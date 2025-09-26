@@ -3,3 +3,11 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Load PP Mondwest font - you'll need to get the actual font files or find a web font version */
+@font-face {
+  font-family: 'PP_Mondwest';
+  src: url('path-to-your-font.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
