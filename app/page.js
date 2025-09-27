@@ -1,6 +1,7 @@
 import IntroSection from '../components/IntroSection'
 import Navigation from '../components/Navigation'
-import TestimonialSection from '../components/TestimonialSection'
+import TestimonialsSection from '../components/TestimonialsSection'
+import ImageCarousel from '../components/ImageCarousel'
 import Footer from '../components/Footer'
 
 export default function Home() {
@@ -8,7 +9,8 @@ export default function Home() {
     <main>
       <Navigation />
       <IntroSection />
-      <TestimonialSection />
+      <TestimonialsSection />
+      <ImageCarousel />
       <Footer />
     </main>
   )
