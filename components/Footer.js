@@ -1,3 +1,5 @@
+'use client'
+
 export default function Footer() {
   return (
     <div className="bg-[#435938] min-w-[375px] max-w-[1440px] mx-auto">
