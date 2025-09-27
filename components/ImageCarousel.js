@@ -1,6 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+
+import { useEffect } from 'react'
+
+useEffect(() => {
+  // Preload all images
+  projects.forEach((project) => {
+    const img = document.createElement('img')
+    img.src = project.image
+  })
+}, [])
+
 import Image from 'next/image'
 
 export default function ImageCarousel() {
