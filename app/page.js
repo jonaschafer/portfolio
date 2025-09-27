@@ -26,7 +26,7 @@ export default function Home() {
 
       <ProjectCarousel 
         title="Prism"
-        description="Clockwise reinvented scheduling with \"Prism\", an AI-powered calendar you talk with. Need to clear your day or meet the CEO? Just ask. Over 2 months we launched an ambitious campaign including a 3D animated video with our friends at →Yatta, and a slew of marketing surfaces: social, paid media, email, 4 pages, blog posts and in-product flows."
+        description="Clockwise reinvented scheduling with Prism, an AI-powered calendar you talk with. Need to clear your day or meet the CEO? Just ask. Over 2 months we launched an ambitious campaign including a 3D animated video with our friends at →Yatta, and a slew of marketing surfaces: social, paid media, email, 4 pages, blog posts and in-product flows."
         folder="04 Prism"
         images={["prism-1.png", "prism-2.png", "prism-3.png", "prism-4.png", "prism-5.png", "prism-6.png", "prism-7.png", "prism-8.png"]}
       />
