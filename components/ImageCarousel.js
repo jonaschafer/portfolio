@@ -17,17 +17,19 @@ export default function ImageCarousel() {
     { image: "/images/novo/novo-8.jpg" }
   ]
 
-  const handleImageClick = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const centerPoint = rect.width / 2
-    
-    if (x < centerPoint && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1)
-    } else if (x > centerPoint && currentIndex < projects.length - 1) {
-      setCurrentIndex(currentIndex + 1)
-    }
+const handleImageClick = (e) => {
+  const rect = e.currentTarget.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const centerPoint = rect.width / 2
+  
+  if (x < centerPoint) {
+    // Left side - go to previous (or wrap to last)
+    setCurrentIndex(currentIndex === 0 ? projects.length - 1 : currentIndex - 1)
+  } else {
+    // Right side - go to next (or wrap to first)
+    setCurrentIndex(currentIndex === projects.length - 1 ? 0 : currentIndex + 1)
   }
+}
 
   return (
     <div className="bg-[#435938] w-full">
