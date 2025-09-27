@@ -9,8 +9,8 @@ export default function Home() {
     <main>
       <Navigation />
       <IntroSection />
-      <TestimonialsSection />
       <ImageCarousel />
+      <TestimonialsSection />
       <Footer />
     </main>
   )
