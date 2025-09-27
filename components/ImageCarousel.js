@@ -57,11 +57,11 @@ const projects = [
             <div className="flex flex-col gap-[28px] max-w-[345px]">
               <div className="flex flex-col gap-[8px]">
                 <h2 className="font-['Mondwest',_sans-serif] text-[31px] text-[#FAFAFA] leading-[1.2] tracking-[0.31px]">
-                  {projects[currentIndex].title}
-                </h2>
-                <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] leading-[16.44px] text-[#FAFAFA] tracking-[0.167px]">
-                  {projects[currentIndex].description}
-                </p>
+  Novo
+</h2>
+<p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] leading-[16.44px] text-[#FAFAFA] tracking-[0.167px]">
+  Novo is a financial platform for small businesses, offering banking features and AI-powered bookkeeping. Despite a brand refresh, their site lacked engagement and clarity. Partnering with →Dawn and →Work Is Play, we redesigned 10 pages, created 50+ illustrations, and built a mini design system in 7 weeks.
+</p>
               </div>
               
               {/* Counter */}
