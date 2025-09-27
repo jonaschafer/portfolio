@@ -84,3 +84,17 @@ export default function Home() {
         title="Scheduling Links"
         description={
           <>
+            Group scheduling is a nightmare—group emails, Doodle polls, and so much back and forth. But Clockwise Links makes it effortless. We teamed up with{' '}
+            <a href="https://www.thirdcoastfilms.com/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Third Coast Films</a>
+            {' '}to produce 15, 30, and 60-second paid media spots, handling everything from scriptwriting to remote art direction. Fast, scrappy, and no wasted motion—just like the product itself.
+          </>
+        }
+        folder="08 Scheduling Links"
+        images={["links-8.gif", "links-6.gif", "links-1.png", "links-2.png", "links-3.png", "links-4.png", "links-5.png", "links-7.png"]}
+      />
+
+      <TestimonialsSection />
+      <Footer />
+    </main>
+  )
+}
