@@ -37,7 +37,7 @@ export default function TestimonialsSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] md:gap-[40px]">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="flex flex-col gap-[8px]">
-                <p className="font-['Haas_Grot_Disp',_sans-serif] text-[19.4px] leading-[1.2] text-[#FAFAFA] tracking-[0.167px]">
+                <p className="font-['Haas_Grot_Disp',_sans-serif] text-[14px] md:text-[16px] lg:text-[19.4px] leading-[1.2] text-[#FAFAFA] tracking-[0.167px]">
                   {testimonial.quote}
                 </p>
                 <div className="text-[13.4px] leading-[16.44px] text-[#FAFAFA] font-['Haas_Grot_Disp',_sans-serif] tracking-[0.167px]">
