@@ -7,14 +7,14 @@ export default function ImageCarousel() {
 
   // Updated images array
   const projects = [
-    { image: "/images/novo/novo-1.png" },
-    { image: "/images/novo/novo-2.png" },
-    { image: "/images/novo/novo-3.png" },
-    { image: "/images/novo/novo-4.png" },
-    { image: "/images/novo/novo-5.png" },
-    { image: "/images/novo/novo-6.png" },
-    { image: "/images/novo/novo-7.png" },
-    { image: "/images/novo/novo-8.png" }
+    { image: "/images/novo/novo-1.jpg" },
+    { image: "/images/novo/novo-2.jpg" },
+    { image: "/images/novo/novo-3.jpg" },
+    { image: "/images/novo/novo-4.jpg" },
+    { image: "/images/novo/novo-5.jpg" },
+    { image: "/images/novo/novo-6.jpg" },
+    { image: "/images/novo/novo-7.jpg" },
+    { image: "/images/novo/novo-8.jpg" }
   ]
 
   const handleImageClick = (e) => {
