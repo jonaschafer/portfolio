@@ -1,13 +1,9 @@
-// components/IntroSection.js
 export default function IntroSection() {
   return (
-    <section className="bg-[#435938] min-h-screen flex items-center justify-center px-4">
-      <div className="max-w-4xl mx-auto">
-        <p className="font-['PP_Mondwest:Regular',_sans-serif] text-[clamp(24px,_4vw,_31px)] text-neutral-50 leading-[1.2] tracking-[0.31px]">
-          <span className="inline-block mr-2">👋</span>
-          <span>Howdy! I'm Jon, Creative Director at ClassDojo based in rainy </span>
-          <span className="inline-block mx-1">🌧️</span>
-          <span>Portland. Prev </span>
+    <section className="bg-[#435938] min-h-screen flex items-center">
+      <div className="w-full px-5 md:px-[60px] lg:px-[60px]">
+        <p className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] lg:text-[31px] text-[#FAFAFA] leading-[1.2] tracking-[0.31px] max-w-[335px] md:max-w-[648px] lg:max-w-[747px] whitespace-pre-wrap">
+          <span>👋 Howdy! I'm Jon, Creative Director at ClassDojo based in rainy  🌧️ Portland. Prev </span>
           <a 
             className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity" 
             href="https://workisplay.studio/"
@@ -34,8 +30,7 @@ export default function IntroSection() {
           >
             Zapier
           </a>
-          <span>. Big fan of emojis. </span>
-          <span className="inline-block">🥳</span>
+          . Big fan of emojis. 🥳
         </p>
       </div>
     </section>
