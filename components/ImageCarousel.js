@@ -8,43 +8,16 @@ export default function ImageCarousel() {
   const [isHovering, setIsHovering] = useState(false)
 
   // Sample project data - you can replace with real data
-  const projects = [
-    {
-      title: "Novo",
-      description: "Novo is a financial platform for small businesses, offering banking features and AI-powered bookkeeping. Despite a brand refresh, their site lacked engagement and clarity. Partnering with →Dawn and →Work Is Play, we redesigned 10 pages, created 50+ illustrations, and built a mini design system in 7 weeks.",
-      image: "https://via.placeholder.com/1320x733/ffffff/000000?text=Project+1"
-    },
-    {
-      title: "Project Two",
-      description: "Description for project two goes here with details about the work done.",
-      image: "https://via.placeholder.com/1320x733/ffffff/000000?text=Project+2"
-    },
-    {
-      title: "Project Three", 
-      description: "Description for project three goes here with details about the work done.",
-      image: "https://via.placeholder.com/1320x733/ffffff/000000?text=Project+3"
-    },
-    {
-      title: "Project Four",
-      description: "Description for project four goes here with details about the work done.",
-      image: "https://via.placeholder.com/1320x733/ffffff/000000?text=Project+4"
-    },
-    {
-      title: "Project Five",
-      description: "Description for project five goes here with details about the work done.", 
-      image: "https://via.placeholder.com/1320x733/ffffff/000000?text=Project+5"
-    },
-    {
-      title: "Project Six",
-      description: "Description for project six goes here with details about the work done.",
-      image: "https://via.placeholder.com/1320x733/ffffff/000000?text=Project+6"
-    },
-    {
-      title: "Project Seven",
-      description: "Description for project seven goes here with details about the work done.",
-      image: "https://via.placeholder.com/1320x733/ffffff/000000?text=Project+7"
-    }
-  ]
+const projects = [
+  { image: "/images/novo/novo-1.png" },
+  { image: "/images/novo/novo-2.png" },
+  { image: "/images/novo/novo-3.png" },
+  { image: "/images/novo/novo-4.png" },
+  { image: "/images/novo/novo-5.png" },
+  { image: "/images/novo/novo-6.png" },
+  { image: "/images/novo/novo-7.png" },
+  { image: "/images/novo/novo-8.png" }
+]
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
