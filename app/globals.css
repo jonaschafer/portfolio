@@ -11,3 +11,11 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'Haas_Grot_Disp';
+  src: url('/fonts/HaasGrotDisp-55Roman.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
