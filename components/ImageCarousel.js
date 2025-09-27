@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function ImageCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  // Updated images array
   const projects = [
     { image: "/images/novo/novo-1.jpg" },
     { image: "/images/novo/novo-2.jpg" },
@@ -53,13 +53,16 @@ export default function ImageCarousel() {
 
             {/* Image Container */}
             <div 
-              className="w-full h-[300px] md:h-[500px] lg:h-[733px] bg-white rounded-[10px] overflow-hidden cursor-pointer"
+              className="w-full aspect-[1300/731] bg-white rounded-[10px] overflow-hidden cursor-pointer relative"
               onClick={handleImageClick}
             >
-              <img 
+              <Image 
                 src={projects[currentIndex].image}
                 alt="Novo project"
+                width={1300}
+                height={731}
                 className="w-full h-full object-cover"
+                priority
               />
             </div>
           </div>
