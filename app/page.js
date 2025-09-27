@@ -1,5 +1,6 @@
 import IntroSection from '../components/IntroSection'
 import Navigation from '../components/Navigation'
+import TestimonialSection from '../components/TestimonialSection'
 import Footer from '../components/Footer'
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <main>
       <Navigation />
       <IntroSection />
+      <TestimonialSection />
       <Footer />
     </main>
   )
