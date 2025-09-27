@@ -5,6 +5,7 @@ import Image from 'next/image'
 
 export default function ProjectCarousel({ title, description, images, folder }) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [showArrows, setShowArrows] = useState(false)
 
   const handleImageClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -16,6 +17,14 @@ export default function ProjectCarousel({ title, description, images, folder }) 
     } else {
       setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1)
     }
+  }
+
+  const handleMouseMove = (e) => {
+    setShowArrows(true)
+  }
+
+  const handleMouseLeave = () => {
+    setShowArrows(false)
   }
 
   return (
@@ -44,6 +53,8 @@ export default function ProjectCarousel({ title, description, images, folder }) 
             <div 
               className="w-full aspect-[1300/731] bg-white rounded-[10px] overflow-hidden cursor-pointer relative"
               onClick={handleImageClick}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
             >
               <Image 
                 src={`/images/${folder}/${images[currentIndex]}`}
@@ -53,6 +64,39 @@ export default function ProjectCarousel({ title, description, images, folder }) 
                 className="w-full h-full object-cover"
                 priority
               />
+              
+              {/* Arrow Overlays */}
+              {showArrows && (
+                <>
+                  {/* Left Arrow */}
+                  <div className="absolute left-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" className="drop-shadow-lg">
+                      <path 
+                        d="M15 18L9 12L15 6" 
+                        stroke="white" 
+                        strokeWidth="3" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        fill="none"
+                      />
+                    </svg>
+                  </div>
+                  
+                  {/* Right Arrow */}
+                  <div className="absolute right-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" className="drop-shadow-lg">
+                      <path 
+                        d="M9 18L15 12L9 6" 
+                        stroke="white" 
+                        strokeWidth="3" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                        fill="none"
+                      />
+                    </svg>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
