@@ -1,4 +1,3 @@
-import Typewriter from '../components/Typewriter'
 
 export default function IntroSection() {
   return (
@@ -6,18 +5,7 @@ export default function IntroSection() {
       <section className="min-w-[375px] max-w-[1440px] mx-auto pt-[60px] pb-[40px]">
         <div className="w-full px-5 md:px-[60px] lg:px-[60px]">
           <p className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] lg:text-[31px] text-[#FAFAFA] leading-[1.2] tracking-[0.31px] max-w-[335px] md:max-w-[648px] lg:max-w-[747px] whitespace-pre-wrap">
-            <span>👋 Howdy! I'm Jon, </span>
-            
-               <Typewriter
-              text={["Creative Director", "Designer", "Problem Solver", "Emoji Enthusiast 🥳"]}
-              speed={70}
-              className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] lg:text-[31px] text-[#FAFAFA]"
-              waitTime={1500}
-              deleteSpeed={40}
-              cursorChar="_"
-            />
-            
-            <span>Creative Director at ClassDojo based in rainy  🌧️ Portland. Prev </span>
+            <span>👋 Howdy! I'm Jon, Creative Director at ClassDojo based in rainy  🌧️ Portland. Prev </span>
             <a 
               className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity" 
               href="https://workisplay.studio/"
