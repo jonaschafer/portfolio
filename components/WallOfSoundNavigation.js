@@ -33,7 +33,7 @@ export default function WallOfSoundNavigation() {
             </a>
             <a 
               href="/wall-of-sound" 
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity font-bold"
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity underline decoration-white underline-offset-1"
             >
               Jams
             </a>
@@ -111,7 +111,7 @@ export default function WallOfSoundNavigation() {
               </a>
               <a 
                 href="/wall-of-sound" 
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity font-bold"
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity underline decoration-white underline-offset-1"
                 onClick={toggleMenu}
               >
                 Jams

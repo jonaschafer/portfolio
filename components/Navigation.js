@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -21,7 +23,7 @@ export default function Navigation() {
           <div className="hidden sm:flex items-center gap-[20px] md:gap-[30px]">
             <a 
               href="/" 
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline decoration-white underline-offset-1' : ''}`}
             >
               Work
             </a>
@@ -33,7 +35,7 @@ export default function Navigation() {
             </a>
             <a 
               href="/wall-of-sound" 
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname === '/wall-of-sound' ? 'underline decoration-white underline-offset-1' : ''}`}
             >
               Jams
             </a>
@@ -97,7 +99,7 @@ export default function Navigation() {
             <div className="flex flex-col space-y-8">
               <a 
                 href="/" 
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline decoration-white underline-offset-1' : ''}`}
                 onClick={toggleMenu}
               >
                 Work
@@ -111,7 +113,7 @@ export default function Navigation() {
               </a>
               <a 
                 href="/wall-of-sound" 
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname === '/wall-of-sound' ? 'underline decoration-white underline-offset-1' : ''}`}
                 onClick={toggleMenu}
               >
                 Jams
