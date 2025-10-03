@@ -19,7 +19,7 @@ export default function AddTrackModal({ onClose, onAdd }) {
 
     try {
       // Fetch Spotify metadata
-      const spotifyRes = await fetch('/api/spotify', {
+      const spotifyRes = await fetch('/wall-of-sound/api/spotify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ spotifyUrl })
@@ -27,7 +27,7 @@ export default function AddTrackModal({ onClose, onAdd }) {
       const spotifyData = await spotifyRes.json();
 
       // Fetch Odesli links
-      const odesliRes = await fetch('/api/odesli', {
+      const odesliRes = await fetch('/wall-of-sound/api/odesli', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ spotifyUrl })
@@ -35,7 +35,7 @@ export default function AddTrackModal({ onClose, onAdd }) {
       const odesliData = await odesliRes.json();
 
       // Save to database
-      const saveRes = await fetch('/api/songs', {
+      const saveRes = await fetch('/wall-of-sound/api/songs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
