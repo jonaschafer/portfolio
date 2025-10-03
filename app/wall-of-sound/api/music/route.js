@@ -127,10 +127,43 @@ async function getOdesliData(musicUrl) {
   
   const data = await response.json();
   
-  // Extract basic info from Odesli response
-  const title = data.title || 'Unknown Track';
-  const artist = data.artistName || 'Unknown Artist';
-  const albumArt = data.thumbnailUrl || null;
+  // Extract metadata from Odesli response structure
+  // Odesli returns data in different formats, so we need to check multiple possible locations
+  let title = 'Unknown Track';
+  let artist = 'Unknown Artist';
+  let albumArt = null;
+  
+  // Check for entity data (most common structure)
+  if (data.entity) {
+    title = data.entity.title || data.entity.name || title;
+    artist = data.entity.artistName || data.entity.artist || artist;
+    albumArt = data.entity.thumbnailUrl || data.entity.imageUrl || albumArt;
+  }
+  
+  // Fallback to root level properties
+  if (title === 'Unknown Track') {
+    title = data.title || data.name || title;
+  }
+  if (artist === 'Unknown Artist') {
+    artist = data.artistName || data.artist || artist;
+  }
+  if (!albumArt) {
+    albumArt = data.thumbnailUrl || data.imageUrl || data.coverArtUrl || albumArt;
+  }
+  
+  // Additional fallback: try to extract from platform-specific data
+  if (title === 'Unknown Track' || artist === 'Unknown Artist') {
+    const platform = detectPlatform(musicUrl);
+    const platformData = data.linksByPlatform?.[platform];
+    if (platformData) {
+      if (title === 'Unknown Track' && platformData.title) {
+        title = platformData.title;
+      }
+      if (artist === 'Unknown Artist' && platformData.artistName) {
+        artist = platformData.artistName;
+      }
+    }
+  }
   
   return {
     trackId: null,
