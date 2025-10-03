@@ -92,9 +92,22 @@ export default function Home() {
     return null; // Will redirect to login
   }
 
+  const handleAddTrack = () => {
+    // This will be handled by MusicWall component
+    const event = new CustomEvent('addTrack');
+    window.dispatchEvent(event);
+  };
+
+  const handleLogout = async () => {
+    if (supabase) {
+      await supabase.auth.signOut();
+      window.location.href = '/wall-of-sound/login';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FFDAD9]">
-      <WallOfSoundNavigation />
+      <WallOfSoundNavigation onAddTrack={handleAddTrack} onLogout={handleLogout} />
       <MusicWall user={user} />
     </div>
   );

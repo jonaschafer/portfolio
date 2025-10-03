@@ -40,8 +40,8 @@ export default function AlbumCard({ song, onPlay }) {
           </div>
 
           {/* Wooden Shelf */}
-          <div className="absolute -bottom-3 left-0 right-0 h-3 bg-gradient-to-b from-shelf-top to-shelf-bottom shadow-lg">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-shelf-mid/60 to-transparent opacity-60" />
+          <div className="absolute -bottom-3 left-0 right-0 h-3 bg-gradient-to-b from-[#8B4513] to-[#654321] shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#A0522D]/60 to-transparent opacity-60" />
             <div className="absolute inset-0 shadow-[0px_1px_0px_0px_inset_rgba(255,255,255,0.1)]" />
           </div>
 
@@ -57,10 +57,10 @@ export default function AlbumCard({ song, onPlay }) {
         {/* Track Info */}
         <div className="flex items-start justify-between gap-2 mt-6">
           <div className="flex-1 min-w-0">
-            <p className="text-text-dark text-sm font-normal truncate leading-5">
+            <p className="text-[#1e1e1e] text-sm font-normal truncate leading-5">
               {song.artist}
             </p>
-            <p className="text-text-secondary text-xs font-normal truncate leading-4">
+            <p className="text-[#1e1e1e]/70 text-xs font-normal truncate leading-4">
               {song.title}
             </p>
           </div>
@@ -68,16 +68,16 @@ export default function AlbumCard({ song, onPlay }) {
                 {/* Find It Button */}
                 <button
                   onClick={() => window.open(song.odesli_url, '_blank')}
-                  className="flex-shrink-0 border border-text-dark rounded px-1.5 py-0.5 flex items-center gap-1 hover:bg-text-dark hover:text-primary transition-colors group/button"
+                  className="flex-shrink-0 border border-[#1e1e1e] rounded px-1.5 py-0.5 flex items-center gap-1 hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors group/button"
                 >
-                  <span className="text-text-dark text-[11px] font-medium group-hover/button:text-primary">Find it</span>
-                  <ExternalLink size={13} className="text-text-dark group-hover/button:text-primary" />
+                  <span className="text-[#1e1e1e] text-[11px] font-medium group-hover/button:text-[#FFDAD9]">Find it</span>
+                  <ExternalLink size={13} className="text-[#1e1e1e] group-hover/button:text-[#FFDAD9]" />
                 </button>
         </div>
 
         {/* Description - Full Width */}
         {song.description && (
-          <p className="text-text-secondary text-xs font-normal mt-2 line-clamp-2 leading-4">
+          <p className="text-[#1e1e1e]/70 text-xs font-normal mt-2 line-clamp-2 leading-4">
             {song.description}
           </p>
         )}
@@ -87,12 +87,12 @@ export default function AlbumCard({ song, onPlay }) {
       {showServices && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowServices(false)}>
           <div 
-            className="bg-primary rounded-lg p-8 max-w-md w-full border-2 border-text-dark shadow-xl"
+            className="bg-[#FFDAD9] rounded-lg p-8 max-w-md w-full border-2 border-[#1e1e1e] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-text-dark">Listen on your favorite service</h2>
-              <button onClick={() => setShowServices(false)} className="text-text-dark hover:opacity-60 transition-opacity">
+              <h2 className="text-2xl font-bold text-[#1e1e1e]">Listen on your favorite service</h2>
+              <button onClick={() => setShowServices(false)} className="text-[#1e1e1e] hover:opacity-60 transition-opacity">
                 <X size={28} />
               </button>
             </div>
@@ -119,8 +119,8 @@ function ServiceLink({ icon, name, url, primary }) {
       rel="noopener noreferrer"
       className={`flex items-center gap-3 p-4 rounded-lg transition-all ${
         primary 
-          ? 'bg-text-dark text-primary hover:opacity-90' 
-          : 'bg-white/50 text-text-dark hover:bg-white/80'
+          ? 'bg-[#1e1e1e] text-[#FFDAD9] hover:opacity-90' 
+          : 'bg-white/50 text-[#1e1e1e] hover:bg-white/80'
       }`}
     >
       <span className="text-2xl">{icon}</span>

@@ -1,4 +1,5 @@
 {
-  "/not-found": "app/not-found.js",
-  "/wall-of-sound/page": "app/wall-of-sound/page.js"
+  "/page": "app/page.js",
+  "/wall-of-sound/page": "app/wall-of-sound/page.js",
+  "/wall-of-sound/api/songs/route": "app/wall-of-sound/api/songs/route.js"
 }
