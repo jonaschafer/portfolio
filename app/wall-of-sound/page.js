@@ -17,26 +17,40 @@ export default function Home() {
       return;
     }
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+    try {
+      // Get initial session
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+        if (!session) {
+          router.push('/wall-of-sound/login');
+        }
+      }).catch((error) => {
+        console.error('Error getting session:', error);
+        setLoading(false);
+        router.push('/wall-of-sound/login');
+      });
+
+      // Listen for auth changes
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+        if (!session) {
+          router.push('/wall-of-sound/login');
+        }
+      });
+
+      return () => {
+        if (subscription) {
+          subscription.unsubscribe();
+        }
+      };
+    } catch (error) {
+      console.error('Error initializing auth:', error);
       setLoading(false);
-      if (!session) {
-        router.push('/wall-of-sound/login');
-      }
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (!session) {
-        router.push('/wall-of-sound/login');
-      }
-    });
-
-    return () => subscription.unsubscribe();
+      router.push('/wall-of-sound/login');
+    }
   }, [router]);
 
   if (loading) {
@@ -80,7 +94,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-primary">
-      <Navigation />
+      <WallOfSoundNavigation />
       <MusicWall user={user} />
     </div>
   );
