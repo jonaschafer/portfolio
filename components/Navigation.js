@@ -20,6 +20,20 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-[20px] md:gap-[30px]">
             <a 
+              href="/" 
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+            >
+              Work
+            </a>
+            <a 
+              href="https://figma-experiments.vercel.app" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+            >
+              Play
+            </a>
+            <a 
               href="/wall-of-sound" 
               className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
             >
@@ -31,7 +45,7 @@ export default function Navigation() {
               rel="noopener noreferrer"
               className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
             >
-              Say 'ello
+              👋
             </a>
             <a 
               href="https://www.are.na/jon-schafer/blocks" 
@@ -84,6 +98,22 @@ export default function Navigation() {
             {/* Menu Items */}
             <div className="flex flex-col space-y-8">
               <a 
+                href="/" 
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
+                onClick={toggleMenu}
+              >
+                Work
+              </a>
+              <a 
+                href="https://figma-experiments.vercel.app" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
+                onClick={toggleMenu}
+              >
+                Play
+              </a>
+              <a 
                 href="/wall-of-sound" 
                 className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
                 onClick={toggleMenu}
@@ -97,7 +127,7 @@ export default function Navigation() {
                 className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
                 onClick={toggleMenu}
               >
-                Say 'ello
+                👋
               </a>
               <a 
                 href="https://www.are.na/jon-schafer/blocks" 
