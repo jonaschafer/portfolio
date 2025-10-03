@@ -17,7 +17,10 @@ export default function MusicWall({ user }) {
     
     // Listen for add track event from navigation
     const handleAddTrack = () => {
-      setShowAddForm(true);
+      if (user) {
+        setShowAddForm(true);
+      }
+      // If no user, the navigation will handle redirecting to login
     };
     
     window.addEventListener('addTrack', handleAddTrack);

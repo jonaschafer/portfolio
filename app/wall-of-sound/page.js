@@ -22,13 +22,11 @@ export default function Home() {
       supabase.auth.getSession().then(({ data: { session } }) => {
         setUser(session?.user ?? null);
         setLoading(false);
-        if (!session) {
-          router.push('/wall-of-sound/login');
-        }
+        // Don't redirect to login - show the wall to everyone
       }).catch((error) => {
         console.error('Error getting session:', error);
         setLoading(false);
-        router.push('/wall-of-sound/login');
+        // Don't redirect to login - show the wall to everyone
       });
 
       // Listen for auth changes
@@ -36,9 +34,7 @@ export default function Home() {
         data: { subscription },
       } = supabase.auth.onAuthStateChange((_event, session) => {
         setUser(session?.user ?? null);
-        if (!session) {
-          router.push('/wall-of-sound/login');
-        }
+        // Don't redirect to login - show the wall to everyone
       });
 
       return () => {
@@ -49,7 +45,7 @@ export default function Home() {
     } catch (error) {
       console.error('Error initializing auth:', error);
       setLoading(false);
-      router.push('/wall-of-sound/login');
+      // Don't redirect to login - show the wall to everyone
     }
   }, [router]);
 
@@ -88,26 +84,37 @@ export default function Home() {
     );
   }
 
-  if (!user) {
-    return null; // Will redirect to login
-  }
-
   const handleAddTrack = () => {
+    if (!user) {
+      // Redirect to login if not authenticated
+      router.push('/wall-of-sound/login');
+      return;
+    }
     // This will be handled by MusicWall component
     const event = new CustomEvent('addTrack');
     window.dispatchEvent(event);
   };
 
+  const handleLogin = () => {
+    router.push('/wall-of-sound/login');
+  };
+
   const handleLogout = async () => {
     if (supabase) {
       await supabase.auth.signOut();
-      window.location.href = '/wall-of-sound/login';
+      // Stay on the same page after logout
+      setUser(null);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#FFDAD9]">
-      <WallOfSoundNavigation onAddTrack={handleAddTrack} onLogout={handleLogout} />
+      <WallOfSoundNavigation 
+        user={user}
+        onAddTrack={handleAddTrack} 
+        onLogin={handleLogin}
+        onLogout={handleLogout} 
+      />
       <MusicWall user={user} />
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-export default function WallOfSoundNavigation({ onAddTrack, onLogout }) {
+export default function WallOfSoundNavigation({ user, onAddTrack, onLogin, onLogout }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
@@ -53,18 +53,29 @@ export default function WallOfSoundNavigation({ onAddTrack, onLogout }) {
             >
               Vibes
             </a>
-            <button
-              onClick={onAddTrack}
-              className="border border-[#1e1e1e] rounded-full px-5 py-2.5 text-[#1e1e1e] text-base hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors"
-            >
-              Add a track
-            </button>
-            <button
-              onClick={onLogout}
-              className="text-[#1e1e1e] text-sm opacity-60 hover:opacity-100 transition-opacity"
-            >
-              Logout
-            </button>
+                {user ? (
+                  <>
+                    <button
+                      onClick={onAddTrack}
+                      className="border border-[#1e1e1e] rounded-full px-5 py-2.5 text-[#1e1e1e] text-base hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors"
+                    >
+                      Add a track
+                    </button>
+                    <button
+                      onClick={onLogout}
+                      className="text-[#1e1e1e] text-sm opacity-60 hover:opacity-100 transition-opacity"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={onLogin}
+                    className="border border-[#1e1e1e] rounded-full px-5 py-2.5 text-[#1e1e1e] text-base hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors"
+                  >
+                    Log in
+                  </button>
+                )}
           </div>
 
           {/* Mobile Hamburger Button */}
@@ -146,18 +157,29 @@ export default function WallOfSoundNavigation({ onAddTrack, onLogout }) {
               >
                 Vibes
               </a>
-              <button
-                onClick={() => { onAddTrack(); toggleMenu(); }}
-                className="border border-[#1e1e1e] rounded-full px-5 py-2.5 text-[#1e1e1e] text-base hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors w-fit"
-              >
-                Add a track
-              </button>
-              <button
-                onClick={() => { onLogout(); toggleMenu(); }}
-                className="text-[#1e1e1e] text-sm opacity-60 hover:opacity-100 transition-opacity w-fit"
-              >
-                Logout
-              </button>
+                  {user ? (
+                    <>
+                      <button
+                        onClick={() => { onAddTrack(); toggleMenu(); }}
+                        className="border border-[#1e1e1e] rounded-full px-5 py-2.5 text-[#1e1e1e] text-base hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors w-fit"
+                      >
+                        Add a track
+                      </button>
+                      <button
+                        onClick={() => { onLogout(); toggleMenu(); }}
+                        className="text-[#1e1e1e] text-sm opacity-60 hover:opacity-100 transition-opacity w-fit"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => { onLogin(); toggleMenu(); }}
+                      className="border border-[#1e1e1e] rounded-full px-5 py-2.5 text-[#1e1e1e] text-base hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors w-fit"
+                    >
+                      Log in
+                    </button>
+                  )}
             </div>
           </div>
         )}
