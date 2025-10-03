@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
 import MusicWall from './components/MusicWall';
 import { useRouter } from 'next/navigation';
+import WallOfSoundNavigation from '../../components/WallOfSoundNavigation';
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -40,28 +41,34 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-primary flex items-center justify-center">
-        <div className="text-text-dark font-geist">Loading...</div>
+      <div className="min-h-screen bg-primary">
+        <WallOfSoundNavigation />
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-text-dark font-geist">Loading...</div>
+        </div>
       </div>
     );
   }
 
   if (!supabase) {
     return (
-      <div className="min-h-screen bg-primary flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-black text-text-dark mb-4">
-            «« wall of sound »»
-          </h1>
-          <p className="text-text-dark mb-8">
-            Supabase configuration required to use this feature.
-          </p>
-          <a 
-            href="/" 
-            className="bg-text-dark text-primary px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
-          >
-            Back to Portfolio
-          </a>
+      <div className="min-h-screen bg-primary">
+        <WallOfSoundNavigation />
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <h1 className="text-4xl font-black text-text-dark mb-4">
+              «« wall of sound »»
+            </h1>
+            <p className="text-text-dark mb-8">
+              Supabase configuration required to use this feature.
+            </p>
+            <a 
+              href="/" 
+              className="bg-text-dark text-primary px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
+            >
+              Back to Portfolio
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -71,5 +78,10 @@ export default function Home() {
     return null; // Will redirect to login
   }
 
-  return <MusicWall user={user} />;
+  return (
+    <div className="min-h-screen bg-primary">
+      <Navigation />
+      <MusicWall user={user} />
+    </div>
+  );
 }
