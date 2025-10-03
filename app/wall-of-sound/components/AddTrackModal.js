@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { X } from 'lucide-react';
 
 export default function AddTrackModal({ onClose, onAdd }) {
-  const [spotifyUrl, setSpotifyUrl] = useState('');
+  const [musicUrl, setMusicUrl] = useState('');
   const [genre, setGenre] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!spotifyUrl || !genre || !description) {
+    if (!musicUrl || !genre || !description) {
       alert('Please fill in all fields');
       return;
     }
@@ -18,43 +18,41 @@ export default function AddTrackModal({ onClose, onAdd }) {
     setLoading(true);
 
     try {
-      // Fetch Spotify metadata
-      const spotifyRes = await fetch('/wall-of-sound/api/spotify', {
+      // Fetch music metadata from unified API
+      const musicRes = await fetch('/wall-of-sound/api/music', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ spotifyUrl })
+        body: JSON.stringify({ musicUrl })
       });
-      const spotifyData = await spotifyRes.json();
-
-      // Fetch Odesli links
-      const odesliRes = await fetch('/wall-of-sound/api/odesli', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ spotifyUrl })
-      });
-      const odesliData = await odesliRes.json();
+      
+      if (!musicRes.ok) {
+        const errorData = await musicRes.json();
+        throw new Error(errorData.error || 'Failed to fetch music data');
+      }
+      
+      const musicData = await musicRes.json();
 
       // Save to database
       const saveRes = await fetch('/wall-of-sound/api/songs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          spotify_url: spotifyUrl,
-          spotify_track_id: spotifyData.trackId,
-          album_art: spotifyData.albumArt,
-          artist: spotifyData.artist,
-          title: spotifyData.title,
+          spotify_url: musicData.originalUrl,
+          spotify_track_id: musicData.trackId,
+          album_art: musicData.albumArt,
+          artist: musicData.artist,
+          title: musicData.title,
           genre: genre,
           description: description,
-          odesli_url: odesliData.odesliUrl,
-          preview_url: spotifyData.previewUrl
+          odesli_url: musicData.odesliUrl,
+          preview_url: musicData.previewUrl
         })
       });
 
       const newSong = await saveRes.json();
       onAdd(newSong);
       
-      setSpotifyUrl('');
+      setMusicUrl('');
       setGenre('');
       setDescription('');
     } catch (error) {
@@ -79,14 +77,17 @@ export default function AddTrackModal({ onClose, onAdd }) {
 
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-2 text-[#1e1e1e]">Spotify URL</label>
+            <label className="block text-sm font-medium mb-2 text-[#1e1e1e]">Music URL</label>
             <input
               type="url"
-              value={spotifyUrl}
-              onChange={(e) => setSpotifyUrl(e.target.value)}
-              placeholder="https://open.spotify.com/track/..."
+              value={musicUrl}
+              onChange={(e) => setMusicUrl(e.target.value)}
+              placeholder="Spotify, Tidal, YouTube, Apple Music, etc..."
               className="w-full px-4 py-3 bg-white border-2 border-[#1e1e1e]/20 rounded-lg focus:outline-none focus:border-[#1e1e1e] text-[#1e1e1e] placeholder:text-[#1e1e1e]/40"
             />
+            <p className="text-xs text-[#1e1e1e]/60 mt-1">
+              Supported: Spotify, Tidal, YouTube, Apple Music, SoundCloud, Bandcamp
+            </p>
           </div>
           
           <div>
