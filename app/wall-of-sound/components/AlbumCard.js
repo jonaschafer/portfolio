@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Play, ExternalLink, X } from 'lucide-react';
 
-export default function AlbumCard({ song, onPlay }) {
+export default function AlbumCard({ song }) {
   const [isHovered, setIsHovered] = useState(false);
   const [showServices, setShowServices] = useState(false);
 
@@ -17,7 +17,7 @@ export default function AlbumCard({ song, onPlay }) {
             className="relative shadow-lg cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            onClick={() => onPlay(song)}
+            onClick={() => window.open(song.odesli_url, '_blank')}
           >
             <div className="relative aspect-square overflow-hidden shadow-md">
               <img 
@@ -30,10 +30,17 @@ export default function AlbumCard({ song, onPlay }) {
                 }}
               />
               
-              {/* Hover Play Overlay */}
-              <div className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'} md:opacity-0 md:group-hover:opacity-100`}>
+              {/* Hover Play Overlay - Desktop only */}
+              <div className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'} hidden md:flex md:opacity-0 md:group-hover:opacity-100`}>
                 <div className="bg-white hover:bg-gray-100 p-4 rounded-full transition-all transform hover:scale-110">
                   <Play size={28} fill="#2D1F0F" className="text-text-dark" />
+                </div>
+              </div>
+              
+              {/* Mobile/Tablet Play Button - Always visible */}
+              <div className="absolute bottom-2 right-2 md:hidden">
+                <div className="bg-white/90 hover:bg-white p-2 rounded-full shadow-lg">
+                  <Play size={16} fill="#2D1F0F" />
                 </div>
               </div>
             </div>
@@ -55,24 +62,13 @@ export default function AlbumCard({ song, onPlay }) {
         </div>
 
         {/* Track Info */}
-        <div className="flex items-start justify-between gap-2 mt-6">
-          <div className="flex-1 min-w-0">
-            <p className="text-[#1e1e1e] text-sm font-normal truncate leading-5">
-              {song.artist}
-            </p>
-            <p className="text-[#1e1e1e]/70 text-xs font-normal truncate leading-4">
-              {song.title}
-            </p>
-          </div>
-
-                {/* Find It Button */}
-                <button
-                  onClick={() => window.open(song.odesli_url, '_blank')}
-                  className="flex-shrink-0 border border-[#1e1e1e] rounded px-1.5 py-0.5 flex items-center gap-1 hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors group/button"
-                >
-                  <span className="text-[#1e1e1e] text-[11px] font-medium group-hover/button:text-[#FFDAD9]">Find it</span>
-                  <ExternalLink size={13} className="text-[#1e1e1e] group-hover/button:text-[#FFDAD9]" />
-                </button>
+        <div className="mt-6">
+          <p className="text-[#1e1e1e] text-sm font-normal truncate leading-5">
+            {song.artist}
+          </p>
+          <p className="text-[#1e1e1e]/70 text-xs font-normal truncate leading-4">
+            {song.title}
+          </p>
         </div>
 
         {/* Description - Full Width */}

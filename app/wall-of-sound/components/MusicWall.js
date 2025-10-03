@@ -4,14 +4,12 @@ import { useState, useEffect } from 'react';
 import { Music } from 'lucide-react';
 import AlbumCard from './AlbumCard';
 import AddTrackModal from './AddTrackModal';
-import Player from './Player';
 import { supabase } from '../lib/supabase';
 
 export default function MusicWall({ user }) {
   const [songs, setSongs] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [currentPlayer, setCurrentPlayer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,7 +72,7 @@ export default function MusicWall({ user }) {
           {/* Wall of Sound Header Image - Export from Figma and place in public folder */}
           <img src="/wall-of-sound-header.svg" alt="wall of sound" className="w-full max-w-3xl" />
           
-          <p className="text-text-dark text-lg text-center max-w-2xl font-normal leading-relaxed tracking-wide">
+          <p className="text-[#1e1e1e] text-lg text-center max-w-2xl font-normal leading-relaxed tracking-wide">
             An on-going collection of recent and long-time faves, tracks on heavy rotation, and/or gems that the world should 100% know about.
           </p>
         </div>
@@ -86,8 +84,8 @@ export default function MusicWall({ user }) {
               onClick={() => setSelectedGenre(null)}
               className={`px-5 py-2 rounded-full text-sm transition-all ${
                 !selectedGenre 
-                  ? 'bg-text-dark text-primary font-medium' 
-                  : 'bg-white/50 text-text-dark hover:bg-white/80'
+                  ? 'bg-[#1e1e1e] text-[#FFDAD9] font-medium' 
+                  : 'bg-white/50 text-[#1e1e1e] hover:bg-white/80'
               }`}
             >
               All
@@ -98,8 +96,8 @@ export default function MusicWall({ user }) {
                 onClick={() => setSelectedGenre(genre)}
                 className={`px-5 py-2 rounded-full text-sm transition-all ${
                   selectedGenre === genre 
-                    ? 'bg-text-dark text-primary font-medium' 
-                    : 'bg-white/50 text-text-dark hover:bg-white/80'
+                    ? 'bg-[#1e1e1e] text-[#FFDAD9] font-medium' 
+                    : 'bg-white/50 text-[#1e1e1e] hover:bg-white/80'
                 }`}
               >
                 {genre}
@@ -115,13 +113,12 @@ export default function MusicWall({ user }) {
             filteredSongs.map(song => (
               <AlbumCard 
                 key={song.id} 
-                song={song} 
-                onPlay={setCurrentPlayer}
+                song={song}
               />
             ))
           ) : (
             <div className="col-span-full text-center py-16">
-              <p className="text-text-dark/60 text-lg">
+              <p className="text-[#1e1e1e]/60 text-lg">
                 {loading ? 'Loading...' : 'No songs found. Add some music to get started!'}
               </p>
             </div>
@@ -133,13 +130,6 @@ export default function MusicWall({ user }) {
         <AddTrackModal 
           onClose={() => setShowAddForm(false)}
           onAdd={handleAddSong}
-        />
-      )}
-
-      {currentPlayer && (
-        <Player 
-          song={currentPlayer}
-          onClose={() => setCurrentPlayer(null)}
         />
       )}
     </div>
