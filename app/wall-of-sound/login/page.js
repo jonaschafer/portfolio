@@ -14,6 +14,12 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
 
+    if (!supabase) {
+      alert('Supabase not configured');
+      setLoading(false);
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -22,7 +28,7 @@ export default function Login() {
     if (error) {
       alert(error.message);
     } else {
-      router.push('/');
+      router.push('/wall-of-sound');
     }
     setLoading(false);
   };
@@ -30,6 +36,12 @@ export default function Login() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!supabase) {
+      alert('Supabase not configured');
+      setLoading(false);
+      return;
+    }
 
     const { error } = await supabase.auth.signUp({
       email,

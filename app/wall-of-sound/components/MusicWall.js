@@ -19,9 +19,15 @@ export default function MusicWall({ user }) {
   }, []);
 
   const fetchSongs = async () => {
-    const response = await fetch('/api/songs');
+    const response = await fetch('/wall-of-sound/api/songs');
     const data = await response.json();
-    setSongs(data);
+    
+    if (response.status === 503) {
+      // Supabase not configured
+      setSongs([]);
+    } else {
+      setSongs(data);
+    }
     setLoading(false);
   };
 
@@ -125,13 +131,21 @@ export default function MusicWall({ user }) {
         {/* Album Grid - Fully Responsive */}
         {/* 2 columns mobile, 3 tablet (640px+), 4 desktop (1024px+), 5 wide desktop (1600px+) */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-12 pb-32">
-          {filteredSongs.map(song => (
-            <AlbumCard 
-              key={song.id} 
-              song={song} 
-              onPlay={setCurrentPlayer}
-            />
-          ))}
+          {filteredSongs.length > 0 ? (
+            filteredSongs.map(song => (
+              <AlbumCard 
+                key={song.id} 
+                song={song} 
+                onPlay={setCurrentPlayer}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-16">
+              <p className="text-text-dark/60 text-lg">
+                {loading ? 'Loading...' : 'No songs found. Add some music to get started!'}
+              </p>
+            </div>
+          )}
         </div>
       </main>
 
