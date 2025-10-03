@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
-import MusicWall from '@/components/MusicWall';
+import { supabase } from './lib/supabase';
+import MusicWall from './components/MusicWall';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {

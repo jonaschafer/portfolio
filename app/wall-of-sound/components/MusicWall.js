@@ -5,7 +5,7 @@ import { Music } from 'lucide-react';
 import AlbumCard from './AlbumCard';
 import AddTrackModal from './AddTrackModal';
 import Player from './Player';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../lib/supabase';
 
 export default function MusicWall({ user }) {
   const [songs, setSongs] = useState([]);
