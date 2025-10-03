@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #FFDAD9;
+  --text-dark: #2D1F0F;
+  --text-secondary: #1E2939;
+  --shelf-top: #8B7355;
+  --shelf-bottom: #6B5644;
+  --shelf-mid: #A0826D;
+}
+
+* {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Custom scrollbar for the warm aesthetic */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFDAD9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8B7355;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6B5644;
+}

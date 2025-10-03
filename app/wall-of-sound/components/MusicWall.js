@@ -1,0 +1,153 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Music } from 'lucide-react';
+import AlbumCard from './AlbumCard';
+import AddTrackModal from './AddTrackModal';
+import Player from './Player';
+import { supabase } from '@/lib/supabase';
+
+export default function MusicWall({ user }) {
+  const [songs, setSongs] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchSongs();
+  }, []);
+
+  const fetchSongs = async () => {
+    const response = await fetch('/api/songs');
+    const data = await response.json();
+    setSongs(data);
+    setLoading(false);
+  };
+
+  const genres = [...new Set(songs.map(song => song.genre))];
+  const filteredSongs = selectedGenre 
+    ? songs.filter(song => song.genre === selectedGenre)
+    : songs;
+
+  const handleAddSong = async (newSong) => {
+    setSongs([newSong, ...songs]);
+    setShowAddForm(false);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/login';
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-primary flex items-center justify-center">
+        <div className="text-text-dark font-geist">Loading your music wall...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-primary">
+      {/* Navigation */}
+      <header className="border-b border-text-dark/10">
+        <div className="max-w-7xl mx-auto px-8 md:px-16 py-8 flex items-center justify-between">
+          <p className="text-text-dark font-normal text-base">Jon Schafer</p>
+          
+          <nav className="flex items-center gap-8">
+            <a href="#" className="text-text-dark font-normal text-base hover:opacity-70 transition-opacity">
+              Say 'ello
+            </a>
+            <a href="#" className="text-text-dark font-normal text-base hover:opacity-70 transition-opacity">
+              Work
+            </a>
+            <span className="text-text-dark font-bold text-base">
+              Tunes
+            </span>
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="border border-text-dark rounded-full px-5 py-2.5 text-text-dark text-base hover:bg-text-dark hover:text-primary transition-colors"
+            >
+              Add a track
+            </button>
+            <button
+              onClick={handleLogout}
+              className="text-text-dark text-sm opacity-60 hover:opacity-100 transition-opacity"
+            >
+              Logout
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-8 py-10 md:py-16">
+        {/* Header Section */}
+        <div className="flex flex-col items-center gap-7 mb-12">
+          {/* Wall of Sound Header Image - Export from Figma and place in public folder */}
+          <img src="/wall-of-sound-header.svg" alt="wall of sound" className="w-full max-w-3xl" />
+          
+          <p className="text-text-dark text-lg text-center max-w-2xl font-normal leading-relaxed tracking-wide">
+            An on-going collection of recent and long-time faves, tracks on heavy rotation, and/or gems that the world should 100% know about.
+          </p>
+        </div>
+
+        {/* Genre Filter */}
+        {genres.length > 0 && (
+          <div className="flex gap-3 mb-12 flex-wrap justify-center">
+            <button
+              onClick={() => setSelectedGenre(null)}
+              className={`px-5 py-2 rounded-full text-sm transition-all ${
+                !selectedGenre 
+                  ? 'bg-text-dark text-primary font-medium' 
+                  : 'bg-white/50 text-text-dark hover:bg-white/80'
+              }`}
+            >
+              All
+            </button>
+            {genres.map(genre => (
+              <button
+                key={genre}
+                onClick={() => setSelectedGenre(genre)}
+                className={`px-5 py-2 rounded-full text-sm transition-all ${
+                  selectedGenre === genre 
+                    ? 'bg-text-dark text-primary font-medium' 
+                    : 'bg-white/50 text-text-dark hover:bg-white/80'
+                }`}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Album Grid - Fully Responsive */}
+        {/* 2 columns mobile, 3 tablet (640px+), 4 desktop (1024px+), 5 wide desktop (1600px+) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-12 pb-32">
+          {filteredSongs.map(song => (
+            <AlbumCard 
+              key={song.id} 
+              song={song} 
+              onPlay={setCurrentPlayer}
+            />
+          ))}
+        </div>
+      </main>
+
+      {showAddForm && (
+        <AddTrackModal 
+          onClose={() => setShowAddForm(false)}
+          onAdd={handleAddSong}
+        />
+      )}
+
+      {currentPlayer && (
+        <Player 
+          song={currentPlayer}
+          onClose={() => setCurrentPlayer(null)}
+        />
+      )}
+    </div>
+  );
+}

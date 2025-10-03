@@ -20,6 +20,12 @@ export default function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-[20px] md:gap-[30px]">
             <a 
+              href="/wall-of-sound" 
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+            >
+              Jams
+            </a>
+            <a 
               href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
               target="_blank"
               rel="noopener noreferrer"
@@ -85,6 +91,13 @@ export default function Navigation() {
 
             {/* Menu Items */}
             <div className="flex flex-col space-y-8">
+              <a 
+                href="/wall-of-sound" 
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
+                onClick={toggleMenu}
+              >
+                Jams
+              </a>
               <a 
                 href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
                 target="_blank"
