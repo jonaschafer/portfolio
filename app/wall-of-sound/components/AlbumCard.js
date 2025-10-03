@@ -47,7 +47,7 @@ export default function AlbumCard({ song }) {
           </div>
 
           {/* Wooden Shelf */}
-          <div className="absolute -bottom-3 left-0 right-0 h-3 bg-gradient-to-b from-[#8B4513] to-[#654321] shadow-lg">
+          <div className="absolute -bottom-3 -left-2 -right-2 h-3 bg-gradient-to-b from-[#8B4513] to-[#654321] shadow-lg">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#A0522D]/60 to-transparent opacity-60" />
             <div className="absolute inset-0 shadow-[0px_1px_0px_0px_inset_rgba(255,255,255,0.1)]" />
           </div>

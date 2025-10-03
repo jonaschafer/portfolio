@@ -1,5 +1,4 @@
 {
   "/page": "app/page.js",
-  "/wall-of-sound/login/page": "app/wall-of-sound/login/page.js",
   "/wall-of-sound/page": "app/wall-of-sound/page.js"
 }

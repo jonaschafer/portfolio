@@ -11,6 +11,7 @@ export default function MusicWall({ user }) {
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showAllGenres, setShowAllGenres] = useState(false);
 
   useEffect(() => {
     fetchSongs();
@@ -82,30 +83,44 @@ export default function MusicWall({ user }) {
 
         {/* Genre Filter */}
         {genres.length > 0 && (
-          <div className="flex gap-3 mb-12 flex-wrap justify-center">
-            <button
-              onClick={() => setSelectedGenre(null)}
-              className={`px-5 py-2 rounded-full text-sm transition-all ${
-                !selectedGenre 
-                  ? 'bg-[#1e1e1e] text-[#FFDAD9] font-medium' 
-                  : 'bg-white/50 text-[#1e1e1e] hover:bg-white/80'
-              }`}
-            >
-              All
-            </button>
-            {genres.map(genre => (
+          <div className="mb-12">
+            <div className={`flex gap-3 flex-wrap justify-center transition-all duration-300 ${
+              showAllGenres && genres.length > 8 
+                ? 'max-h-32 overflow-y-auto pr-2' 
+                : ''
+            }`}>
               <button
-                key={genre}
-                onClick={() => setSelectedGenre(genre)}
+                onClick={() => setSelectedGenre(null)}
                 className={`px-5 py-2 rounded-full text-sm transition-all ${
-                  selectedGenre === genre 
+                  !selectedGenre 
                     ? 'bg-[#1e1e1e] text-[#FFDAD9] font-medium' 
                     : 'bg-white/50 text-[#1e1e1e] hover:bg-white/80'
                 }`}
               >
-                {genre}
+                All
               </button>
-            ))}
+              {(showAllGenres ? genres : genres.slice(0, 5)).map(genre => (
+                <button
+                  key={genre}
+                  onClick={() => setSelectedGenre(genre)}
+                  className={`px-5 py-2 rounded-full text-sm transition-all ${
+                    selectedGenre === genre 
+                      ? 'bg-[#1e1e1e] text-[#FFDAD9] font-medium' 
+                      : 'bg-white/50 text-[#1e1e1e] hover:bg-white/80'
+                  }`}
+                >
+                  {genre}
+                </button>
+              ))}
+              {genres.length > 5 && (
+                <button
+                  onClick={() => setShowAllGenres(!showAllGenres)}
+                  className="px-5 py-2 rounded-full text-sm transition-all bg-transparent border border-[#1e1e1e] text-[#1e1e1e] hover:bg-[#1e1e1e] hover:text-[#FFDAD9]"
+                >
+                  {showAllGenres ? 'See less' : `See all ${genres.length - 5}+`}
+                </button>
+              )}
+            </div>
           </div>
         )}
 
