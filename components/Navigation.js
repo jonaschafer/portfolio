@@ -34,14 +34,6 @@ export default function Navigation() {
               Say 'ello
             </a>
             <a 
-              href="https://open.spotify.com/user/jonaschafer?si=5edabafb78584a0d" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
-            >
-              Tunes
-            </a>
-            <a 
               href="https://www.are.na/jon-schafer/blocks" 
               target="_blank"
               rel="noopener noreferrer"
@@ -106,15 +98,6 @@ export default function Navigation() {
                 onClick={toggleMenu}
               >
                 Say 'ello
-              </a>
-              <a 
-                href="https://open.spotify.com/user/jonaschafer?si=5edabafb78584a0d" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
-                onClick={toggleMenu}
-              >
-                Tunes
               </a>
               <a 
                 href="https://www.are.na/jon-schafer/blocks" 
