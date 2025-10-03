@@ -1,6 +1,6 @@
 {
+  "/not-found": "app/not-found.js",
   "/page": "app/page.js",
-  "/wall-of-sound/page": "app/wall-of-sound/page.js",
-  "/wall-of-sound/api/songs/route": "app/wall-of-sound/api/songs/route.js",
-  "/wall-of-sound/login/page": "app/wall-of-sound/login/page.js"
+  "/wall-of-sound/login/page": "app/wall-of-sound/login/page.js",
+  "/wall-of-sound/page": "app/wall-of-sound/page.js"
 }

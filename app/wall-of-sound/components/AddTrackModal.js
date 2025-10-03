@@ -67,54 +67,54 @@ export default function AddTrackModal({ onClose, onAdd }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div 
-        className="bg-primary rounded-lg p-8 max-w-lg w-full border-2 border-text-dark shadow-xl"
+        className="bg-[#FFDAD9] rounded-lg p-8 max-w-lg w-full border-2 border-[#1e1e1e] shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-text-dark">Add New Track</h2>
-          <button onClick={onClose} className="text-text-dark hover:opacity-60 transition-opacity">
+          <h2 className="text-2xl font-bold text-[#1e1e1e]">Add New Track</h2>
+          <button onClick={onClose} className="text-[#1e1e1e] hover:opacity-60 transition-opacity">
             <X size={28} />
           </button>
         </div>
 
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-2 text-text-dark">Spotify URL</label>
+            <label className="block text-sm font-medium mb-2 text-[#1e1e1e]">Spotify URL</label>
             <input
               type="url"
               value={spotifyUrl}
               onChange={(e) => setSpotifyUrl(e.target.value)}
               placeholder="https://open.spotify.com/track/..."
-              className="w-full px-4 py-3 bg-white border-2 border-text-dark/20 rounded-lg focus:outline-none focus:border-text-dark text-text-dark placeholder:text-text-dark/40"
+              className="w-full px-4 py-3 bg-white border-2 border-[#1e1e1e]/20 rounded-lg focus:outline-none focus:border-[#1e1e1e] text-[#1e1e1e] placeholder:text-[#1e1e1e]/40"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2 text-text-dark">Genre</label>
+            <label className="block text-sm font-medium mb-2 text-[#1e1e1e]">Genre</label>
             <input
               type="text"
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
               placeholder="e.g., Alternative, Hip-Hop, Jazz"
-              className="w-full px-4 py-3 bg-white border-2 border-text-dark/20 rounded-lg focus:outline-none focus:border-text-dark text-text-dark placeholder:text-text-dark/40"
+              className="w-full px-4 py-3 bg-white border-2 border-[#1e1e1e]/20 rounded-lg focus:outline-none focus:border-[#1e1e1e] text-[#1e1e1e] placeholder:text-[#1e1e1e]/40"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2 text-text-dark">Description</label>
+            <label className="block text-sm font-medium mb-2 text-[#1e1e1e]">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="A sentence or two about this track..."
               rows={3}
-              className="w-full px-4 py-3 bg-white border-2 border-text-dark/20 rounded-lg focus:outline-none focus:border-text-dark resize-none text-text-dark placeholder:text-text-dark/40"
+              className="w-full px-4 py-3 bg-white border-2 border-[#1e1e1e]/20 rounded-lg focus:outline-none focus:border-[#1e1e1e] resize-none text-[#1e1e1e] placeholder:text-[#1e1e1e]/40"
             />
           </div>
           
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-text-dark text-primary py-3 rounded-lg transition-all hover:opacity-90 disabled:opacity-50 font-medium"
+            className="w-full bg-[#1e1e1e] text-[#FFDAD9] py-3 rounded-lg transition-all hover:opacity-90 disabled:opacity-50 font-medium"
           >
             {loading ? 'Adding...' : 'Add to Wall'}
           </button>
