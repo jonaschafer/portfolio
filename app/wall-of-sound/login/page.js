@@ -57,9 +57,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-primary flex items-center justify-center p-4">
-      <div className="bg-white p-10 rounded-lg border-2 border-text-dark w-full max-w-md shadow-xl">
-        <h1 className="text-4xl font-black text-text-dark mb-8 text-center">
+    <div className="min-h-screen bg-[#FFDAD9] flex items-center justify-center p-4">
+      <div className="bg-white p-10 rounded-lg border-2 border-[#1e1e1e] w-full max-w-md shadow-xl">
+        <h1 className="text-4xl font-black text-[#1e1e1e] mb-8 text-center">
           «« wall of sound »»
         </h1>
         
@@ -69,20 +69,20 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 bg-white border-2 border-text-dark/20 rounded-lg text-text-dark focus:outline-none focus:border-text-dark placeholder:text-text-dark/40"
+            className="w-full px-4 py-3 bg-white border-2 border-[#1e1e1e]/20 rounded-lg text-[#1e1e1e] focus:outline-none focus:border-[#1e1e1e] placeholder:text-[#1e1e1e]/40"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 bg-white border-2 border-text-dark/20 rounded-lg text-text-dark focus:outline-none focus:border-text-dark placeholder:text-text-dark/40"
+            className="w-full px-4 py-3 bg-white border-2 border-[#1e1e1e]/20 rounded-lg text-[#1e1e1e] focus:outline-none focus:border-[#1e1e1e] placeholder:text-[#1e1e1e]/40"
           />
           
           <button
             onClick={handleLogin}
             disabled={loading}
-            className="w-full bg-text-dark text-primary py-3 rounded-lg transition-all hover:opacity-90 disabled:opacity-50 font-medium"
+            className="w-full bg-[#1e1e1e] text-[#FFDAD9] py-3 rounded-lg transition-all hover:opacity-90 disabled:opacity-50 font-medium"
           >
             {loading ? 'Loading...' : 'Login'}
           </button>
@@ -90,7 +90,7 @@ export default function Login() {
           <button
             onClick={handleSignUp}
             disabled={loading}
-            className="w-full bg-white border-2 border-text-dark text-text-dark py-3 rounded-lg transition-all hover:bg-text-dark/5 disabled:opacity-50 font-medium"
+            className="w-full bg-white border-2 border-[#1e1e1e] text-[#1e1e1e] py-3 rounded-lg transition-all hover:bg-[#1e1e1e]/5 disabled:opacity-50 font-medium"
           >
             Sign Up
           </button>

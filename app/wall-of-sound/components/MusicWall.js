@@ -48,47 +48,31 @@ export default function MusicWall({ user }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-primary flex items-center justify-center">
-        <div className="text-text-dark font-geist">Loading your music wall...</div>
+      <div className="min-h-screen bg-[#FFDAD9] flex items-center justify-center">
+        <div className="text-[#1e1e1e] font-geist">Loading your music wall...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-primary">
-      {/* Navigation */}
-      <header className="border-b border-text-dark/10">
-        <div className="max-w-7xl mx-auto px-8 md:px-16 py-8 flex items-center justify-between">
-          <p className="text-text-dark font-normal text-base">Jon Schafer</p>
-          
-          <nav className="flex items-center gap-8">
-            <a href="#" className="text-text-dark font-normal text-base hover:opacity-70 transition-opacity">
-              Say 'ello
-            </a>
-            <a href="#" className="text-text-dark font-normal text-base hover:opacity-70 transition-opacity">
-              Work
-            </a>
-            <span className="text-text-dark font-bold text-base">
-              Tunes
-            </span>
-            <button
-              onClick={() => setShowAddForm(true)}
-              className="border border-text-dark rounded-full px-5 py-2.5 text-text-dark text-base hover:bg-text-dark hover:text-primary transition-colors"
-            >
-              Add a track
-            </button>
-            <button
-              onClick={handleLogout}
-              className="text-text-dark text-sm opacity-60 hover:opacity-100 transition-opacity"
-            >
-              Logout
-            </button>
-          </nav>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-[#FFDAD9]">
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-8 py-10 md:py-16">
+        {/* Add Track and Logout buttons */}
+        <div className="flex justify-end gap-4 mb-8">
+          <button
+            onClick={() => setShowAddForm(true)}
+            className="border border-[#1e1e1e] rounded-full px-5 py-2.5 text-[#1e1e1e] text-base hover:bg-[#1e1e1e] hover:text-[#FFDAD9] transition-colors"
+          >
+            Add a track
+          </button>
+          <button
+            onClick={handleLogout}
+            className="text-[#1e1e1e] text-sm opacity-60 hover:opacity-100 transition-opacity"
+          >
+            Logout
+          </button>
+        </div>
         {/* Header Section */}
         <div className="flex flex-col items-center gap-7 mb-12">
           {/* Wall of Sound Header Image - Export from Figma and place in public folder */}

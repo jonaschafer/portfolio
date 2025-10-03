@@ -55,10 +55,10 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-primary">
+      <div className="min-h-screen bg-[#FFDAD9]">
         <WallOfSoundNavigation />
         <div className="flex items-center justify-center h-screen">
-          <div className="text-text-dark font-geist">Loading...</div>
+          <div className="text-[#1e1e1e] font-geist">Loading...</div>
         </div>
       </div>
     );
@@ -66,19 +66,19 @@ export default function Home() {
 
   if (!supabase) {
     return (
-      <div className="min-h-screen bg-primary">
+      <div className="min-h-screen bg-[#FFDAD9]">
         <WallOfSoundNavigation />
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <h1 className="text-4xl font-black text-text-dark mb-4">
+            <h1 className="text-4xl font-black text-[#1e1e1e] mb-4">
               «« wall of sound »»
             </h1>
-            <p className="text-text-dark mb-8">
+            <p className="text-[#1e1e1e] mb-8">
               Supabase configuration required to use this feature.
             </p>
             <a 
               href="/" 
-              className="bg-text-dark text-primary px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
+              className="bg-[#1e1e1e] text-[#FFDAD9] px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
             >
               Back to Portfolio
             </a>
@@ -93,7 +93,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-primary">
+    <div className="min-h-screen bg-[#FFDAD9]">
       <WallOfSoundNavigation />
       <MusicWall user={user} />
     </div>
