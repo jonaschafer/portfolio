@@ -70,7 +70,7 @@ export default function MusicWall({ user }) {
   return (
     <div className="min-h-screen bg-[#FFDAD9]">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-8 py-10 md:py-16">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 overflow-hidden">
         {/* Header Section */}
         <div className="flex flex-col items-center gap-7 mb-12">
           {/* Wall of Sound Header Image - Export from Figma and place in public folder */}
@@ -126,7 +126,7 @@ export default function MusicWall({ user }) {
 
         {/* Album Grid - Fully Responsive */}
         {/* 2 columns mobile, 3 tablet (640px+), 4 desktop (1024px+), 5 wide desktop (1600px+) */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-12 pb-32">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6 sm:gap-8 lg:gap-12 pb-32 justify-items-center">
           {filteredSongs.length > 0 ? (
             filteredSongs.map(song => (
               <AlbumCard 

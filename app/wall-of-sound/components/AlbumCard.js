@@ -9,7 +9,7 @@ export default function AlbumCard({ song }) {
 
   return (
     <>
-      <div className="group">
+      <div className="group w-full max-w-[280px]">
         {/* Album Cover with Shelf */}
         <div className="relative mb-4">
           {/* Album Artwork */}
