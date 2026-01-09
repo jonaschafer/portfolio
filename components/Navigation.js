@@ -34,12 +34,6 @@ export default function Navigation() {
               Play
             </a>
             <a 
-              href="/wall-of-sound" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname === '/wall-of-sound' ? 'underline decoration-white underline-offset-1' : ''}`}
-            >
-              Jams
-            </a>
-            <a 
               href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
               target="_blank"
               rel="noopener noreferrer"
@@ -110,13 +104,6 @@ export default function Navigation() {
                 onClick={toggleMenu}
               >
                 Play
-              </a>
-              <a 
-                href="/wall-of-sound" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname === '/wall-of-sound' ? 'underline decoration-white underline-offset-1' : ''}`}
-                onClick={toggleMenu}
-              >
-                Jams
               </a>
               <a 
                 href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
