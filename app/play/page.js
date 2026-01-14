@@ -157,6 +157,27 @@ export default function PlayPage() {
 
   return (
     <div className="font-mono bg-white text-black min-h-screen text-[13px] leading-[1.6]">
+      {/* Headline Block */}
+      <div className="bg-white w-full">
+        <section className="min-w-[375px] max-w-[1440px] mx-auto pt-[60px] pb-[40px]">
+          <div className="w-full px-5 md:px-[60px] lg:px-[60px]">
+            <p className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] lg:text-[31px] text-black leading-[1.2] tracking-[0.31px] max-w-[335px] md:max-w-[648px] lg:max-w-[747px] whitespace-pre-wrap">
+              A small, growing collection of vibed coded projects just 'cause.{' '}
+              <span>👉 </span>
+              <a 
+                className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity"
+                href="https://github.com/jonaschafer"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Github
+              </a>
+              <span> if'n you're curious.</span>
+            </p>
+          </div>
+        </section>
+      </div>
+
       <div className="flex min-h-screen max-w-[1400px] mx-auto">
         {/* Left Column - Filters */}
         <div className="w-[280px] border-r border-[#e0e0e0] p-5 bg-[#fafafa]">
@@ -215,32 +236,52 @@ export default function PlayPage() {
 
         {/* Right Column - Content */}
         <div className="flex-1 p-5 md:p-8">
-          <div className="grid grid-cols-[100px_1fr_120px_40px] gap-5 py-3 border-b border-[#e0e0e0] mb-0 font-semibold">
-            <div className="text-black">/ DATE</div>
-            <div className="text-black">/ NAME</div>
-            <div className="text-black">/ TYPE</div>
-            <div></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProjects.map(project => {
+              // Extract tech stack from tags (HTML/CSS, JavaScript, React, Claude)
+              const techStack = project.tags.filter(tag => 
+                ['HTML/CSS', 'JavaScript', 'React', 'Claude'].includes(tag)
+              )
+              
+              return (
+                <Link
+                  key={project.id}
+                  href={project.path}
+                  className="flex flex-col gap-[28px] text-inherit no-underline transition-opacity hover:opacity-80"
+                >
+                  <div className="flex flex-col gap-[8px]">
+                    <h2 className="font-['Mondwest',_sans-serif] text-[31px] text-black leading-[1.2] tracking-[0.31px]">
+                      {project.name}
+                    </h2>
+                    <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] leading-[16.44px] text-black tracking-[0.167px]">
+                      {project.description}
+                    </p>
+                  </div>
+                  
+                  <div className="flex flex-col gap-2">
+                    {/* Tech Stack Bubbles */}
+                    {techStack.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {techStack.map((tech, index) => (
+                          <div
+                            key={index}
+                            className="inline-block px-2.5 py-1 border border-[#d0d0d0] rounded text-xs text-black bg-white"
+                          >
+                            {tech}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Date */}
+                    <div className="text-black text-[13px] font-mono">
+                      {project.date}
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
-
-          {filteredProjects.map(project => (
-            <Link
-              key={project.id}
-              href={project.path}
-              className="grid grid-cols-[100px_1fr_120px_40px] gap-5 py-4 border-b border-[#e0e0e0] items-center text-inherit no-underline transition-colors hover:bg-[#f9f9f9]"
-            >
-              <div className="flex items-center gap-1.5 text-black">
-                <div className="w-2 h-2 bg-black flex-shrink-0"></div>
-                <span>{project.date}</span>
-              </div>
-              <div className="text-black leading-[1.5]">{project.name}: {project.description}</div>
-              <div className="inline-block px-2.5 py-1 border border-[#d0d0d0] rounded text-xs text-black bg-white">
-                {project.type}
-              </div>
-              <div className="text-right text-black text-base cursor-pointer hover:text-[#666]">
-                +
-              </div>
-            </Link>
-          ))}
         </div>
       </div>
     </div>
