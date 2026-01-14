@@ -35,20 +35,20 @@ export default function Navigation() {
               Play
             </Link>
             <a 
+              href="https://www.are.na/jon-schafer/blocks" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity flex items-center gap-1"
+            >
+              Vibes <img src="/arrow-up-icon.svg" alt="" width={17} height={17} className="inline-block" />
+            </a>
+            <a 
               href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
               target="_blank"
               rel="noopener noreferrer"
               className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
             >
               👋
-            </a>
-            <a 
-              href="https://www.are.na/jon-schafer/blocks" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap border border-white rounded-full px-[20px] py-[10px] hover:bg-white hover:text-[#435938] transition-all"
-            >
-              Vibes
             </a>
           </div>
 
@@ -107,6 +107,15 @@ export default function Navigation() {
                 Play
               </Link>
               <a 
+                href="https://www.are.na/jon-schafer/blocks" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity flex items-center gap-2"
+                onClick={toggleMenu}
+              >
+                Vibes <img src="/arrow-up-icon.svg" alt="" width={17} height={17} className="inline-block" />
+              </a>
+              <a 
                 href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
                 target="_blank"
                 rel="noopener noreferrer"
@@ -114,15 +123,6 @@ export default function Navigation() {
                 onClick={toggleMenu}
               >
                 👋
-              </a>
-              <a 
-                href="https://www.are.na/jon-schafer/blocks" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
-                onClick={toggleMenu}
-              >
-                Vibes
               </a>
             </div>
           </div>
