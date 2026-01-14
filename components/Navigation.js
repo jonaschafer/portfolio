@@ -4,19 +4,33 @@ import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
-export default function Navigation() {
+export default function Navigation({ 
+  backgroundColor = '#435938', 
+  textColor = '#FAFAFA',
+  underlineColor = 'white',
+  arrowColor = null
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
+  
+  // Use arrowColor if provided, otherwise default to textColor
+  const arrowStrokeColor = arrowColor !== null ? arrowColor : textColor
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+  
+  const ArrowIcon = ({ size = 17 }) => (
+    <svg width={size} height={size} viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+      <path d="M4.25 13.4583L13.4583 4.24997M13.4583 4.24997V13.09M13.4583 4.24997H4.61833" stroke={arrowStrokeColor} strokeWidth="1.0625" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
 
   return (
-    <div className="bg-[#435938] w-full relative">
+    <div className="w-full relative" style={{ backgroundColor }}>
       <div className="min-w-[375px] max-w-[1440px] mx-auto">
         <nav className="flex items-center justify-between pb-[60px] pt-[30px] px-[20px] md:px-[60px]">
-          <p className="font-['Inter',_sans-serif] font-normal leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap">
+          <p className="font-['Inter',_sans-serif] font-normal leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap" style={{ color: textColor }}>
             Jon Schafer
           </p>
           
@@ -24,13 +38,15 @@ export default function Navigation() {
           <div className="hidden sm:flex items-center gap-[20px] md:gap-[30px]">
             <Link 
               href="/" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline decoration-white underline-offset-1' : ''}`}
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline underline-offset-1' : ''}`}
+              style={{ color: textColor, textDecorationColor: underlineColor }}
             >
               Work
             </Link>
             <Link 
               href="/play" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline decoration-white underline-offset-1' : ''}`}
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline underline-offset-1' : ''}`}
+              style={{ color: textColor, textDecorationColor: underlineColor }}
             >
               Play
             </Link>
@@ -38,15 +54,17 @@ export default function Navigation() {
               href="https://www.are.na/jon-schafer/blocks" 
               target="_blank"
               rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity flex items-center gap-1"
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity flex items-center gap-1"
+              style={{ color: textColor }}
             >
-              Vibes <img src="/arrow-up-icon.svg" alt="" width={17} height={17} className="inline-block" />
+              Vibes <ArrowIcon size={17} />
             </a>
             <a 
               href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
               target="_blank"
               rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+              style={{ color: textColor }}
             >
               👋
             </a>
@@ -60,15 +78,15 @@ export default function Navigation() {
             {isMenuOpen ? (
               /* X Icon */
               <div className="relative w-6 h-6 flex items-center justify-center">
-                <div className="absolute w-6 h-0.5 bg-white transform rotate-45"></div>
-                <div className="absolute w-6 h-0.5 bg-white transform -rotate-45"></div>
+                <div className="absolute w-6 h-0.5 transform rotate-45" style={{ backgroundColor: textColor }}></div>
+                <div className="absolute w-6 h-0.5 transform -rotate-45" style={{ backgroundColor: textColor }}></div>
               </div>
             ) : (
               /* Hamburger Icon */
               <>
-                <div className="w-6 h-0.5 bg-white"></div>
-                <div className="w-6 h-0.5 bg-white"></div>
-                <div className="w-6 h-0.5 bg-white"></div>
+                <div className="w-6 h-0.5" style={{ backgroundColor: textColor }}></div>
+                <div className="w-6 h-0.5" style={{ backgroundColor: textColor }}></div>
+                <div className="w-6 h-0.5" style={{ backgroundColor: textColor }}></div>
               </>
             )}
           </button>
@@ -76,7 +94,7 @@ export default function Navigation() {
 
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
-          <div className="sm:hidden absolute top-0 left-0 w-full h-screen bg-[#435938] z-50 flex flex-col justify-start pt-[140px] px-[20px]">
+          <div className="sm:hidden absolute top-0 left-0 w-full h-screen z-50 flex flex-col justify-start pt-[140px] px-[20px]" style={{ backgroundColor }}>
             {/* Close button in overlay */}
             <div className="absolute top-[30px] right-[20px]">
               <button 
@@ -84,8 +102,8 @@ export default function Navigation() {
                 className="w-8 h-8 flex items-center justify-center"
               >
                 <div className="relative w-6 h-6 flex items-center justify-center">
-                  <div className="absolute w-6 h-0.5 bg-white transform rotate-45"></div>
-                  <div className="absolute w-6 h-0.5 bg-white transform -rotate-45"></div>
+                  <div className="absolute w-6 h-0.5 transform rotate-45" style={{ backgroundColor: textColor }}></div>
+                  <div className="absolute w-6 h-0.5 transform -rotate-45" style={{ backgroundColor: textColor }}></div>
                 </div>
               </button>
             </div>
@@ -94,14 +112,16 @@ export default function Navigation() {
             <div className="flex flex-col space-y-8">
               <Link 
                 href="/" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline decoration-white underline-offset-1' : ''}`}
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline underline-offset-1' : ''}`}
+                style={{ color: textColor, textDecorationColor: underlineColor }}
                 onClick={toggleMenu}
               >
                 Work
               </Link>
               <Link 
                 href="/play" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline decoration-white underline-offset-1' : ''}`}
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline underline-offset-1' : ''}`}
+                style={{ color: textColor, textDecorationColor: underlineColor }}
                 onClick={toggleMenu}
               >
                 Play
@@ -110,16 +130,18 @@ export default function Navigation() {
                 href="https://www.are.na/jon-schafer/blocks" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity flex items-center gap-2"
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity flex items-center gap-2"
+                style={{ color: textColor }}
                 onClick={toggleMenu}
               >
-                Vibes <img src="/arrow-up-icon.svg" alt="" width={17} height={17} className="inline-block" />
+                Vibes <ArrowIcon size={17} />
               </a>
               <a 
                 href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity"
+                style={{ color: textColor }}
                 onClick={toggleMenu}
               >
                 👋
