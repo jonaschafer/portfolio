@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>PDX Campsite Reporter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height for mobile */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1a472a;
+            color: white;
+            padding: 16px;
+            padding-top: max(16px, env(safe-area-inset-top));
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bot-message {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .user-message {
+            background: #1a472a;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .input-area {
+            background: white;
+            padding: 12px;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .input-area input:focus {
+            border-color: #1a472a;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .quick-button {
+            background: #1a472a;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .quick-button:active {
+            background: #143820;
+        }
+
+        .send-button {
+            background: #1a472a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .send-button:active {
+            background: #143820;
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            max-width: 60px;
+            align-self: flex-start;
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+        }
+
+        .typing-indicator.active {
+            display: block;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #999;
+            margin: 0 2px;
+            animation: typing 1.4s infinite;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .submit-form-button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .location-help {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .restart-button {
+            background: #f0f0f0;
+            color: #666;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        PDX Campsite Reporter
+    </div>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="message bot-message">
+            Hi! I'll help you report a campsite to the City of Portland. This will take about 60 seconds. Ready to start?
+        </div>
+    </div>
+
+    <div class="typing-indicator" id="typingIndicator">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your answer..." />
+        <button class="send-button" id="sendButton">Send</button>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        let conversationState = {
+            step: 0,
+            data: {
+                location: '',
+                blockingAccess: '',
+                hasTent: '',
+                hasTrash: '',
+                hasVehicle: '',
+                vehicleDetails: {},
+                needsPhotos: false,
+                privateProperty: '',
+                timeline: '',
+                description: '',
+                contact: ''
+            }
+        };
+
+        const vehicleTypes = ['2 Door', '4 Door', '5th Wheel', 'Boat', 'Boat on Trailer', 'Boat Trailer', 'Box Truck', 'Bus', 'Camper', 'Canopy', 'Cargo Trailer', 'Dropbox', 'Dumpster', 'Flatbed Trailer', 'Golf Cart', 'Motorcycle', 'Motorhome', 'Pickup', 'Pickup Camper', 'Pickup with Trailer', 'Pod', 'Semi Cab', 'Semi Trailer', 'Station Wagon', 'Step Van', 'Storage Container', 'SUV', 'Tow Truck', 'Tractor Trailer', 'Trailer', 'Travel Trailer', 'Truck', 'Utility Trailer', 'Van'];
+        
+        const vehicleMakes = ['Acura', 'Alfa', 'American', 'Aprilia', 'Assembled', 'Astin Martin', 'Audi', 'Bajaj', 'Bentley', 'BMW', 'Buell', 'Buick', 'Cadillac', 'Chevrolet', 'Chrysler', 'Citroen', 'Daewoo', 'Daihatsu', 'Datsun', 'Desoto', 'Dodge', 'Ducati', 'Eagle', 'Ferrari', 'Fiat', 'Ford', 'Freightliner', 'Freuhaf', 'Genuine', 'Geo', 'GMC', 'Great Dane', 'Grumman', 'Harley Davidson', 'Hino', 'Honda', 'Hudson', 'Hummer', 'Hyundai', 'Indian', 'Infiniti', 'International', 'Isuzu', 'Italjet', 'Jaguar', 'Jeep', 'Jensen', 'Kawasaki', 'Kenworth', 'Kia', 'Kymco', 'Lamborghini', 'Lancia', 'Land Rover', 'Lexus', 'Lincoln', 'Lotus', 'Mack Truck', 'Maserati', 'Mazda', 'Mercedes Benz', 'Mercury', 'Merker', 'MG', 'Mini', 'Mitsubishi', 'Moto Guzzi', 'Nash', 'Nissan', 'Oldsmobile', 'Opel', 'Packard', 'Panoz', 'Peterbilt', 'Peugeot', 'Piaggio', 'Plymouth', 'Pontiac', 'Porsche', 'Prevost', 'Rambler', 'Renault', 'Rolls Royce', 'Saab', 'Saturn', 'Scion', 'Smartcar', 'Sterling', 'Studebaker', 'Subaru', 'Sunbeam', 'Suzuki', 'Symco', 'Tesla', 'Think', 'Toyota', 'Triumph', 'U-D', 'Utilimaster', 'Vespa', 'Victory', 'Volkswagen', 'Volvo', 'Wabash', 'White', 'Wiggins', 'Willys', 'Winnebago', 'Yamaha', 'Yugo', 'Unknown / Not sure'];
+        
+        const vehicleColors = ['Beige', 'Black', 'Blue', 'Brown', 'Dark Blue', 'Gold', 'Green', 'Gray', 'Maroon', 'Orange', 'Pink', 'Purple', 'Red', 'Silver', 'Silver Blue', 'Tan', 'Teal', 'White', 'Yellow', 'Unidentifiable'];
+        
+        const states = ['OR (Oregon)', 'WA (Washington)', 'AL (Alabama)', 'AK (Alaska)', 'AZ (Arizona)', 'AR (Arkansas)', 'CA (California)', 'CO (Colorado)', 'CT (Connecticut)', 'DE (Delaware)', 'DC (District of Columbia)', 'FL (Florida)', 'GA (Georgia)', 'GU (Guam)', 'HI (Hawaii)', 'ID (Idaho)', 'IL (Illinois)', 'IN (Indiana)', 'IA (Iowa)', 'KS (Kansas)', 'KY (Kentucky)', 'LA (Louisiana)', 'ME (Maine)', 'MD (Maryland)', 'MA (Massachusetts)', 'MI (Michigan)', 'MN (Minnesota)', 'MS (Mississippi)', 'MO (Missouri)', 'MT (Montana)', 'NE (Nebraska)', 'NV (Nevada)', 'NH (New Hampshire)', 'NJ (New Jersey)', 'NM (New Mexico)', 'NY (New York)', 'NC (North Carolina)', 'ND (North Dakota)', 'OH (Ohio)', 'OK (Oklahoma)', 'PA (Pennsylvania)', 'RI (Rhode Island)', 'SC (South Carolina)', 'SD (South Dakota)', 'TN (Tennessee)', 'TX (Texas)', 'UT (Utah)', 'VT (Vermont)', 'VA (Virginia)', 'WV (West Virginia)', 'WI (Wisconsin)', 'WY (Wyoming)', 'Not sure'];
+
+        const questions = [
+            {
+                question: "Where is the campsite located? (You can say the address, intersection, or nearby landmark)",
+                key: 'location',
+                help: "e.g., 'SE Hawthorne and 32nd' or '123 Main St'"
+            },
+            {
+                question: "Is the campsite blocking pedestrian access, like a sidewalk, trail, or path?",
+                key: 'blockingAccess',
+                options: ['Yes', 'No']
+            },
+            {
+                question: "Is there a tent, tarp, or other shelter?",
+                key: 'hasTent',
+                options: ['Yes', 'No']
+            },
+            {
+                question: "Trash or debris?",
+                key: 'hasTrash',
+                options: ['Yes', 'No']
+            },
+            {
+                question: "Is there a vehicle (car, truck, RV, trailer, etc.)?",
+                key: 'hasVehicle',
+                options: ['Yes', 'No']
+            },
+            {
+                question: "Is the location on private property?",
+                key: 'privateProperty',
+                options: ['Yes', 'No', 'Not sure']
+            },
+            {
+                question: "When did you first notice this campsite?",
+                key: 'timeline',
+                options: ['Today', 'This week', 'This month', 'Longer than a month']
+            },
+            {
+                question: "Anything else you'd like to add? (optional - describe conditions, concerns, etc.)",
+                key: 'description',
+                optional: true
+            },
+            {
+                question: "Would you like to provide your email for follow-up? (optional)",
+                key: 'contact',
+                optional: true
+            }
+        ];
+
+        function addMessage(text, isUser = false) {
+            const message = document.createElement('div');
+            message.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            message.textContent = text;
+            chatContainer.appendChild(message);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function showTyping() {
+            typingIndicator.classList.add('active');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function hideTyping() {
+            typingIndicator.classList.remove('active');
+        }
+
+        function addButtons(options) {
+            const buttonGroup = document.createElement('div');
+            buttonGroup.className = 'button-group';
+            
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'quick-button';
+                button.textContent = option;
+                button.onclick = () => handleUserResponse(option);
+                buttonGroup.appendChild(button);
+            });
+            
+            chatContainer.appendChild(buttonGroup);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function notePhotosNeeded(itemType) {
+            conversationState.data.needsPhotos = true;
+            setTimeout(() => {
+                addMessage(`Great! Please take photos of the ${itemType} and have them ready to attach to the email.`);
+                setTimeout(() => {
+                    continueAfterPhotoNote();
+                }, 1500);
+            }, 800);
+        }
+
+        function continueAfterPhotoNote() {
+            conversationState.step++;
+            showTyping();
+            askQuestion();
+        }
+
+        let vehicleQuestionStep = 0;
+        let isAskingVehicleQuestions = false;
+
+        function askQuestion() {
+            if (conversationState.step >= questions.length) {
+                showSummary();
+                return;
+            }
+
+            const currentQuestion = questions[conversationState.step];
+            
+            setTimeout(() => {
+                hideTyping();
+                addMessage(currentQuestion.question);
+                
+                if (currentQuestion.help) {
+                    const help = document.createElement('div');
+                    help.className = 'message bot-message location-help';
+                    help.textContent = currentQuestion.help;
+                    chatContainer.appendChild(help);
+                }
+                
+                if (currentQuestion.options) {
+                    addButtons(currentQuestion.options);
+                }
+                
+                if (currentQuestion.optional) {
+                    addButtons(['Skip']);
+                }
+            }, 800);
+        }
+
+        function handleUserResponse(response) {
+            // If we're asking vehicle questions, use the vehicle handler
+            if (isAskingVehicleQuestions) {
+                const buttonGroups = chatContainer.querySelectorAll('.button-group');
+                buttonGroups.forEach(bg => bg.remove());
+                addMessage(response, true);
+                handleVehicleResponse(response);
+                return;
+            }
+            
+            // Remove any existing button groups
+            const buttonGroups = chatContainer.querySelectorAll('.button-group');
+            buttonGroups.forEach(bg => bg.remove());
+
+            addMessage(response, true);
+            
+            const currentQuestion = questions[conversationState.step];
+            
+            if (response !== 'Skip') {
+                conversationState.data[currentQuestion.key] = response;
+            }
+            
+            // Check if we just answered the tent question
+            if (currentQuestion.key === 'hasTent' && response === 'Yes') {
+                conversationState.step++;
+                showTyping();
+                notePhotosNeeded('tent/shelter');
+                return;
+            }
+            
+            // Check if we just answered the trash question
+            if (currentQuestion.key === 'hasTrash' && response === 'Yes') {
+                conversationState.step++;
+                showTyping();
+                notePhotosNeeded('trash/debris');
+                return;
+            }
+            
+            // Check if we just answered the vehicle question
+            if (currentQuestion.key === 'hasVehicle' && response === 'Yes') {
+                conversationState.step++;
+                askVehicleQuestions();
+                return;
+            }
+            
+            conversationState.step++;
+            showTyping();
+            askQuestion();
+        }
+
+        function askVehicleQuestions() {
+            isAskingVehicleQuestions = true;
+            
+            const vehicleQuestions = [
+                {
+                    question: "What kind of vehicle?",
+                    key: 'vehicleType'
+                },
+                {
+                    question: "What make/model?",
+                    key: 'vehicleMake'
+                },
+                {
+                    question: "What color?",
+                    key: 'vehicleColor'
+                },
+                {
+                    question: "What is the license plate state and number?",
+                    key: 'licensePlate'
+                }
+            ];
+
+            if (vehicleQuestionStep >= vehicleQuestions.length) {
+                // Done with vehicle questions
+                isAskingVehicleQuestions = false;
+                vehicleQuestionStep = 0;
+                
+                // Note that vehicle photos are needed
+                showTyping();
+                setTimeout(() => {
+                    hideTyping();
+                    addMessage("Great! Please take photos and have them ready to attach to the email.");
+                    conversationState.data.needsPhotos = true;
+                    setTimeout(() => {
+                        conversationState.step++;
+                        showTyping();
+                        askQuestion();
+                    }, 1500);
+                }, 800);
+                return;
+            }
+
+            const vq = vehicleQuestions[vehicleQuestionStep];
+            
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                addMessage(vq.question);
+                // No buttons - user must type answer
+            }, 800);
+        }
+
+        function handleVehicleResponse(response) {
+            const vq = [
+                { key: 'vehicleType' },
+                { key: 'vehicleMake' },
+                { key: 'vehicleColor' },
+                { key: 'licensePlate' }
+            ][vehicleQuestionStep];
+            
+            if (!conversationState.data.vehicleDetails) {
+                conversationState.data.vehicleDetails = {};
+            }
+            conversationState.data.vehicleDetails[vq.key] = response;
+            
+            vehicleQuestionStep++;
+            askVehicleQuestions();
+        }
+
+        function showSummary() {
+            hideTyping();
+            
+            setTimeout(() => {
+                addMessage("Perfect! Here's what you reported:");
+                
+                setTimeout(() => {
+                    let summary = `📍 Location: ${conversationState.data.location}\n`;
+                    summary += `🚶 Blocking access: ${conversationState.data.blockingAccess || 'Not specified'}\n`;
+                    
+                    // Show site items
+                    let items = [];
+                    if (conversationState.data.hasTent === 'Yes') items.push('Tent/shelter');
+                    if (conversationState.data.hasTrash === 'Yes') items.push('Trash/debris');
+                    if (conversationState.data.hasVehicle === 'Yes') items.push('Vehicle');
+                    if (items.length > 0) {
+                        summary += `📋 Items at site: ${items.join(', ')}\n`;
+                    }
+                    
+                    if (conversationState.data.vehicleDetails && Object.keys(conversationState.data.vehicleDetails).length > 0) {
+                        const v = conversationState.data.vehicleDetails;
+                        summary += `🚗 Vehicle: ${v.vehicleType || ''} ${v.vehicleMake || ''} (${v.vehicleColor || ''})\n`;
+                        if (v.licensePlate) {
+                            summary += `   Plate: ${v.licensePlate}\n`;
+                        }
+                    }
+                    
+                    summary += `🏠 Private property: ${conversationState.data.privateProperty || 'Not specified'}\n`;
+                    summary += `📅 First noticed: ${conversationState.data.timeline || 'Not specified'}`;
+                    
+                    if (conversationState.data.description) {
+                        summary += `\n💬 Notes: ${conversationState.data.description}`;
+                    }
+                    
+                    addMessage(summary);
+                    
+                    setTimeout(() => {
+                        if (conversationState.data.needsPhotos) {
+                            addMessage("📸 IMPORTANT: Don't forget to attach your photos to the email before sending!");
+                        }
+                        
+                        setTimeout(() => {
+                            addMessage("I'll now open your email app with everything pre-filled. Review the details and send!");
+                            
+                            const submitButton = document.createElement('button');
+                            submitButton.className = 'submit-form-button';
+                            submitButton.textContent = '📧 Open Email to Submit';
+                            submitButton.onclick = submitToPortland;
+                            chatContainer.appendChild(submitButton);
+                            
+                            const restartButton = document.createElement('button');
+                            restartButton.className = 'restart-button';
+                            restartButton.textContent = '↻ Report Another Campsite';
+                            restartButton.onclick = restartConversation;
+                            chatContainer.appendChild(restartButton);
+                            
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 500);
+        }
+
+        function submitToPortland() {
+            const data = conversationState.data;
+            
+            // Build email subject
+            const subject = encodeURIComponent('Campsite Report - ' + data.location);
+            
+            // Build email body with all details
+            let body = 'I would like to report a campsite at the following location:\n\n';
+            body += `Location: ${data.location}\n\n`;
+            
+            body += `Blocking Pedestrian Access: ${data.blockingAccess || 'Not specified'}\n\n`;
+            
+            // Site items
+            body += `Items at site:\n`;
+            if (data.hasTent === 'Yes') body += `- Tent, tarp, or other shelter\n`;
+            if (data.hasTrash === 'Yes') body += `- Trash or debris\n`;
+            if (data.hasVehicle === 'Yes') body += `- Vehicle\n`;
+            body += '\n';
+            
+            if (data.vehicleDetails && Object.keys(data.vehicleDetails).length > 0) {
+                body += `Vehicle Details:\n`;
+                if (data.vehicleDetails.vehicleType) body += `- Type: ${data.vehicleDetails.vehicleType}\n`;
+                if (data.vehicleDetails.vehicleMake) body += `- Make/Model: ${data.vehicleDetails.vehicleMake}\n`;
+                if (data.vehicleDetails.vehicleColor) body += `- Color: ${data.vehicleDetails.vehicleColor}\n`;
+                if (data.vehicleDetails.licensePlate) body += `- License Plate: ${data.vehicleDetails.licensePlate}\n`;
+                body += '\n';
+            }
+            
+            body += `Private Property: ${data.privateProperty || 'Not specified'}\n`;
+            body += `First Noticed: ${data.timeline || 'Not specified'}\n\n`;
+            
+            if (data.description) {
+                body += `Additional Details:\n${data.description}\n\n`;
+            }
+            
+            if (data.needsPhotos) {
+                body += `NOTE: Photos will be attached to this email.\n\n`;
+            }
+            
+            if (data.contact && data.contact !== 'Skip') {
+                body += `Contact Email: ${data.contact}\n\n`;
+            }
+            
+            body += '---\nSubmitted via PDX Campsite Reporter';
+            
+            // Encode the body for mailto link
+            const encodedBody = encodeURIComponent(body);
+            
+            // Create mailto link to Portland's reporting email
+            const mailtoLink = `mailto:reportpdx@portlandoregon.gov?subject=${subject}&body=${encodedBody}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+        }
+
+        function restartConversation() {
+            chatContainer.innerHTML = '<div class="message bot-message">Hi! I\'ll help you report a campsite to the City of Portland. This will take about 60 seconds. Ready to start?</div>';
+            conversationState = {
+                step: 0,
+                data: {
+                    location: '',
+                    blockingAccess: '',
+                    hasTent: '',
+                    hasTrash: '',
+                    hasVehicle: '',
+                    vehicleDetails: {},
+                    needsPhotos: false,
+                    privateProperty: '',
+                    timeline: '',
+                    description: '',
+                    contact: ''
+                }
+            };
+            vehicleQuestionStep = 0;
+            isAskingVehicleQuestions = false;
+            userInput.value = '';
+            setTimeout(() => {
+                showTyping();
+                askQuestion();
+            }, 1000);
+        }
+
+        sendButton.addEventListener('click', () => {
+            const response = userInput.value.trim();
+            if (response) {
+                handleUserResponse(response);
+                userInput.value = '';
+            }
+        });
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+
+        setTimeout(() => {
+            showTyping();
+            askQuestion();
+        }, 1000);
+    </script>
+</body>
+</html>

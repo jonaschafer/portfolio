@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Repel - Figma Experiments</title>
+    
+    <!-- Custom Fonts -->
+    <style>
+        @font-face {
+            font-family: 'Haas Grot Disp';
+            src: url('/fonts/HaasGrotDisp-55Roman.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'PP Mondwest';
+            src: url('/fonts/Mondwest-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Haas Grot Disp', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Navigation Styles */
+        .prototype-nav {
+            background-color: #f8db79;
+            padding: 30px 60px 60px 60px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            color: #1e1e1e;
+            white-space: nowrap;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .prototype-nav .prototype-title {
+            font-family: 'PP Mondwest', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 31px;
+            line-height: 1.2;
+            letter-spacing: 0.31px;
+            color: #1e1e1e;
+            margin: 0;
+        }
+
+        .prototype-nav .back-link {
+            font-family: 'Haas Grot Disp', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
+            line-height: 1.4;
+            letter-spacing: 0.16px;
+            color: #1e1e1e;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .prototype-nav .back-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Main Content Container */
+        .main-container {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #f9fafb;
+        }
+
+        /* Fixed centered text - matches Figma exactly */
+        .fixed-text {
+            position: absolute;
+            left: 396px;
+            top: calc(50% + 32px);
+            width: 648px;
+            transform: translateY(-50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .fixed-text h1 {
+            font-family: 'Melun', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: bold;
+            font-size: 52px;
+            line-height: 1.1;
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        .fixed-text p {
+            font-family: 'ABC Ginto', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            line-height: 1.2;
+            color: black;
+            width: 404px;
+            margin: 0 auto;
+        }
+
+        /* Repelling elements with exact Figma positioning */
+        .repel-element {
+            position: absolute;
+            transition: transform 0.15s ease-out;
+            cursor: default;
+        }
+
+        /* Photo containers - exact Figma sizes and positions */
+        .photo {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 168.254px;
+            height: 168.254px;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Message pills - exact Figma positioning */
+        .message-pill {
+            background-color: white;
+            border-radius: 20px;
+            padding: 10px 15px;
+            border: 1px solid #905cff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .message-pill .avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 100px;
+            background-color: white;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .message-pill .avatar img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+        }
+
+        .message-pill span {
+            font-family: 'ABC Ginto', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            line-height: 1.2;
+            color: black;
+        }
+
+        /* Individual element positioning from Figma */
+        .photo-1 { left: 904px; top: 138px; }
+        .photo-2 { left: 337px; top: 471px; }
+        .photo-3 { left: 200px; top: 347px; }
+        .photo-4 { left: 390px; top: 105px; }
+        .photo-5 { left: 952px; top: 515px; }
+        .photo-6 { left: 1072px; top: 367px; }
+
+        .pill-1 { left: 1118px; top: 245px; }
+        .pill-2 { left: 447px; top: 626px; }
+        .pill-3 { left: 111px; top: 306px; }
+        .pill-4 { left: 1045px; top: 654px; }
+        .pill-5 { left: 518px; top: 133px; }
+
+        /* Responsive adjustments */
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .prototype-nav {
+                padding: 30px 40px 60px 40px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .prototype-nav {
+                padding: 30px 20px 60px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .prototype-nav .prototype-title {
+                font-size: 24px;
+            }
+
+            .fixed-text {
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                top: 50%;
+            }
+
+            .fixed-text h1 {
+                font-size: 2rem;
+            }
+
+            /* Adjust element positions for mobile */
+            .photo-1, .photo-2, .photo-3, .photo-4, .photo-5, .photo-6 {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Navigation -->
+        <nav class="prototype-nav">
+            <h1 class="prototype-title">Mouse Repel</h1>
+            <a href="../../" class="back-link">← Back</a>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-container">
+            
+            <!-- Fixed centered text -->
+            <div class="fixed-text">
+                <h1>
+                    Every message.<br>
+                    Every moment.<br>
+                    One app.
+                </h1>
+                <p>
+                    ClassDojo helps your school community communicate, share, and support student learning, 
+                    whether it's a message home, a classroom update, or a quick check-in.
+                </p>
+            </div>
+
+            <!-- Repelling Photos -->
+            <div class="repel-element photo photo-1">
+                <img src="./images/photo1.png" alt="Student photo" onerror="this.src='https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=300&h=300&fit=crop'">
+            </div>
+
+            <div class="repel-element photo photo-2">
+                <img src="./images/photo2.png" alt="Student photo" onerror="this.src='https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&h=300&fit=crop'">
+            </div>
+
+            <div class="repel-element photo photo-3">
+                <img src="./images/photo3.png" alt="Student photo" onerror="this.src='https://images.unsplash.com/photo-1491013516836-7db643ee125a?w=300&h=300&fit=crop'">
+            </div>
+
+            <div class="repel-element photo photo-4">
+                <img src="./images/photo4.png" alt="Student photo" onerror="this.src='https://images.unsplash.com/photo-1474313438662-85ce389c174a?w=300&h=300&fit=crop'">
+            </div>
+
+            <div class="repel-element photo photo-5">
+                <img src="./images/photo5.png" alt="Student photo" onerror="this.src='https://images.unsplash.com/photo-1476234251651-f353703a034d?w=300&h=300&fit=crop'">
+            </div>
+
+            <div class="repel-element photo photo-6">
+                <img src="./images/photo6.png" alt="Student photo" onerror="this.src='https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=300&h=300&fit=crop'">
+            </div>
+
+            <!-- Repelling Message Pills -->
+            <div class="repel-element message-pill pill-1">
+                <div class="avatar">
+                    <img src="./images/avatar1.png" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face'">
+                </div>
+                <span>Wow! Hayden has improved so much this week!</span>
+            </div>
+
+            <div class="repel-element message-pill pill-2">
+                <div class="avatar">
+                    <img src="./images/avatar2.png" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1494790108755-2616b612b786?w=32&h=32&fit=crop&crop=face'">
+                </div>
+                <span>Jonas gave Cass a point today :0)</span>
+            </div>
+
+            <div class="repel-element message-pill pill-3">
+                <div class="avatar">
+                    <img src="./images/avatar3.png" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=32&h=32&fit=crop&crop=face'">
+                </div>
+                <span>Pics from Ice cream making today</span>
+            </div>
+
+            <div class="repel-element message-pill pill-4">
+                <div class="avatar">
+                    <img src="./images/avatar4.png" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=32&h=32&fit=crop&crop=face'">
+                </div>
+                <span>PTC sign up sheets</span>
+            </div>
+
+            <div class="repel-element message-pill pill-5">
+                <div class="avatar">
+                    <img src="./images/avatar5.png" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face'">
+                </div>
+                <span>Field trip to the zoo soon!</span>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        class CollectiveRepelEffect {
+            constructor() {
+                this.elements = document.querySelectorAll('.repel-element');
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.animationId = null;
+                this.init();
+            }
+
+            init() {
+                // Initialize positions for each element
+                this.elements.forEach(element => {
+                    element.repelData = {
+                        currentX: 0,
+                        currentY: 0
+                    };
+                });
+
+                this.mouseMoveHandler = (e) => this.handleMouseMove(e);
+                document.addEventListener('mousemove', this.mouseMoveHandler);
+                this.animate();
+            }
+
+            handleMouseMove(e) {
+                this.mouseX = e.clientX;
+                this.mouseY = e.clientY;
+            }
+
+            animate() {
+                // Calculate collective movement direction
+                const viewportCenterX = window.innerWidth / 2;
+                const viewportCenterY = window.innerHeight / 2;
+                
+                // Get mouse offset from center
+                const mouseOffsetX = this.mouseX - viewportCenterX;
+                const mouseOffsetY = this.mouseY - viewportCenterY;
+                
+                // Calculate collective movement (all elements move together)
+                const maxCollectiveOffset = 15; // Maximum pixels for collective movement
+                const collectiveInfluence = 0.1; // How much mouse position affects collective movement
+                
+                const collectiveX = -mouseOffsetX * collectiveInfluence;
+                const collectiveY = -mouseOffsetY * collectiveInfluence;
+                
+                // Clamp collective movement
+                const clampedCollectiveX = Math.max(-maxCollectiveOffset, Math.min(maxCollectiveOffset, collectiveX));
+                const clampedCollectiveY = Math.max(-maxCollectiveOffset, Math.min(maxCollectiveOffset, collectiveY));
+
+                this.elements.forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    const deltaX = centerX - this.mouseX;
+                    const deltaY = centerY - this.mouseY;
+                    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                    
+                    let individualX = 0;
+                    let individualY = 0;
+                    
+                    // Individual repel when mouse is within 120px
+                    if (distance < 120 && distance > 0) {
+                        const repelForce = Math.max(0, (120 - distance) / 120);
+                        const maxIndividualOffset = 8; // Maximum 8px for individual repel
+                        
+                        individualX = (deltaX / distance) * repelForce * maxIndividualOffset;
+                        individualY = (deltaY / distance) * repelForce * maxIndividualOffset;
+                    }
+                    
+                    // Combine collective and individual movement
+                    const targetX = clampedCollectiveX + individualX;
+                    const targetY = clampedCollectiveY + individualY;
+                    
+                    // Smooth interpolation
+                    element.repelData.currentX += (targetX - element.repelData.currentX) * 0.15;
+                    element.repelData.currentY += (targetY - element.repelData.currentY) * 0.15;
+                    
+                    // Apply transform
+                    element.style.transform = `translate(${element.repelData.currentX}px, ${element.repelData.currentY}px)`;
+                });
+
+                this.animationId = requestAnimationFrame(() => this.animate());
+            }
+
+            destroy() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+                document.removeEventListener('mousemove', this.mouseMoveHandler);
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            new CollectiveRepelEffect();
+        });
+    </script>
+</body>
+</html>

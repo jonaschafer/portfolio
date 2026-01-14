@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sourdough Reference Guide</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const SourdoughReference = () => {
+          const [activeSection, setActiveSection] = useState('recipes');
+          const [expandedFAQ, setExpandedFAQ] = useState(null);
+
+          const toggleFAQ = (id) => {
+            setExpandedFAQ(expandedFAQ === id ? null : id);
+          };
+
+          const recipes = {
+            busyBaker: {
+              name: "Busy Baker's Sourdough",
+              time: "20 min active, 12-36 hrs passive",
+              difficulty: "Easy",
+              ingredients: [
+                { item: "Strong bread flour", amount: "500g" },
+                { item: "Lukewarm water", amount: "350g" },
+                { item: "Active sourdough starter", amount: "50g" },
+                { item: "Salt", amount: "5g" }
+              ],
+              timeline: [
+                { day: "Day 1 - Evening", time: "9pm", task: "Take starter out of fridge, leave on counter" },
+                { day: "Day 2 - Morning", time: "8am", task: "Feed starter (discard half + 50g flour + 50g water)" },
+                { day: "Day 2 - Afternoon", time: "2-4pm", task: "When starter peaks: Mix all ingredients in stand mixer, knead 10 min. Put remaining starter back in fridge." },
+                { day: "Day 2 - Evening", time: "2-4am (12 hrs later)", task: "Shape dough, rest 20 min, final shape, into banneton, into fridge" },
+                { day: "Day 3+ - Morning", time: "Anytime", task: "Preheat oven + Dutch oven 30-60 min at 480°F. Score, bake 25 min covered + 25 min uncovered" }
+              ],
+              notes: [
+                "Uses stand mixer - no stretch & folds needed",
+                "10% starter = 12 hour bulk ferment (very flexible)",
+                "Can proof in fridge 1-3 days before baking",
+                "Room temp should be 68-70°F for 12 hour timeline",
+                "Put a baking sheet on the rack BELOW your Dutch oven so the bottom doesn't cook faster than the rest"
+              ]
+            },
+            homestead: {
+              name: "Homestead & Chill No-Knead",
+              time: "40 min active over 4 hrs, overnight proof",
+              difficulty: "Moderate",
+              ingredients: [
+                { item: "Bread flour (or mix)", amount: "455g" },
+                { item: "Water (reserve 25g)", amount: "345g" },
+                { item: "Active sourdough starter", amount: "100g" },
+                { item: "Salt", amount: "10g" }
+              ],
+              timeline: [
+                { day: "Day 1 - Evening", time: "9pm", task: "Take starter out of fridge" },
+                { day: "Day 2 - Morning", time: "8am", task: "Feed starter" },
+                { day: "Day 2 - Afternoon", time: "4:45pm", task: "Mix 455g flour + 320g water (autolyse), cover 1 hour" },
+                { day: "Day 2", time: "5:45pm", task: "Add 100g starter + 10g salt + 25g water, mix. Put remaining starter in fridge." },
+                { day: "Day 2", time: "6:15-7:45pm", task: "Stretch & fold 3-4 times (every 30 min)" },
+                { day: "Day 2", time: "8:30pm", task: "Shape, into banneton, into fridge" },
+                { day: "Day 3 - Morning", time: "8:30am", task: "Preheat oven + Dutch oven 1 hour at 475°F. Score, bake 35 min covered + 10 min uncovered" }
+              ],
+              notes: [
+                "Hand-mixed method - no equipment needed",
+                "22% starter = 4 hour bulk ferment (must be home)",
+                "Includes autolyse step for easier gluten development",
+                "More traditional artisan approach",
+                "Put a baking sheet on the rack BELOW your Dutch oven so the bottom doesn't cook faster than the rest"
+              ]
+            }
+          };
+
+          const starterMaintenance = {
+            weekly: [
+              { day: "Thursday night", task: "Take starter out of fridge, leave on counter overnight" },
+              { day: "Friday morning", task: "Discard half, feed (50g starter + 50g flour + 50g water)" },
+              { day: "Friday afternoon (4-8 hrs later)", task: "Use when peaked (doubled, bubbly, domed)" },
+              { day: "After using", task: "Put remaining starter back in fridge UNFED" }
+            ],
+            signs: {
+              healthy: [
+                "Doubles within 4-8 hours after feeding",
+                "Bubbly throughout",
+                "Domed top (not flat or collapsed)",
+                "Smells yeasty/tangy (not bad)",
+                "Gray liquid on top (hooch) - normal, just stir in"
+              ],
+              problems: [
+                "Pink, orange, or fuzzy mold → throw out, start over",
+                "Smells like vomit/rotting → likely contaminated",
+                "Never rises after multiple feedings → might be dead (rare)"
+              ]
+            }
+          };
+
+          const glossary = [
+            { term: "Autolyse", definition: "Mixing flour + water and letting it rest 30-60 min before adding starter/salt. Helps gluten form naturally with less work." },
+            { term: "Bulk Fermentation", definition: "After mixing everything, dough sits at room temp rising for 4-12 hours. Yeast creates CO2 (rise) and flavor." },
+            { term: "Hydration", definition: "Ratio of water to flour as percentage. 70% = 350g water ÷ 500g flour. Higher = stickier dough, airier crumb." },
+            { term: "Levain/Starter", definition: "Living culture of flour + water + wild yeast. Makes bread rise instead of commercial yeast." },
+            { term: "Oven Spring", definition: "Dramatic rise in first 15 min of baking when cold dough hits hot oven. Makes or breaks loaf height." },
+            { term: "Peak", definition: "When starter has doubled, is bubbly, and has domed top. Ready to use. After this it starts to fall (still usable but weaker)." },
+            { term: "Proofing", definition: "Final rise after shaping. Cold proof = in fridge 8-36 hrs (most common). Room temp proof = 2-4 hrs." },
+            { term: "Scoring", definition: "Cutting slashes in dough top before baking. Controls where bread expands during oven spring." },
+            { term: "Stretch & Fold", definition: "During bulk ferment, grab dough edges and fold over (every 30 min, 3-4 times). Builds gluten without kneading." }
+          ];
+
+          const troubleshooting = [
+            {
+              problem: "Dense, gummy interior",
+              causes: ["Oven too cool (<450°F)", "Underbaked", "Not enough gluten development"],
+              solutions: ["Bake at 475°F minimum", "Ensure full 1 hour preheat", "Knead/stretch & fold properly"]
+            },
+            {
+              problem: "Flat loaf, no rise",
+              causes: ["Starter not active enough", "Over-fermented", "Weak gluten"],
+              solutions: ["Use starter at peak only", "Watch bulk ferment time", "Use bread flour (12%+ protein)"]
+            },
+            {
+              problem: "Huge air pocket in center",
+              causes: ["Air trapped during shaping", "Under-proofed"],
+              solutions: ["Gently press out big bubbles when shaping", "Let proof longer"]
+            },
+            {
+              problem: "Burnt bottom",
+              causes: ["Oven too hot on bottom", "Baked too long"],
+              solutions: ["Put empty sheet pan on rack below Dutch oven", "Reduce temp to 450°F"]
+            }
+          ];
+
+          const faqs = [
+            {
+              id: 1,
+              question: "Can I use all-purpose flour instead of bread flour?",
+              answer: "Yes, but your loaf will have less rise and chewier texture. Bread flour (12-14% protein) is ideal because it creates stronger gluten. All-purpose (10-12% protein) works but results are less impressive."
+            },
+            {
+              id: 2,
+              question: "What if I don't have a Dutch oven?",
+              answer: "You can use: any oven-safe pot with lid, a combo cooker (inverted Dutch oven), or baking stone + covered roasting pan. The key is trapping steam. Without steam trap, bread will be denser with less rise."
+            },
+            {
+              id: 3,
+              question: "How long does bread stay fresh?",
+              answer: "3-4 days at room temp (wrapped in towel + paper bag). After that, toast it or freeze slices. Homemade bread stales faster than store-bought (no preservatives)."
+            },
+            {
+              id: 4,
+              question: "Can I skip the banneton?",
+              answer: "Yes! Use any bowl lined with a well-floured tea towel. Banneton just makes prettier patterns and wicks moisture for better crust."
+            },
+            {
+              id: 5,
+              question: "My starter won't peak - what's wrong?",
+              answer: "Usually temperature. Keep at 75-80°F and feed with 50% whole wheat or rye flour to perk it up. If room is cool, try: near warm appliances, oven with light on, or wrapped in heating pad."
+            }
+          ];
+
+          return (
+            <div className="min-h-screen bg-amber-50">
+              <header className="bg-amber-800 text-white p-6 shadow-lg">
+                <div className="max-w-6xl mx-auto">
+                  <a href="../../index.html" className="text-amber-200 hover:text-white text-sm mb-2 inline-block">← Back to Home</a>
+                  <h1 className="text-4xl font-bold mb-2">Sourdough Reference Guide</h1>
+                  <p className="text-amber-100">Your complete guide to baking sourdough weekly at home</p>
+                </div>
+              </header>
+
+              <nav className="bg-amber-700 text-white sticky top-0 z-10 shadow-md">
+                <div className="max-w-6xl mx-auto flex overflow-x-auto">
+                  {['recipes', 'starter', 'glossary', 'troubleshoot', 'faq', 'tools'].map(section => (
+                    <button
+                      key={section}
+                      onClick={() => setActiveSection(section)}
+                      className={`px-6 py-3 font-medium hover:bg-amber-600 transition-colors whitespace-nowrap ${
+                        activeSection === section ? 'bg-amber-600 border-b-4 border-white' : ''
+                      }`}
+                    >
+                      {section.charAt(0).toUpperCase() + section.slice(1)}
+                    </button>
+                  ))}
+                </div>
+              </nav>
+
+              <main className="max-w-6xl mx-auto p-6">
+                {activeSection === 'recipes' && (
+                  <div className="space-y-8">
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className="text-2xl">📅</span>
+                        <h2 className="text-2xl font-bold text-amber-900">Recipes</h2>
+                      </div>
+                      
+                      {Object.values(recipes).map((recipe, idx) => (
+                        <div key={idx} className="mb-8 last:mb-0">
+                          <div className="border-l-4 border-amber-500 pl-4 mb-4">
+                            <h3 className="text-xl font-bold text-amber-800">{recipe.name}</h3>
+                            <div className="flex gap-4 text-sm text-gray-600 mt-1">
+                              <span className="flex items-center gap-1">
+                                ⏱️ {recipe.time}
+                              </span>
+                              <span>Difficulty: {recipe.difficulty}</span>
+                            </div>
+                          </div>
+
+                          <div className="grid md:grid-cols-2 gap-6 mb-6">
+                            <div className="bg-amber-50 rounded-lg p-4">
+                              <h4 className="font-bold text-amber-900 mb-3 flex items-center gap-2">
+                                ⚖️ Ingredients
+                              </h4>
+                              <ul className="space-y-2">
+                                {recipe.ingredients.map((ing, i) => (
+                                  <li key={i} className="flex justify-between">
+                                    <span>{ing.item}</span>
+                                    <span className="font-mono font-bold">{ing.amount}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="bg-blue-50 rounded-lg p-4">
+                              <h4 className="font-bold text-blue-900 mb-3">Key Notes</h4>
+                              <ul className="space-y-2">
+                                {recipe.notes.map((note, i) => (
+                                  <li key={i} className="text-sm flex gap-2">
+                                    <span className="text-blue-600 font-bold">•</span>
+                                    <span>{note}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg p-4">
+                            <h4 className="font-bold text-amber-900 mb-3">Timeline</h4>
+                            <div className="space-y-3">
+                              {recipe.timeline.map((step, i) => (
+                                <div key={i} className="flex gap-4 items-start">
+                                  <div className="bg-white rounded-lg px-3 py-1 text-xs font-bold text-amber-700 whitespace-nowrap">
+                                    {step.time}
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="font-medium text-sm text-amber-800">{step.day}</div>
+                                    <div className="text-sm text-gray-700">{step.task}</div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {idx === 0 && (
+                            <div className="mt-4 p-4 bg-green-50 border-l-4 border-green-500 rounded">
+                              <p className="text-sm text-green-800">
+                                <strong>Best for your schedule:</strong> Mix morning, gone all day, shape evening. Very forgiving timeline.
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                      <h3 className="text-xl font-bold text-amber-900 mb-4">External Resources</h3>
+                      <div className="space-y-3">
+                        <a 
+                          href="https://homesteadandchill.com/simple-sourdough-bread-recipe/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-amber-700 hover:text-amber-900 hover:underline"
+                        >
+                          🔗 Full Homestead & Chill Recipe (detailed photos & video)
+                        </a>
+                        <a 
+                          href="https://eddkimber.substack.com/p/the-busy-bakers-sourdough"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-amber-700 hover:text-amber-900 hover:underline"
+                        >
+                          🔗 Original Busy Baker's Recipe by Ed Kimber
+                        </a>
+                        <a 
+                          href="https://sourdoughcalculator.info/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-amber-700 hover:text-amber-900 hover:underline"
+                        >
+                          🔗 Sourdough Calculator (scale recipes, adjust hydration)
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'starter' && (
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-bold text-amber-900 mb-6">Starter Maintenance</h2>
+                    
+                    <div className="mb-8">
+                      <h3 className="text-xl font-bold text-amber-800 mb-4">Weekly Baking Schedule</h3>
+                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4">
+                        <div className="space-y-3">
+                          {starterMaintenance.weekly.map((step, i) => (
+                            <div key={i} className="flex gap-3 items-start">
+                              <div className="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                                {i + 1}
+                              </div>
+                              <div>
+                                <div className="font-bold text-emerald-800">{step.day}</div>
+                                <div className="text-gray-700">{step.task}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+                        <p className="text-sm text-blue-800">
+                          <strong>Key point:</strong> If baking weekly, you only feed once before baking. No need to feed extra times during the week.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="bg-green-50 rounded-lg p-4">
+                        <h4 className="font-bold text-green-900 mb-3">Healthy Starter Signs</h4>
+                        <ul className="space-y-2">
+                          {starterMaintenance.signs.healthy.map((sign, i) => (
+                            <li key={i} className="text-sm flex gap-2">
+                              <span className="text-green-600 font-bold">✓</span>
+                              <span>{sign}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="bg-red-50 rounded-lg p-4">
+                        <h4 className="font-bold text-red-900 mb-3">Problem Signs</h4>
+                        <ul className="space-y-2">
+                          {starterMaintenance.signs.problems.map((sign, i) => (
+                            <li key={i} className="text-sm flex gap-2">
+                              <span className="text-red-600 font-bold">✗</span>
+                              <span>{sign}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded">
+                      <h4 className="font-bold text-amber-900 mb-2">Missed a Week?</h4>
+                      <p className="text-sm text-gray-700 mb-2">
+                        If you skip baking, still feed it once that week (discard + feed, back to fridge). Keeps it healthy.
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <strong>Missed 2-3 weeks?</strong> Still alive! Feed twice (12 hours apart) before using.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'glossary' && (
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-bold text-amber-900 mb-6">Sourdough Glossary</h2>
+                    <div className="space-y-4">
+                      {glossary.map((item, i) => (
+                        <div key={i} className="border-l-4 border-amber-400 pl-4 py-2">
+                          <h3 className="font-bold text-amber-800 text-lg">{item.term}</h3>
+                          <p className="text-gray-700">{item.definition}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'troubleshoot' && (
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-bold text-amber-900 mb-6">Troubleshooting</h2>
+                    <div className="space-y-6">
+                      {troubleshooting.map((item, i) => (
+                        <div key={i} className="border rounded-lg overflow-hidden">
+                          <div className="bg-red-100 p-4 border-b">
+                            <h3 className="font-bold text-red-900 text-lg">{item.problem}</h3>
+                          </div>
+                          <div className="p-4">
+                            <div className="mb-4">
+                              <h4 className="font-bold text-gray-800 mb-2">Likely Causes:</h4>
+                              <ul className="space-y-1">
+                                {item.causes.map((cause, j) => (
+                                  <li key={j} className="text-sm flex gap-2">
+                                    <span className="text-red-600">•</span>
+                                    <span>{cause}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-gray-800 mb-2">Solutions:</h4>
+                              <ul className="space-y-1">
+                                {item.solutions.map((solution, j) => (
+                                  <li key={j} className="text-sm flex gap-2">
+                                    <span className="text-green-600">→</span>
+                                    <span>{solution}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'faq' && (
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-bold text-amber-900 mb-6">Frequently Asked Questions</h2>
+                    <div className="space-y-3">
+                      {faqs.map((faq) => (
+                        <div key={faq.id} className="border rounded-lg overflow-hidden">
+                          <button
+                            onClick={() => toggleFAQ(faq.id)}
+                            className="w-full p-4 flex justify-between items-center bg-amber-50 hover:bg-amber-100 transition-colors"
+                          >
+                            <span className="font-medium text-amber-900 text-left">{faq.question}</span>
+                            <span className="text-amber-600 flex-shrink-0">
+                              {expandedFAQ === faq.id ? '▼' : '▶'}
+                            </span>
+                          </button>
+                          {expandedFAQ === faq.id && (
+                            <div className="p-4 bg-white border-t">
+                              <p className="text-gray-700">{faq.answer}</p>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'tools' && (
+                  <div className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-2xl font-bold text-amber-900 mb-6">Equipment Guide</h2>
+                    
+                    <div className="mb-8">
+                      <h3 className="text-xl font-bold text-amber-800 mb-4">Essential (Must Have)</h3>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-green-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-green-900 mb-2">Kitchen Scale</h4>
+                          <p className="text-sm text-gray-700 mb-2">Digital, 0.1g precision, at least 3kg capacity</p>
+                          <p className="text-xs text-gray-600">~$15-25 | Non-negotiable for consistent results</p>
+                        </div>
+                        <div className="bg-green-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-green-900 mb-2">Dutch Oven / Combo Cooker</h4>
+                          <p className="text-sm text-gray-700 mb-2">Cast iron, 3.5-5 qt, oven-safe to 500°F</p>
+                          <p className="text-xs text-gray-600">~$30-80 | Creates steam for oven spring</p>
+                        </div>
+                        <div className="bg-green-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-green-900 mb-2">Large Bowl</h4>
+                          <p className="text-sm text-gray-700 mb-2">Glass or stainless, 3+ quart capacity</p>
+                          <p className="text-xs text-gray-600">You probably have this already</p>
+                        </div>
+                        <div className="bg-green-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-green-900 mb-2">Tea Towels (2-3)</h4>
+                          <p className="text-sm text-gray-700 mb-2">Lint-free, for covering dough</p>
+                          <p className="text-xs text-gray-600">~$10 for set | Also use for banneton liner</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mb-8">
+                      <h3 className="text-xl font-bold text-amber-800 mb-4">Recommended (Big Quality Boost)</h3>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-amber-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-amber-900 mb-2">Banneton (9-10 inch round)</h4>
+                          <p className="text-sm text-gray-700 mb-2">Proofing basket for shaping</p>
+                          <p className="text-xs text-gray-600">~$15-25 | Makes prettier loaves, better crust</p>
+                        </div>
+                        <div className="bg-amber-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-amber-900 mb-2">Bench Scraper</h4>
+                          <p className="text-sm text-gray-700 mb-2">For handling sticky dough</p>
+                          <p className="text-xs text-gray-600">~$8 | Makes life much easier</p>
+                        </div>
+                        <div className="bg-amber-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-amber-900 mb-2">Bread Lame</h4>
+                          <p className="text-sm text-gray-700 mb-2">For scoring (or use sharp knife)</p>
+                          <p className="text-xs text-gray-600">~$10 | Better control than knife</p>
+                        </div>
+                        <div className="bg-amber-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-amber-900 mb-2">Instant-Read Thermometer</h4>
+                          <p className="text-sm text-gray-700 mb-2">Check dough/water temp</p>
+                          <p className="text-xs text-gray-600">~$15 | Helps troubleshoot fermentation</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-xl font-bold text-amber-800 mb-4">Nice to Have (Convenience)</h3>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-gray-900 mb-2">Stand Mixer (for Busy Baker method)</h4>
+                          <p className="text-sm text-gray-700 mb-2">KitchenAid or similar with dough hook</p>
+                          <p className="text-xs text-gray-600">Eliminates hand kneading & stretch/folds</p>
+                        </div>
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-gray-900 mb-2">Clear Dough Tub with Measurements</h4>
+                          <p className="text-sm text-gray-700 mb-2">Cambro or similar</p>
+                          <p className="text-xs text-gray-600">~$10 | Easy to track dough rise</p>
+                        </div>
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <h4 className="font-bold text-gray-900 mb-2">High-Heat Oven Mitts</h4>
+                          <p className="text-sm text-gray-700 mb-2">Rated to 500°F+</p>
+                          <p className="text-xs text-gray-600">~$20 | Safety first with hot Dutch oven</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </main>
+            </div>
+          );
+        };
+
+        // Render the app
+        const rootElement = document.getElementById('root');
+        if (rootElement && ReactDOM.createRoot) {
+            // React 18+
+            const root = ReactDOM.createRoot(rootElement);
+            root.render(<SourdoughReference />);
+        } else if (rootElement) {
+            // Fallback for older React versions
+            ReactDOM.render(<SourdoughReference />, rootElement);
+        }
+    </script>
+</body>
+</html>

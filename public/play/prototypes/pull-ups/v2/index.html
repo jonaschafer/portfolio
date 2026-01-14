@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pull-up Mastery v2 - Figma Experiments</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: white;
+            color: black;
+            letter-spacing: -0.01em;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .prototype-nav {
+            background-color: white;
+            padding: 30px 60px 40px 60px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            border-bottom: 4px solid black;
+        }
+
+        .prototype-nav .prototype-title {
+            font-family: 'Archivo Black', 'Arial Black', sans-serif;
+            font-size: 31px;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 0.9;
+            color: black;
+            margin: 0;
+        }
+
+        .prototype-nav .back-link {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            transition: none;
+            border: 2px solid black;
+            padding: 8px 16px;
+            background: white;
+        }
+
+        .prototype-nav .back-link:hover {
+            background: black;
+            color: white;
+        }
+
+        /* Brutalist Typography */
+        .brutalist-title {
+            font-family: 'Archivo Black', 'Arial Black', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 0.9;
+        }
+
+        .brutalist-text {
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        /* Hard Shadows */
+        .brutal-shadow {
+            box-shadow: 8px 8px 0 0 black;
+        }
+
+        .brutal-shadow-sm {
+            box-shadow: 4px 4px 0 0 black;
+        }
+
+        /* No transitions - instant changes */
+        .brutal-button {
+            transition: none;
+        }
+
+        .brutal-button:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 0 black;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: white;
+            border-bottom: 2px solid black;
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: black;
+            transition: width 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            padding-top: 80px;
+            background: white;
+        }
+
+        .hero-box {
+            text-align: center;
+            max-width: 400px;
+            border: 8px solid black;
+            padding: 32px;
+            background: white;
+            box-shadow: 8px 8px 0 0 black;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 24px;
+        }
+
+        .progress-display {
+            border: 4px solid black;
+            padding: 24px;
+            background: white;
+            margin: 32px 0;
+        }
+
+        .progress-label {
+            margin-bottom: 8px;
+        }
+
+        .progress-number {
+            font-size: 4rem;
+        }
+
+        .start-button {
+            width: 100%;
+            margin-top: 32px;
+            padding: 24px;
+            background: #2563eb;
+            color: white;
+            border: 4px solid black;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 8px 8px 0 0 black;
+        }
+
+        .start-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* Exercise Step */
+        .exercise-step {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            padding-top: 32px;
+            background: white;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 4px solid black;
+        }
+
+        .step-number {
+            font-size: 16px;
+        }
+
+        .completed-badge {
+            background: black;
+            color: white;
+            padding: 4px 12px;
+            font-size: 16px;
+        }
+
+        .exercise-name {
+            font-size: 2.5rem;
+            margin-bottom: 32px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 32px;
+            border: 4px solid black;
+            aspect-ratio: 9/16;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 8px 8px 0 0 black;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #f5f5f5;
+        }
+
+        .exercise-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .info-box {
+            border: 4px solid black;
+            padding: 16px;
+            background: white;
+            text-align: center;
+        }
+
+        .info-label {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .info-value {
+            font-size: 2.5rem;
+            word-break: break-word;
+        }
+
+        .complete-button {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 24px;
+            border: 4px solid black;
+            cursor: pointer;
+            font-size: 16px;
+            transition: none;
+        }
+
+        .complete-button.active {
+            background: #2563eb;
+            color: white;
+            box-shadow: 8px 8px 0 0 black;
+        }
+
+        .complete-button.active:hover {
+            background: #1d4ed8;
+        }
+
+        .complete-button.completed {
+            background: #e5e7eb;
+            cursor: not-allowed;
+        }
+
+        /* Completion Screen */
+        .completion-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: white;
+        }
+
+        .completion-box {
+            text-align: center;
+            max-width: 400px;
+            border: 8px solid black;
+            padding: 32px;
+            background: white;
+            box-shadow: 8px 8px 0 0 black;
+        }
+
+        .completion-title {
+            font-size: 3rem;
+            margin-bottom: 24px;
+        }
+
+        .completion-text {
+            margin-bottom: 32px;
+            font-size: 16px;
+        }
+
+        .restart-button {
+            width: 100%;
+            padding: 24px;
+            background: black;
+            color: white;
+            border: 4px solid black;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 8px 8px 0 0 black;
+        }
+
+        .restart-button:hover {
+            background: #374151;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 767px) {
+            .prototype-nav {
+                padding: 30px 20px 40px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .prototype-nav .prototype-title {
+                font-size: 24px;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .progress-number {
+                font-size: 3rem;
+            }
+
+            .exercise-name {
+                font-size: 2rem;
+            }
+
+            .info-value {
+                font-size: 2rem;
+            }
+
+            .completion-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="prototype-nav">
+        <h1 class="prototype-title">Pull-up Mastery v2</h1>
+        <a href="../../../" class="back-link">← Back</a>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section" id="hero-section">
+        <div class="hero-box">
+            <h1 class="brutalist-title hero-title">Get yer first pull up</h1>
+            
+            <div class="progress-display">
+                <div class="brutalist-text progress-label">PROGRESS</div>
+                <div class="brutalist-title progress-number" id="progress-display">0/8</div>
+            </div>
+
+            <button class="brutalist-text start-button brutal-button" onclick="startExercises()">
+                START →
+            </button>
+        </div>
+    </div>
+
+    <!-- Exercise Steps -->
+    <div id="exercises-container"></div>
+
+    <!-- Completion Screen -->
+    <div class="completion-screen hidden" id="completion-screen">
+        <div class="completion-box">
+            <h2 class="brutalist-title completion-title">ALL DONE</h2>
+            <p class="brutalist-text completion-text">YOU COMPLETED ALL 8 STEPS</p>
+            <button class="brutalist-text restart-button brutal-button" onclick="restartProgram()">
+                START AGAIN
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const exercises = [
+            {
+                id: 1,
+                name: 'Hang',
+                sets: 3,
+                reps: '30 seconds',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-1.mp4'
+            },
+            {
+                id: 2,
+                name: 'Scapular Pull-ups',
+                sets: 3,
+                reps: '15',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-2.mp4'
+            },
+            {
+                id: 3,
+                name: 'Inverted Rows',
+                sets: 3,
+                reps: '10',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-3.mp4'
+            },
+            {
+                id: 4,
+                name: 'Jacknife Pull-ups',
+                sets: 3,
+                reps: '10',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-4.mp4'
+            },
+            {
+                id: 5,
+                name: 'Band-Assisted Pull-ups',
+                sets: 3,
+                reps: '10',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-5.mp4'
+            },
+            {
+                id: 6,
+                name: 'Top-Hold',
+                sets: 3,
+                reps: '30 seconds',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-6.mp4'
+            },
+            {
+                id: 7,
+                name: 'Negatives',
+                sets: 3,
+                reps: '5 seconds',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-7.mp4'
+            },
+            {
+                id: 8,
+                name: 'Pull-ups',
+                sets: 3,
+                reps: '1',
+                videoSrc: '/prototypes/pull-ups/v2/video/1002-8.mp4'
+            }
+        ];
+
+        let completedSteps = new Set();
+        let currentStep = 1;
+
+        function loadData() {
+            const saved = localStorage.getItem('pullup-v2-progress');
+            if (saved) {
+                completedSteps = new Set(JSON.parse(saved));
+            }
+            updateProgress();
+        }
+
+        function saveData() {
+            localStorage.setItem('pullup-v2-progress', JSON.stringify([...completedSteps]));
+        }
+
+        function updateProgress() {
+            const completed = completedSteps.size;
+            const total = exercises.length;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+            document.getElementById('progress-display').textContent = `${completed}/${total}`;
+        }
+
+        function startExercises() {
+            document.getElementById('hero-section').style.display = 'none';
+            renderExercises();
+            scrollToStep(1);
+        }
+
+        function renderExercises() {
+            const container = document.getElementById('exercises-container');
+            container.innerHTML = exercises.map(exercise => {
+                const isCompleted = completedSteps.has(exercise.id);
+                const repsDisplay = exercise.reps.replace(' seconds', 'S').replace(' second', 'S');
+                
+                return `
+                    <div class="exercise-step" id="step-${exercise.id}">
+                        <div class="step-header">
+                            <div class="brutalist-text step-number">
+                                STEP ${exercise.id}/8
+                            </div>
+                            ${isCompleted ? '<div class="brutalist-text completed-badge">✓</div>' : ''}
+                        </div>
+
+                        <h2 class="brutalist-title exercise-name">${exercise.name}</h2>
+
+                        <div class="video-container">
+                            <video controls playsInline preload="metadata">
+                                <source src="${exercise.videoSrc}" type="video/mp4">
+                                <p>Your browser does not support the video tag.</p>
+                            </video>
+                        </div>
+
+                        <div class="exercise-info">
+                            <div class="info-box">
+                                <div class="brutalist-text info-label">SETS</div>
+                                <div class="brutalist-title info-value">${exercise.sets}</div>
+                            </div>
+                            <div class="info-box">
+                                <div class="brutalist-text info-label">REPS</div>
+                                <div class="brutalist-title info-value">${repsDisplay}</div>
+                            </div>
+                        </div>
+
+                        <button 
+                            class="brutalist-text complete-button brutal-button ${isCompleted ? 'completed' : 'active'}"
+                            onclick="completeStep(${exercise.id})"
+                            ${isCompleted ? 'disabled' : ''}
+                        >
+                            ${isCompleted ? '✓ DONE' : 'MARK COMPLETE'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function completeStep(stepId) {
+            completedSteps.add(stepId);
+            saveData();
+            updateProgress();
+            
+            // Re-render to update button state
+            renderExercises();
+            
+            // Check if all completed
+            if (completedSteps.size === exercises.length) {
+                setTimeout(() => {
+                    document.getElementById('completion-screen').classList.remove('hidden');
+                    document.getElementById('completion-screen').scrollIntoView({ behavior: 'smooth' });
+                }, 500);
+            } else {
+                // Auto-scroll to next step
+                setTimeout(() => {
+                    scrollToStep(stepId + 1);
+                }, 300);
+            }
+        }
+
+        function scrollToStep(stepNumber) {
+            const stepElement = document.getElementById(`step-${stepNumber}`);
+            if (stepElement) {
+                stepElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function restartProgram() {
+            completedSteps.clear();
+            localStorage.removeItem('pullup-v2-progress');
+            location.reload();
+        }
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>

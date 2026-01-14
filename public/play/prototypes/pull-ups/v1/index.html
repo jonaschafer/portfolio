@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pull-up Mastery - Figma Experiments</title>
+    
+    <style>
+        @font-face {
+            font-family: 'Haas Grot Disp';
+            src: url('/fonts/HaasGrotDisp-55Roman.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'PP Mondwest';
+            src: url('/fonts/Mondwest-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Haas Grot Disp', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8db79;
+            min-height: 100vh;
+            color: #1e1e1e;
+        }
+
+        /* Navigation */
+        .prototype-nav {
+            background-color: #f8db79;
+            padding: 30px 60px 40px 60px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            border-bottom: 2px solid rgba(30, 30, 30, 0.1);
+        }
+
+        .prototype-nav .prototype-title {
+            font-family: 'PP Mondwest', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 31px;
+            line-height: 1.2;
+            letter-spacing: 0.31px;
+            color: #1e1e1e;
+            margin: 0;
+        }
+
+        .prototype-nav .back-link {
+            font-family: 'Haas Grot Disp', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
+            line-height: 1.4;
+            letter-spacing: 0.16px;
+            color: #1e1e1e;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .prototype-nav .back-link:hover {
+            opacity: 0.7;
+        }
+
+        .container {
+            max-width: 896px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            line-height: 1.5;
+            max-width: 672px;
+            margin: 0 auto 16px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: white;
+            border: 1px solid black;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            background: white;
+            border: 2px solid black;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: #f0f0f0;
+            border: 2px solid black;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4ade80;
+            transition: width 0.3s ease;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            padding: 4px;
+        }
+
+        .progress-step.completed {
+            font-weight: bold;
+            color: #16a34a;
+        }
+
+        /* Alert */
+        .alert {
+            background: #f8db79;
+            border: 2px solid black;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Step Card */
+        .step-card {
+            background: white;
+            border: 2px solid black;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .step-card.locked {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .step-badge {
+            background: #4ade80;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .step-badge.locked {
+            background: #d1d5db;
+            color: #6b7280;
+        }
+
+        .step-description {
+            color: #6b7280;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .step-target {
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .step-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid black;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: black;
+            color: white;
+            border: 2px solid black;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: white;
+            color: black;
+        }
+
+        button.secondary {
+            background: white;
+            color: black;
+        }
+
+        button.secondary:hover {
+            background: black;
+            color: white;
+        }
+
+        .attempts-list {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .attempts-list span {
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        /* Reset Button */
+        .reset-container {
+            text-align: center;
+            padding: 24px 0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border: 3px solid black;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            text-align: center;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .modal-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        @media (max-width: 767px) {
+            .prototype-nav {
+                padding: 30px 20px 40px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .prototype-nav .prototype-title {
+                font-size: 24px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .step-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="prototype-nav">
+        <h1 class="prototype-title">Pull-up Mastery</h1>
+        <a href="../../../" class="back-link">← Back</a>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <span>💪</span>
+                Pull-up Mastery
+                <span>🎯</span>
+            </h1>
+            <p>
+                Your journey from zero to hero! Follow these progressive steps to achieve your first pull-up. 
+                Each step builds the strength you need for the next level.
+            </p>
+            <div class="badges">
+                <div class="badge" id="start-date">Started: Loading...</div>
+                <div class="badge" id="day-count">Day 1</div>
+            </div>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="progress-tracker">
+            <div class="progress-header">
+                <strong>Overall Progress</strong>
+                <span id="progress-text">0/5 steps completed</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-steps" id="progress-steps"></div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="alert">
+            <span>ℹ️</span>
+            <div>
+                <strong>How it works:</strong> Complete each step in order by reaching the target. 
+                Steps unlock as you complete the previous one. Log your attempts to track progress!
+            </div>
+        </div>
+
+        <!-- Steps Container -->
+        <div id="steps-container"></div>
+
+        <!-- Reset Button -->
+        <div class="reset-container">
+            <button class="secondary" onclick="resetProgress()">
+                🔄 Reset All Progress
+            </button>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div class="modal" id="celebration-modal">
+        <div class="modal-content">
+            <h2>🎉 Congratulations! 🎉</h2>
+            <p style="font-size: 1.125rem; margin-bottom: 16px;">
+                You did it! You completed your first pull-up!
+            </p>
+            <div class="modal-stats">
+                <div class="stat">
+                    <span class="stat-value" id="modal-attempts">0</span>
+                    <span class="stat-label">Total Attempts</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="modal-days">0</span>
+                    <span class="stat-label">Days of Training</span>
+                </div>
+            </div>
+            <p style="color: #6b7280; margin-bottom: 24px;">
+                This is just the beginning - keep training and you'll be doing sets in no time!
+            </p>
+            <button onclick="closeCelebration()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const initialSteps = [
+            {
+                id: 'dead-hang',
+                title: '1. Dead Hang',
+                description: 'Hang from the bar with straight arms. Focus on grip strength and shoulder stability.',
+                targetValue: 30,
+                unit: 'seconds',
+                completed: false,
+                attempts: [],
+                bestAttempt: 0,
+            },
+            {
+                id: 'negative-pullups',
+                title: '2. Negative Pull-ups',
+                description: 'Start at the top position and slowly lower yourself down over 3-5 seconds.',
+                targetValue: 5,
+                unit: 'reps',
+                completed: false,
+                attempts: [],
+                bestAttempt: 0,
+            },
+            {
+                id: 'assisted-pullups',
+                title: '3. Assisted Pull-ups',
+                description: 'Use a resistance band or assistance machine to reduce your body weight.',
+                targetValue: 8,
+                unit: 'reps',
+                completed: false,
+                attempts: [],
+                bestAttempt: 0,
+            },
+            {
+                id: 'partial-pullups',
+                title: '4. Partial Pull-ups',
+                description: 'Pull yourself up as high as you can, even if it\'s just a few inches.',
+                targetValue: 3,
+                unit: 'reps',
+                completed: false,
+                attempts: [],
+                bestAttempt: 0,
+            },
+            {
+                id: 'full-pullup',
+                title: '5. Full Pull-up',
+                description: 'The moment you\'ve been training for - complete one full pull-up from dead hang to chin over bar!',
+                targetValue: 1,
+                unit: 'reps',
+                completed: false,
+                attempts: [],
+                bestAttempt: 0,
+            },
+        ];
+
+        let steps = [];
+        let startDate = new Date();
+
+        function loadData() {
+            const saved = localStorage.getItem('pullup-progress');
+            steps = saved ? JSON.parse(saved) : [...initialSteps];
+            
+            const savedDate = localStorage.getItem('pullup-start-date');
+            startDate = savedDate ? new Date(savedDate) : new Date();
+            
+            if (!savedDate) {
+                localStorage.setItem('pullup-start-date', startDate.toISOString());
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('pullup-progress', JSON.stringify(steps));
+        }
+
+        function render() {
+            renderHeader();
+            renderProgress();
+            renderSteps();
+        }
+
+        function renderHeader() {
+            document.getElementById('start-date').textContent = `Started: ${startDate.toLocaleDateString()}`;
+            const daysOfTraining = Math.ceil((new Date().getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            document.getElementById('day-count').textContent = `Day ${daysOfTraining}`;
+        }
+
+        function renderProgress() {
+            const completed = steps.filter(s => s.completed).length;
+            const total = steps.length;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('progress-text').textContent = `${completed}/${total} steps completed`;
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+            
+            const stepsContainer = document.getElementById('progress-steps');
+            stepsContainer.innerHTML = steps.map(step => 
+                `<div class="progress-step ${step.completed ? 'completed' : ''}">${step.completed ? '✓' : '○'}</div>`
+            ).join('');
+        }
+
+        function renderSteps() {
+            const container = document.getElementById('steps-container');
+            container.innerHTML = steps.map((step, index) => {
+                const isUnlocked = index === 0 || steps[index - 1].completed;
+                const locked = !isUnlocked;
+                
+                return `
+                    <div class="step-card ${locked ? 'locked' : ''}" id="step-${step.id}">
+                        <div class="step-header">
+                            <div>
+                                <div class="step-title">${step.title}</div>
+                                <div class="step-description">${step.description}</div>
+                            </div>
+                            <div class="step-badge ${locked ? 'locked' : ''}">${step.completed ? 'Completed ✓' : locked ? 'Locked 🔒' : 'In Progress'}</div>
+                        </div>
+                        
+                        <div class="step-target">Target: ${step.targetValue} ${step.unit}</div>
+                        
+                        <div class="step-stats">
+                            <div class="stat">
+                                <span class="stat-value">${step.bestAttempt}</span>
+                                <span class="stat-label">Best Attempt</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">${step.attempts.length}</span>
+                                <span class="stat-label">Total Attempts</span>
+                            </div>
+                        </div>
+                        
+                        ${!locked ? `
+                            <div class="input-group">
+                                <input type="number" id="input-${step.id}" placeholder="Enter ${step.unit}" min="0">
+                                <input type="text" id="note-${step.id}" placeholder="Add a note (optional)" style="flex: 2; padding: 8px 12px; border: 2px solid black; border-radius: 4px; font-size: 16px;">
+                                <button onclick="logAttempt('${step.id}')">Log Attempt</button>
+                            </div>
+                        ` : ''}
+                        
+                        ${step.attempts.length > 0 ? `
+                            <div class="attempts-list">
+                                <strong>Recent attempts:</strong> ${step.attempts.slice(-5).reverse().map(a => {
+                                    const attempt = (typeof a === 'object' && a !== null) ? a : { value: a };
+                                    const note = attempt.note ? ` — ${attempt.note}` : '';
+                                    const date = attempt.date ? ` (${new Date(attempt.date).toLocaleDateString()})` : '';
+                                    return `<span>${attempt.value}${note}${date}</span>`;
+                                }).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function logAttempt(stepId) {
+            const input = document.getElementById(`input-${stepId}`);
+            const noteInput = document.getElementById(`note-${stepId}`);
+            const value = parseFloat(input.value);
+            
+            if (!value || value <= 0) {
+                alert('Please enter a valid number');
+                return;
+            }
+            
+            const stepIndex = steps.findIndex(s => s.id === stepId);
+            const step = steps[stepIndex];
+            
+            // Ensure attempts stored as objects
+            const attempt = { value, note: noteInput ? (noteInput.value || '') : '', date: new Date().toISOString() };
+            step.attempts.push(attempt);
+            step.bestAttempt = Math.max(step.bestAttempt, value);
+            
+            if (value >= step.targetValue && !step.completed) {
+                step.completed = true;
+                
+                // Check if this is the final step
+                if (stepId === 'full-pullup') {
+                    setTimeout(() => showCelebration(), 500);
+                }
+            }
+            
+            saveData();
+            // Append to log file if enabled
+            render();
+            input.value = '';
+            if (noteInput) noteInput.value = '';
+        }
+
+
+        // Data migration to support attempt objects with notes and dates
+        function migrateAttemptsIfNeeded() {
+            let migrated = false;
+            steps.forEach(step => {
+                if (Array.isArray(step.attempts)) {
+                    for (let i = 0; i < step.attempts.length; i++) {
+                        const a = step.attempts[i];
+                        if (typeof a !== 'object' || a === null || !('value' in a)) {
+                            step.attempts[i] = { value: a, note: '', date: new Date().toISOString() };
+                            migrated = true;
+                        }
+                    }
+                }
+            });
+            if (migrated) {
+                saveData();
+            }
+        }
+
+        function showCelebration() {
+            const totalAttempts = steps.reduce((sum, step) => sum + step.attempts.length, 0);
+            const daysOfTraining = Math.ceil((new Date().getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('modal-attempts').textContent = totalAttempts;
+            document.getElementById('modal-days').textContent = daysOfTraining;
+            document.getElementById('celebration-modal').classList.add('show');
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebration-modal').classList.remove('show');
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                localStorage.removeItem('pullup-progress');
+                localStorage.removeItem('pullup-start-date');
+                location.reload();
+            }
+        }
+
+        // Initialize
+        loadData();
+        migrateAttemptsIfNeeded();
+        render();
+    </script>
+</body>
+</html>

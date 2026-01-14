@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacation Planner | Warm Weather Destinations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #FF6B35;
+            --primary-blue: #004E89;
+            --accent-coral: #FF8C69;
+            --text-dark: #1A1A1A;
+            --text-light: #666666;
+            --bg-light: #FAFAFA;
+            --white: #FFFFFF;
+            --border-light: #E5E5E5;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--accent-coral) 100%);
+            color: var(--white);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Search and Filters */
+        .controls {
+            background: var(--white);
+            padding: 2rem 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-light);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .filters {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            min-width: 60px;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border-light);
+            background: var(--white);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--primary-orange);
+            background: var(--primary-orange);
+            color: var(--white);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .view-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--border-light);
+            background: var(--white);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .view-btn.active {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        /* Grid View */
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .destination-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-light);
+        }
+
+        .destination-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .destination-card.selected {
+            border: 3px solid var(--primary-orange);
+            transform: translateY(-4px);
+        }
+
+        .checkbox-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 3;
+        }
+
+        .destination-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--white);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .destination-checkbox:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .destination-checkbox.checked {
+            background: var(--primary-orange);
+            border-color: var(--primary-orange);
+        }
+
+        .destination-checkbox.checked::after {
+            content: "✓";
+            color: var(--white);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .warning-message {
+            background: #ff6b6b;
+            color: var(--white);
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            margin: 1rem 0;
+            border-radius: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .destination-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .destination-country {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .best-time {
+            background: var(--primary-orange);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .cost-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+        }
+
+        .cost-item {
+            text-align: center;
+        }
+
+        .cost-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .cost-value {
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        /* Detail View */
+        .detail-view {
+            display: none;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .detail-view.active {
+            display: block;
+        }
+
+        .detail-hero {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .detail-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .detail-hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            color: var(--white);
+        }
+
+        .detail-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .detail-content {
+            padding: 2rem;
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .itinerary-day {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .day-header {
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .time-slot {
+            margin-bottom: 1rem;
+        }
+
+        .time-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .activity {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .activity-description {
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .activity-cost {
+            margin-bottom: 0.5rem;
+            color: var(--primary-orange);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .cost-item.total {
+            border-top: 2px solid var(--primary-orange);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        .detail-climate {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        .cost-link {
+            color: var(--primary-orange);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .cost-link:hover {
+            color: var(--text-dark);
+            text-decoration: underline;
+        }
+
+        .cost-link-icon {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .cost-link:hover .cost-link-icon {
+            opacity: 1;
+        }
+
+        .accommodation-card {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .accommodation-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .accommodation-details {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .accommodation-price {
+            font-weight: 600;
+            color: var(--primary-orange);
+        }
+
+        .tip-card {
+            background: var(--white);
+            border: 2px solid var(--border-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            border-color: var(--primary-orange);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.1);
+        }
+
+        .tip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .tip-content {
+            display: none;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .tip-content.active {
+            display: block;
+        }
+
+        .tip-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .tip-card.active .tip-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: none;
+            background: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-orange);
+        }
+
+        .back-btn.active {
+            display: inline-block;
+        }
+
+        /* Comparison Mode */
+        .comparison-mode {
+            display: none;
+        }
+
+        .comparison-mode.active {
+            display: block;
+        }
+
+        .comparison-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .comparison-grid[data-count="1"] {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin: 1rem auto 0;
+        }
+
+        .comparison-grid[data-count="2"] {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .comparison-grid[data-count="3"] {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .comparison-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-card-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .comparison-country {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        .comparison-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .comparison-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .comparison-section h4 {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .budget-level {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .budget-level.luxury {
+            background: var(--primary-orange);
+            color: var(--white);
+        }
+
+        .budget-level.budget {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .comparison-costs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cost-row .cost-value {
+            font-weight: 600;
+            color: var(--primary-orange);
+        }
+
+        .accommodation-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-dark);
+        }
+
+        .accommodation-type {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .accommodation-price {
+            font-weight: 600;
+            color: var(--primary-orange);
+            font-size: 0.9rem;
+        }
+
+        .highlights-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .highlights-list li {
+            padding: 0.25rem 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .highlights-list li:before {
+            content: "•";
+            color: var(--primary-orange);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .destinations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                gap: 1rem;
+            }
+
+            .filter-group {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .filter-label {
+                min-width: 50px;
+                font-size: 0.8rem;
+            }
+
+            .filter-btn {
+                white-space: nowrap;
+                flex-shrink: 0;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .detail-title {
+                font-size: 2rem;
+            }
+
+            .detail-content {
+                padding: 1rem;
+            }
+
+            .comparison-grid[data-count="2"],
+            .comparison-grid[data-count="3"] {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading and Empty States */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-light);
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Vacation Planner</h1>
+        <p>Discover your perfect warm-weather getaway</p>
+    </div>
+
+    <div class="controls">
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search destinations..." id="searchInput">
+        </div>
+        
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Region:</label>
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="hawaii">Hawaii</button>
+                <button class="filter-btn" data-filter="europe">Europe</button>
+                <button class="filter-btn" data-filter="mexico">Mexico</button>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Budget:</label>
+                <button class="filter-btn" data-filter="budget-all">All</button>
+                <button class="filter-btn" data-filter="budget-under2k">Under $2k</button>
+                <button class="filter-btn" data-filter="budget-2k-3k">$2k-3k</button>
+                <button class="filter-btn" data-filter="budget-3k-4k">$3k-4k</button>
+                <button class="filter-btn" data-filter="budget-4k-plus">$4k+</button>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Season:</label>
+                <button class="filter-btn" data-filter="season-all">All</button>
+                <button class="filter-btn" data-filter="season-winter">Winter (Dec-Feb)</button>
+                <button class="filter-btn" data-filter="season-spring">Spring (Mar-May)</button>
+                <button class="filter-btn" data-filter="season-summer">Summer (Jun-Aug)</button>
+                <button class="filter-btn" data-filter="season-fall">Fall (Sep-Nov)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="grid">Grid View</button>
+            <button class="view-btn" data-view="comparison">Compare (0)</button>
+        </div>
+
+        <div id="warningContainer"></div>
+
+        <button class="back-btn" id="backBtn">← Back to Grid</button>
+
+        <div id="gridView" class="destinations-grid">
+            <!-- Destination cards will be populated by JavaScript -->
+        </div>
+
+        <div id="detailView" class="detail-view">
+            <!-- Detail view will be populated by JavaScript -->
+        </div>
+
+        <div id="comparisonView" class="comparison-mode">
+            <h2 class="section-title">Destination Comparison</h2>
+            <div class="comparison-grid" id="comparisonGrid">
+                <!-- Comparison cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Load destination data from external file -->
+    <script src="/prototypes/vacation-planner/data.js"></script>
+    
+    <script>
+
+        // State management
+        let currentView = 'grid';
+        let selectedDestinations = [];
+        let filteredDestinations = destinations;
+
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const viewBtns = document.querySelectorAll('.view-btn');
+        const backBtn = document.getElementById('backBtn');
+        const gridView = document.getElementById('gridView');
+        const detailView = document.getElementById('detailView');
+        const comparisonView = document.getElementById('comparisonView');
+        const comparisonGrid = document.getElementById('comparisonGrid');
+
+        // Initialize the app
+        function init() {
+            renderDestinations();
+            setupEventListeners();
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            // Search
+            searchInput.addEventListener('input', handleSearch);
+
+            // Filters
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', handleFilter);
+            });
+
+            // View toggle
+            viewBtns.forEach(btn => {
+                btn.addEventListener('click', handleViewToggle);
+            });
+
+            // Back button
+            backBtn.addEventListener('click', () => {
+                showView('grid');
+            });
+        }
+
+        // Search functionality
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            filteredDestinations = destinations.filter(dest => 
+                dest.name.toLowerCase().includes(query) ||
+                dest.country.toLowerCase().includes(query)
+            );
+            renderDestinations();
+        }
+
+        // Filter functionality
+        function handleFilter(e) {
+            const filter = e.target.dataset.filter;
+            
+            // Update active filter button within the same group
+            const filterGroup = e.target.closest('.filter-group');
+            const groupButtons = filterGroup.querySelectorAll('.filter-btn');
+            groupButtons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+
+            // Apply all active filters
+            applyFilters();
+        }
+
+        // Apply all active filters
+        function applyFilters() {
+            const activeFilters = {};
+            
+            // Get active filters from each group
+            document.querySelectorAll('.filter-group').forEach(group => {
+                const activeBtn = group.querySelector('.filter-btn.active');
+                if (activeBtn) {
+                    const filter = activeBtn.dataset.filter;
+                    if (filter.startsWith('budget-')) {
+                        activeFilters.budget = filter;
+                    } else if (filter.startsWith('season-')) {
+                        activeFilters.season = filter;
+                    } else {
+                        activeFilters.region = filter;
+                    }
+                }
+            });
+
+            // Apply filters
+            filteredDestinations = destinations.filter(dest => {
+                // Region filter
+                if (activeFilters.region && activeFilters.region !== 'all') {
+                    if (dest.region !== activeFilters.region) return false;
+                }
+
+                // Budget filter
+                if (activeFilters.budget && activeFilters.budget !== 'budget-all') {
+                    const cost = dest.estimatedCost || parseInt(dest.costs?.total?.replace('$', '') || '0');
+                    switch (activeFilters.budget) {
+                        case 'budget-under2k':
+                            if (cost >= 2000) return false;
+                            break;
+                        case 'budget-2k-3k':
+                            if (cost < 2000 || cost > 3000) return false;
+                            break;
+                        case 'budget-3k-4k':
+                            if (cost < 3000 || cost > 4000) return false;
+                            break;
+                        case 'budget-4k-plus':
+                            if (cost < 4000) return false;
+                            break;
+                    }
+                }
+
+                // Season filter
+                if (activeFilters.season && activeFilters.season !== 'season-all') {
+                    const season = activeFilters.season.replace('season-', '');
+                    if (!dest.seasons || !dest.seasons.includes(season)) return false;
+                }
+
+                return true;
+            });
+
+            renderDestinations();
+        }
+
+        // View toggle
+        function handleViewToggle(e) {
+            const view = e.target.dataset.view;
+            showView(view);
+        }
+
+        // Show specific view (make globally accessible)
+        window.showView = function(view) {
+            currentView = view;
+            console.log('Switching to view:', view);
+            
+            // Update view buttons
+            viewBtns.forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.querySelector(`[data-view="${view}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+
+            // Update comparison button text
+            const comparisonBtn = document.querySelector('[data-view="comparison"]');
+            if (comparisonBtn) {
+                comparisonBtn.textContent = `Compare (${selectedDestinations.length})`;
+            }
+
+            // Show/hide views
+            gridView.style.display = view === 'grid' ? 'grid' : 'none';
+            detailView.style.display = view === 'detail' ? 'block' : 'none';
+            detailView.className = view === 'detail' ? 'detail-view active' : 'detail-view';
+            comparisonView.style.display = view === 'comparison' ? 'block' : 'none';
+            backBtn.style.display = view === 'grid' ? 'none' : 'inline-block';
+
+            if (view === 'comparison') {
+                renderComparison();
+            }
+        }
+
+        // Render destinations grid
+        function renderDestinations() {
+            gridView.innerHTML = '';
+
+            if (filteredDestinations.length === 0) {
+                gridView.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No destinations found</h3>
+                        <p>Try adjusting your search or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredDestinations.forEach(dest => {
+                const card = createDestinationCard(dest);
+                gridView.appendChild(card);
+            });
+        }
+
+        // Create destination card
+        function createDestinationCard(dest) {
+            const card = document.createElement('div');
+            const isSelected = selectedDestinations.some(d => d.id === dest.id);
+            const selectionClass = isSelected ? 'selected' : '';
+            
+            card.className = `destination-card ${selectionClass}`;
+            card.innerHTML = `
+                <div class="card-image" style="background-image: url('${dest.cardImage}')">
+                    <div class="card-overlay"></div>
+                    <div class="checkbox-container">
+                        <div class="destination-checkbox ${isSelected ? 'checked' : ''}" data-dest-id="${dest.id}"></div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3 class="destination-name">${dest.name}</h3>
+                    <p class="destination-country">${dest.country}</p>
+                    <span class="best-time">Best: ${dest.bestTime}</span>
+                  <div class="cost-summary">
+                      <div class="cost-item">
+                          <div class="cost-label">Flights</div>
+                          <div class="cost-value">${dest.costs.flights || '$0'}</div>
+                      </div>
+                      <div class="cost-item">
+                          <div class="cost-label">Hotel</div>
+                          <div class="cost-value">${dest.costs.accommodation || '$0'}</div>
+                      </div>
+                      <div class="cost-item">
+                          <div class="cost-label">Daily</div>
+                          <div class="cost-value">${dest.costs.food || '$0'}</div>
+                      </div>
+                  </div>
+                </div>
+            `;
+
+            // Add click handlers
+            const checkbox = card.querySelector('.destination-checkbox');
+            const cardContent = card.querySelector('.card-content');
+            
+            // Checkbox click handler
+            checkbox.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleDestinationSelection(dest);
+            });
+            
+            // Card content click handler (for detail view)
+            cardContent.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentView === 'grid') {
+                    showDestinationDetail(dest);
+                }
+            });
+
+            return card;
+        }
+
+        // Show destination detail
+        function showDestinationDetail(dest) {
+            console.log('Showing detail for:', dest.name);
+            console.log('Destination data:', dest);
+            showView('detail');
+            
+            // Generate itinerary HTML from new data structure
+            let itineraryHTML = '';
+            if (dest.itinerary && Array.isArray(dest.itinerary)) {
+                itineraryHTML = dest.itinerary.map(day => `
+                    <div class="itinerary-day">
+                        <div class="day-header">Day ${day.day}</div>
+                        ${day.morning ? `
+                            <div class="time-slot">
+                                <div class="time-label">Morning</div>
+                                <div class="activity">${day.morning.activity}</div>
+                                <div class="activity-description">${day.morning.description}</div>
+                                ${day.morning.cost ? `<div class="activity-cost">Cost: $${day.morning.cost}</div>` : ''}
+                            </div>
+                        ` : ''}
+                        ${day.afternoon ? `
+                            <div class="time-slot">
+                                <div class="time-label">Afternoon</div>
+                                <div class="activity">${day.afternoon.activity}</div>
+                                <div class="activity-description">${day.afternoon.description}</div>
+                                ${day.afternoon.cost ? `<div class="activity-cost">Cost: $${day.afternoon.cost}</div>` : ''}
+                            </div>
+                        ` : ''}
+                        ${day.evening ? `
+                            <div class="time-slot">
+                                <div class="time-label">Evening</div>
+                                <div class="activity">${day.evening.activity}</div>
+                                <div class="activity-description">${day.evening.description}</div>
+                                ${day.evening.cost ? `<div class="activity-cost">Cost: $${day.evening.cost}</div>` : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            }
+
+            // Generate tips HTML from new data structure
+            let tipsHTML = '';
+            if (dest.tips && Array.isArray(dest.tips)) {
+                tipsHTML = dest.tips.map(tip => `
+                    <div class="tip-card" onclick="toggleTip(this)">
+                        <div class="tip-header">
+                            <span>${tip.icon} ${tip.title}</span>
+                            <span class="tip-toggle">▼</span>
+                        </div>
+                        <div class="tip-content">${tip.content}</div>
+                    </div>
+                `).join('');
+            }
+
+            detailView.innerHTML = `
+                <div class="detail-hero" style="background-image: url('${dest.heroImage}')">
+                    <div class="detail-hero-overlay"></div>
+                    <div class="detail-hero-content">
+                        <h1 class="detail-title">${dest.name}</h1>
+                        <p class="detail-subtitle">${dest.country}</p>
+                        <p class="detail-climate">${dest.climate || ''}</p>
+                    </div>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-section">
+                        <h2 class="section-title">Best Time to Visit</h2>
+                        <p>${dest.bestTime}</p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2 class="section-title">Cost Breakdown</h2>
+                        <div class="cost-summary">
+                            <div class="cost-item">
+                                <div class="cost-label">Flights</div>
+                                <div class="cost-value">
+                                    <a href="${getFlightSearchUrl(dest)}" target="_blank" class="cost-link">
+                                        ${dest.costs.flights || '$0'}
+                                        <span class="cost-link-icon">🔗</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-label">Accommodation</div>
+                                <div class="cost-value">
+                                    <a href="${getHotelSearchUrl(dest)}" target="_blank" class="cost-link">
+                                        ${dest.costs.accommodation || '$0'}
+                                        <span class="cost-link-icon">🔗</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-label">Food & Dining</div>
+                                <div class="cost-value">
+                                    <a href="${getFoodGuideUrl(dest)}" target="_blank" class="cost-link">
+                                        ${dest.costs.food || '$0'}
+                                        <span class="cost-link-icon">🔗</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-label">Activities</div>
+                                <div class="cost-value">
+                                    <a href="${getActivitySearchUrl(dest)}" target="_blank" class="cost-link">
+                                        ${dest.costs.activities || '$0'}
+                                        <span class="cost-link-icon">🔗</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cost-item total">
+                                <div class="cost-label">Total Estimated Cost</div>
+                                <div class="cost-value">${dest.costs.total || '$0'}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2 class="section-title">7-Day Itinerary</h2>
+                        ${itineraryHTML || '<p>Itinerary details coming soon...</p>'}
+                    </div>
+
+                    <div class="detail-section">
+                        <h2 class="section-title">Recommended Accommodation</h2>
+                        <div class="accommodation-card">
+                            <div class="accommodation-name">${dest.accommodation?.name || 'Not specified'}</div>
+                            <div class="accommodation-details">${dest.accommodation?.type || 'Not specified'}</div>
+                            <div class="accommodation-details">${dest.accommodation?.description || ''}</div>
+                            <div class="accommodation-price">$${dest.accommodation?.pricePerNight || 0}/night</div>
+                        </div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h2 class="section-title">Travel Tips</h2>
+                        ${tipsHTML || '<p>Travel tips coming soon...</p>'}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle tip card (make it globally accessible)
+        window.toggleTip = function(card) {
+            card.classList.toggle('active');
+            const content = card.querySelector('.tip-content');
+            content.classList.toggle('active');
+        }
+
+        // Toggle destination selection
+        function toggleDestinationSelection(dest) {
+            console.log('Toggling selection for:', dest.name);
+            const index = selectedDestinations.findIndex(d => d.id === dest.id);
+            
+            if (index > -1) {
+                // Remove from selection
+                selectedDestinations.splice(index, 1);
+                console.log('Removed from selection:', dest.name);
+                hideWarning();
+            } else if (selectedDestinations.length < 3) {
+                // Add to selection
+                selectedDestinations.push(dest);
+                console.log('Added to selection:', dest.name);
+                hideWarning();
+            } else {
+                // Show warning - max 3 reached
+                console.log('Maximum 3 destinations allowed');
+                showWarning('You can only select up to 3 destinations maximum');
+                return;
+            }
+
+            // Update comparison button text
+            updateComparisonButton();
+
+            // Re-render destinations to update selection state
+            renderDestinations();
+        }
+
+        // Show warning message
+        function showWarning(message) {
+            const warningContainer = document.getElementById('warningContainer');
+            warningContainer.innerHTML = `<div class="warning-message">${message}</div>`;
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                hideWarning();
+            }, 3000);
+        }
+
+        // Hide warning message
+        function hideWarning() {
+            const warningContainer = document.getElementById('warningContainer');
+            warningContainer.innerHTML = '';
+        }
+
+        // Update comparison button text
+        function updateComparisonButton() {
+            const comparisonBtn = document.querySelector('[data-view="comparison"]');
+            if (comparisonBtn) {
+                if (selectedDestinations.length === 0) {
+                    comparisonBtn.textContent = 'Compare (0)';
+                } else {
+                    comparisonBtn.textContent = `Compare (${selectedDestinations.length})`;
+                }
+            }
+        }
+
+        // Render comparison view
+        function renderComparison() {
+            comparisonGrid.innerHTML = '';
+
+            if (selectedDestinations.length === 0) {
+                comparisonGrid.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No destinations selected for comparison</h3>
+                        <p>Go back to Grid View and click the checkboxes on up to 3 destination cards to select them for comparison.</p>
+                        <div style="margin-top: 1rem;">
+                            <button class="view-btn" onclick="showView('grid')" style="display: inline-block; margin: 0;">← Back to Grid View</button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Set grid layout based on number of selected destinations
+            comparisonGrid.setAttribute('data-count', selectedDestinations.length);
+
+            selectedDestinations.forEach(dest => {
+                const card = document.createElement('div');
+                card.className = 'comparison-card';
+                card.innerHTML = `
+                    <div class="comparison-card-header">
+                        <img src="${dest.cardImage}" alt="${dest.name}" class="comparison-image">
+                        <h3 class="comparison-title">${dest.name}</h3>
+                        <p class="comparison-country">${dest.country}</p>
+                    </div>
+                    
+                    <div class="comparison-section">
+                        <h4>Best Time to Visit</h4>
+                        <p>${dest.bestTime}</p>
+                    </div>
+
+                    <div class="comparison-section">
+                        <h4>Budget Level</h4>
+                        <p class="budget-level ${dest.budget}">${dest.budget.toUpperCase()}</p>
+                    </div>
+
+                  <div class="comparison-section">
+                      <h4>Cost Breakdown</h4>
+                      <div class="comparison-costs">
+                          <div class="cost-row">
+                              <span>Flights:</span>
+                              <span class="cost-value">
+                                  <a href="${getFlightSearchUrl(dest)}" target="_blank" class="cost-link">
+                                      ${dest.costs.flights || '$0'}
+                                      <span class="cost-link-icon">🔗</span>
+                                  </a>
+                              </span>
+                          </div>
+                          <div class="cost-row">
+                              <span>Accommodation:</span>
+                              <span class="cost-value">
+                                  <a href="${getHotelSearchUrl(dest)}" target="_blank" class="cost-link">
+                                      ${dest.costs.accommodation || '$0'}
+                                      <span class="cost-link-icon">🔗</span>
+                                  </a>
+                              </span>
+                          </div>
+                          <div class="cost-row">
+                              <span>Daily Expenses:</span>
+                              <span class="cost-value">
+                                  <a href="${getFoodGuideUrl(dest)}" target="_blank" class="cost-link">
+                                      ${dest.costs.food || '$0'}
+                                      <span class="cost-link-icon">🔗</span>
+                                  </a>
+                              </span>
+                          </div>
+                          <div class="cost-row">
+                              <span>Activities:</span>
+                              <span class="cost-value">
+                                  <a href="${getActivitySearchUrl(dest)}" target="_blank" class="cost-link">
+                                      ${dest.costs.activities || '$0'}
+                                      <span class="cost-link-icon">🔗</span>
+                                  </a>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+
+                    <div class="comparison-section">
+                        <h4>Accommodation</h4>
+                        <p class="accommodation-name">${dest.accommodation?.name || 'Not specified'}</p>
+                        <p class="accommodation-type">${dest.accommodation?.type || 'Not specified'}</p>
+                        <p class="accommodation-price">$${dest.accommodation?.pricePerNight || 0}/night</p>
+                    </div>
+
+                    <div class="comparison-section">
+                        <h4>Top Highlights</h4>
+                        <ul class="highlights-list">
+                            ${getHighlights(dest).map(highlight => `<li>${highlight}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                comparisonGrid.appendChild(card);
+            });
+        }
+
+        // Get top highlights for comparison
+        function getHighlights(dest) {
+            const highlights = [];
+            const itinerary = dest.itinerary;
+
+            // Extract highlights from new data structure
+            if (itinerary && Array.isArray(itinerary)) {
+                itinerary.forEach(day => {
+                    if (day.morning && day.morning.activity) {
+                        highlights.push(day.morning.activity);
+                    }
+                    if (day.afternoon && day.afternoon.activity) {
+                        highlights.push(day.afternoon.activity);
+                    }
+                    if (day.evening && day.evening.activity) {
+                        highlights.push(day.evening.activity);
+                    }
+                });
+            }
+            
+            return highlights.slice(0, 4); // Return top 4 highlights
+        }
+
+        // URL generation functions for cost links
+        function getFlightSearchUrl(dest) {
+            const destination = dest.name.includes(',') ? dest.name.split(',')[0] : dest.name;
+            const dates = getRecommendedDates(dest);
+            return `https://www.google.com/travel/flights/search?q=Flights+from+Portland+to+${encodeURIComponent(destination)}+${dates}`;
+        }
+
+        function getHotelSearchUrl(dest) {
+            const destination = dest.name.includes(',') ? dest.name.split(',')[0] : dest.name;
+            const dates = getRecommendedDates(dest);
+            return `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(destination)}&checkin=${dates.split('+')[0]}&checkout=${dates.split('+')[1]}`;
+        }
+
+        function getFoodGuideUrl(dest) {
+            const destination = dest.name.includes(',') ? dest.name.split(',')[0] : dest.name;
+            return `https://www.tripadvisor.com/Restaurants-g${getTripAdvisorId(dest)}-${encodeURIComponent(destination)}.html`;
+        }
+
+        function getActivitySearchUrl(dest) {
+            const destination = dest.name.includes(',') ? dest.name.split(',')[0] : dest.name;
+            return `https://www.viator.com/searchResults/all?text=${encodeURIComponent(destination)}+activities`;
+        }
+
+        function getRecommendedDates(dest) {
+            // Generate dates for next month (7-day trip)
+            const today = new Date();
+            const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+            const startDate = nextMonth.toISOString().split('T')[0];
+            const endDate = new Date(nextMonth.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            return `${startDate}+${endDate}`;
+        }
+
+        function getTripAdvisorId(dest) {
+            // TripAdvisor location IDs for major destinations
+            const ids = {
+                'Maui': '60635', // Maui, Hawaii
+                'Big Island': '60633', // Hawaii Island
+                'Kauai': '60636', // Kauai
+                'Tulum': '150812', // Tulum, Mexico
+                'Cabo San Lucas': '150811', // Cabo San Lucas
+                'Costa Rica': '294266' // Costa Rica
+            };
+            
+            const key = Object.keys(ids).find(k => dest.name.includes(k));
+            return ids[key] || '60635'; // Default to Maui if not found
+        }
+
+        // Initialize the app when data is loaded
+        function initializeApp() {
+            if (typeof destinations !== 'undefined' && destinations.length > 0) {
+                console.log('Destinations loaded:', destinations);
+                console.log('Number of destinations:', destinations.length);
+                init();
+            } else {
+                console.log('Waiting for destinations to load...');
+                setTimeout(initializeApp, 100);
+            }
+        }
+
+        // Start initialization
+        initializeApp();
+    </script>
+</body>
+</html>

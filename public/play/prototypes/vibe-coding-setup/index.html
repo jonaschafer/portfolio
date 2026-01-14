@@ -1,0 +1,2052 @@
+<!--
+ __     __  ______  _______   ________   ______  
+|  \   |  \|      \|       \ |        \ /      \ 
+| $$   | $$ \$$$$$$| $$$$$$$\| $$$$$$$$|  $$$$$$\
+| $$   | $$  | $$  | $$__/ $$| $$__    | $$___\$$
+ \$$\ /  $$  | $$  | $$    $$| $$  \    \$$    \ 
+  \$$\  $$   | $$  | $$$$$$$\| $$$$$    _\$$$$$$\
+   \$$ $$   _| $$_ | $$__/ $$| $$_____ |  \__| $$
+    \$$$   |   $$ \| $$    $$| $$     \ \$$    $$
+     \$     \$$$$$$ \$$$$$$$  \$$$$$$$$  \$$$$$$ 
+                                                 
+                                                 
+                                                 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>〰️VIBES〰️</title>
+    <style>
+        :root {
+            /* Light mode colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-tertiary: #999999;
+            --border-color: #e5e5e5;
+            --accent-color: #5e6ad2;
+            --accent-hover: #4c56c0;
+            --code-bg: #f6f8fa;
+            --code-border: #e1e4e8;
+            --sidebar-bg: #fafbfc;
+            --sidebar-active: #e8ecf0;
+        }
+
+        [data-theme="dark"] {
+            /* Dark mode colors */
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-tertiary: #6e7681;
+            --border-color: #30363d;
+            --accent-color: #58a6ff;
+            --accent-hover: #79c0ff;
+            --code-bg: #161b22;
+            --code-border: #30363d;
+            --sidebar-bg: #0d1117;
+            --sidebar-active: #1c2128;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .header-title:hover {
+            opacity: 0.7;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-toggle,
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-toggle:hover,
+        .theme-toggle:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .search-toggle svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .search-modal.open {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 80px;
+        }
+
+        .search-modal-content {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .search-input-wrapper {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .search-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input-icon {
+            position: absolute;
+            left: 12px;
+            width: 16px;
+            height: 16px;
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            font-size: 15px;
+            border: none;
+            border-radius: 6px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .search-input:focus {
+            background-color: var(--bg-primary);
+        }
+
+        .search-results {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px;
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .search-result-item:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .search-result-item.active {
+            background-color: var(--sidebar-active);
+        }
+
+        .search-result-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: var(--text-tertiary);
+        }
+
+        .search-result-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+        }
+
+        .search-result-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-result-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .search-result-snippet {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .search-result-highlight {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .no-results {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Sidebar */
+        aside {
+            width: 240px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 60px;
+            left: 0;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 24px 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            overscroll-behavior: contain;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin: 0;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 24px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav a .chevron {
+            opacity: 0.5;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .sidebar-nav a .chevron svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+        }
+
+        .sidebar-nav a.expanded .chevron {
+            transform: rotate(90deg);
+        }
+
+        .sidebar-nav a:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+        }
+
+        .sidebar-nav a.active {
+            color: var(--accent-color);
+            background-color: var(--sidebar-active);
+            border-left-color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .sidebar-nav .nested {
+            padding-left: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .sidebar-nav .nested.expanded {
+            max-height: 1000px;
+        }
+
+        .sidebar-nav .nested > li {
+            margin: 0;
+        }
+
+        .sidebar-nav .nested a {
+            padding: 6px 24px 6px 48px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            border-left: none;
+        }
+
+        .sidebar-nav .nested a:hover {
+            color: var(--text-secondary);
+        }
+
+        .sidebar-nav .nested a.active {
+            color: var(--accent-color);
+            background-color: var(--sidebar-active);
+            border-left: none;
+        }
+
+        /* Main content */
+        main {
+            margin-left: 240px;
+            margin-top: 60px;
+            padding: 48px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-top: 48px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            padding-top: 48px;
+            scroll-margin-top: 80px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        h2:hover {
+            cursor: pointer;
+        }
+
+        h2 .link-icon {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            margin-left: 8px;
+            display: inline-block;
+            font-size: 20px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        h2:hover .link-icon {
+            opacity: 1;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        code {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', monospace;
+            font-size: 0.9em;
+            color: var(--text-primary);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            margin-top: 16px;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        .intro-section {
+            margin-bottom: 48px;
+        }
+
+        .intro-section p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* Collapsible sections */
+        .collapsible-section {
+            margin-bottom: 24px;
+        }
+
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            user-select: none;
+        }
+
+        .collapsible-header:hover {
+            background-color: var(--sidebar-active);
+        }
+
+        .collapsible-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .collapsible-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+        }
+
+        .collapsible-header.expanded .collapsible-icon {
+            transform: rotate(90deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 16px;
+        }
+
+        .collapsible-content.expanded {
+            max-height: 5000px;
+            padding: 16px;
+        }
+
+        .collapsible-content p,
+        .collapsible-content ul,
+        .collapsible-content ol {
+            margin-bottom: 12px;
+        }
+
+        .collapsible-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .collapsible-content h4:first-child {
+            margin-top: 0;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .color-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .color-name {
+            font-weight: 500;
+            margin-right: 8px;
+            min-width: 120px;
+        }
+
+        .color-value {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tech-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .tech-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .tech-details {
+            flex: 1;
+        }
+
+        .tech-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .tech-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .cost-table th,
+        .cost-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cost-table th {
+            font-weight: 600;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+        }
+
+        .cost-table td {
+            color: var(--text-secondary);
+        }
+
+        .cost-free {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+            pointer-events: none;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            aside {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            aside.open {
+                transform: translateX(0);
+            }
+
+            main {
+                margin-left: 0;
+            }
+
+            .mobile-menu-button {
+                display: block;
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                z-index: 101;
+                background: var(--bg-primary);
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                padding: 8px;
+                cursor: pointer;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-menu-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header>
+        <h1 class="header-title">〰️VIBES〰️</h1>
+        <div class="header-actions">
+            <button class="search-toggle" id="searchToggle" aria-label="Search">
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+            </button>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-input-wrapper">
+                <div class="search-input-container">
+                    <div class="search-input-icon">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                    </div>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search..." autocomplete="off" />
+                </div>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <aside id="sidebar">
+            <nav>
+                <ul class="sidebar-nav" id="sidebarNav">
+                    <!-- Will be populated by JavaScript -->
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <section class="intro-section">
+                <h1>Get the vibes right (man).</h1>
+                <p>
+                    This guide will walk you through setting up everything you need to start vibe coding with Figma designs. 
+                    Vibe coding is about creating a seamless workflow between design and development, allowing you to quickly 
+                    translate Figma designs into working code with the help of AI-powered tools.
+                </p>
+                <p>
+                    By the end of this tutorial, you'll have a complete development environment that connects Figma, Cursor, 
+                    GitHub, and Vercel into a cohesive workflow. We'll also cover Supabase (optional) if you need backend functionality.
+                </p>
+            </section>
+
+            <section id="prerequisites">
+                <h2>Prerequisites</h2>
+                <p>Before you begin, make sure you have the following accounts and software ready:</p>
+                
+                <h3>Required Accounts</h3>
+                <ul>
+                    <li><strong>GitHub account</strong> - For version control and repository hosting</li>
+                    <li><strong>Vercel account</strong> - For deployment and hosting (free tier available)</li>
+                    <li><strong>Supabase account (optional)</strong> - For backend services if you need a database or authentication (free tier available)</li>
+                    <li><strong>Figma account</strong> - For design files (free tier available)</li>
+                </ul>
+
+                <h3>Required Software</h3>
+                <ul>
+                    <li><strong>Cursor</strong> - AI-powered code editor (download from cursor.sh)</li>
+                    <li><strong>Node.js (optional)</strong> - Version 18 or higher (only needed if you're using Next.js or React)</li>
+                </ul>
+            </section>
+
+            <section id="github-repository-setup">
+                <h2>GitHub Repository Setup</h2>
+                <p>
+                    GitHub will serve as your version control system and the source of truth for your code. 
+                    It also integrates seamlessly with Vercel for automatic deployments.
+                </p>
+
+                <h3>Creating a New Repository</h3>
+                <ol>
+                    <li>Go to <a href="https://github.com/new" target="_blank">github.com/new</a></li>
+                    <li>Choose a repository name (e.g., "my-vibe-project")</li>
+                    <li>Set it to Public or Private based on your preference</li>
+                    <li>Initialize with a README if you want a starting point</li>
+                    <li>Click "Create repository"</li>
+                </ol>
+
+                <h3>Connecting GitHub to Cursor via MCP</h3>
+                <p>Once you have your repository, connect it to Cursor so you can work with it directly:</p>
+                <ol>
+                    <li>In Cursor, open Settings (Cmd/Ctrl + ,)</li>
+                    <li>Navigate to "Features" → "Model Context Protocol"</li>
+                    <li>Click "Add Server" or edit existing configuration</li>
+                    <li>Add the GitHub MCP server configuration</li>
+                </ol>
+
+                <p>You'll need a GitHub Personal Access Token. Ask Cursor to help you create one, or follow these steps:</p>
+                <ol>
+                    <li>Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)</li>
+                    <li>Click "Generate new token (classic)"</li>
+                    <li>Give it a name (e.g., "Cursor MCP")</li>
+                    <li>Select scopes: <code>repo</code>, <code>read:org</code>, <code>read:user</code></li>
+                    <li>Generate and copy the token</li>
+                    <li>Add it to Cursor's MCP configuration</li>
+                </ol>
+
+                <p>Example GitHub MCP configuration (Cursor can help you set this up):</p>
+                <pre><code>{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your-github-token-here"
+      }
+    }
+  }
+}</code></pre>
+
+                <p><strong>Pro tip:</strong> Instead of manually cloning repositories, ask Cursor to help you clone your GitHub repo. 
+                Just paste the repository URL and ask Cursor to clone it for you.</p>
+            </section>
+
+            <section id="vercel-deployment">
+                <h2>Vercel Deployment</h2>
+                <p>
+                    Vercel provides seamless deployment from GitHub with automatic previews for every push. 
+                    It works with different types of projects, and it's important to understand the differences.
+                </p>
+
+                <h3>Understanding Project Types</h3>
+                <p>Vercel can deploy different kinds of projects:</p>
+                <ul>
+                    <li><strong>Static Sites</strong> - Simple HTML, CSS, and JavaScript files. No server needed. 
+                    Perfect for landing pages, portfolios, or simple websites. Just upload your files and they're live.</li>
+                    <li><strong>React Apps</strong> - Interactive web applications built with React. These need to be built 
+                    (compiled) before deployment. Vercel handles this automatically.</li>
+                    <li><strong>Next.js Apps</strong> - A framework built on React that adds features like server-side rendering, 
+                    routing, and API routes. Next.js projects can be more complex but offer more features out of the box.</li>
+                </ul>
+
+                <p>For vibe coding, you can start with a simple static site (just HTML/CSS/JS) or jump into Next.js if you want 
+                more features. Cursor can help you decide which is right for your project.</p>
+
+                <h3>Connecting GitHub Repository</h3>
+                <ol>
+                    <li>Go to <a href="https://vercel.com" target="_blank">vercel.com</a> and sign in with GitHub</li>
+                    <li>Click "Add New Project"</li>
+                    <li>Select your GitHub repository from the list</li>
+                    <li>Vercel will auto-detect your project type (Next.js, React, or static site)</li>
+                    <li>Click "Deploy"</li>
+                </ol>
+
+                <h3>Environment Variables</h3>
+                <p>If your project needs API keys or other secrets (like Supabase keys), you'll need to add them as environment variables. 
+                Instead of doing this manually, ask Cursor to help you set up environment variables. Just tell Cursor what keys you need, 
+                and it can guide you through the process or even help you create the configuration files.</p>
+
+                <p>In Vercel dashboard:</p>
+                <ol>
+                    <li>Go to your project settings</li>
+                    <li>Navigate to "Environment Variables"</li>
+                    <li>Add variables for each environment (Production, Preview, Development)</li>
+                </ol>
+
+                <p>Then access them in your code (Cursor can help you with this syntax):</p>
+                <pre><code>// Next.js
+const apiKey = process.env.NEXT_PUBLIC_API_KEY;</code></pre>
+
+                <h3>Deployment Process</h3>
+                <p>Once connected, every push to your main branch triggers a production deployment. 
+                Pull requests get preview deployments automatically. You'll receive:</p>
+                <ul>
+                    <li>Production URL: <code>your-project.vercel.app</code></li>
+                    <li>Preview URLs: <code>your-project-git-branch.vercel.app</code></li>
+                    <li>Deployment status notifications</li>
+                </ul>
+            </section>
+
+            <section id="custom-domain-setup">
+                <h2>Custom Domain Setup</h2>
+                <p>
+                    Adding a custom domain gives your project a professional URL and makes it easier to share. 
+                    This is completely optional - your Vercel URL works perfectly fine.
+                </p>
+
+                <h3>DNS Configuration</h3>
+                <p>In your domain registrar (where you bought your domain):</p>
+                <ol>
+                    <li>Add a CNAME record pointing to <code>cname.vercel-dns.com</code></li>
+                    <li>Or add A records pointing to Vercel's IP addresses (if CNAME not supported)</li>
+                    <li>Wait for DNS propagation (can take up to 48 hours, usually much faster)</li>
+                </ol>
+
+                <h3>Vercel Domain Settings</h3>
+                <ol>
+                    <li>In Vercel dashboard, go to your project settings</li>
+                    <li>Navigate to "Domains"</li>
+                    <li>Enter your domain name (e.g., <code>example.com</code> or <code>www.example.com</code>)</li>
+                    <li>Vercel will verify DNS configuration</li>
+                    <li>Once verified, your site will be live on your custom domain</li>
+                </ol>
+            </section>
+
+            <section id="figma-mcp-setup">
+                <h2>Connecting Figma to Cursor</h2>
+                <p>
+                    The Figma MCP (Model Context Protocol) server allows Cursor to access your Figma designs, 
+                    extract design details, and generate code based on your designs. This is the magic that makes vibe coding work.
+                </p>
+
+                <h3>Getting Your Figma Personal Access Token</h3>
+                <p>First, you need to create a token that lets Cursor access your Figma files:</p>
+                <ol>
+                    <li>Open Figma (desktop app or web)</li>
+                    <li>Go to Figma → Settings → Account</li>
+                    <li>Scroll down to "Personal access tokens"</li>
+                    <li>Click "Create new token"</li>
+                    <li>Give it a name (e.g., "Cursor MCP")</li>
+                    <li><strong>Copy the token immediately</strong> - you won't be able to see it again!</li>
+                </ol>
+
+                <h3>Configuring Figma MCP in Cursor</h3>
+                <p>Now let's connect it to Cursor:</p>
+                <ol>
+                    <li>Open Cursor settings (Cmd/Ctrl + ,)</li>
+                    <li>Navigate to "Features" → "Model Context Protocol"</li>
+                    <li>Click "Add Server" or edit existing configuration</li>
+                    <li>Add the Figma MCP server configuration</li>
+                </ol>
+
+                <p>You'll need to add configuration that looks like this (Cursor can help you set this up if you ask):</p>
+                <pre><code>{
+  "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-figma"
+      ],
+      "env": {
+        "FIGMA_PERSONAL_ACCESS_TOKEN": "paste-your-token-here"
+      }
+    }
+  }
+}</code></pre>
+
+                <h3>Sharing Your Figma File</h3>
+                <p>For Cursor to access your designs, your Figma file needs to be accessible:</p>
+                <ol>
+                    <li>Open your Figma file</li>
+                    <li>Click "Share" in the top right</li>
+                    <li>Set permissions to "Can view" (this is enough for MCP access)</li>
+                    <li>Copy the file URL - you can paste this in Cursor when asking about designs</li>
+                </ol>
+
+                <h3>Testing the Connection</h3>
+                <p>Once configured, test the connection in Cursor:</p>
+                <ul>
+                    <li>Open a chat in Cursor</li>
+                    <li>Paste a Figma URL and ask: "Can you access this Figma design?"</li>
+                    <li>Or try: "Get the design context for this Figma file" (with the URL)</li>
+                    <li>If working, Cursor should be able to describe your designs and extract design details</li>
+                </ul>
+
+                <p><strong>Troubleshooting:</strong> If it's not working, make sure your Figma file is shared (even if just with "Can view" permission) 
+                and that you've restarted Cursor after adding the MCP configuration.</p>
+            </section>
+
+            <section id="cursor-setup">
+                <h2>Cursor Setup</h2>
+                <p>
+                    Cursor is an AI-powered code editor that integrates with Figma, GitHub, and other tools 
+                    to streamline your development workflow. This is where the magic happens.
+                </p>
+
+                <h3>Installing Cursor</h3>
+                <ol>
+                    <li>Go to <a href="https://cursor.sh" target="_blank">cursor.sh</a></li>
+                    <li>Download for your operating system (macOS, Windows, Linux)</li>
+                    <li>Install the application</li>
+                    <li>Open Cursor and sign in (or create an account)</li>
+                </ol>
+
+                <p>That's it! Cursor comes ready to use. You can start asking it questions and writing code right away.</p>
+            </section>
+
+            <section id="working-with-figma-and-cursor">
+                <h2>Figma & Cursor</h2>
+                <p>
+                    The magic happens when Figma and Cursor work together. Here's how to translate your designs into code.
+                </p>
+
+                <h3>Example Workflow</h3>
+                <p>Let's say you have a button design in Figma and want to code it:</p>
+                <ol>
+                    <li>In Figma, select the button frame or component you want to code</li>
+                    <li>Copy the Figma URL (or the node ID from the URL)</li>
+                    <li>In Cursor, paste the URL and ask: "Create an HTML button that matches this Figma design"</li>
+                    <li>Cursor will access the Figma design, extract the colors, spacing, typography, and generate the code</li>
+                    <li>Review the code, make adjustments if needed, and ask Cursor to refine it</li>
+                </ol>
+
+                <p>Example prompts you can try:</p>
+                <ul>
+                    <li>"Create a React component based on this Figma design: [paste URL]"</li>
+                    <li>"What are the exact colors and spacing used in this Figma frame?"</li>
+                    <li>"Generate CSS for this button design from Figma"</li>
+                    <li>"Create a Next.js page that matches this Figma layout"</li>
+                    <li>"Extract the design tokens (colors, fonts, spacing) from this Figma file"</li>
+                </ul>
+
+                <h3>Best Practices in Figma</h3>
+                <p>To make vibe coding easier, use these Figma features:</p>
+                <ul>
+                    <li><strong>Auto Layout</strong> - Use Auto Layout for frames so Cursor can better understand spacing and relationships between elements</li>
+                    <li><strong>Name layers clearly</strong> - Use descriptive names that match your component structure (e.g., "Button", "Card", "Header")</li>
+                    <li><strong>Use components</strong> - Create reusable components for buttons, cards, etc. This helps Cursor understand your design system</li>
+                    <li><strong>Organize with frames</strong> - Group related elements in frames so Cursor can understand the layout structure</li>
+                </ul>
+            </section>
+
+            <section id="local-development-server">
+                <h2>Do it live!</h2>
+                <p>
+                    To see your changes in real-time, you'll need to run a local development server. 
+                    The good news: Cursor can help you set this up and fix any issues that come up.
+                </p>
+
+                <h3>Setting Up Your Project</h3>
+                <p>Instead of running commands manually, ask Cursor to help you:</p>
+                <ul>
+                    <li><strong>For Next.js:</strong> "Help me create a new Next.js project" or "Set up a Next.js development server"</li>
+                    <li><strong>For static sites:</strong> "Help me set up a local server for my HTML files"</li>
+                    <li><strong>For React:</strong> "Create a new React project" or "Set up a React development environment"</li>
+                </ul>
+
+                <p>Cursor can create the project structure, install dependencies, and get everything running for you.</p>
+
+                <h3>When Things Go Wrong</h3>
+                <p>If your server won't start or you see errors, Cursor can help:</p>
+                <ol>
+                    <li>Open the terminal in Cursor (View → Terminal, or the terminal panel at the bottom)</li>
+                    <li>If you see an error message, select it (highlight the text)</li>
+                    <li>Ask Cursor: "This error appeared when I tried to start my dev server. Can you help fix it?"</li>
+                    <li>Or paste the error and ask: "What does this error mean and how do I fix it?"</li>
+                </ol>
+
+                <p><strong>Common issues Cursor can help with:</strong></p>
+                <ul>
+                    <li>Port already in use (e.g., "Address already in use" error) - Cursor can help you find what's using the port or switch to a different one</li>
+                    <li>Missing dependencies - Cursor can help install what's needed</li>
+                    <li>Configuration errors - Cursor can help fix config files</li>
+                    <li>Build errors - Select the error message and ask Cursor to explain and fix it</li>
+                </ul>
+
+                <p>The key is: if Cursor can do it, let it. Don't struggle with command line errors when you can just ask for help.</p>
+            </section>
+
+            <section id="helpful-cursor-extensions">
+                <h2>Extensions</h2>
+                <p>
+                    Extensions can enhance your Cursor experience. Here are some that might be useful for vibe coding 
+                    and web development. (Note: I haven't used all of these, so I'm curious how well they work!)
+                </p>
+
+                <h3>Recommended Extensions List</h3>
+                <ul>
+                    <li><strong>Prettier</strong> - Code formatter for consistent styling</li>
+                    <li><strong>ESLint</strong> - JavaScript linter for code quality</li>
+                    <li><strong>Tailwind CSS IntelliSense</strong> - Autocomplete for Tailwind classes</li>
+                    <li><strong>GitLens</strong> - Enhanced Git capabilities and blame annotations</li>
+                    <li><strong>Error Lens</strong> - Inline error highlighting</li>
+                    <li><strong>Auto Rename Tag</strong> - Automatically rename paired HTML/JSX tags</li>
+                    <li><strong>Path Intellisense</strong> - Autocomplete for file paths</li>
+                    <li><strong>Color Highlight</strong> - Highlight color codes in your code</li>
+                    <li><strong>Bracket Pair Colorizer</strong> - Color matching brackets</li>
+                    <li><strong>Live Server</strong> - Launch a development server with live reload</li>
+                </ul>
+
+                <h3>Installation Instructions</h3>
+                <ol>
+                    <li>Open Cursor</li>
+                    <li>Press <code>Cmd/Ctrl + Shift + X</code> to open Extensions view</li>
+                    <li>Search for the extension name</li>
+                    <li>Click "Install"</li>
+                    <li>Some extensions may require a reload (click "Reload" when prompted)</li>
+                </ol>
+
+                <p><strong>Tip:</strong> Ask Cursor to help you set up extensions if you're not sure which ones you need or how to configure them.</p>
+            </section>
+
+            <section id="what-about-backend">
+                <h2>What About Backend? (Optional)</h2>
+                <p>
+                    If your project needs a database, user authentication, or other backend features, 
+                    Supabase is a great option. It's like having a backend without managing servers yourself.
+                </p>
+
+                <h3>What is Supabase?</h3>
+                <p>Supabase provides:</p>
+                <ul>
+                    <li><strong>PostgreSQL database</strong> - A full-featured database (think of it like a spreadsheet, but much more powerful)</li>
+                    <li><strong>Built-in authentication</strong> - Let users sign up and log in (email, social logins, magic links)</li>
+                    <li><strong>Real-time subscriptions</strong> - Your app can update instantly when data changes</li>
+                    <li><strong>Storage</strong> - Upload and manage files (images, documents, etc.)</li>
+                    <li><strong>Auto-generated APIs</strong> - Supabase automatically creates APIs from your database, so you don't have to write backend code</li>
+                    <li><strong>Free tier</strong> - Generous limits for personal projects</li>
+                </ul>
+
+                <h3>Creating a Supabase Project</h3>
+                <p>Ask Cursor to help you set up Supabase, or follow these steps:</p>
+                <ol>
+                    <li>Go to <a href="https://supabase.com" target="_blank">supabase.com</a> and sign up</li>
+                    <li>Click "New Project"</li>
+                    <li>Choose an organization (or create one)</li>
+                    <li>Enter project name and database password</li>
+                    <li>Select a region closest to your users</li>
+                    <li>Click "Create new project" (takes 1-2 minutes)</li>
+                </ol>
+
+                <h3>Getting Your API Keys</h3>
+                <p>Once your project is ready:</p>
+                <ol>
+                    <li>Go to Project Settings → API</li>
+                    <li>Copy your Project URL (e.g., <code>https://xxxxx.supabase.co</code>)</li>
+                    <li>Copy your anon/public key (safe for client-side use)</li>
+                    <li>Copy your service_role key (keep secret, server-side only)</li>
+                </ol>
+
+                <p><strong>Pro tip:</strong> Ask Cursor to help you set up Supabase in your project. Just tell Cursor you want to use Supabase, 
+                and it can help you install the client library and set up the connection.</p>
+
+                <h3>Using Supabase in Your Project</h3>
+                <p>Ask Cursor to help you connect Supabase, or use this as a starting point:</p>
+                <pre><code>// Install the Supabase client (ask Cursor to do this)
+// npm install @supabase/supabase-js
+
+// Create a Supabase client (Cursor can help you set this up)
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = 'https://your-project.supabase.co'
+const supabaseAnonKey = 'your-anon-key'
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)</code></pre>
+
+                <p>Then ask Cursor to help you use it. For example: "Help me query data from Supabase" or 
+                "How do I add user authentication with Supabase?"</p>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>Troubleshooting</h2>
+                <p>
+                    Common issues and their solutions when setting up your vibe coding environment.
+                </p>
+
+                <h3>Common Issues</h3>
+
+                <h4>Figma MCP Not Connecting</h4>
+                <ul>
+                    <li>Verify your Figma Personal Access Token is correct and not expired</li>
+                    <li>Check that the file URL is accessible (not private without proper permissions)</li>
+                    <li>Restart Cursor after MCP configuration changes</li>
+                    <li>Check Cursor's MCP logs for error messages</li>
+                </ul>
+
+                <h4>GitHub MCP Issues</h4>
+                <ul>
+                    <li>Ensure your GitHub token has the correct scopes (<code>repo</code>, <code>read:org</code>)</li>
+                    <li>Check token expiration date</li>
+                    <li>Verify repository permissions if accessing private repos</li>
+                </ul>
+
+                <h4>Vercel Deployment Fails</h4>
+                <ul>
+                    <li>Check build logs in Vercel dashboard for specific errors</li>
+                    <li>Verify environment variables are set correctly</li>
+                    <li>Ensure <code>package.json</code> has correct build scripts</li>
+                    <li>Check Node.js version compatibility</li>
+                </ul>
+
+                <h4>Supabase Connection Issues (Optional)</h4>
+                <ul>
+                    <li>Verify API URL and keys are correct</li>
+                    <li>Check Supabase project status (not paused)</li>
+                    <li>Verify Row Level Security (RLS) policies if data isn't accessible</li>
+                    <li>Check browser console for CORS errors</li>
+                    <li><strong>Better yet:</strong> Select the error message and ask Cursor to help fix it</li>
+                </ul>
+
+                <h4>Local Dev Server Not Starting</h4>
+                <p>Instead of troubleshooting manually, try this:</p>
+                <ul>
+                    <li>Open the terminal in Cursor</li>
+                    <li>Select the error message</li>
+                    <li>Ask Cursor: "This error appeared when I tried to start my dev server. Can you help fix it?"</li>
+                    <li>Common issues Cursor can help with: port conflicts, missing dependencies, configuration errors</li>
+                </ul>
+
+                <h3>Solutions</h3>
+                <p>General troubleshooting steps:</p>
+                <ol>
+                    <li><strong>Check logs</strong> - Most tools provide detailed error logs</li>
+                    <li><strong>Restart services</strong> - Often fixes transient issues</li>
+                    <li><strong>Update dependencies</strong> - <code>npm update</code> or check for updates</li>
+                    <li><strong>Clear caches</strong> - Browser cache, npm cache, Next.js cache</li>
+                    <li><strong>Verify credentials</strong> - Tokens, API keys, passwords</li>
+                    <li><strong>Check documentation</strong> - Official docs often have troubleshooting sections</li>
+                </ol>
+            </section>
+
+            <section id="next-steps">
+                <h2>Next Steps</h2>
+                <p>
+                    Now that your environment is set up, here are some resources and next steps to continue 
+                    your vibe coding journey.
+                </p>
+
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://cursor.sh/docs" target="_blank">Cursor Documentation</a> - Official Cursor docs</li>
+                    <li><a href="https://www.figma.com/developers" target="_blank">Figma Developer Resources</a> - API and plugin docs</li>
+                    <li><a href="https://vercel.com/docs" target="_blank">Vercel Documentation</a> - Deployment guides</li>
+                    <li><a href="https://supabase.com/docs" target="_blank">Supabase Documentation (Optional)</a> - Database and auth guides</li>
+                    <li><a href="https://nextjs.org/docs" target="_blank">Next.js Documentation</a> - Framework reference</li>
+                    <li><a href="https://github.com/modelcontextprotocol" target="_blank">MCP GitHub</a> - Model Context Protocol resources</li>
+                </ul>
+
+                <h3>Further Reading</h3>
+                <ul>
+                    <li><strong>Design Systems</strong> - Learn about creating reusable design components</li>
+                    <li><strong>Component Architecture</strong> - Best practices for organizing React/Next.js components</li>
+                    <li><strong>API Design</strong> - How to structure your Supabase database and APIs</li>
+                    <li><strong>Performance Optimization</strong> - Tips for fast-loading web applications</li>
+                    <li><strong>Accessibility</strong> - Making your sites usable for everyone</li>
+                </ul>
+
+                <p>
+                    Happy vibe coding! Remember, the best workflow is the one that works for you. 
+                    Experiment, iterate, and refine your setup as you go.
+                </p>
+            </section>
+
+            <section id="overview">
+                <h2>Overview</h2>
+                <p>
+                    This section provides a comprehensive overview of the tech stack, tool relationships, costs, and design system 
+                    used in the vibe coding workflow.
+                </p>
+
+                <h3>Technologies</h3>
+                <div class="tech-item">
+                    <div class="tech-icon">🎨</div>
+                    <div class="tech-details">
+                        <div class="tech-name">Figma</div>
+                        <div class="tech-description">Design tool for creating UI/UX designs. Provides MCP integration for accessing design files, extracting design tokens, and generating code from designs.</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🤖</div>
+                    <div class="tech-details">
+                        <div class="tech-name">Cursor</div>
+                        <div class="tech-description">AI-powered code editor built on VS Code. Integrates with Figma, GitHub, and other tools via Model Context Protocol (MCP) to enable vibe coding workflows.</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🐙</div>
+                    <div class="tech-details">
+                        <div class="tech-name">GitHub</div>
+                        <div class="tech-description">Version control and repository hosting. Serves as the source of truth for code and integrates with Vercel for automatic deployments.</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">▲</div>
+                    <div class="tech-details">
+                        <div class="tech-name">Vercel</div>
+                        <div class="tech-description">Deployment and hosting platform. Automatically deploys from GitHub with preview URLs for every push and pull request. Supports static sites, React, and Next.js.</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🗄️</div>
+                    <div class="tech-details">
+                        <div class="tech-name">Supabase (Optional)</div>
+                        <div class="tech-description">Backend-as-a-Service providing PostgreSQL database, authentication, real-time subscriptions, and storage. Auto-generates APIs from database schema.</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📦</div>
+                    <div class="tech-details">
+                        <div class="tech-name">Model Context Protocol (MCP)</div>
+                        <div class="tech-description">Protocol that enables AI assistants to securely access external tools and data sources. Connects Cursor to Figma, GitHub, and other services.</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">⚛️</div>
+                    <div class="tech-details">
+                        <div class="tech-name">React / Next.js (Optional)</div>
+                        <div class="tech-description">JavaScript frameworks for building interactive web applications. Next.js adds server-side rendering, routing, and API routes on top of React.</div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">💻</div>
+                    <div class="tech-details">
+                        <div class="tech-name">HTML / CSS / JavaScript</div>
+                        <div class="tech-description">Core web technologies. Can start with simple static sites or use frameworks for more complex applications.</div>
+                    </div>
+                </div>
+
+                <h3>Relationship Between Apps</h3>
+                <p>The vibe coding workflow creates a seamless pipeline from design to deployment:</p>
+                <ol>
+                    <li><strong>Figma → Cursor:</strong> Design files are accessed via Figma MCP, allowing Cursor to extract design tokens, colors, typography, spacing, and component structures.</li>
+                    <li><strong>Cursor → GitHub:</strong> Code is written in Cursor and committed to GitHub repositories via GitHub MCP integration, enabling version control and collaboration.</li>
+                    <li><strong>GitHub → Vercel:</strong> Every push to GitHub automatically triggers deployments on Vercel, creating production and preview URLs.</li>
+                    <li><strong>Supabase (Optional):</strong> Provides backend services that can be accessed from frontend code deployed on Vercel, completing the full-stack workflow.</li>
+                </ol>
+                <p>This creates a continuous workflow: Design → Code → Deploy → Iterate, all powered by AI assistance in Cursor.</p>
+
+                <h3>What Each App Does</h3>
+                <h4>Figma</h4>
+                <ul>
+                    <li>Create and organize UI/UX designs</li>
+                    <li>Define design systems with components, colors, and typography</li>
+                    <li>Share design files for collaboration</li>
+                    <li>Export design tokens and specifications</li>
+                </ul>
+
+                <h4>Cursor</h4>
+                <ul>
+                    <li>AI-powered code editor for writing and editing code</li>
+                    <li>Accesses Figma designs via MCP to extract design details</li>
+                    <li>Generates code that matches Figma designs</li>
+                    <li>Manages GitHub repositories and commits</li>
+                    <li>Helps troubleshoot errors and set up development environments</li>
+                </ul>
+
+                <h4>GitHub</h4>
+                <ul>
+                    <li>Version control for tracking code changes</li>
+                    <li>Repository hosting and collaboration</li>
+                    <li>Issue tracking and project management</li>
+                    <li>Integration point for CI/CD pipelines</li>
+                </ul>
+
+                <h4>Vercel</h4>
+                <ul>
+                    <li>Automatic deployments from GitHub</li>
+                    <li>Preview URLs for every branch and pull request</li>
+                    <li>Production hosting with global CDN</li>
+                    <li>Environment variable management</li>
+                    <li>Custom domain support</li>
+                </ul>
+
+                <h4>Supabase (Optional)</h4>
+                <ul>
+                    <li>PostgreSQL database with real-time capabilities</li>
+                    <li>User authentication (email, social logins, magic links)</li>
+                    <li>File storage for images and documents</li>
+                    <li>Auto-generated REST and GraphQL APIs</li>
+                    <li>Row Level Security (RLS) for data access control</li>
+                </ul>
+
+                <h3>Cost</h3>
+                <table class="cost-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Free Tier</th>
+                            <th>Paid Plans</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Figma</strong></td>
+                            <td class="cost-free">Free</td>
+                            <td>Professional: $12/editor/month, Organization: $45/editor/month</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cursor</strong></td>
+                            <td>Limited free tier</td>
+                            <td>Pro: $20/month, Business: $40/user/month</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GitHub</strong></td>
+                            <td class="cost-free">Free</td>
+                            <td>Team: $4/user/month, Enterprise: Custom pricing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Vercel</strong></td>
+                            <td class="cost-free">Free (Hobby)</td>
+                            <td>Pro: $20/month, Enterprise: Custom pricing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Supabase</strong></td>
+                            <td class="cost-free">Free</td>
+                            <td>Pro: $25/month, Team: $599/month</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <strong>Total Free Tier Cost:</strong> $0/month - You can build and deploy projects completely free using the free tiers of all services. 
+                    Paid plans unlock additional features, higher limits, and team collaboration tools.
+                </p>
+
+                <h3>Design System</h3>
+                <h4>Type</h4>
+                <p><strong>Font Family:</strong> System font stack for optimal performance and native feel:</p>
+                <pre><code>-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif</code></pre>
+                <p>This ensures the site uses the native system font on each platform (San Francisco on macOS, Segoe UI on Windows, etc.).</p>
+
+                <h4>Type Scale</h4>
+                <ul>
+                    <li><strong>H1:</strong> 42px, font-weight: 700, line-height: 1.2</li>
+                    <li><strong>H2:</strong> 28px, font-weight: 600, line-height: 1.2</li>
+                    <li><strong>H3:</strong> 20px, font-weight: 600, line-height: 1.3</li>
+                    <li><strong>H4:</strong> 16px, font-weight: 600, line-height: 1.4</li>
+                    <li><strong>Body:</strong> 16px (default), line-height: 1.7</li>
+                    <li><strong>Small:</strong> 14px, line-height: 1.6</li>
+                    <li><strong>Code:</strong> 14px (in code blocks), 0.9em (inline), font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', monospace</li>
+                </ul>
+
+                <h4>Color</h4>
+                <p><strong>Light Mode:</strong></p>
+                <div class="color-info">
+                    <span class="color-name">Background Primary:</span>
+                    <span class="color-swatch" style="background-color: #ffffff;"></span>
+                    <span class="color-value">#ffffff</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Background Secondary:</span>
+                    <span class="color-swatch" style="background-color: #f8f9fa;"></span>
+                    <span class="color-value">#f8f9fa</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Text Primary:</span>
+                    <span class="color-swatch" style="background-color: #1a1a1a;"></span>
+                    <span class="color-value">#1a1a1a</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Text Secondary:</span>
+                    <span class="color-swatch" style="background-color: #666666;"></span>
+                    <span class="color-value">#666666</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Text Tertiary:</span>
+                    <span class="color-swatch" style="background-color: #999999;"></span>
+                    <span class="color-value">#999999</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Accent:</span>
+                    <span class="color-swatch" style="background-color: #5e6ad2;"></span>
+                    <span class="color-value">#5e6ad2</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Border:</span>
+                    <span class="color-swatch" style="background-color: #e5e5e5;"></span>
+                    <span class="color-value">#e5e5e5</span>
+                </div>
+
+                <p><strong>Dark Mode:</strong></p>
+                <div class="color-info">
+                    <span class="color-name">Background Primary:</span>
+                    <span class="color-swatch" style="background-color: #0d1117;"></span>
+                    <span class="color-value">#0d1117</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Background Secondary:</span>
+                    <span class="color-swatch" style="background-color: #161b22;"></span>
+                    <span class="color-value">#161b22</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Text Primary:</span>
+                    <span class="color-swatch" style="background-color: #c9d1d9;"></span>
+                    <span class="color-value">#c9d1d9</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Text Secondary:</span>
+                    <span class="color-swatch" style="background-color: #8b949e;"></span>
+                    <span class="color-value">#8b949e</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Text Tertiary:</span>
+                    <span class="color-swatch" style="background-color: #6e7681;"></span>
+                    <span class="color-value">#6e7681</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Accent:</span>
+                    <span class="color-swatch" style="background-color: #58a6ff;"></span>
+                    <span class="color-value">#58a6ff</span>
+                </div>
+                <div class="color-info">
+                    <span class="color-name">Border:</span>
+                    <span class="color-swatch" style="background-color: #30363d;"></span>
+                    <span class="color-value">#30363d</span>
+                </div>
+
+                <h4>Other Design System Elements</h4>
+                <ul>
+                    <li><strong>Border Radius:</strong> 4px (small elements), 6px (buttons, inputs), 8px (cards, modals)</li>
+                    <li><strong>Spacing Scale:</strong> 4px base unit (4px, 8px, 12px, 16px, 24px, 32px, 48px)</li>
+                    <li><strong>Shadows:</strong> Minimal, used for modals and elevated elements</li>
+                    <li><strong>Transitions:</strong> 0.2s-0.3s ease for interactive elements</li>
+                    <li><strong>Code Blocks:</strong> Light background (#f6f8fa light / #161b22 dark) with border</li>
+                    <li><strong>Sidebar Width:</strong> 240px fixed</li>
+                    <li><strong>Content Max Width:</strong> 900px</li>
+                    <li><strong>Header Height:</strong> 60px fixed</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
+
+        // Load saved theme or default to light
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // Sidebar navigation generation
+        function generateSidebarNav() {
+            const sections = document.querySelectorAll('section[id]');
+            const sidebarNav = document.getElementById('sidebarNav');
+            
+            // Sections that should be nested under Prerequisites
+            const nestedSections = [
+                'github-repository-setup',
+                'vercel-deployment',
+                'custom-domain-setup',
+                'figma-mcp-setup',
+                'cursor-setup'
+            ];
+            
+            // Custom labels for navigation
+            const navLabels = {
+                'overview': 'Tech Stack',
+                'prerequisites': 'Pre-reqs',
+                'github-repository-setup': 'Github',
+                'vercel-deployment': 'Vercel',
+                'custom-domain-setup': 'Custom domain',
+                'figma-mcp-setup': 'Figma 🤝 Cursor',
+                'cursor-setup': 'Cursor'
+            };
+            
+            let prerequisitesLi = null;
+            let nestedUl = null;
+            let overviewSection = null;
+            
+            sections.forEach(section => {
+                const h2 = section.querySelector('h2');
+                if (!h2) return;
+                
+                const sectionId = section.getAttribute('id');
+                
+                // Skip overview - we'll add it at the end
+                if (sectionId === 'overview') {
+                    overviewSection = section;
+                    return;
+                }
+                
+                const isPrerequisites = sectionId === 'prerequisites';
+                const isNested = nestedSections.includes(sectionId);
+                
+                // Get custom label or use h2 text
+                const label = navLabels[sectionId] || h2.textContent;
+                
+                if (isPrerequisites) {
+                    // Create Prerequisites item
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${sectionId}`;
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = label;
+                    a.appendChild(textSpan);
+                    
+                    // Add chevron icon (SVG)
+                    const chevron = document.createElement('span');
+                    chevron.className = 'chevron';
+                    chevron.innerHTML = '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>';
+                    a.appendChild(chevron);
+                    
+                    // Start expanded by default
+                    a.classList.add('expanded');
+                    
+                    li.appendChild(a);
+                    sidebarNav.appendChild(li);
+                    prerequisitesLi = li;
+                    
+                    // Create nested list for child items
+                    nestedUl = document.createElement('ul');
+                    nestedUl.className = 'nested expanded';
+                    li.appendChild(nestedUl);
+                    
+                    // Add toggle functionality
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const isExpanded = nestedUl.classList.contains('expanded');
+                        if (isExpanded) {
+                            nestedUl.classList.remove('expanded');
+                            a.classList.remove('expanded');
+                        } else {
+                            nestedUl.classList.add('expanded');
+                            a.classList.add('expanded');
+                        }
+                        
+                        // Also scroll to the section
+                        const targetSection = document.getElementById(sectionId);
+                        if (targetSection) {
+                            const h2 = targetSection.querySelector('h2');
+                            if (h2) {
+                                h2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            } else {
+                                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                            updateActiveNav(a);
+                        }
+                    });
+                } else if (isNested && prerequisitesLi && nestedUl) {
+                    // Add as nested item under Prerequisites
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${sectionId}`;
+                    a.textContent = label;
+                    li.appendChild(a);
+                    nestedUl.appendChild(li);
+                } else {
+                    // Regular top-level item
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${sectionId}`;
+                    a.textContent = label;
+                    li.appendChild(a);
+                    sidebarNav.appendChild(li);
+                }
+            });
+
+            // Add overview section at the end
+            if (overviewSection) {
+                const h2 = overviewSection.querySelector('h2');
+                if (h2) {
+                    const sectionId = overviewSection.getAttribute('id');
+                    const label = navLabels[sectionId] || h2.textContent;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${sectionId}`;
+                    a.textContent = label;
+                    li.appendChild(a);
+                    sidebarNav.appendChild(li);
+                }
+            }
+
+            // Add click handlers for smooth scrolling (skip Pre-reqs as it has its own handler)
+            sidebarNav.querySelectorAll('a').forEach(link => {
+                // Skip if it's the Pre-reqs link (it has toggle functionality)
+                if (link.getAttribute('href') === '#prerequisites') return;
+                
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        // Scroll to the H2 element within the section for better positioning
+                        const h2 = targetSection.querySelector('h2');
+                        if (h2) {
+                            h2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                        updateActiveNav(link);
+                    }
+                });
+            });
+        }
+
+        // Update active navigation on scroll
+        function updateActiveNav(activeLink) {
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (activeLink) {
+                activeLink.classList.add('active');
+                // Also highlight parent if it's a nested item
+                const parentLi = activeLink.closest('.nested')?.parentElement;
+                if (parentLi) {
+                    const parentLink = parentLi.querySelector('a');
+                    if (parentLink) {
+                        parentLink.classList.add('active');
+                    }
+                }
+            }
+        }
+
+        // Intersection Observer for active section highlighting
+        function setupScrollSpy() {
+            const sections = document.querySelectorAll('section[id]');
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -70% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        const navLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                        updateActiveNav(navLink);
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        // Mobile menu toggle (if needed)
+        function setupMobileMenu() {
+            // Add mobile menu button if needed in the future
+        }
+
+        // Add link icons to H2 headings and setup copy functionality
+        function setupHeadingLinks() {
+            const h2Elements = document.querySelectorAll('section[id] h2');
+            
+            h2Elements.forEach(h2 => {
+                // Get the parent section's ID
+                const section = h2.closest('section[id]');
+                if (!section) return;
+                
+                const sectionId = section.getAttribute('id');
+                
+                // Create link icon
+                const linkIcon = document.createElement('span');
+                linkIcon.className = 'link-icon';
+                linkIcon.textContent = '🔗';
+                linkIcon.setAttribute('aria-label', 'Copy link to this section');
+                h2.appendChild(linkIcon);
+                
+                // Add click handler to copy URL
+                h2.addEventListener('click', () => {
+                    const url = window.location.origin + window.location.pathname + '#' + sectionId;
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(url).then(() => {
+                        showToast('URL copied to your clipboard');
+                    }).catch(err => {
+                        console.error('Failed to copy URL:', err);
+                        showToast('Failed to copy URL');
+                    });
+                });
+            });
+        }
+
+        // Toast notification
+        function showToast(message) {
+            // Remove existing toast if any
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // Create new toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Scroll to top when clicking header title
+        function setupHeaderTitleClick() {
+            const headerTitle = document.querySelector('.header-title');
+            if (headerTitle) {
+                headerTitle.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // Clear active nav state
+                    updateActiveNav(null);
+                });
+            }
+        }
+
+        // Search functionality
+        function setupSearch() {
+            const searchToggle = document.getElementById('searchToggle');
+            const searchModal = document.getElementById('searchModal');
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+
+            // Open modal
+            searchToggle.addEventListener('click', () => {
+                searchModal.classList.add('open');
+                searchInput.focus();
+            });
+
+            // Close modal on outside click
+            searchModal.addEventListener('click', (e) => {
+                if (e.target === searchModal) {
+                    closeSearchModal();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && searchModal.classList.contains('open')) {
+                    closeSearchModal();
+                }
+            });
+
+            function closeSearchModal() {
+                searchModal.classList.remove('open');
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+            }
+
+            // Real-time search
+            let searchTimeout;
+            let currentSelectedIndex = -1;
+            
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim().toLowerCase();
+                currentSelectedIndex = -1;
+
+                if (query.length === 0) {
+                    searchResults.innerHTML = '';
+                    return;
+                }
+
+                searchTimeout = setTimeout(() => {
+                    performSearch(query);
+                }, 150);
+            });
+
+            // Keyboard navigation
+            searchInput.addEventListener('keydown', (e) => {
+                const items = searchResults.querySelectorAll('.search-result-item');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    currentSelectedIndex = Math.min(currentSelectedIndex + 1, items.length - 1);
+                    updateSelection(items);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    currentSelectedIndex = Math.max(currentSelectedIndex - 1, -1);
+                    updateSelection(items);
+                } else if (e.key === 'Enter' && currentSelectedIndex >= 0) {
+                    e.preventDefault();
+                    items[currentSelectedIndex].click();
+                }
+            });
+
+            function updateSelection(items) {
+                items.forEach((item, index) => {
+                    item.classList.toggle('active', index === currentSelectedIndex);
+                });
+            }
+
+            function performSearch(query) {
+                const results = [];
+                const sections = document.querySelectorAll('section[id]');
+                
+                sections.forEach(section => {
+                    const h2 = section.querySelector('h2');
+                    if (!h2) return;
+
+                    const sectionId = section.getAttribute('id');
+                    const title = h2.textContent.toLowerCase();
+                    const content = section.textContent.toLowerCase();
+
+                    // Check if query matches title or content
+                    if (title.includes(query) || content.includes(query)) {
+                        // Find matching text snippets
+                        const paragraphs = section.querySelectorAll('p, li, h3');
+                        const snippets = [];
+
+                        paragraphs.forEach(el => {
+                            const text = el.textContent.toLowerCase();
+                            if (text.includes(query)) {
+                                const index = text.indexOf(query);
+                                const start = Math.max(0, index - 50);
+                                const end = Math.min(text.length, index + query.length + 50);
+                                let snippet = el.textContent.substring(start, end);
+                                
+                                // Highlight the match
+                                const regex = new RegExp(`(${query})`, 'gi');
+                                snippet = snippet.replace(regex, '<span class="search-result-highlight">$1</span>');
+                                
+                                snippets.push(snippet);
+                            }
+                        });
+
+                        results.push({
+                            id: sectionId,
+                            title: h2.textContent,
+                            snippets: snippets.slice(0, 2) // Limit to 2 snippets per result
+                        });
+                    }
+                });
+
+                displayResults(results, query);
+            }
+
+            function getSectionIcon(sectionId) {
+                // Return appropriate icon SVG based on section type
+                const iconMap = {
+                    'overview': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-3.75v3.75m-3-3.75h3m-3 0H9m12 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>',
+                    'prerequisites': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>',
+                    'github-repository-setup': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>',
+                    'vercel-deployment': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>',
+                    'custom-domain-setup': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>',
+                    'figma-mcp-setup': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg>',
+                    'cursor-setup': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" /></svg>',
+                    'working-with-figma-and-cursor': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.059 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>',
+                    'local-development-server': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3V6a3 3 0 013-3h13.5a3 3 0 013 3v5.25a3 3 0 01-3 3m-16.5 0a3 3 0 00-3 3v2.25a3 3 0 003 3h13.5a3 3 0 003-3v-2.25a3 3 0 00-3-3m-16.5 0V19.5h13.5v-2.25m-13.5 0v-1.5m13.5 1.5v-1.5m0 16.5h-13.5m13.5 0a3 3 0 003-3V9a3 3 0 00-3-3h-2.25m-16.5 0a3 3 0 00-3 3v11.25a3 3 0 003 3h2.25m13.5-18.75h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25m-13.5 0H6m-3.75 0H3.75m13.5 0v-1.5m0 1.5v-1.5m0 0H21m-3.75 0h3.75m-3.75 0v-1.5m0 1.5v-1.5m0 0H21" /></svg>',
+                    'helpful-cursor-extensions': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.355-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>',
+                    'troubleshooting': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>',
+                    'what-about-backend': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-16.5 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25z" /></svg>',
+                    'next-steps': '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>'
+                };
+                
+                return iconMap[sectionId] || '<svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>';
+            }
+
+            function displayResults(results, query) {
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<div class="no-results">No results found</div>';
+                    return;
+                }
+
+                searchResults.innerHTML = '';
+                results.forEach((result, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.setAttribute('data-section-id', result.id);
+                    
+                    const icon = getSectionIcon(result.id);
+                    
+                    let html = `
+                        <div class="search-result-icon">${icon}</div>
+                        <div class="search-result-content">
+                            <div class="search-result-title">${highlightText(result.title, query)}</div>
+                    `;
+                    
+                    if (result.snippets.length > 0) {
+                        html += `<div class="search-result-snippet">${result.snippets[0]}</div>`;
+                    }
+                    
+                    html += '</div>';
+                    item.innerHTML = html;
+                    
+                    item.addEventListener('click', () => {
+                        const section = document.getElementById(result.id);
+                        if (section) {
+                            const h2 = section.querySelector('h2');
+                            if (h2) {
+                                h2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                            closeSearchModal();
+                            // Update active nav
+                            const navLink = document.querySelector(`.sidebar-nav a[href="#${result.id}"]`);
+                            if (navLink) {
+                                updateActiveNav(navLink);
+                            }
+                        }
+                    });
+
+                    searchResults.appendChild(item);
+                });
+            }
+
+            function highlightText(text, query) {
+                const regex = new RegExp(`(${query})`, 'gi');
+                return text.replace(regex, '<span class="search-result-highlight">$1</span>');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            generateSidebarNav();
+            setupScrollSpy();
+            setupMobileMenu();
+            setupHeadingLinks();
+            setupHeaderTitleClick();
+            setupSearch();
+        });
+    </script>
+</body>
+</html>

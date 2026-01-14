@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -21,18 +22,18 @@ export default function Navigation() {
           
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-[20px] md:gap-[30px]">
-            <a 
+            <Link 
               href="/" 
               className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline decoration-white underline-offset-1' : ''}`}
             >
               Work
-            </a>
-            <a 
-              href="https://figma-experiments.vercel.app" 
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+            </Link>
+            <Link 
+              href="/play" 
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#FAFAFA] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline decoration-white underline-offset-1' : ''}`}
             >
               Play
-            </a>
+            </Link>
             <a 
               href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
               target="_blank"
@@ -91,20 +92,20 @@ export default function Navigation() {
 
             {/* Menu Items */}
             <div className="flex flex-col space-y-8">
-              <a 
+              <Link 
                 href="/" 
                 className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline decoration-white underline-offset-1' : ''}`}
                 onClick={toggleMenu}
               >
                 Work
-              </a>
-              <a 
-                href="https://figma-experiments.vercel.app" 
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity"
+              </Link>
+              <Link 
+                href="/play" 
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#FAFAFA] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline decoration-white underline-offset-1' : ''}`}
                 onClick={toggleMenu}
               >
                 Play
-              </a>
+              </Link>
               <a 
                 href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
                 target="_blank"

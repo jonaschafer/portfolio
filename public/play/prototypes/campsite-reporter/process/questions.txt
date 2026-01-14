@@ -1,0 +1,82 @@
+# Complete Question List - PDX Campsite Reporter
+
+## Core Questions (Always Asked)
+
+### 1. Location
+**Question:** "Where is the campsite located? (You can say the address, intersection, or nearby landmark)"
+- **Type:** Text input
+- **Example:** "SE Hawthorne and 32nd" or "123 Main St"
+
+### 2. Blocking Access
+**Question:** "Is the campsite blocking pedestrian access, like a sidewalk, trail, or path?"
+- **Options:** Yes | No
+
+### 3. Site Items
+**Question:** "Is there a tent, tarp, or other shelter?"
+- **Options:** Yes | No
+
+**Question:** "Trash or debris?"
+- **Options:** Yes | No
+
+**Question:** "Is there a vehicle (car, truck, RV, trailer, etc.)?"
+- **Options:** Yes | No
+
+
+
+---
+
+## Conditional Questions (Based on Site Items Selected)
+
+### If yes to "Tent, tarp, or other shelter"
+
+**Reminder:** "Great! Please take photos and have them ready to attach to the email."
+- No additional questions
+- Continues to next section
+
+### If yes to "Trash or debris"
+
+**Reminder:** "Great! Please take photos and have them ready to attach to the email."
+- No additional questions
+- Continues to next section
+
+
+### If yes to "Is there a vehicle (car, truck, RV, trailer, etc.)"
+**Question:** "What kind of vehicle?"
+- **Type:** Text input
+
+**Question:** "What kind of vehicle?"
+- **Type:** Text input
+
+**Question:** "What kind of make/model?"
+- **Type:** Text input
+
+**Question:** "What color?"
+- **Type:** Text input
+
+**Question:** "What is the license plate state and number?"
+- **Type:** Text input
+
+- Continues to next section
+
+
+---
+
+## Remaining Core Questions (Always Asked)
+
+### 4. Private Property
+**Question:** "Is the location on private property?"
+- **Options:** Yes | No | Not sure
+
+### 5. Timeline
+**Question:** "When did you first notice this campsite?"
+- **Options:** Today | This week | This month | Longer than a month
+
+### 6. Additional Notes (Optional)
+**Question:** "Anything else you'd like to add? (optional - describe conditions, concerns, etc.)"
+- **Type:** Text input
+- **Can skip**
+
+### 7. Contact Email (Optional)
+**Question:** "Would you like to provide your email for follow-up? (optional)"
+- **Type:** Text input
+- **Can skip**
