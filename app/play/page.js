@@ -4,10 +4,28 @@ import Link from 'next/link'
 
 const projects = [
   {
+    id: 'vibe-coding-setup',
+    name: 'Vibes',
+    description: 'Complete guide to setting up your environment for vibe coding with Figma designs, Cursor, GitHub, Vercel, and Supabase. Step-by-step instructions to create a seamless workflow from design to deployment.',
+    date: '2026.01.15',
+    type: 'TUTORIAL',
+    tags: ['Tutorial', 'HTML/CSS'],
+    path: '/play/vibe-coding-setup'
+  },
+  {
+    id: 'sourdough',
+    name: 'Sourdough',
+    description: 'Complete guide to baking sourdough weekly at home. Includes recipes, starter maintenance, glossary, troubleshooting, FAQ, and equipment recommendations. Everything you need to master the art of sourdough.',
+    date: '2025.11.15',
+    type: 'REACT',
+    tags: ['React', 'Food'],
+    path: '/play/prototypes/sourdough'
+  },
+  {
     id: 'campsite-reporter',
     name: 'Campsite Reporter',
     description: 'Making the process of reporting a campsite easier (hopefully). A simple form-based tool that helps campers document and share campsite conditions, availability, and amenities with the community.',
-    date: '2024.12.10',
+    date: '2025.12.10',
     type: 'HTML/CSS',
     tags: ['HTML/CSS', 'Claude', 'Portland'],
     path: '/play/prototypes/campsite-reporter'
@@ -16,7 +34,7 @@ const projects = [
     id: 'vacation-planner',
     name: 'Vacation planner',
     description: 'Interactive travel planning tool with destination cards, cost breakdowns, detailed itineraries, and comparison mode. Helps travelers organize trips, compare options, and visualize their journey from start to finish.',
-    date: '2024.11.15',
+    date: '2025.11.15',
     type: 'HTML/CSS',
     tags: ['HTML/CSS', 'Travel'],
     path: '/play/prototypes/vacation-planner'
@@ -25,7 +43,7 @@ const projects = [
     id: 'mouse-repel',
     name: 'Mouse repel',
     description: 'Photos and message pills that subtly move away from your cursor while maintaining collective drift movement. An interactive experience that creates organic, fluid motion as users explore the interface.',
-    date: '2024.10.20',
+    date: '2025.10.20',
     type: 'HTML/CSS',
     tags: ['HTML/CSS', 'JavaScript'],
     path: '/play/prototypes/mouse-repel'
@@ -34,7 +52,7 @@ const projects = [
     id: 'pull-ups',
     name: 'Get yer first pull-up',
     description: 'He owns two pull up bars. Isn\'t time he can do a pull up? Let\'s find out. A progressive training guide with video demonstrations, workout tracking, and personalized routines to build strength.',
-    date: '2024.09.05',
+    date: '2025.09.05',
     type: 'REACT',
     tags: ['React', 'JavaScript'],
     path: '/play/prototypes/pull-ups/v2'
@@ -43,28 +61,10 @@ const projects = [
     id: 'ocean-viewer',
     name: 'Ocean views',
     description: 'Tried to create a page of randomized ocean views by using publicly-available web cams but....no dice. An experimental interface exploring live feeds and ambient visual experiences for relaxation.',
-    date: '2024.08.12',
+    date: '2025.08.12',
     type: 'YOUTUBE',
     tags: ['HTML/CSS', 'JavaScript'],
     path: '/play/prototypes/ocean-viewer'
-  },
-  {
-    id: 'sourdough',
-    name: 'Sourdough Reference Guide',
-    description: 'Complete guide to baking sourdough weekly at home. Includes recipes, starter maintenance, glossary, troubleshooting, FAQ, and equipment recommendations. Everything you need to master the art of sourdough.',
-    date: '2024.07.22',
-    type: 'REACT',
-    tags: ['React', 'Food'],
-    path: '/play/prototypes/sourdough'
-  },
-  {
-    id: 'vibe-coding-setup',
-    name: 'Vibe Coding Setup',
-    description: 'Complete guide to setting up your environment for vibe coding with Figma designs, Cursor, GitHub, Vercel, and Supabase. Step-by-step instructions to create a seamless workflow from design to deployment.',
-    date: '2024.06.30',
-    type: 'TUTORIAL',
-    tags: ['Tutorial', 'HTML/CSS'],
-    path: '/play/vibe-coding-setup'
   }
 ]
 
@@ -137,7 +137,7 @@ export default function PlayPage() {
                       {techStack.map((tech, index) => (
                         <div
                           key={index}
-                          className="px-[10px] py-[10px] rounded-full border border-black/70 text-[13px] font-['Haas_Grot_Disp',_sans-serif] leading-[18.20px] tracking-[0.13px] text-black/70 bg-white inline-flex items-center justify-center h-fit"
+                          className="px-[10px] py-[4px] rounded-[4px] border border-black/70 text-[13px] font-['Haas_Grot_Disp',_sans-serif] leading-[18.20px] tracking-[0.13px] text-black/70 bg-white inline-flex items-center justify-center h-fit"
                         >
                           {tech}
                         </div>
