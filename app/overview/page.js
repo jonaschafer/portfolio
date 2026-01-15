@@ -199,7 +199,7 @@ export default function OverviewPage() {
       name: 'Vibe Coding Setup',
       description: 'Complete guide to setting up your environment for vibe coding with Figma designs, Cursor, GitHub, Vercel, and Supabase. Step-by-step instructions to create a seamless workflow from design to deployment.',
       date: '2024.06.30',
-      tags: ['Tutorial', 'HTML/CSS'],
+      tags: ['Tutorial', 'Next.js'],
     },
   ]
 

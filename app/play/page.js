@@ -9,7 +9,7 @@ const projects = [
     description: 'Complete guide to setting up your environment for vibe coding with Figma designs, Cursor, GitHub, Vercel, and Supabase. Step-by-step instructions to create a seamless workflow from design to deployment.',
     date: '2026.01.15',
     type: 'TUTORIAL',
-    tags: ['Tutorial', 'HTML/CSS'],
+    tags: ['Tutorial', 'Next.js'],
     path: '/play/vibe-coding-setup'
   },
   {
@@ -106,9 +106,9 @@ export default function PlayPage() {
         <div className="pt-5 pb-5 md:pt-8 md:pb-8 px-5 md:px-[60px] lg:px-[60px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map(project => {
-              // Extract tech stack from tags (HTML/CSS, JavaScript, React, Claude)
+              // Extract tech stack from tags (HTML/CSS, JavaScript, React, Next.js, Claude)
               const techStack = project.tags.filter(tag => 
-                ['HTML/CSS', 'JavaScript', 'React', 'Claude'].includes(tag)
+                ['HTML/CSS', 'JavaScript', 'React', 'Next.js', 'Claude'].includes(tag)
               )
               
               return (
