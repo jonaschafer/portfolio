@@ -113,7 +113,7 @@ export default function VibeCodingSetupPage() {
   }
 
   return (
-    <div className="min-h-screen" data-theme={theme}>
+    <div className="min-h-screen bg-[var(--bg-primary)]" data-theme={theme}>
       <style jsx global>{`
         :root {
           --bg-primary: #ffffff;
