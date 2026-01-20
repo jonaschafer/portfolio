@@ -44,6 +44,18 @@ export default function VibeCodingSetupPage() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    // Lock body scroll when sidebar is open on mobile
+    if (sidebarOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [sidebarOpen])
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
@@ -175,6 +187,10 @@ export default function VibeCodingSetupPage() {
           transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
+        .sidebar-header {
+          display: none;
+        }
+
         .vibe-main {
           margin-left: 240px;
           margin-top: 60px;
@@ -245,6 +261,14 @@ export default function VibeCodingSetupPage() {
           margin-bottom: 16px;
           padding-left: 24px;
           color: var(--text-secondary);
+        }
+
+        .vibe-section ul {
+          list-style-type: disc;
+        }
+
+        .vibe-section ol {
+          list-style-type: decimal;
         }
 
         .vibe-section li {
@@ -489,16 +513,125 @@ export default function VibeCodingSetupPage() {
           transform: translateY(0);
         }
 
+        .sidebar-overlay {
+          display: none;
+        }
+
+        .mobile-menu-button {
+          display: none;
+        }
+
         @media (max-width: 1024px) {
           .vibe-sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s ease;
+            z-index: 200;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            width: 280px;
+            top: 0;
+            height: 100vh;
+            padding-top: 60px;
           }
           .vibe-sidebar.open {
             transform: translateX(0);
           }
+          .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            z-index: 201;
+          }
+          .sidebar-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+          }
+          .sidebar-close-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+          }
+          .sidebar-close-button:hover {
+            background: var(--bg-secondary);
+          }
+          .sidebar-close-button svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+          }
+          .vibe-sidebar nav {
+            padding-top: 60px;
+          }
           .vibe-main {
             margin-left: 0;
+            padding: 24px;
+          }
+          .mobile-menu-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+          }
+          .mobile-menu-button:hover {
+            background: var(--bg-secondary);
+          }
+          .mobile-menu-button svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+          }
+          .sidebar-overlay {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(4px);
+          }
+          .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .vibe-main {
+            padding: 16px;
+          }
+          .vibe-section h1 {
+            font-size: 32px;
+          }
+          .vibe-section h2 {
+            font-size: 24px;
+            margin-top: 32px;
+            padding-top: 32px;
           }
         }
       `}</style>
@@ -508,6 +641,21 @@ export default function VibeCodingSetupPage() {
           〰️VIBES〰️
         </Link>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="mobile-menu-button"
+            aria-label="Toggle menu"
+          >
+            {sidebarOpen ? (
+              <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            )}
+          </button>
           <button
             onClick={() => setIsSearchOpen(true)}
             className="bg-transparent border border-[var(--border-color)] rounded-md px-3 py-2 cursor-pointer text-sm text-[var(--text-primary)] transition-all hover:bg-[var(--bg-secondary)] flex items-center justify-center"
@@ -585,8 +733,29 @@ export default function VibeCodingSetupPage() {
         </div>
       )}
 
+      {/* Sidebar Overlay for Mobile/Tablet */}
+      {sidebarOpen && (
+        <div 
+          className={`sidebar-overlay ${sidebarOpen ? 'open' : ''}`}
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close menu"
+        />
+      )}
+
       <div className="flex min-h-screen">
         <aside className={`vibe-sidebar ${sidebarOpen ? 'open' : ''}`}>
+          <div className="sidebar-header">
+            <h3>Navigation</h3>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="sidebar-close-button"
+              aria-label="Close menu"
+            >
+              <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
           <nav>
             <ul className="sidebar-nav">
               {sections
