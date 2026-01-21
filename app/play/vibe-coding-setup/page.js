@@ -2,9 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { sections, navLabels, nestedSections, cursorNestedSections } from './content'
 
 export default function VibeCodingSetupPage() {
+  const router = useRouter()
   const [theme, setTheme] = useState('light')
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -767,9 +769,12 @@ export default function VibeCodingSetupPage() {
       `}</style>
 
       <header className="vibe-header">
-        <Link href="/play" className="text-lg font-semibold text-[var(--text-primary)] cursor-pointer hover:opacity-70 transition-opacity">
+        <button
+          onClick={() => scrollToSection('intro')}
+          className="text-lg font-semibold text-[var(--text-primary)] cursor-pointer hover:opacity-70 transition-opacity bg-transparent border-none p-0"
+        >
           〰️VIBES〰️
-        </Link>
+        </button>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
