@@ -374,6 +374,43 @@ export default function VibeCodingSetupPage() {
           word-break: break-all;
         }
 
+        .code-block-wrapper {
+          position: relative;
+          margin-bottom: 24px;
+          margin-top: 16px;
+        }
+
+        .copy-button {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-color);
+          border-radius: 6px;
+          padding: 6px 8px;
+          cursor: pointer;
+          color: var(--text-secondary);
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0.7;
+        }
+
+        .code-block-wrapper:hover .copy-button {
+          opacity: 1;
+        }
+
+        .copy-button:hover {
+          background: var(--bg-primary);
+          border-color: var(--accent-color);
+          color: var(--accent-color);
+        }
+
+        .copy-button:active {
+          transform: scale(0.95);
+        }
+
         .vibe-section a {
           color: var(--accent-color);
           text-decoration: none;
