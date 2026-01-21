@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { sections, navLabels, nestedSections } from './content'
+import { sections, navLabels, nestedSections, cursorNestedSections } from './content'
 
 export default function VibeCodingSetupPage() {
   const [theme, setTheme] = useState('light')
@@ -13,6 +13,12 @@ export default function VibeCodingSetupPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
   const [prerequisitesExpanded, setPrerequisitesExpanded] = useState(true)
+  const [cursorExpanded, setCursorExpanded] = useState(true)
+  const [contributeUnlocked, setContributeUnlocked] = useState(false)
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
+  const [passwordInput, setPasswordInput] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'light'
@@ -63,6 +69,62 @@ export default function VibeCodingSetupPage() {
     localStorage.setItem('theme', newTheme)
   }
 
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id)
+    if (element) {
+      const headerHeight = 60 // Fixed header height
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      const offsetPosition = elementPosition - headerHeight
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
+    setSidebarOpen(false)
+  }
+
+  const checkPassword = () => {
+    if (passwordInput === 'nerdboyz') {
+      setContributeUnlocked(true)
+      setShowPasswordModal(false)
+      setPasswordInput('')
+      setPasswordError('')
+      localStorage.setItem('contributeUnlocked', 'true')
+      // Scroll to contribute section
+      setTimeout(() => {
+        document.getElementById('contribute')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    } else {
+      setPasswordError('Incorrect password. Try again.')
+      setPasswordInput('')
+    }
+  }
+
+  const handleContributeClick = (e) => {
+    e.preventDefault()
+    const isUnlocked = localStorage.getItem('contributeUnlocked') === 'true' || contributeUnlocked
+    if (isUnlocked) {
+      scrollToSection('contribute')
+    } else {
+      setShowPasswordModal(true)
+    }
+  }
+
+  useEffect(() => {
+    // Check if contribute was previously unlocked
+    const wasUnlocked = localStorage.getItem('contributeUnlocked') === 'true'
+    if (wasUnlocked) {
+      setContributeUnlocked(true)
+    }
+    
+    // Check if URL hash points to contribute section
+    const hash = window.location.hash.slice(1)
+    if (hash === 'contribute' && !wasUnlocked) {
+      setShowPasswordModal(true)
+    }
+  }, [])
+
   const performSearch = (query) => {
     if (!query.trim()) {
       setSearchResults([])
@@ -102,11 +164,6 @@ export default function VibeCodingSetupPage() {
       setSearchQuery('')
       setSearchResults([])
     }
-  }
-
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    setSidebarOpen(false)
   }
 
   const copyLink = (id) => {
@@ -217,11 +274,18 @@ export default function VibeCodingSetupPage() {
           scroll-margin-top: 80px;
           position: relative;
           cursor: pointer;
+          border-top: 1px solid var(--border-color);
+          padding-top: 48px;
         }
 
         .vibe-section h2:first-of-type {
           margin-top: 0;
           padding-top: 0;
+          border-top: none;
+        }
+
+        .vibe-section section:first-of-type h2 {
+          border-top: none;
         }
 
         .vibe-section h2 .link-icon {
@@ -292,8 +356,11 @@ export default function VibeCodingSetupPage() {
           border-radius: 8px;
           padding: 16px;
           overflow-x: auto;
-          margin-bottom: 24px;
-          margin-top: 16px;
+          overflow-y: hidden;
+          margin: 0;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          word-break: break-all;
         }
 
         .vibe-section pre code {
@@ -302,6 +369,9 @@ export default function VibeCodingSetupPage() {
           padding: 0;
           font-size: 14px;
           line-height: 1.6;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          word-break: break-all;
         }
 
         .vibe-section a {
@@ -313,6 +383,18 @@ export default function VibeCodingSetupPage() {
         .vibe-section a:hover {
           color: var(--accent-hover);
           text-decoration: underline;
+        }
+
+        .content-divider {
+          margin: 64px 0 48px 0;
+          height: 1px;
+          background: linear-gradient(
+            to right,
+            transparent,
+            var(--border-color) 20%,
+            var(--border-color) 80%,
+            transparent
+          );
         }
 
         .sidebar-nav {
@@ -374,6 +456,17 @@ export default function VibeCodingSetupPage() {
         .sidebar-nav .nested a.active {
           color: var(--accent-color);
           background-color: var(--sidebar-active);
+        }
+
+        .sidebar-divider {
+          margin: 16px 0;
+          padding: 0 24px;
+        }
+
+        .sidebar-divider-line {
+          height: 1px;
+          background-color: var(--border-color);
+          width: 100%;
         }
 
         .chevron {
@@ -733,6 +826,94 @@ export default function VibeCodingSetupPage() {
         </div>
       )}
 
+      {/* Password Modal for Contribute Section */}
+      {showPasswordModal && (
+        <div
+          className="fixed inset-0 bg-black/50 z-[1000] backdrop-blur-sm flex items-center justify-center"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowPasswordModal(false)
+              setPasswordInput('')
+              setPasswordError('')
+              setShowPassword(false)
+            }
+          }}
+        >
+          <div className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg w-[90%] max-w-[480px] flex flex-col shadow-2xl overflow-hidden">
+            <div className="p-6 border-b border-[var(--border-color)]">
+              <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Password Required</h3>
+              <p className="text-sm text-[var(--text-secondary)]">Enter the password to access the Contribute section.</p>
+            </div>
+            <div className="p-6">
+              <div className="mb-4">
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className="w-full py-2.5 px-4 pr-12 text-[15px] border border-[var(--border-color)] rounded-md bg-[var(--bg-secondary)] text-[var(--text-primary)] outline-none transition-colors focus:bg-[var(--bg-primary)] focus:border-[var(--accent-color)]"
+                    placeholder="Enter password..."
+                    value={passwordInput}
+                    onChange={(e) => {
+                      setPasswordInput(e.target.value)
+                      setPasswordError('')
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        checkPassword()
+                      } else if (e.key === 'Escape') {
+                        setShowPasswordModal(false)
+                        setPasswordInput('')
+                        setPasswordError('')
+                        setShowPassword(false)
+                      }
+                    }}
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? (
+                      <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 01-4.243-4.243m4.242 4.242L9.88 9.88" />
+                      </svg>
+                    ) : (
+                      <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                {passwordError && (
+                  <p className="mt-2 text-sm text-red-500">{passwordError}</p>
+                )}
+              </div>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() => {
+                    setShowPasswordModal(false)
+                    setPasswordInput('')
+                    setPasswordError('')
+                    setShowPassword(false)
+                  }}
+                  className="px-4 py-2 text-sm border border-[var(--border-color)] rounded-md text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={checkPassword}
+                  className="px-4 py-2 text-sm bg-[var(--accent-color)] text-white rounded-md hover:bg-[var(--accent-hover)] transition-colors"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Sidebar Overlay for Mobile/Tablet */}
       {sidebarOpen && (
         <div 
@@ -759,10 +940,11 @@ export default function VibeCodingSetupPage() {
           <nav>
             <ul className="sidebar-nav">
               {sections
-                .filter(s => s.id !== 'intro' && s.id !== 'overview')
+                .filter(s => s.id !== 'intro' && s.id !== 'overview' && s.id !== 'contribute')
                 .map((section) => {
                   const isPrerequisites = section.id === 'prerequisites'
-                  const isNested = nestedSections.includes(section.id)
+                  const isCursor = section.id === 'cursor-setup'
+                  const isNested = nestedSections.includes(section.id) || cursorNestedSections.includes(section.id)
                   const label = navLabels[section.id] || section.title
 
                   if (isPrerequisites) {
@@ -801,6 +983,42 @@ export default function VibeCodingSetupPage() {
                         </ul>
                       </li>
                     )
+                  } else if (isCursor) {
+                    return (
+                      <li key={section.id}>
+                        <a
+                          onClick={() => {
+                            setCursorExpanded(!cursorExpanded)
+                            scrollToSection(section.id)
+                          }}
+                          className={activeSection === section.id ? 'active' : ''}
+                        >
+                          <span>{label}</span>
+                          <span className={`chevron ${cursorExpanded ? 'expanded' : ''}`}>
+                            <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                          </span>
+                        </a>
+                        <ul className={`nested ${cursorExpanded ? 'expanded' : ''}`}>
+                          {cursorNestedSections.map(nestedId => {
+                            const nestedSection = sections.find(s => s.id === nestedId)
+                            if (!nestedSection) return null
+                            const nestedLabel = navLabels[nestedId] || nestedSection.title
+                            return (
+                              <li key={nestedId}>
+                                <a
+                                  onClick={() => scrollToSection(nestedId)}
+                                  className={activeSection === nestedId ? 'active' : ''}
+                                >
+                                  {nestedLabel}
+                                </a>
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </li>
+                    )
                   } else if (!isNested) {
                     return (
                       <li key={section.id}>
@@ -815,7 +1033,7 @@ export default function VibeCodingSetupPage() {
                   }
                   return null
                 })}
-              {/* Overview at the end */}
+              {/* Overview and Contribute at the end */}
               {sections
                 .filter(s => s.id === 'overview')
                 .map(section => (
@@ -828,29 +1046,71 @@ export default function VibeCodingSetupPage() {
                     </a>
                   </li>
                 ))}
+              {/* Dividing line before Contribute */}
+              <li className="sidebar-divider">
+                <div className="sidebar-divider-line"></div>
+              </li>
+              {/* Contribute section */}
+              {sections
+                .filter(s => s.id === 'contribute')
+                .map(section => (
+                  <li key={section.id}>
+                    <a
+                      onClick={handleContributeClick}
+                      className={activeSection === section.id ? 'active' : ''}
+                    >
+                      {navLabels[section.id] || section.title}
+                    </a>
+                  </li>
+                ))}
             </ul>
           </nav>
         </aside>
 
         <main className="vibe-main">
           <div className="vibe-section">
-            {sections.map((section) => (
-              <section
-                key={section.id}
-                id={section.id}
-                className={section.id === 'intro' ? 'mb-12' : ''}
-              >
-                {section.id === 'intro' ? (
-                  <h1>{section.title}</h1>
-                ) : (
-                  <h2 onClick={() => copyLink(section.id)}>
-                    {section.title}
-                    <span className="link-icon">🔗</span>
-                  </h2>
-                )}
-                <div>{section.content}</div>
-              </section>
-            ))}
+            {sections.map((section, index) => {
+              // Add dividing line between sections (but not before intro or after last section)
+              const showDivider = index > 0 && section.id !== 'intro' && sections[index - 1].id !== 'intro'
+              
+              // Password protection for contribute section
+              if (section.id === 'contribute' && !contributeUnlocked) {
+                return (
+                  <div key={section.id}>
+                    {showDivider && <div className="content-divider"></div>}
+                    <section id={section.id}>
+                      <h2 onClick={() => copyLink(section.id)}>
+                        {section.title}
+                        <span className="link-icon">🔗</span>
+                      </h2>
+                      <div>
+                        <p>This section is password protected. Click "Contribute" in the sidebar and enter the password to access.</p>
+                      </div>
+                    </section>
+                  </div>
+                )
+              }
+              
+              return (
+                <div key={section.id}>
+                  {showDivider && <div className="content-divider"></div>}
+                  <section
+                    id={section.id}
+                    className={section.id === 'intro' ? 'mb-12' : ''}
+                  >
+                    {section.id === 'intro' ? (
+                      <h1>{section.title}</h1>
+                    ) : (
+                      <h2 onClick={() => copyLink(section.id)}>
+                        {section.title}
+                        <span className="link-icon">🔗</span>
+                      </h2>
+                    )}
+                    <div>{section.content}</div>
+                  </section>
+                </div>
+              )
+            })}
           </div>
         </main>
       </div>

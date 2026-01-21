@@ -79,7 +79,8 @@ export const sections = [
         </ol>
 
         <p>Example GitHub MCP configuration (Cursor can help you set this up):</p>
-        <pre><code>{`{
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`{
   "mcpServers": {
     "github": {
       "command": "npx",
@@ -93,6 +94,13 @@ export const sections = [
     }
   }
 }`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
 
         <p><strong>Pro tip:</strong> Instead of manually cloning repositories, ask Cursor to help you clone your GitHub repo.
         Just paste the repository URL and ask Cursor to clone it for you.</p>
@@ -145,8 +153,16 @@ export const sections = [
         </ol>
 
         <p>Then access them in your code (Cursor can help you with this syntax):</p>
-        <pre><code>{`// Next.js
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`// Next.js
 const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
 
         <h3>Deployment Process</h3>
         <p>Once connected, every push to your main branch triggers a production deployment.
@@ -219,7 +235,8 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
         </ol>
 
         <p>You'll need to add configuration that looks like this (Cursor can help you set this up if you ask):</p>
-        <pre><code>{`{
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`{
   "mcpServers": {
     "figma": {
       "command": "npx",
@@ -233,6 +250,13 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
     }
   }
 }`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
 
         <h3>Sharing Your Figma File</h3>
         <p>For Cursor to access your designs, your Figma file needs to be accessible:</p>
@@ -276,6 +300,358 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
         </ol>
 
         <p>That's it! Cursor comes ready to use. You can start asking it questions and writing code right away.</p>
+      </>
+    )
+  },
+  {
+    id: 'cursor-memory-context',
+    title: 'Cursor Memory & Context Management',
+    content: (
+      <>
+        <p>
+          Cursor has a limited context window—the amount of information it can "see" in a single conversation.
+          Without proper memory management, you'll find yourself repeating information, losing important context
+          between sessions, and hitting token limits. This section shows you how to set up persistent memory
+          that survives across sessions and how to monitor your context usage effectively.
+        </p>
+
+        <h3>Why Persistent Memory Matters</h3>
+        <p>
+          Every Cursor conversation has a context limit (typically 1M tokens for premium plans, less for free).
+          Once you hit this limit, Cursor can't see earlier parts of the conversation. More importantly, when you
+          start a new chat session, Cursor forgets everything from previous sessions unless you explicitly tell it
+          to read certain files. By creating structured context files and configuring Cursor to reference them,
+          you ensure important decisions, architecture choices, and project state persist across sessions.
+        </p>
+
+        <h3>How .cursorrules Works</h3>
+        <p>
+          <code>.cursorrules</code> is a special file that Cursor automatically reads when it starts working in your project.
+          Think of it as instructions that tell Cursor how to behave in your codebase. When you create a <code>.cursorrules</code>
+          file in your project root, Cursor reads it automatically—no configuration needed.
+        </p>
+        <p>
+          The file contains plain text rules that guide Cursor's behavior. For persistent memory, you'll add rules that tell
+          Cursor to read <code>docs/ai-context.md</code> at the start of sessions and update it when you make important decisions.
+        </p>
+        <p>
+          <strong>Important:</strong> Cursor automatically detects and reads <code>.cursorrules</code> from your project root.
+          Just create the file, and Cursor will use it. No settings, no configuration—it just works.
+        </p>
+
+        <h3>Repeatable Setup Framework</h3>
+        <p>
+          <strong>Important:</strong> Simply telling Cursor to "create the files" isn't enough. You need to provide a prompt
+          that includes the actual rules and content. Here's a repeatable framework you can use for any project:
+        </p>
+
+        <h4>Step 1: Set Up .cursorrules</h4>
+        <p>Copy and paste this prompt into Cursor:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`Create a \`.cursorrules\` file in the project root with the following content:
+
+# Cursor Rules for Persistent Memory
+
+## Automatic Session Kickoff
+
+- At the start of EVERY new chat session, automatically read \`docs/ai-context.md\` to understand project context before responding
+- If \`docs/ai-context.md\` doesn't exist, offer to create it with a starter template
+- Reference information from \`docs/ai-context.md\` when making suggestions or answering questions
+
+## Automatic Context Updates
+
+You MUST automatically update \`docs/ai-context.md\` in the following situations:
+
+- **Architectural decisions**: When the user makes or you suggest architectural choices (framework selection, design patterns, project structure changes)
+- **New patterns introduced**: When establishing new coding patterns, conventions, or approaches that should be reused
+- **Important problem solutions**: When solving complex problems that required significant reasoning or decisions
+- **Project state changes**: When completing major features, fixing critical bugs, or making changes that affect project state
+- **Key decisions**: When the user makes decisions about tools, libraries, or approaches that impact the project
+
+**When NOT to update:**
+- Small bug fixes or minor changes
+- Routine code additions that don't introduce new patterns
+- Temporary workarounds
+- Code that's self-documenting through comments
+
+**How to update:**
+- Read the current \`docs/ai-context.md\` first
+- Add entries in the appropriate sections with date and reasoning
+- Keep entries concise and focused on decisions, not implementation details
+- Update the "Last Updated" date at the bottom
+
+## Context Management
+
+- Before starting major refactors or new features, read \`docs/ai-context.md\` to ensure alignment with existing decisions
+- When context is getting full (80%+ token usage), proactively suggest starting a new chat session
+- Monitor for warning signs: model repetition, forgetting recent decisions, generic responses
+- When you notice context exhaustion, suggest: "Context is getting full. Let's start a new chat—I'll read \`ai-context.md\` to catch up."
+
+## File References
+
+- ALWAYS prefer referencing specific files over pasting large code blocks in chat
+- Use file paths and line numbers when discussing code changes (format: \`path/to/file.js:12:45\`)
+- When code is needed, reference the file and ask if the user wants you to read it, rather than pasting it
+
+## Context File Maintenance
+
+- Keep \`docs/ai-context.md\` focused on essential information: decisions, architecture, current state
+- Don't duplicate information that belongs in code comments or documentation
+- Structure updates clearly with dates and reasoning
+- For team projects: Treat \`docs/ai-context.md\` as a handoff document—ensure it's comprehensive enough for new team members`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <h4>Step 2: Set Up docs/ai-context.md</h4>
+        <p>After creating <code>.cursorrules</code>, use this prompt to create the context file:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`Create a \`docs/ai-context.md\` file with a starter template. The file should include:
+
+# AI Context - Project Memory
+
+This file serves as persistent memory for Cursor AI across chat sessions. Update it when making important decisions, architectural choices, or when project state changes significantly.
+
+## Project Overview
+
+**What is this project?**
+- [Brief description of the project and its purpose]
+
+**Tech Stack:**
+- [List key technologies, frameworks, libraries]
+
+**Key Dependencies:**
+- [Important packages or services the project relies on]
+
+## Key Decisions
+
+### Architecture Decisions
+- [Date] - [Decision]: [Reasoning]
+  - Example: "2024-01-15 - Chose Next.js over plain React: Need SSR for SEO and better performance"
+
+### Design Patterns
+- [Pattern used]: [Why it was chosen]
+  - Example: "Component composition pattern: Allows for flexible, reusable UI components"
+
+### Tooling Choices
+- [Tool]: [Why it was chosen]
+  - Example: "Tailwind CSS: Rapid development with utility-first approach"
+
+## Architecture Notes
+
+### Project Structure
+\`\`\`
+[Brief overview of how the codebase is organized]
+\`\`\`
+
+### Important Patterns
+- [Pattern name]: [Description and where it's used]
+  - Example: "Custom hooks pattern: All data fetching logic lives in hooks/ directory"
+
+### Key Files/Directories
+- \`[path]\`: [What it does and why it's important]
+  - Example: "\`lib/api.js\`: Central API client with authentication handling"
+
+## Current State
+
+### What's Working
+- [Feature/component]: [Status and notes]
+  - Example: "User authentication: Fully functional, using Supabase Auth"
+
+### In Progress
+- [Feature/component]: [Current status]
+  - Example: "Dashboard redesign: 60% complete, need to finish responsive layout"
+
+### Known Issues
+- [Issue]: [Impact and potential solutions]
+  - Example: "Slow API response on mobile: Investigating caching strategy"
+
+### Recent Changes
+- [Date] - [Change]: [Impact]
+  - Example: "2024-01-20 - Migrated to new API version: All endpoints updated, breaking changes handled"
+
+## Important Context
+
+### Domain Knowledge
+- [Business rule or domain concept]: [Explanation]
+  - Example: "User roles: Admin, Editor, Viewer. Only Admins can delete content."
+
+### Edge Cases
+- [Edge case]: [How it's handled]
+  - Example: "Empty state handling: All lists show helpful empty state messages with CTAs"
+
+### Environment Variables
+- \`[VAR_NAME]\`: [Purpose and where it's used]
+  - Example: "\`NEXT_PUBLIC_API_URL\`: Base URL for all API calls, set in Vercel dashboard"
+
+### External Services
+- [Service]: [How it's integrated and what it's used for]
+  - Example: "Supabase: Database and auth. Connection config in \`lib/supabase.js\`"
+
+## Notes for Future Sessions
+
+- [Any important reminders or context for future work]
+  - Example: "Remember: Always run tests before deploying. Test suite located in \`__tests__/\`"
+
+---
+
+**Last Updated:** [Date]
+**Maintained By:** [Your name/team]`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <p>
+          <strong>Why This Framework Works:</strong>
+        </p>
+        <ul>
+          <li>
+            <strong>Complete Content</strong> - The prompts include the full rules and template content, not just "create a file"
+          </li>
+          <li>
+            <strong>Repeatable</strong> - Copy and paste these prompts into any new project to set up persistent memory
+          </li>
+          <li>
+            <strong>No Manual Work</strong> - Once set up, Cursor automatically reads and updates the files based on the rules
+          </li>
+          <li>
+            <strong>Customizable</strong> - You can modify the prompts to add project-specific rules or context
+          </li>
+        </ul>
+
+        <h3>What Gets Created</h3>
+        <ol>
+          <li>
+            <strong><code>docs/ai-context.md</code></strong> - Your persistent memory file that Cursor reads at the start of each session
+          </li>
+          <li>
+            <strong><code>.cursorrules</code></strong> - Configuration file that tells Cursor to always check <code>docs/ai-context.md</code>
+          </li>
+        </ol>
+
+        <p>
+          <strong>Pro tip:</strong> Pin <code>docs/ai-context.md</code> in your Cursor editor (right-click → Pin) so it's always visible.
+          Cursor will automatically update it when you make important decisions—no manual work needed.
+        </p>
+
+        <h3>How It Works (Automatically)</h3>
+        <p>
+          Once you have <code>.cursorrules</code> configured, Cursor handles everything automatically:
+        </p>
+        <ul>
+          <li>
+            <strong>Automatic session kickoff</strong> - At the start of every new chat, Cursor automatically reads
+            <code>docs/ai-context.md</code> to understand project context. No manual prompt needed.
+          </li>
+          <li>
+            <strong>Automatic context updates</strong> - When you make architectural decisions, introduce new patterns,
+            or solve important problems, Cursor automatically updates <code>ai-context.md</code> with the decision and reasoning.
+            It won't update for small changes—only meaningful decisions.
+          </li>
+          <li>
+            <strong>Automatic context monitoring</strong> - Cursor watches token usage and proactively suggests starting
+            a new chat when context gets full (80%+). When you start fresh, it automatically reads <code>ai-context.md</code>
+            to catch up.
+          </li>
+          <li>
+            <strong>Strategic file references</strong> - Cursor automatically prefers referencing specific files over
+            pasting large code blocks, keeping context usage efficient.
+          </li>
+          <li>
+            <strong>Focused context file</strong> - Cursor keeps <code>ai-context.md</code> focused on essential information:
+            decisions, architecture, and current state. It won't dump everything in—code comments and documentation belong elsewhere.
+          </li>
+          <li>
+            <strong>Team handoffs</strong> - For team projects, <code>ai-context.md</code> serves as an automatic handoff document.
+            When someone new joins or you switch contexts, that file brings them up to speed automatically.
+          </li>
+        </ul>
+
+        <h3>Monitoring Context Usage</h3>
+        <p>Cursor automatically monitors context usage and shows you:</p>
+        <ul>
+          <li>
+            <strong>Token Counter</strong> - Visible at the bottom of the chat panel showing tokens used vs. available
+          </li>
+          <li>
+            <strong>Automatic Warnings</strong> - Cursor proactively warns you when approaching limits (80%+ usage)
+          </li>
+          <li>
+            <strong>Automatic Detection</strong> - Cursor watches for warning signs and suggests starting a new chat when needed
+          </li>
+        </ul>
+
+        <h3>Warning Signs (Cursor Detects These Automatically)</h3>
+        <p>Cursor automatically watches for these indicators that context is getting exhausted:</p>
+        <ul>
+          <li>
+            <strong>Model repetition</strong> - If Cursor notices itself repeating the same things, it may have lost earlier context
+          </li>
+          <li>
+            <strong>Forgetting recent decisions</strong> - When Cursor asks about things you just discussed, it's a sign context is full
+          </li>
+          <li>
+            <strong>Can't see earlier code</strong> - References to files or functions from earlier in the conversation fail
+          </li>
+          <li>
+            <strong>Token counter near limit</strong> - At 80%+ usage, Cursor automatically suggests starting a new chat
+          </li>
+          <li>
+            <strong>Generic responses</strong> - When Cursor gives generic answers instead of project-specific ones, context may be exhausted
+          </li>
+        </ul>
+        <p>
+          When Cursor detects these signs, it will automatically suggest: "Context is getting full. Let's start a new chat—I'll read
+          <code>ai-context.md</code> to catch up."
+        </p>
+
+        <h3>No Manual Work Required</h3>
+        <p>
+          With <code>.cursorrules</code> properly configured, you don't need to do anything manually:
+        </p>
+        <ul>
+          <li>
+            <strong>No kickoff prompts needed</strong> - Cursor automatically reads <code>docs/ai-context.md</code>
+            at the start of every new chat session
+          </li>
+          <li>
+            <strong>No manual updates</strong> - Cursor automatically updates <code>ai-context.md</code> when you make
+            architectural decisions, introduce patterns, or solve important problems
+          </li>
+          <li>
+            <strong>No context monitoring</strong> - Cursor watches token usage and proactively suggests when to start
+            a new chat
+          </li>
+        </ul>
+        <p>
+          Just work normally—Cursor handles the memory management behind the scenes. The goal is to make this completely
+          seamless so you can focus on building, not managing context.
+        </p>
+
+        <h3>Example Workflow</h3>
+        <ol>
+          <li>Clone a new repository</li>
+          <li>Copy and paste the "Step 1: Set Up .cursorrules" prompt above into Cursor</li>
+          <li>Copy and paste the "Step 2: Set Up docs/ai-context.md" prompt above into Cursor</li>
+          <li>Cursor creates both files with the complete rules and template content</li>
+          <li>Pin <code>docs/ai-context.md</code> in your editor (optional, but helpful to see what Cursor is tracking)</li>
+          <li>Work normally—Cursor automatically updates <code>ai-context.md</code> when you make architectural decisions</li>
+          <li>When starting new chats, Cursor automatically reads <code>ai-context.md</code> to get context</li>
+          <li>Cursor monitors token usage and suggests new chats when context gets full</li>
+        </ol>
+
+        <p>
+          <strong>Remember:</strong> The best memory system is one that works automatically. Once set up with the complete prompts above,
+          you don't need to think about it—Cursor handles reading, updating, and monitoring context so you can focus on building.
+        </p>
       </>
     )
   },
@@ -442,7 +818,8 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
 
         <h3>Using Supabase in Your Project</h3>
         <p>Ask Cursor to help you connect Supabase, or use this as a starting point:</p>
-        <pre><code>{`// Install the Supabase client (ask Cursor to do this)
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`// Install the Supabase client (ask Cursor to do this)
 // npm install @supabase/supabase-js
 
 // Create a Supabase client (Cursor can help you set this up)
@@ -452,6 +829,13 @@ const supabaseUrl = 'https://your-project.supabase.co'
 const supabaseAnonKey = 'your-anon-key'
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
 
         <p>Then ask Cursor to help you use it. For example: "Help me query data from Supabase" or
         "How do I add user authentication with Supabase?"</p>
@@ -682,7 +1066,15 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)`}</code></pre
         <h3>Design System</h3>
         <h4>Type</h4>
         <p><strong>Font Family:</strong> System font stack for optimal performance and native feel:</p>
-        <pre><code>-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif</code></pre>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
         <p>This ensures the site uses the native system font on each platform (San Francisco on macOS, Segoe UI on Windows, etc.).</p>
 
         <h4>Type Scale</h4>
@@ -784,18 +1176,75 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)`}</code></pre
         </ul>
       </>
     )
+  },
+  {
+    id: 'contribute',
+    title: 'Contribute',
+    content: (
+      <>
+        <p>
+          This guide is a living document. If you use Cursor, Claude Code, or other AI coding tools,
+          your unique workflow and tips can help others!
+        </p>
+
+        <h3>How to Contribute</h3>
+        <p>Use this prompt with your AI tool to document your workflow:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`Help me document my complete workflow by asking me questions about:
+
+1. **Setup & Configuration**
+   - How I installed and configured the tool
+   - Any MCP servers or integrations I use (Figma, GitHub, etc.)
+   - Custom settings, extensions, or configurations
+   - Any setup steps that were tricky or non-obvious
+
+2. **Daily Workflow**
+   - How I typically start a new project
+   - How I work with Figma designs (if applicable)
+   - How I use AI features (prompts, code generation, etc.)
+   - How I handle version control (Git/GitHub)
+   - How I deploy projects
+   - Any shortcuts, tricks, or workflows I've developed
+
+3. **Tips & Tricks**
+   - Prompts that work really well for me
+   - Common problems and how I solve them
+   - Tools or extensions I can't live without
+   - Any unique approaches or techniques
+
+4. **Troubleshooting**
+   - Common issues I've encountered
+   - Solutions that worked for me
+   - Things that tripped me up initially
+
+Ask me questions one at a time, and compile my answers into a structured markdown document that captures my complete workflow. Be thorough and ask follow-up questions if something is unclear.`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <p>
+          Share the markdown file with Jon to compare against the current version of the wiki. He'll create a PR and format each contribution with <code>&gt; **💡 Contributor Note:**</code> blockquotes to mark what came from you vs. the original guide.
+        </p>
+      </>
+    )
   }
 ]
 
 // Navigation labels for sidebar
 export const navLabels = {
   'overview': 'Tech Stack',
+  'contribute': 'Contribute',
   'prerequisites': 'Pre-reqs',
   'github-repository-setup': 'Github',
   'vercel-deployment': 'Vercel',
   'custom-domain-setup': 'Custom domain',
   'figma-mcp-setup': 'Figma 🤝 Cursor',
-  'cursor-setup': 'Cursor'
+  'cursor-setup': 'Cursor',
+  'cursor-memory-context': 'Memory & Context'
 }
 
 // Sections that should be nested under Prerequisites
@@ -805,4 +1254,9 @@ export const nestedSections = [
   'custom-domain-setup',
   'figma-mcp-setup',
   'cursor-setup'
+]
+
+// Sections that should be nested under Cursor
+export const cursorNestedSections = [
+  'cursor-memory-context'
 ]

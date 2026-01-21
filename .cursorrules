@@ -1,0 +1,56 @@
+# Cursor Rules for Persistent Memory
+
+## Automatic Session Kickoff
+
+- At the start of EVERY new chat session, automatically read `docs/ai-context.md` to understand project context before responding
+- If `docs/ai-context.md` doesn't exist, offer to create it with a starter template
+- Reference information from `docs/ai-context.md` when making suggestions or answering questions
+
+## Automatic Context Updates
+
+You MUST automatically update `docs/ai-context.md` in the following situations:
+
+- **Architectural decisions**: When the user makes or you suggest architectural choices (framework selection, design patterns, project structure changes)
+- **New patterns introduced**: When establishing new coding patterns, conventions, or approaches that should be reused
+- **Important problem solutions**: When solving complex problems that required significant reasoning or decisions
+- **Project state changes**: When completing major features, fixing critical bugs, or making changes that affect project state
+- **Key decisions**: When the user makes decisions about tools, libraries, or approaches that impact the project
+
+**When NOT to update:**
+- Small bug fixes or minor changes
+- Routine code additions that don't introduce new patterns
+- Temporary workarounds
+- Code that's self-documenting through comments
+
+**How to update:**
+- Read the current `docs/ai-context.md` first
+- Add entries in the appropriate sections with date and reasoning
+- Keep entries concise and focused on decisions, not implementation details
+- Update the "Last Updated" date at the bottom
+
+## Context Management
+
+- Before starting major refactors or new features, read `docs/ai-context.md` to ensure alignment with existing decisions
+- When context is getting full (80%+ token usage), proactively suggest starting a new chat session
+- Monitor for warning signs: model repetition, forgetting recent decisions, generic responses
+- When you notice context exhaustion, suggest: "Context is getting full. Let's start a new chat—I'll read `docs/ai-context.md` to catch up."
+
+## File References
+
+- ALWAYS prefer referencing specific files over pasting large code blocks in chat
+- Use file paths and line numbers when discussing code changes (format: `path/to/file.js:12:45`)
+- When code is needed, reference the file and ask if the user wants you to read it, rather than pasting it
+
+## Context File Maintenance
+
+- Keep `docs/ai-context.md` focused on essential information: decisions, architecture, current state
+- Don't duplicate information that belongs in code comments or documentation
+- Structure updates clearly with dates and reasoning
+- For team projects: Treat `docs/ai-context.md` as a handoff document—ensure it's comprehensive enough for new team members
+
+## Best Practices
+
+- Monitor token usage throughout the conversation
+- Watch for warning signs: model repetition, forgetting recent decisions, generic responses
+- When context is exhausted, start fresh and automatically read the context file to bring yourself up to speed
+- Reference the context file proactively when making suggestions, not just when asked
