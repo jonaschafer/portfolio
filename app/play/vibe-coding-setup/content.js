@@ -300,6 +300,22 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
         </ol>
 
         <p>That's it! Cursor comes ready to use. You can start asking it questions and writing code right away.</p>
+
+        <h3>Rules for AI (Cursor Settings)</h3>
+        <p>
+          Add project-agnostic instructions that apply to all your Cursor chats via <strong>Settings → Cursor Settings → Rules for AI</strong>.
+          One rule we recommend: tell Cursor to use tools directly instead of giving you manual instructions.
+        </p>
+        <p>Add this to your Rules for AI:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`When you have access to tools via MCP or other integrations, ALWAYS use them directly instead of giving me instructions.
+
+If you can execute an action yourself (create files, run SQL, make API calls, etc.), do it immediately. Never say "go to X and do Y" - just do Y yourself.
+
+Only give me manual instructions when you literally cannot perform the action (e.g., requires physical access, external authentication you don't have).
+
+Default to action, not explanation.`}</code></pre>
+        </div>
       </>
     )
   },
