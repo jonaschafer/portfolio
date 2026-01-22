@@ -1,31 +1,35 @@
 {
   "pages": {
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/wall-of-sound/page": [
+    "/error": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/wall-of-sound/page.js"
+      "static/chunks/app/error.js"
     ],
-    "/wall-of-sound/layout": [
+    "/play/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/wall-of-sound/layout.css",
-      "static/chunks/app/wall-of-sound/layout.js"
+      "static/chunks/app/play/page.js"
     ],
-    "/page": [
+    "/play/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/play/layout.js"
     ],
-    "/wall-of-sound/login/page": [
+    "/play/vibe-coding-setup/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/wall-of-sound/login/page.js"
+      "static/chunks/app/play/vibe-coding-setup/page.js"
     ]
   }
 }
