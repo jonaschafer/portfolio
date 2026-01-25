@@ -4,6 +4,15 @@ import Link from 'next/link'
 
 const projects = [
   {
+    id: 'spina',
+    name: 'Spina',
+    description: 'Helping a friend with her illustration side hustle. A straightforward guide for selling art online without being tech savvy.',
+    date: '2026.01.24',
+    type: 'HTML/CSS',
+    tags: ['HTML/CSS'],
+    path: '/play/prototypes/spina'
+  },
+  {
     id: 'vibe-coding-setup',
     name: 'Vibes',
     description: 'Complete guide to setting up your environment for vibe coding with Figma designs, Cursor, GitHub, Vercel, and Supabase. Step-by-step instructions to create a seamless workflow from design to deployment.',

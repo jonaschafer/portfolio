@@ -14,6 +14,18 @@ const nextConfig = {
       },
     ]
   },
+  async rewrites() {
+    return [
+      {
+        source: '/play/prototypes/:folder',
+        destination: '/play/prototypes/:folder/index.html',
+      },
+      {
+        source: '/play/prototypes/:folder/:subfolder',
+        destination: '/play/prototypes/:folder/:subfolder/index.html',
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

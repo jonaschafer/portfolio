@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spina - Artist Online Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #fafafa;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Password screen */
+        .password-screen {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .password-screen h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .password-screen p {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .password-input {
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .password-input:focus {
+            border-color: #333;
+        }
+
+        .password-input.error {
+            border-color: #e53935;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .password-submit {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            background: #111;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .password-submit:hover {
+            background: #333;
+        }
+
+        .content-wrapper {
+            display: none;
+        }
+
+        .content-wrapper.unlocked {
+            display: block;
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            gap: 0;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: #333;
+        }
+
+        .nav-btn.active {
+            color: #000;
+            border-bottom-color: #000;
+        }
+
+        /* Content sections */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #111;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: #111;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            color: #222;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #444;
+        }
+
+        strong {
+            color: #111;
+            font-weight: 600;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 40px 0;
+        }
+
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Code blocks */
+        pre {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 14px;
+        }
+
+        /* Inline highlights */
+        .highlight {
+            background: #fffde7;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Section styling for goal page */
+        .section {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            margin-top: 0;
+        }
+
+        .section-number {
+            display: inline-block;
+            background: #111;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        /* Callout boxes */
+        .callout {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .callout.warning {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+        }
+
+        .callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .checklist li {
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #999;
+            border-radius: 3px;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-block;
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .back-link:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Password Screen -->
+        <div id="password-screen" class="password-screen">
+            <h1>Hey Lindsay!</h1>
+            <p>Enter the password to view this page</p>
+            <form class="password-form" onsubmit="checkPassword(event)">
+                <input type="password" id="password-input" class="password-input" placeholder="Password" autocomplete="off">
+                <button type="submit" class="password-submit">Enter</button>
+            </form>
+        </div>
+
+        <!-- Main Content (hidden until password entered) -->
+        <div id="content-wrapper" class="content-wrapper">
+            <a href="/play" class="back-link">&larr; Back to Play</a>
+
+            <nav class="nav">
+                <button class="nav-btn active" data-page="goal">Goal</button>
+                <button class="nav-btn" data-page="howto">How to</button>
+            </nav>
+
+            <!-- Goal Page -->
+            <div id="goal" class="page active">
+                <h1>Hey Lindsay!</h1>
+                <p class="subtitle">Here's the game plan for getting your art online</p>
+
+                <p>So here's the deal: you don't need to become some online marketing guru or compete with giant Etsy shops. That's not what this is about. Instead, we're going to set up a few simple things that work <em>for you</em> while you're busy doing what you actually love&mdash;making art and selling it at markets.</p>
+
+                <h2>Three Things That'll Actually Help</h2>
+
+                <div class="section">
+                    <h3><span class="section-number">1</span>Instagram Shop</h3>
+                    <p>You already post photos of your work, right? This just lets people tap on those photos and actually buy stuff. No new apps to learn, no separate website to manage. You post like normal, tag your products, and people can purchase right from Instagram.</p>
+                    <div class="callout">
+                        <p><strong>Why this makes sense for you:</strong> Your customers are already following you there. This just makes it way easier for them to buy when they see something they like.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3><span class="section-number">2</span>Google Business Profile</h3>
+                    <p>This is free and takes maybe 20 minutes. When someone in Portland searches "local artist" or "custom t-shirts near me"&mdash;you'll actually show up! Most artists don't even bother with this, so there's basically zero competition.</p>
+                    <div class="callout">
+                        <p><strong>Why this makes sense for you:</strong> It'll help you get found by local shops and breweries looking for wholesale. That's happened for other artists who set this up.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3><span class="section-number">3</span>Print-on-Demand</h3>
+                    <p>This one's optional but pretty cool. You upload your designs once, and when someone orders, a company prints and ships it for you. You literally don't have to do anything after the initial setup. It's passive income from designs you've already made.</p>
+                    <div class="callout">
+                        <p><strong>Why this makes sense for you:</strong> Those designs you already have? They can keep making money while you sleep. And you still do the custom/limited stuff at markets.</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2>What We're NOT Doing</h2>
+                <div class="callout warning">
+                    <p>I want to be clear about what this isn't:</p>
+                    <ul style="margin-top: 12px; margin-bottom: 0;">
+                        <li>No complicated custom website (total overkill)</li>
+                        <li>No TikTok viral strategy (exhausting and not sustainable)</li>
+                        <li>No managing five different social platforms (you won't, and that's fine)</li>
+                        <li>No weird dropshipping stuff (you make real things!)</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h2>What This Actually Looks Like</h2>
+
+                <h3>I'll help you set up:</h3>
+                <ul>
+                    <li>A simple Shopify or Square store ($29-39/month, or free with Square)</li>
+                    <li>Instagram Shopping connected to it (free)</li>
+                    <li>Google Business Profile (free)</li>
+                    <li>A few of your bestsellers on print-on-demand</li>
+                    <li>Maybe a simple email signup (15% off first order type thing)</li>
+                </ul>
+
+                <h3>What you'd do after that:</h3>
+                <ul>
+                    <li>Post to Instagram when you make new stuff (you already do this)</li>
+                    <li>Ship orders once or twice a week</li>
+                    <li>Maybe email your list when you're at markets nearby</li>
+                </ul>
+
+                <p>That's it. Maybe 30-35 minutes a week total.</p>
+
+                <hr>
+
+                <h2>The Bottom Line</h2>
+                <div class="callout">
+                    <p>You don't need to "compete online." You just need online to feed your real-life business and create a small passive income stream on the side.</p>
+                    <p style="margin-top: 12px;">Your advantage is that you're <strong>real</strong>, you're <strong>local</strong>, and you make <strong>actual things</strong>. That beats Redbubble spam every time.</p>
+                </div>
+
+                <p style="margin-top: 32px; color: #666;">Check out the <strong>How to</strong> tab when you're ready for the step-by-step instructions. No rush&mdash;take it one thing at a time!</p>
+            </div>
+
+            <!-- How to Page -->
+            <div id="howto" class="page">
+                <h1>How to Sell Your Art Online</h1>
+                <p class="subtitle">
+                    <strong>For:</strong> Artists who sell at farmers markets and want to make more money online<br>
+                    <strong>Tech level:</strong> Can send an email<br>
+                    <strong>Time:</strong> 2-3 hours spread over a weekend<br>
+                    <strong>Cost:</strong> $29-39/month (pays for itself with 2-3 sales)
+                </p>
+
+                <h2>Why This Works</h2>
+                <p>You're not trying to compete with massive Etsy shops. You're:</p>
+                <ul>
+                    <li>Making it easy for people who saw you at the market to buy later</li>
+                    <li>Getting found by locals searching "custom t-shirts near me"</li>
+                    <li>Creating passive income from your old designs</li>
+                    <li>Getting wholesale inquiries from local shops</li>
+                </ul>
+                <div class="callout">
+                    <p><strong>The secret:</strong> Most local artists don't even try this. Zero competition.</p>
+                </div>
+
+                <hr>
+
+                <h2>The Three Things That Actually Work</h2>
+                <ol>
+                    <li><strong>Instagram Shopping</strong> (Start Here)</li>
+                    <li><strong>Google Business Profile</strong> (Free Local Advertising)</li>
+                    <li><strong>Print-on-Demand</strong> (Passive Income)</li>
+                </ol>
+                <p>Let's do them one at a time.</p>
+
+                <hr>
+
+                <h2>PART 1: Instagram Shopping Setup</h2>
+                <p><strong>What this does:</strong> People tap your Instagram photos and buy directly. No leaving the app.</p>
+                <p><strong>What you need:</strong></p>
+                <ul>
+                    <li>Instagram account (you probably have this)</li>
+                    <li>Business bank account or debit card</li>
+                    <li>30 minutes</li>
+                </ul>
+
+                <h3>Step 1: Pick Your Store Platform</h3>
+                <p>You need a "store" that connects to Instagram. Two options:</p>
+
+                <p><strong>OPTION A: Square Online (Easiest)</strong></p>
+                <ul>
+                    <li>Go to: squareup.com/us/en/online-store</li>
+                    <li>Click "Get Started"</li>
+                    <li>Choose "Free" plan to start</li>
+                    <li>Create account with your email</li>
+                </ul>
+
+                <p><strong>OPTION B: Shopify (Most Popular)</strong></p>
+                <ul>
+                    <li>Go to: shopify.com</li>
+                    <li>Click "Start free trial"</li>
+                    <li>Enter your email</li>
+                    <li>Choose "I'm just starting" when asked</li>
+                </ul>
+
+                <div class="callout">
+                    <p><strong>Which one?</strong><br>
+                    Already use Square at markets? &rarr; Square Online<br>
+                    Starting fresh? &rarr; Shopify (better Instagram connection)</p>
+                </div>
+
+                <h3>Step 2: Add Your First Product</h3>
+                <p><strong>In Square:</strong></p>
+                <ol>
+                    <li>Click "Items" in the left menu</li>
+                    <li>Click "Create an Item"</li>
+                    <li>Add: Item name, Price, Upload photo, Description</li>
+                    <li>Click "Save"</li>
+                </ol>
+
+                <p><strong>In Shopify:</strong></p>
+                <ol>
+                    <li>Click "Products"</li>
+                    <li>Click "Add product"</li>
+                    <li>Fill in: Title, Description, Price, Upload photo</li>
+                    <li>Click "Save"</li>
+                </ol>
+
+                <div class="callout">
+                    <p><strong>Pro tip:</strong> Start with your 5 bestsellers from markets. That's it.</p>
+                </div>
+
+                <h3>Step 3: Connect to Instagram</h3>
+                <p><strong>In Square:</strong></p>
+                <ol>
+                    <li>Go to "Marketing" &rarr; "Instagram"</li>
+                    <li>Click "Connect Instagram"</li>
+                    <li>Log in to your Instagram</li>
+                    <li>Click "Allow" on all the permissions</li>
+                    <li>Done!</li>
+                </ol>
+
+                <p><strong>In Shopify:</strong></p>
+                <ol>
+                    <li>Click "Sales channels" (left side, bottom)</li>
+                    <li>Click "+" next to Facebook & Instagram</li>
+                    <li>Click "Add sales channel"</li>
+                    <li>Click "Connect Account"</li>
+                    <li>Log in to Instagram and Facebook</li>
+                    <li>Click through all the "Allow" buttons</li>
+                    <li>Wait 24-48 hours for approval</li>
+                </ol>
+
+                <h3>Step 4: Tag Products in Instagram Posts</h3>
+                <p><strong>Once approved:</strong></p>
+                <ol>
+                    <li>Post a photo like normal on Instagram</li>
+                    <li>Before posting, tap "Tag Products"</li>
+                    <li>Tap on your product in the photo</li>
+                    <li>Search for it by name</li>
+                    <li>Select it</li>
+                    <li>Post!</li>
+                </ol>
+
+                <p><strong>Now what happens:</strong></p>
+                <ul>
+                    <li>People see your post</li>
+                    <li>They tap the photo</li>
+                    <li>They see the price</li>
+                    <li>They click "View on Website"</li>
+                    <li>They buy!</li>
+                </ul>
+
+                <hr>
+
+                <h2>PART 2: Google Business Profile</h2>
+                <p><strong>What this does:</strong> When someone searches "custom t-shirts Portland" or "local artist near me", YOU show up.</p>
+                <p><strong>Cost:</strong> Free &nbsp; <strong>Time:</strong> 20 minutes</p>
+
+                <h3>Step 1: Create Your Profile</h3>
+                <ol>
+                    <li>Go to: business.google.com</li>
+                    <li>Click "Manage now"</li>
+                    <li>Sign in with your Gmail</li>
+                    <li>Enter your business name</li>
+                    <li>Choose category: "Artist" or "Custom T-Shirt Store"</li>
+                </ol>
+
+                <h3>Step 2: Choose How Customers Find You</h3>
+                <p><strong>Question: "Do you want to add a location?"</strong></p>
+                <ul>
+                    <li>Sell at home/studio: Choose "Yes" and enter address</li>
+                    <li>Only do markets: Choose "No, I deliver goods and services"</li>
+                </ul>
+
+                <h3>Step 3: Add Contact Info</h3>
+                <ol>
+                    <li>Enter phone number (Google will text you a code)</li>
+                    <li>Enter that code</li>
+                    <li>Add your website (Square/Shopify URL)</li>
+                    <li>Add your Instagram handle</li>
+                </ol>
+
+                <h3>Step 4: Add Photos</h3>
+                <p>This is IMPORTANT. Add:</p>
+                <ul>
+                    <li>5-10 photos of your products</li>
+                    <li>1-2 photos of you at your booth</li>
+                    <li>Cover photo (your logo or best product)</li>
+                </ul>
+                <div class="callout">
+                    <p><strong>Why photos matter:</strong> Google shows profiles with photos 2x more often.</p>
+                </div>
+
+                <h3>Step 5: Write Your Description</h3>
+                <pre><code>Custom illustrated t-shirts, art prints, and
+unique gifts made by [Your Name].
+Find me at [City] farmers markets.
+Original designs, locally made.
+Wholesale inquiries welcome!</code></pre>
+
+                <h3>Step 6: Post Updates Weekly</h3>
+                <ol>
+                    <li>Open Google Business app on your phone</li>
+                    <li>Tap "Add update"</li>
+                    <li>Upload a photo from the market</li>
+                    <li>Write: "At [Market Name] Saturday 9am-2pm!"</li>
+                    <li>Post</li>
+                </ol>
+
+                <hr>
+
+                <h2>PART 3: Print-on-Demand</h2>
+                <p><strong>What this does:</strong> Someone orders your design, a company prints and ships it, you get paid. Zero work after setup.</p>
+
+                <h3>Step 1: Choose a Service</h3>
+                <p><strong>Printful</strong> (integrates with Shopify/Square)</p>
+                <ol>
+                    <li>Go to: printful.com</li>
+                    <li>Click "Sign up"</li>
+                    <li>Choose "I have an online store"</li>
+                    <li>Connect your store</li>
+                </ol>
+
+                <h3>Step 2: Upload a Design</h3>
+                <ol>
+                    <li>Click "Add Product"</li>
+                    <li>Choose product type (t-shirt, hoodie, print)</li>
+                    <li>Upload your design file (PNG/JPG, at least 3000x3000 pixels)</li>
+                    <li>Position it on the mockup</li>
+                    <li>Click "Proceed to mockups"</li>
+                </ol>
+
+                <h3>Step 3: Set Your Price</h3>
+                <p>Printful shows you:</p>
+                <ul>
+                    <li>Their cost: $12.95</li>
+                    <li>Suggested retail: $24.95</li>
+                    <li><strong>Your profit: $12 per sale</strong></li>
+                </ul>
+                <p>Most artists charge $28-32 for t-shirts.</p>
+
+                <h3>Step 4: What Happens When Someone Orders</h3>
+                <ol>
+                    <li>Customer orders on your site</li>
+                    <li>Printful gets the order automatically</li>
+                    <li>They print it (2-3 days)</li>
+                    <li>They ship it to customer</li>
+                    <li>Money goes to your bank account</li>
+                </ol>
+                <div class="callout">
+                    <p><strong>You literally do nothing.</strong></p>
+                </div>
+
+                <hr>
+
+                <h2>Your Weekly Routine</h2>
+                <p><strong>Monday (5 min):</strong> Check orders, ship custom orders</p>
+                <p><strong>Wednesday (10 min):</strong> Post to Instagram with product tags</p>
+                <p><strong>Friday (5 min):</strong> Post on Google Business about weekend market</p>
+                <p><strong>Sunday (15 min):</strong> Review sales, add 1 new product</p>
+                <div class="callout">
+                    <p><strong>Total: 35 minutes per week</strong></p>
+                </div>
+
+                <hr>
+
+                <h2>What This Costs</h2>
+                <p><strong>Month 1 (Setup):</strong> $0 (free trials)</p>
+                <p><strong>Month 2+:</strong> $0-39/month (Shopify or free with Square)</p>
+                <p><strong>Break-even:</strong> 4 sales per month at $28 shirts</p>
+
+                <hr>
+
+                <h2>Common Questions</h2>
+
+                <h3>"I don't have a business bank account"</h3>
+                <p>Use your personal debit card to start. Get a business account when making $500+/month.</p>
+
+                <h3>"What about taxes?"</h3>
+                <p>Save 25% of profits in a separate account. Give that to your tax person at tax time.</p>
+
+                <h3>"What if someone wants a custom order?"</h3>
+                <p>Message them on Instagram, arrange payment through Venmo/PayPal like you do now.</p>
+
+                <h3>"I'm terrible at Instagram"</h3>
+                <p>Just post: photos of new products, photos from markets, behind-the-scenes. 3 posts per week is plenty.</p>
+
+                <h3>"What about Etsy?"</h3>
+                <p>You can do both. But this is better: no listing fees, lower transaction fees, you own your customer list, less competition.</p>
+
+                <h3>"What if I get overwhelmed?"</h3>
+                <p>Start with JUST Instagram Shopping (Part 1). Do that for a month. Add more when ready.</p>
+
+                <hr>
+
+                <h2>Your First Weekend</h2>
+                <ul class="checklist">
+                    <li><strong>Saturday Morning:</strong> Set up Square/Shopify, add 5 products</li>
+                    <li><strong>Saturday Afternoon:</strong> Connect Instagram (wait for approval)</li>
+                    <li><strong>Sunday Morning:</strong> Set up Google Business Profile</li>
+                    <li><strong>Sunday Afternoon:</strong> Post first product-tagged Instagram</li>
+                    <li><strong>Following Week:</strong> Set up Printful, upload 2-3 designs</li>
+                </ul>
+
+                <hr>
+
+                <div class="callout">
+                    <p><strong>You've got this.</strong> You're already doing the hardest part (creating amazing art). This is just making it easier for people to give you money for it.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password protection
+        const CORRECT_PASSWORD = 'lichen';
+
+        function checkPassword(event) {
+            event.preventDefault();
+            const input = document.getElementById('password-input');
+            const password = input.value.toLowerCase().trim();
+
+            if (password === CORRECT_PASSWORD) {
+                document.getElementById('password-screen').style.display = 'none';
+                document.getElementById('content-wrapper').classList.add('unlocked');
+                sessionStorage.setItem('spina-unlocked', 'true');
+            } else {
+                input.classList.add('error');
+                input.value = '';
+                setTimeout(() => input.classList.remove('error'), 400);
+            }
+        }
+
+        // Check if already unlocked this session
+        if (sessionStorage.getItem('spina-unlocked') === 'true') {
+            document.getElementById('password-screen').style.display = 'none';
+            document.getElementById('content-wrapper').classList.add('unlocked');
+        }
+
+        // Tab navigation
+        const buttons = document.querySelectorAll('.nav-btn');
+        const pages = document.querySelectorAll('.page');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pageId = btn.dataset.page;
+
+                // Update buttons
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update pages
+                pages.forEach(p => p.classList.remove('active'));
+                document.getElementById(pageId).classList.add('active');
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+            });
+        });
+    </script>
+</body>
+</html>
