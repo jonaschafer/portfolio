@@ -172,80 +172,36 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
           <li>Preview URLs: <code>your-project-git-branch.vercel.app</code></li>
           <li>Deployment status notifications</li>
         </ul>
-      </>
-    )
-  },
-  {
-    id: 'custom-domain-setup',
-    title: 'Custom Domain Setup',
-    content: (
-      <>
-        <p>
-          Adding a custom domain gives your project a professional URL and makes it easier to share.
-          This is completely optional - your Vercel URL works perfectly fine.
-        </p>
 
-        <h3>DNS Configuration</h3>
-        <p>In your domain registrar (where you bought your domain):</p>
+        <h3>Connecting Vercel to Cursor via MCP</h3>
+        <p>You can connect Vercel to Cursor via MCP to manage deployments, check build status, and configure environment variables directly from Cursor:</p>
         <ol>
-          <li>Add a CNAME record pointing to <code>cname.vercel-dns.com</code></li>
-          <li>Or add A records pointing to Vercel's IP addresses (if CNAME not supported)</li>
-          <li>Wait for DNS propagation (can take up to 48 hours, usually much faster)</li>
-        </ol>
-
-        <h3>Vercel Domain Settings</h3>
-        <ol>
-          <li>In Vercel dashboard, go to your project settings</li>
-          <li>Navigate to "Domains"</li>
-          <li>Enter your domain name (e.g., <code>example.com</code> or <code>www.example.com</code>)</li>
-          <li>Vercel will verify DNS configuration</li>
-          <li>Once verified, your site will be live on your custom domain</li>
-        </ol>
-      </>
-    )
-  },
-  {
-    id: 'figma-mcp-setup',
-    title: 'Connecting Figma to Cursor',
-    content: (
-      <>
-        <p>
-          The Figma MCP (Model Context Protocol) server allows Cursor to access your Figma designs,
-          extract design details, and generate code based on your designs. This is the magic that makes vibe coding work.
-        </p>
-
-        <h3>Getting Your Figma Personal Access Token</h3>
-        <p>First, you need to create a token that lets Cursor access your Figma files:</p>
-        <ol>
-          <li>Open Figma (desktop app or web)</li>
-          <li>Go to Figma → Settings → Account</li>
-          <li>Scroll down to "Personal access tokens"</li>
-          <li>Click "Create new token"</li>
-          <li>Give it a name (e.g., "Cursor MCP")</li>
-          <li><strong>Copy the token immediately</strong> - you won't be able to see it again!</li>
-        </ol>
-
-        <h3>Configuring Figma MCP in Cursor</h3>
-        <p>Now let's connect it to Cursor:</p>
-        <ol>
-          <li>Open Cursor settings (Cmd/Ctrl + ,)</li>
+          <li>In Cursor, open Settings (Cmd/Ctrl + ,)</li>
           <li>Navigate to "Features" → "Model Context Protocol"</li>
           <li>Click "Add Server" or edit existing configuration</li>
-          <li>Add the Figma MCP server configuration</li>
+          <li>Add the Vercel MCP server configuration</li>
         </ol>
 
-        <p>You'll need to add configuration that looks like this (Cursor can help you set this up if you ask):</p>
+        <p>You'll need a Vercel Access Token. To create one:</p>
+        <ol>
+          <li>Go to Vercel → Settings → Tokens</li>
+          <li>Click "Create Token"</li>
+          <li>Give it a name (e.g., "Cursor MCP")</li>
+          <li>Copy the token immediately</li>
+        </ol>
+
+        <p>Example Vercel MCP configuration:</p>
         <div className="code-block-wrapper">
           <pre><code className="copyable-code">{`{
   "mcpServers": {
-    "figma": {
+    "vercel": {
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-figma"
+        "@vercel/mcp"
       ],
       "env": {
-        "FIGMA_PERSONAL_ACCESS_TOKEN": "paste-your-token-here"
+        "VERCEL_ACCESS_TOKEN": "your-vercel-token-here"
       }
     }
   }
@@ -258,26 +214,28 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
           </button>
         </div>
 
-        <h3>Sharing Your Figma File</h3>
-        <p>For Cursor to access your designs, your Figma file needs to be accessible:</p>
+        <h3>Custom Domain Setup</h3>
+        <p>
+          Adding a custom domain gives your project a professional URL and makes it easier to share.
+          This is completely optional - your Vercel URL works perfectly fine.
+        </p>
+
+        <h4>DNS Configuration</h4>
+        <p>In your domain registrar (where you bought your domain):</p>
         <ol>
-          <li>Open your Figma file</li>
-          <li>Click "Share" in the top right</li>
-          <li>Set permissions to "Can view" (this is enough for MCP access)</li>
-          <li>Copy the file URL - you can paste this in Cursor when asking about designs</li>
+          <li>Add a CNAME record pointing to <code>cname.vercel-dns.com</code></li>
+          <li>Or add A records pointing to Vercel's IP addresses (if CNAME not supported)</li>
+          <li>Wait for DNS propagation (can take up to 48 hours, usually much faster)</li>
         </ol>
 
-        <h3>Testing the Connection</h3>
-        <p>Once configured, test the connection in Cursor:</p>
-        <ul>
-          <li>Open a chat in Cursor</li>
-          <li>Paste a Figma URL and ask: "Can you access this Figma design?"</li>
-          <li>Or try: "Get the design context for this Figma file" (with the URL)</li>
-          <li>If working, Cursor should be able to describe your designs and extract design details</li>
-        </ul>
-
-        <p><strong>Troubleshooting:</strong> If it's not working, make sure your Figma file is shared (even if just with "Can view" permission)
-        and that you've restarted Cursor after adding the MCP configuration.</p>
+        <h4>Vercel Domain Settings</h4>
+        <ol>
+          <li>In Vercel dashboard, go to your project settings</li>
+          <li>Navigate to "Domains"</li>
+          <li>Enter your domain name (e.g., <code>example.com</code> or <code>www.example.com</code>)</li>
+          <li>Vercel will verify DNS configuration</li>
+          <li>Once verified, your site will be live on your custom domain</li>
+        </ol>
       </>
     )
   },
@@ -316,105 +274,54 @@ Only give me manual instructions when you literally cannot perform the action (e
 
 Default to action, not explanation.`}</code></pre>
         </div>
-      </>
-    )
-  },
-  {
-    id: 'cursor-memory-context',
-    title: 'Cursor Memory & Context Management',
-    content: (
-      <>
+
         <p>
-          Cursor has a limited context window—the amount of information it can "see" in a single conversation.
-          Without proper memory management, you'll find yourself repeating information, losing important context
-          between sessions, and hitting token limits. This section shows you how to set up persistent memory
-          that survives across sessions and how to monitor your context usage effectively.
+          For more rules you can add to your <code>.cursorrules</code> file, see the <a href="#best-practices">Best Practices</a> section
+          which includes design guidelines and error handling patterns.
         </p>
 
-        <h3>Why Persistent Memory Matters</h3>
+        <h3>Connecting Figma to Cursor via MCP</h3>
         <p>
-          Every Cursor conversation has a context limit (typically 1M tokens for premium plans, less for free).
-          Once you hit this limit, Cursor can't see earlier parts of the conversation. More importantly, when you
-          start a new chat session, Cursor forgets everything from previous sessions unless you explicitly tell it
-          to read certain files. By creating structured context files and configuring Cursor to reference them,
-          you ensure important decisions, architecture choices, and project state persist across sessions.
+          The Figma MCP (Model Context Protocol) server allows Cursor to access your Figma designs,
+          extract design details, and generate code based on your designs. This is the magic that makes vibe coding work.
         </p>
 
-        <h3>How .cursorrules Works</h3>
-        <p>
-          <code>.cursorrules</code> is a special file that Cursor automatically reads when it starts working in your project.
-          Think of it as instructions that tell Cursor how to behave in your codebase. When you create a <code>.cursorrules</code>
-          file in your project root, Cursor reads it automatically—no configuration needed.
-        </p>
-        <p>
-          The file contains plain text rules that guide Cursor's behavior. For persistent memory, you'll add rules that tell
-          Cursor to read <code>docs/ai-context.md</code> at the start of sessions and update it when you make important decisions.
-        </p>
-        <p>
-          <strong>Important:</strong> Cursor automatically detects and reads <code>.cursorrules</code> from your project root.
-          Just create the file, and Cursor will use it. No settings, no configuration—it just works.
-        </p>
+        <h4>Getting Your Figma Personal Access Token</h4>
+        <p>First, you need to create a token that lets Cursor access your Figma files:</p>
+        <ol>
+          <li>Open Figma (desktop app or web)</li>
+          <li>Go to Figma → Settings → Account</li>
+          <li>Scroll down to "Personal access tokens"</li>
+          <li>Click "Create new token"</li>
+          <li>Give it a name (e.g., "Cursor MCP")</li>
+          <li><strong>Copy the token immediately</strong> - you won't be able to see it again!</li>
+        </ol>
 
-        <h3>Repeatable Setup Framework</h3>
-        <p>
-          <strong>Important:</strong> Simply telling Cursor to "create the files" isn't enough. You need to provide a prompt
-          that includes the actual rules and content. Here's a repeatable framework you can use for any project:
-        </p>
+        <h4>Configuring Figma MCP in Cursor</h4>
+        <p>Now let's connect it to Cursor:</p>
+        <ol>
+          <li>Open Cursor settings (Cmd/Ctrl + ,)</li>
+          <li>Navigate to "Features" → "Model Context Protocol"</li>
+          <li>Click "Add Server" or edit existing configuration</li>
+          <li>Add the Figma MCP server configuration</li>
+        </ol>
 
-        <h4>Step 1: Set Up .cursorrules</h4>
-        <p>Copy and paste this prompt into Cursor:</p>
+        <p>You'll need to add configuration that looks like this (Cursor can help you set this up if you ask):</p>
         <div className="code-block-wrapper">
-          <pre><code className="copyable-code">{`Create a \`.cursorrules\` file in the project root with the following content:
-
-# Cursor Rules for Persistent Memory
-
-## Automatic Session Kickoff
-
-- At the start of EVERY new chat session, automatically read \`docs/ai-context.md\` to understand project context before responding
-- If \`docs/ai-context.md\` doesn't exist, offer to create it with a starter template
-- Reference information from \`docs/ai-context.md\` when making suggestions or answering questions
-
-## Automatic Context Updates
-
-You MUST automatically update \`docs/ai-context.md\` in the following situations:
-
-- **Architectural decisions**: When the user makes or you suggest architectural choices (framework selection, design patterns, project structure changes)
-- **New patterns introduced**: When establishing new coding patterns, conventions, or approaches that should be reused
-- **Important problem solutions**: When solving complex problems that required significant reasoning or decisions
-- **Project state changes**: When completing major features, fixing critical bugs, or making changes that affect project state
-- **Key decisions**: When the user makes decisions about tools, libraries, or approaches that impact the project
-
-**When NOT to update:**
-- Small bug fixes or minor changes
-- Routine code additions that don't introduce new patterns
-- Temporary workarounds
-- Code that's self-documenting through comments
-
-**How to update:**
-- Read the current \`docs/ai-context.md\` first
-- Add entries in the appropriate sections with date and reasoning
-- Keep entries concise and focused on decisions, not implementation details
-- Update the "Last Updated" date at the bottom
-
-## Context Management
-
-- Before starting major refactors or new features, read \`docs/ai-context.md\` to ensure alignment with existing decisions
-- When context is getting full (80%+ token usage), proactively suggest starting a new chat session
-- Monitor for warning signs: model repetition, forgetting recent decisions, generic responses
-- When you notice context exhaustion, suggest: "Context is getting full. Let's start a new chat—I'll read \`ai-context.md\` to catch up."
-
-## File References
-
-- ALWAYS prefer referencing specific files over pasting large code blocks in chat
-- Use file paths and line numbers when discussing code changes (format: \`path/to/file.js:12:45\`)
-- When code is needed, reference the file and ask if the user wants you to read it, rather than pasting it
-
-## Context File Maintenance
-
-- Keep \`docs/ai-context.md\` focused on essential information: decisions, architecture, current state
-- Don't duplicate information that belongs in code comments or documentation
-- Structure updates clearly with dates and reasoning
-- For team projects: Treat \`docs/ai-context.md\` as a handoff document—ensure it's comprehensive enough for new team members`}</code></pre>
+          <pre><code className="copyable-code">{`{
+  "mcpServers": {
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-figma"
+      ],
+      "env": {
+        "FIGMA_PERSONAL_ACCESS_TOKEN": "paste-your-token-here"
+      }
+    }
+  }
+}`}</code></pre>
           <button className="copy-button" aria-label="Copy code">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -423,261 +330,48 @@ You MUST automatically update \`docs/ai-context.md\` in the following situations
           </button>
         </div>
 
-        <h4>Step 2: Set Up docs/ai-context.md</h4>
-        <p>After creating <code>.cursorrules</code>, use this prompt to create the context file:</p>
-        <div className="code-block-wrapper">
-          <pre><code className="copyable-code">{`Create a \`docs/ai-context.md\` file with a starter template. The file should include:
-
-# AI Context - Project Memory
-
-This file serves as persistent memory for Cursor AI across chat sessions. Update it when making important decisions, architectural choices, or when project state changes significantly.
-
-## Project Overview
-
-**What is this project?**
-- [Brief description of the project and its purpose]
-
-**Tech Stack:**
-- [List key technologies, frameworks, libraries]
-
-**Key Dependencies:**
-- [Important packages or services the project relies on]
-
-## Key Decisions
-
-### Architecture Decisions
-- [Date] - [Decision]: [Reasoning]
-  - Example: "2024-01-15 - Chose Next.js over plain React: Need SSR for SEO and better performance"
-
-### Design Patterns
-- [Pattern used]: [Why it was chosen]
-  - Example: "Component composition pattern: Allows for flexible, reusable UI components"
-
-### Tooling Choices
-- [Tool]: [Why it was chosen]
-  - Example: "Tailwind CSS: Rapid development with utility-first approach"
-
-## Architecture Notes
-
-### Project Structure
-\`\`\`
-[Brief overview of how the codebase is organized]
-\`\`\`
-
-### Important Patterns
-- [Pattern name]: [Description and where it's used]
-  - Example: "Custom hooks pattern: All data fetching logic lives in hooks/ directory"
-
-### Key Files/Directories
-- \`[path]\`: [What it does and why it's important]
-  - Example: "\`lib/api.js\`: Central API client with authentication handling"
-
-## Current State
-
-### What's Working
-- [Feature/component]: [Status and notes]
-  - Example: "User authentication: Fully functional, using Supabase Auth"
-
-### In Progress
-- [Feature/component]: [Current status]
-  - Example: "Dashboard redesign: 60% complete, need to finish responsive layout"
-
-### Known Issues
-- [Issue]: [Impact and potential solutions]
-  - Example: "Slow API response on mobile: Investigating caching strategy"
-
-### Recent Changes
-- [Date] - [Change]: [Impact]
-  - Example: "2024-01-20 - Migrated to new API version: All endpoints updated, breaking changes handled"
-
-## Important Context
-
-### Domain Knowledge
-- [Business rule or domain concept]: [Explanation]
-  - Example: "User roles: Admin, Editor, Viewer. Only Admins can delete content."
-
-### Edge Cases
-- [Edge case]: [How it's handled]
-  - Example: "Empty state handling: All lists show helpful empty state messages with CTAs"
-
-### Environment Variables
-- \`[VAR_NAME]\`: [Purpose and where it's used]
-  - Example: "\`NEXT_PUBLIC_API_URL\`: Base URL for all API calls, set in Vercel dashboard"
-
-### External Services
-- [Service]: [How it's integrated and what it's used for]
-  - Example: "Supabase: Database and auth. Connection config in \`lib/supabase.js\`"
-
-## Notes for Future Sessions
-
-- [Any important reminders or context for future work]
-  - Example: "Remember: Always run tests before deploying. Test suite located in \`__tests__/\`"
-
----
-
-**Last Updated:** [Date]
-**Maintained By:** [Your name/team]`}</code></pre>
-          <button className="copy-button" aria-label="Copy code">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          </button>
-        </div>
-
-        <p>
-          <strong>Why This Framework Works:</strong>
-        </p>
-        <ul>
-          <li>
-            <strong>Complete Content</strong> - The prompts include the full rules and template content, not just "create a file"
-          </li>
-          <li>
-            <strong>Repeatable</strong> - Copy and paste these prompts into any new project to set up persistent memory
-          </li>
-          <li>
-            <strong>No Manual Work</strong> - Once set up, Cursor automatically reads and updates the files based on the rules
-          </li>
-          <li>
-            <strong>Customizable</strong> - You can modify the prompts to add project-specific rules or context
-          </li>
-        </ul>
-
-        <h3>What Gets Created</h3>
+        <h4>Sharing Your Figma File</h4>
+        <p>For Cursor to access your designs, your Figma file needs to be accessible:</p>
         <ol>
-          <li>
-            <strong><code>docs/ai-context.md</code></strong> - Your persistent memory file that Cursor reads at the start of each session
-          </li>
-          <li>
-            <strong><code>.cursorrules</code></strong> - Configuration file that tells Cursor to always check <code>docs/ai-context.md</code>
-          </li>
+          <li>Open your Figma file</li>
+          <li>Click "Share" in the top right</li>
+          <li>Set permissions to "Can view" (this is enough for MCP access)</li>
+          <li>Copy the file URL - you can paste this in Cursor when asking about designs</li>
         </ol>
 
-        <p>
-          <strong>Pro tip:</strong> Pin <code>docs/ai-context.md</code> in your Cursor editor (right-click → Pin) so it's always visible.
-          Cursor will automatically update it when you make important decisions—no manual work needed.
-        </p>
-
-        <h3>How It Works (Automatically)</h3>
-        <p>
-          Once you have <code>.cursorrules</code> configured, Cursor handles everything automatically:
-        </p>
+        <h4>Testing the Connection</h4>
+        <p>Once configured, test the connection in Cursor:</p>
         <ul>
-          <li>
-            <strong>Automatic session kickoff</strong> - At the start of every new chat, Cursor automatically reads
-            <code>docs/ai-context.md</code> to understand project context. No manual prompt needed.
-          </li>
-          <li>
-            <strong>Automatic context updates</strong> - When you make architectural decisions, introduce new patterns,
-            or solve important problems, Cursor automatically updates <code>ai-context.md</code> with the decision and reasoning.
-            It won't update for small changes—only meaningful decisions.
-          </li>
-          <li>
-            <strong>Automatic context monitoring</strong> - Cursor watches token usage and proactively suggests starting
-            a new chat when context gets full (80%+). When you start fresh, it automatically reads <code>ai-context.md</code>
-            to catch up.
-          </li>
-          <li>
-            <strong>Strategic file references</strong> - Cursor automatically prefers referencing specific files over
-            pasting large code blocks, keeping context usage efficient.
-          </li>
-          <li>
-            <strong>Focused context file</strong> - Cursor keeps <code>ai-context.md</code> focused on essential information:
-            decisions, architecture, and current state. It won't dump everything in—code comments and documentation belong elsewhere.
-          </li>
-          <li>
-            <strong>Team handoffs</strong> - For team projects, <code>ai-context.md</code> serves as an automatic handoff document.
-            When someone new joins or you switch contexts, that file brings them up to speed automatically.
-          </li>
+          <li>Open a chat in Cursor</li>
+          <li>Paste a Figma URL and ask: "Can you access this Figma design?"</li>
+          <li>Or try: "Get the design context for this Figma file" (with the URL)</li>
+          <li>If working, Cursor should be able to describe your designs and extract design details</li>
         </ul>
 
-        <h3>Monitoring Context Usage</h3>
-        <p>Cursor automatically monitors context usage and shows you:</p>
-        <ul>
-          <li>
-            <strong>Token Counter</strong> - Visible at the bottom of the chat panel showing tokens used vs. available
-          </li>
-          <li>
-            <strong>Automatic Warnings</strong> - Cursor proactively warns you when approaching limits (80%+ usage)
-          </li>
-          <li>
-            <strong>Automatic Detection</strong> - Cursor watches for warning signs and suggests starting a new chat when needed
-          </li>
-        </ul>
-
-        <h3>Warning Signs (Cursor Detects These Automatically)</h3>
-        <p>Cursor automatically watches for these indicators that context is getting exhausted:</p>
-        <ul>
-          <li>
-            <strong>Model repetition</strong> - If Cursor notices itself repeating the same things, it may have lost earlier context
-          </li>
-          <li>
-            <strong>Forgetting recent decisions</strong> - When Cursor asks about things you just discussed, it's a sign context is full
-          </li>
-          <li>
-            <strong>Can't see earlier code</strong> - References to files or functions from earlier in the conversation fail
-          </li>
-          <li>
-            <strong>Token counter near limit</strong> - At 80%+ usage, Cursor automatically suggests starting a new chat
-          </li>
-          <li>
-            <strong>Generic responses</strong> - When Cursor gives generic answers instead of project-specific ones, context may be exhausted
-          </li>
-        </ul>
+        <p><strong>Troubleshooting:</strong> If it's not working, make sure your Figma file is shared (even if just with "Can view" permission)
+        and that you've restarted Cursor after adding the MCP configuration.</p>
+      </>
+    )
+  },
+  {
+    id: 'best-practices',
+    title: 'Best Practices',
+    content: (
+      <>
         <p>
-          When Cursor detects these signs, it will automatically suggest: "Context is getting full. Let's start a new chat—I'll read
-          <code>ai-context.md</code> to catch up."
-        </p>
-
-        <h3>No Manual Work Required</h3>
-        <p>
-          With <code>.cursorrules</code> properly configured, you don't need to do anything manually:
-        </p>
-        <ul>
-          <li>
-            <strong>No kickoff prompts needed</strong> - Cursor automatically reads <code>docs/ai-context.md</code>
-            at the start of every new chat session
-          </li>
-          <li>
-            <strong>No manual updates</strong> - Cursor automatically updates <code>ai-context.md</code> when you make
-            architectural decisions, introduce patterns, or solve important problems
-          </li>
-          <li>
-            <strong>No context monitoring</strong> - Cursor watches token usage and proactively suggests when to start
-            a new chat
-          </li>
-        </ul>
-        <p>
-          Just work normally—Cursor handles the memory management behind the scenes. The goal is to make this completely
-          seamless so you can focus on building, not managing context.
-        </p>
-
-        <h3>Example Workflow</h3>
-        <ol>
-          <li>Clone a new repository</li>
-          <li>Copy and paste the "Step 1: Set Up .cursorrules" prompt above into Cursor</li>
-          <li>Copy and paste the "Step 2: Set Up docs/ai-context.md" prompt above into Cursor</li>
-          <li>Cursor creates both files with the complete rules and template content</li>
-          <li>Pin <code>docs/ai-context.md</code> in your editor (optional, but helpful to see what Cursor is tracking)</li>
-          <li>Work normally—Cursor automatically updates <code>ai-context.md</code> when you make architectural decisions</li>
-          <li>When starting new chats, Cursor automatically reads <code>ai-context.md</code> to get context</li>
-          <li>Cursor monitors token usage and suggests new chats when context gets full</li>
-        </ol>
-
-        <p>
-          <strong>Remember:</strong> The best memory system is one that works automatically. Once set up with the complete prompts above,
-          you don't need to think about it—Cursor handles reading, updating, and monitoring context so you can focus on building.
+          These best practices will help you get the most out of vibe coding. They cover design guidelines for working with Figma,
+          and error handling patterns to make your AI assistant more autonomous.
         </p>
       </>
     )
   },
   {
-    id: 'working-with-figma-and-cursor',
-    title: 'Figma & Cursor',
+    id: 'best-practices-design',
+    title: 'Design Smart',
     content: (
       <>
         <p>
-          The magic happens when Figma and Cursor work together. Here's how to translate your designs into code.
+          The magic happens when Figma and Cursor work together. Here's how to translate your designs into code effectively.
         </p>
 
         <h3>Example Workflow</h3>
@@ -707,6 +401,528 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
           <li><strong>Use components</strong> - Create reusable components for buttons, cards, etc. This helps Cursor understand your design system</li>
           <li><strong>Organize with frames</strong> - Group related elements in frames so Cursor can understand the layout structure</li>
         </ul>
+
+        <h3>Design Best Practices for .cursorrules</h3>
+        <p>Add these rules to your <code>.cursorrules</code> file to ensure consistent design implementation:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`# Design Best Practices
+
+## Before Building UI
+- Always read the design best practices file (e.g., docs/design-best-practices.md) before implementing any UI
+- Extract and reference design tokens (colors, spacing, typography) from the design system
+- Check for existing components that match or can be extended
+
+## During Implementation
+- Match Figma designs pixel-perfectly unless responsive adjustments are needed
+- Use semantic HTML elements (button, nav, article, etc.)
+- Implement mobile-first responsive design
+- Ensure all interactive elements have proper hover/focus/active states
+
+## Accessibility
+- Include proper alt text for images
+- Ensure sufficient color contrast (WCAG AA minimum)
+- Support keyboard navigation
+- Use ARIA labels where semantic HTML is insufficient`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <h3>Creating a Design Best Practices File</h3>
+        <p>
+          For larger projects, create a dedicated <code>docs/design-best-practices.md</code> file that Cursor reads before implementing UI.
+          This gives you a single source of truth for design decisions. Here's an example structure:
+        </p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`# Design Best Practices (Builder Guide)
+
+**Purpose**: Internal guide for Cursor to translate sparse product requirements into consistent, modern UI choices.
+
+---
+
+## Decision Order (Highest Priority Wins)
+
+1. **Brand voice**: \`docs/brand/voice.md\`
+2. **Platform**: iOS-first (HIG defaults), Android later (Material defaults)
+3. **Existing screens**: match current typography, spacing, and button styles
+4. **Accessibility**: minimum touch target + contrast
+5. **Performance**: avoid heavy animations unless asked
+
+---
+
+## Default UI Choices (When User Gives Minimal Input)
+
+### Layout Defaults
+- **Page padding**: 20px horizontal, 20px vertical
+- **Section spacing**: 24px between major blocks
+- **Title -> subtitle**: 8px
+- **Subtitle -> content**: 32-40px
+- **Background**: white (\`#fff\`)
+
+### Typography Defaults
+- **Title**: 32px, bold, \`#000\`
+- **Subtitle**: 16px, regular, \`#666\`
+- **Body**: 16px, regular, \`#000\`
+- **Small**: 14px, regular, \`#666\`
+
+### Button Defaults
+- **Primary**: full-width, \`#000\` bg, \`#fff\` text, 16px padding, radius 8
+- **Secondary**: full-width, outline \`#000\`, radius 8, 16px padding
+- **Destructive**: \`#ff3b30\` bg, white text
+
+### Input Defaults
+- **TextInput**: 1px border \`#ddd\`, radius 8, padding 16, font 16
+
+---
+
+## Motion Defaults
+
+- **Tap feedback**: scale 0.98 or opacity 0.8 (200ms)
+- **Screen transitions**: standard stack push
+- **List items**: simple fade-in (200-300ms)
+- **Avoid**: heavy shared-element transitions unless asked
+
+---
+
+## State Defaults
+
+- **Loading**: spinner for simple screens, skeleton for lists
+- **Empty**: title + short helper text + primary CTA
+- **Error**: short error text + retry action
+
+---
+
+## Accessibility Defaults
+
+- **Touch targets**: minimum 44x44
+- **Contrast**: WCAG AA for text on backgrounds
+- **Labels**: add accessibility labels on icon-only buttons`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <p>
+          Then in your <code>.cursorrules</code>, add: <code>Before implementing any UI, read docs/design-best-practices.md</code>.
+          This ensures Cursor applies your design system consistently without you having to repeat specifications.
+        </p>
+      </>
+    )
+  },
+  {
+    id: 'best-practices-errors',
+    title: 'Error Handling',
+    content: (
+      <>
+        <p>
+          One of the most powerful ways to improve your vibe coding workflow is to make your AI assistant autonomous when handling errors.
+          Instead of copying and pasting error messages back and forth, configure your assistant to debug independently.
+        </p>
+
+        <h3>Autonomous Error Resolution</h3>
+        <p>Add this to your <code>.cursorrules</code> file:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`# Autonomous Error Resolution
+
+When you encounter an error after attempting a solution:
+1. DO NOT wait for me to copy-paste errors or ask you to fix them
+2. Automatically read error messages, logs, or console output
+3. Analyze the root cause
+4. Implement a fix
+5. Test the fix
+6. If still broken, iterate autonomously up to 3 times
+7. Only stop to ask if you've tried 3 approaches without success
+
+Default mode: Keep going until it works. Don't ask permission to debug.
+
+Exception: If the error suggests a fundamental misunderstanding of requirements, stop and clarify.`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li><strong>Faster iteration</strong> - No waiting for you to copy errors back into the chat</li>
+          <li><strong>Better context</strong> - The AI can see the full error message and surrounding code</li>
+          <li><strong>Compound fixes</strong> - Sometimes fixing one error reveals another; autonomous mode handles the chain</li>
+          <li><strong>Less context pollution</strong> - Error messages don't fill up your chat history</li>
+        </ul>
+
+        <h3>When to Intervene</h3>
+        <p>The AI should stop and ask you when:</p>
+        <ul>
+          <li>It has tried 3 different approaches without success</li>
+          <li>The error suggests a misunderstanding of what you're trying to build</li>
+          <li>The fix requires access to external systems (databases, APIs) it can't reach</li>
+          <li>The error is in a file or area you haven't given it permission to modify</li>
+        </ul>
+      </>
+    )
+  },
+  {
+    id: 'best-practices-action',
+    title: 'Action over Explanation',
+    content: (
+      <>
+        <p>
+          When your AI assistant has access to tools via MCP or other integrations, it should use them directly
+          instead of giving you instructions. This is one of the most impactful rules you can add.
+        </p>
+
+        <h3>The Rule</h3>
+        <p>Add this to your Cursor Settings → Rules for AI (or <code>.cursorrules</code>):</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`When you have access to tools via MCP or other integrations, ALWAYS use them directly instead of giving me instructions.
+
+If you can execute an action yourself (create files, run SQL, make API calls, etc.), do it immediately. Never say "go to X and do Y" - just do Y yourself.
+
+Only give me manual instructions when you literally cannot perform the action (e.g., requires physical access, external authentication you don't have).
+
+Default to action, not explanation.`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <h3>Why This Matters</h3>
+        <ul>
+          <li><strong>Faster workflow</strong> - No copy-pasting commands or navigating to external tools</li>
+          <li><strong>Fewer errors</strong> - The AI executes precisely; you might make typos or miss steps</li>
+          <li><strong>True automation</strong> - You're leveraging the full power of MCP integrations</li>
+          <li><strong>Less context switching</strong> - Stay in your editor instead of jumping between apps</li>
+        </ul>
+
+        <h3>Examples</h3>
+        <p><strong>Without this rule:</strong> "Go to Vercel and check your deployment status..."</p>
+        <p><strong>With this rule:</strong> The AI uses the Vercel MCP to check status and reports back directly.</p>
+
+        <p><strong>Without this rule:</strong> "Run this SQL query in Supabase..."</p>
+        <p><strong>With this rule:</strong> The AI executes the query via Supabase MCP and shows you the results.</p>
+      </>
+    )
+  },
+  {
+    id: 'memory-context',
+    title: 'Memory & Context',
+    content: (
+      <>
+        <p>
+          AI coding assistants have limited context windows—the amount of information they can "see" in a single conversation.
+          Without proper memory management, you'll find yourself repeating information, losing important context
+          between sessions, and hitting token limits. This section covers two approaches to persistent memory,
+          from simple to comprehensive.
+        </p>
+
+        <h3>Why Persistent Memory Matters</h3>
+        <p>
+          Every AI conversation has a context limit. Once you hit this limit, the AI can't see earlier parts of the conversation.
+          More importantly, when you start a new chat session, the AI forgets everything from previous sessions unless you
+          explicitly tell it to read certain files. By creating structured context files, you ensure important decisions,
+          architecture choices, and project state persist across sessions.
+        </p>
+
+        <h3>Choose Your Approach</h3>
+        <p>
+          There are two main approaches to persistent memory. Choose based on your project complexity and team size:
+        </p>
+        <ul>
+          <li><strong>Simple (Two-File)</strong> - Best for smaller projects, solo work, or when you need the wider team to quickly understand what decisions were made</li>
+          <li><strong>Nuanced (Multi-File)</strong> - Best for substantial projects built over months, multiple people/AI sessions, or when you want to tell the story later</li>
+        </ul>
+      </>
+    )
+  },
+  {
+    id: 'memory-simple',
+    title: 'Simple Approach',
+    content: (
+      <>
+        <p>
+          This process was used on the Dojo Brand Studio "AI Speedrun" project to keep things simple and for the wider team to understand what decisions were made.
+        </p>
+
+        <h3>Two-File Memory System</h3>
+        <p>The simple approach uses just two files with distinct purposes:</p>
+
+        <h4>AGENTS.md (Static Reference)</h4>
+        <p>
+          <code>AGENTS.md</code> is typically a static reference document—it defines the agent's role, capabilities, and operational guidelines.
+          Think of it as the agent's job description and manual. It's meant to be relatively stable and consulted when the agent needs to understand "what am I and what should I do?"
+        </p>
+        <ul>
+          <li>Project overview and tech stack</li>
+          <li>Coding conventions and patterns to follow</li>
+          <li>File structure guidelines</li>
+          <li>Do's and don'ts for the codebase</li>
+        </ul>
+
+        <h4>changelog.md (Dynamic Log)</h4>
+        <p>
+          <code>changelog.md</code> (or similar names like <code>agent-diary.md</code>, <code>memory.md</code>) is a dynamic log that accumulates over time.
+          The agent writes to it after tasks, documenting what it learned, decisions made, and context for future sessions.
+          It's the agent's growing memory across interactions.
+        </p>
+        <ul>
+          <li>Date-stamped entries of work completed</li>
+          <li>Decisions made and why</li>
+          <li>Problems encountered and solutions</li>
+          <li>Context for future sessions</li>
+        </ul>
+
+        <h3>When to Use This Approach</h3>
+        <ul>
+          <li>Weekend projects or quick prototypes</li>
+          <li>Solo development without complex handoffs</li>
+          <li>When you need team members to quickly scan what happened</li>
+          <li>Projects where simplicity beats comprehensiveness</li>
+        </ul>
+
+        <h3>Setup</h3>
+        <p>Ask your AI assistant to create these files, or create them manually:</p>
+        <ol>
+          <li>Create <code>AGENTS.md</code> in your project root with your project overview and guidelines</li>
+          <li>Create <code>changelog.md</code> (or <code>docs/changelog.md</code>) for the dynamic log</li>
+          <li>Tell the AI to read <code>AGENTS.md</code> at session start and append to <code>changelog.md</code> after completing tasks</li>
+        </ol>
+      </>
+    )
+  },
+  {
+    id: 'memory-nuanced',
+    title: 'Nuanced Approach',
+    content: (
+      <>
+        <p>
+          This process was used for the creation of Orbit, to keep different concerns in separate files so it's easier to understand for a human.
+          In turn, these separate docs were used in the local-only wiki.
+        </p>
+
+        <h3>Multi-File Memory Architecture</h3>
+        <p>
+          This approach separates agent context into specialized files by purpose, rather than a single static reference + single dynamic log.
+          Each file serves a distinct cognitive function, making it easier for AI assistants to find relevant context quickly and for humans to maintain documentation over time.
+        </p>
+
+        <h3>Core Files</h3>
+
+        <h4>AGENTS.md (Entry Point)</h4>
+        <p>
+          The entry point and quick reference—a summary document that AI assistants read first to get oriented.
+          It contains key decisions (with brief rationale), architecture principles, current project status, and pointers to detailed files.
+          Think of it as the "executive summary" that tells the agent what it needs to know to start working, without requiring it to read everything.
+          It's updated when decisions change, but kept concise—details live elsewhere.
+        </p>
+
+        <h4>DECISIONS.md (Why)</h4>
+        <p>
+          A chronological append-only log of all decisions with full context. Each entry includes:
+        </p>
+        <ul>
+          <li>Date and decision summary</li>
+          <li>Context (why this needed deciding)</li>
+          <li>Rationale (why this option)</li>
+          <li>Alternatives considered</li>
+          <li>Trade-offs accepted</li>
+          <li>Owner and status</li>
+        </ul>
+        <p>
+          This is the source of truth for "why did we do it this way?" and prevents revisiting settled decisions.
+          AI assistants check this before proposing approaches.
+        </p>
+
+        <h4>JOURNEY.md (Story)</h4>
+        <p>
+          Captures the narrative and meta-story—origin story, milestones, challenges overcome, wins celebrated, and reflections over time.
+          It's the human layer: what sparked the idea, how the team dynamics evolved, what surprised you, what you learned.
+          This file is for storytelling and motivation, not operational reference. It's what you'll share with investors, press, or future team members.
+        </p>
+
+        <h4>ROADMAP.md (What)</h4>
+        <p>
+          Defines what's being built and when—phases, features per version, success criteria, and explicit "what we're NOT building yet" lists.
+          It keeps scope creep at bay and gives AI assistants context for prioritization. Updated as phases complete or priorities shift.
+        </p>
+
+        <h4>RESEARCH.md (Context)</h4>
+        <p>
+          Holds problem space exploration, competitive analysis, user research, market data, and inspiration.
+          It's the "homework" file—everything you learned that informed decisions but doesn't belong in the decision log itself.
+          AI assistants reference this for context on why certain directions were chosen.
+        </p>
+
+        <h3>How The Files Work Together</h3>
+        <div className="code-block-wrapper">
+          <pre><code>{`┌─────────────────────────────────────────────────────────┐
+│  AGENTS.md (read first)                                 │
+│  "Here's what you need to know to start working"        │
+│  - Key decisions (summarized)                           │
+│  - Current status                                       │
+│  - Pointers to detail files                             │
+└─────────────────────┬───────────────────────────────────┘
+                      │ references
+          ┌───────────┼───────────┬─────────────┐
+          ▼           ▼           ▼             ▼
+┌─────────────┐ ┌───────────┐ ┌─────────┐ ┌──────────┐
+│ DECISIONS   │ │ ROADMAP   │ │ JOURNEY │ │ RESEARCH │
+│ (why)       │ │ (what)    │ │ (story) │ │ (context)│
+│             │ │           │ │         │ │          │
+│ Full        │ │ Phases    │ │ Origin  │ │ Market   │
+│ decision    │ │ Features  │ │ Wins    │ │ Comps    │
+│ records     │ │ Success   │ │ Lessons │ │ Users    │
+│ w/ context  │ │ criteria  │ │ Quotes  │ │ Data     │
+└─────────────┘ └───────────┘ └─────────┘ └──────────┘
+     ▲               ▲             ▲            ▲
+     │               │             │            │
+     └───────────────┴─────────────┴────────────┘
+              All append-only or semi-static
+              (updated incrementally, never wiped)`}</code></pre>
+        </div>
+
+        <h3>Why This Works Better Than Simple</h3>
+        <ul>
+          <li><strong>Separation of concerns</strong> - Decisions, roadmap, narrative, and research serve different cognitive needs. Splitting them means you always know where to look (and where to write).</li>
+          <li><strong>Scalability</strong> - A single changelog becomes unwieldy fast. Separate files can grow independently without becoming a wall of text.</li>
+          <li><strong>AI efficiency</strong> - Agents can read only what they need. Working on a feature? Read AGENTS.md + ROADMAP.md. Questioning a past choice? Read DECISIONS.md. Understanding competitive positioning? Read RESEARCH.md.</li>
+          <li><strong>Human maintainability</strong> - It's clear what goes where. New decision? DECISIONS.md. Shipped something? JOURNEY.md. Found relevant research? RESEARCH.md. No ambiguity.</li>
+          <li><strong>Narrative preservation</strong> - JOURNEY.md keeps the story intact. In the simple approach, the narrative gets buried in operational entries.</li>
+        </ul>
+
+        <h3>Workflow for AI Assistants</h3>
+        <p>Per the AGENTS.md instructions:</p>
+        <ul>
+          <li><strong>Before starting work:</strong> Read AGENTS.md first for quick context, check DECISIONS.md before suggesting new approaches</li>
+          <li><strong>When making decisions:</strong> Update DECISIONS.md with full entry, update AGENTS.md summary, conditionally update other files if relevant</li>
+          <li><strong>Don't defer updates</strong> - update files as decisions are made, not later</li>
+          <li><strong>Cross-reference</strong> - always link between files</li>
+        </ul>
+
+        <h3>When to Use This Approach</h3>
+        <ul>
+          <li>Building something substantial over months (not a weekend project)</li>
+          <li>Multiple people (or AI sessions) need to pick up context quickly</li>
+          <li>You want to tell the story later (investors, users, team members)</li>
+          <li>Decisions need clear documentation for "why did we do it this way?"</li>
+          <li>You're using AI tools extensively and need to manage context efficiently</li>
+        </ul>
+
+        <p>
+          <strong>Note:</strong> For simpler projects, the two-file approach (Simple) may be sufficient.
+          This architecture adds overhead that pays off at scale.
+        </p>
+      </>
+    )
+  },
+  {
+    id: 'memory-cursor-setup',
+    title: 'Cursor Setup',
+    content: (
+      <>
+        <p>
+          If you're using Cursor, here's how to configure it to work with your persistent memory files automatically
+          using <code>.cursorrules</code>.
+        </p>
+
+        <h3>How .cursorrules Works</h3>
+        <p>
+          <code>.cursorrules</code> is a special file that Cursor automatically reads when it starts working in your project.
+          Think of it as instructions that tell Cursor how to behave in your codebase. When you create a <code>.cursorrules</code>
+          file in your project root, Cursor reads it automatically—no configuration needed.
+        </p>
+
+        <h3>Setup for Simple Approach</h3>
+        <p>Copy and paste this prompt into Cursor:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`Create a \`.cursorrules\` file in the project root with the following content:
+
+# Cursor Rules for Persistent Memory
+
+## Session Start
+- At the start of EVERY new chat session, automatically read \`AGENTS.md\` to understand project context
+- If \`AGENTS.md\` doesn't exist, offer to create it
+
+## After Completing Tasks
+- Append an entry to \`changelog.md\` documenting:
+  - Date and what was done
+  - Any decisions made and why
+  - Context for future sessions
+- Keep entries concise but informative
+
+## File References
+- ALWAYS prefer referencing specific files over pasting large code blocks
+- Use file paths and line numbers when discussing code (format: \`path/to/file.js:12\`)`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <h3>Setup for Nuanced Approach</h3>
+        <p>Copy and paste this prompt into Cursor:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`Create a \`.cursorrules\` file in the project root with the following content:
+
+# Cursor Rules for Multi-File Memory
+
+## Session Start
+- At the start of EVERY new chat session, read \`AGENTS.md\` first for quick context
+- Check \`DECISIONS.md\` before suggesting new approaches
+
+## When Making Decisions
+- Update \`DECISIONS.md\` with full entry (date, decision, context, rationale, alternatives, trade-offs)
+- Update \`AGENTS.md\` summary if the decision affects project overview
+- Update \`ROADMAP.md\` if the decision affects what's being built
+- Update \`JOURNEY.md\` for significant milestones or wins
+
+## File Reading by Task Type
+- Working on a feature: AGENTS.md + ROADMAP.md
+- Questioning a past choice: DECISIONS.md
+- Understanding competitive positioning: RESEARCH.md
+- Adding milestone or win: JOURNEY.md
+
+## Important Rules
+- Don't defer updates—update files as decisions are made, not later
+- Cross-reference between files when relevant
+- Keep AGENTS.md concise—details live in other files
+- DECISIONS.md is append-only (never edit past entries)
+
+## File References
+- ALWAYS prefer referencing specific files over pasting large code blocks
+- Use file paths and line numbers when discussing code (format: \`path/to/file.js:12\`)`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+
+        <h3>Monitoring Context Usage</h3>
+        <p>Cursor shows context usage and can warn you when approaching limits:</p>
+        <ul>
+          <li><strong>Token Counter</strong> - Visible at the bottom of the chat panel showing tokens used vs. available</li>
+          <li><strong>Warning Signs</strong> - Model repetition, forgetting recent decisions, generic responses</li>
+          <li><strong>When Full</strong> - Start a new chat; the AI will read your memory files to catch up</li>
+        </ul>
+
+        <p>
+          <strong>Pro tip:</strong> Pin your primary memory file (e.g., <code>AGENTS.md</code> or <code>docs/ai-context.md</code>) in Cursor (right-click → Pin)
+          so it's always visible and you can see when it's updated.
+        </p>
       </>
     )
   },
@@ -1257,22 +1473,34 @@ export const navLabels = {
   'prerequisites': 'Pre-reqs',
   'github-repository-setup': 'Github',
   'vercel-deployment': 'Vercel',
-  'custom-domain-setup': 'Custom domain',
-  'figma-mcp-setup': 'Figma 🤝 Cursor',
   'cursor-setup': 'Cursor',
-  'cursor-memory-context': 'Memory & Context'
+  'best-practices': 'Best Practices',
+  'best-practices-design': 'Design Smart',
+  'best-practices-errors': 'Error Handling',
+  'best-practices-action': 'Action over Explanation',
+  'memory-context': 'Memory & Context',
+  'memory-simple': 'Simple',
+  'memory-nuanced': 'Nuanced',
+  'memory-cursor-setup': 'Cursor Setup'
 }
 
 // Sections that should be nested under Prerequisites
 export const nestedSections = [
   'github-repository-setup',
   'vercel-deployment',
-  'custom-domain-setup',
-  'figma-mcp-setup',
   'cursor-setup'
 ]
 
-// Sections that should be nested under Cursor
-export const cursorNestedSections = [
-  'cursor-memory-context'
+// Sections that should be nested under Best Practices
+export const bestPracticesNestedSections = [
+  'best-practices-design',
+  'best-practices-errors',
+  'best-practices-action'
+]
+
+// Sections that should be nested under Memory & Context
+export const memoryNestedSections = [
+  'memory-simple',
+  'memory-nuanced',
+  'memory-cursor-setup'
 ]
