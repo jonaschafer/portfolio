@@ -1,19 +1,51 @@
 // Content sections for the vibe-coding-setup wiki
-export const sections = [
+const allSections = [
   {
     id: 'intro',
     title: 'Get the vibes right (man).',
     content: (
       <>
         <p>
-          This guide will walk you through setting up everything you need to start vibe coding with Figma designs.
-          Vibe coding is about creating a seamless workflow between design and development, allowing you to quickly
-          translate Figma designs into working code with the help of AI-powered tools.
+          Vibe coding is building software by describing what you want instead of writing every line of code yourself.
         </p>
         <p>
-          By the end of this tutorial, you'll have a complete development environment that connects Figma, Cursor,
-          GitHub, and Vercel into a cohesive workflow. We'll also cover Supabase (optional) if you need backend functionality.
+          Traditional coding means you write every function, debug every error, and read documentation for every library. You copy-paste from Stack Overflow. Basic features take hours. Vibe coding flips that: you describe what you want—like &quot;Add user authentication&quot;—and AI writes the implementation, debugs errors, and knows the documentation. You get working code in minutes instead of hours.
         </p>
+        <p>
+          You&apos;re still the developer. You make architectural decisions, review code, and ensure quality. But you&apos;re freed from the tedious work of translating ideas into syntax.
+        </p>
+        <p>
+          This isn&apos;t lazy. It&apos;s leverage. A construction foreman doesn&apos;t personally nail every board. They direct the work, ensure quality, make decisions. That&apos;s you with AI.
+        </p>
+        <p>
+          The question isn&apos;t &quot;Can AI code?&quot; It&apos;s &quot;Why are you still doing work AI can do?&quot;
+        </p>
+      </>
+    )
+  },
+  {
+    id: 'workflow',
+    title: 'The Actual Vibe Coding Workflow',
+    content: (
+      <>
+        <p><strong>What vibe coding looks like in practice:</strong></p>
+        <ol>
+          <li><strong>Start with strategy (Claude)</strong> — Describe what you want to build. Discuss architecture, tradeoffs, decisions. Get a plan before writing code.</li>
+          <li><strong>Execute with code (Cursor)</strong> — Take the plan to Cursor. Let Cursor write the actual code. Cursor reads your project docs for context.</li>
+          <li><strong>Iterate and refine (both)</strong> — Cursor for implementation details. Claude for &quot;should we do it this way or that way?&quot; Back and forth as needed.</li>
+        </ol>
+        <h3>Example Session</h3>
+        <p><strong>You (in Claude):</strong> &quot;I need to add user authentication to my app. Should I use Supabase Auth or build custom?&quot;</p>
+        <p><strong>Claude:</strong> Discusses options, recommends Supabase Auth for faster MVP, explains security benefits, notes you can migrate later if needed.</p>
+        <p><strong>You (in Cursor):</strong> &quot;Add Supabase authentication to the app. Email/password + Google Sign-In.&quot;</p>
+        <p><strong>Cursor:</strong> Reads AGENTS.md for context, writes auth code, updates database schema, adds UI components, updates relevant docs.</p>
+        <h3>Key Insight</h3>
+        <p>Claude for thinking. Cursor for doing. Don&apos;t try to make one tool do both jobs.</p>
+        <p>The magic happens when you use each tool for what it&apos;s optimized for:</p>
+        <ul>
+          <li>Claude excels at strategic thinking, exploring options, critiquing approaches</li>
+          <li>Cursor excels at writing code, implementing features, executing plans</li>
+        </ul>
       </>
     )
   },
@@ -37,6 +69,24 @@ export const sections = [
           <li><strong>Cursor</strong> - AI-powered code editor (download from cursor.sh)</li>
           <li><strong>Node.js (optional)</strong> - Version 18 or higher (only needed if you're using Next.js or React)</li>
         </ul>
+      </>
+    )
+  },
+  {
+    id: 'claude-setup',
+    title: 'Claude Setup',
+    content: (
+      <>
+        <p>
+          Use <a href="https://claude.ai" target="_blank" rel="noopener noreferrer">Claude</a> for strategy and planning before you write code. No special setup required—just create an account and start a conversation.
+        </p>
+        <h3>Memory / Project Context</h3>
+        <p>
+          For ongoing projects, start each Claude session by pasting or uploading a short summary of your project (tech stack, what you&apos;re building, key decisions). You can use the same <code>AGENTS.md</code> summary you use for Cursor. This gives Claude context so you don&apos;t re-explain everything.
+        </p>
+        <p>
+          <strong>Tip:</strong> Keep a project context note (or link to AGENTS.md) and paste it into Claude when you start a planning session. &quot;Here&apos;s my project context. I need to decide...&quot;
+        </p>
       </>
     )
   },
@@ -261,10 +311,9 @@ const apiKey = process.env.NEXT_PUBLIC_API_KEY;`}</code></pre>
 
         <h3>Rules for AI (Cursor Settings)</h3>
         <p>
-          Add project-agnostic instructions that apply to all your Cursor chats via <strong>Settings → Cursor Settings → Rules for AI</strong>.
+          Add project-agnostic instructions via <strong>Settings → Cursor Settings → Rules for AI</strong>.
           One rule we recommend: tell Cursor to use tools directly instead of giving you manual instructions.
         </p>
-        <p>Add this to your Rules for AI:</p>
         <div className="code-block-wrapper">
           <pre><code className="copyable-code">{`When you have access to tools via MCP or other integrations, ALWAYS use them directly instead of giving me instructions.
 
@@ -275,10 +324,44 @@ Only give me manual instructions when you literally cannot perform the action (e
 Default to action, not explanation.`}</code></pre>
         </div>
 
-        <p>
-          For more rules you can add to your <code>.cursorrules</code> file, see the <a href="#best-practices">Best Practices</a> section
-          which includes design guidelines and error handling patterns.
-        </p>
+        <h3>Example .cursorrules</h3>
+        <p>Here&apos;s a real <code>.cursorrules</code> file that demonstrates &quot;concise, action-oriented&quot;:</p>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`# Project: [Your App Name]
+# Stack: [Your tech stack]
+
+## Before Making Changes
+- Read AGENTS.md for current context
+- Show me your plan before executing
+- Ask about tradeoffs when multiple approaches exist
+- Wait for approval
+
+## After Completing Work
+- Update AGENTS.md with what changed and why
+- Note new patterns
+- Clean up only your changes
+
+## Code Quality
+- [Your language/framework] best practices
+- Prefer simplicity over cleverness
+- Comment only when code isn't self-explanatory
+
+## Communication Style
+- Direct and concise
+- Code-first: show code, explain when asked
+- Default to action, not explanation
+
+## Project Context
+- Current phase: [e.g., MVP v1]
+- Key constraints: [e.g., Solo builder, 3-month timeline]
+- Team: [e.g., Solo with 2 advisors]
+
+## Anti-Patterns to Avoid
+- Don't suggest [deferred features]
+- Don't add [libraries we don't need yet]
+- Don't over-engineer for scale we don't have`}</code></pre>
+        </div>
+        <p><strong>Why this works:</strong> Cursor knows what to do by default. You don&apos;t have to remember prompts or paste instructions every time. The file tells Cursor: what to read for context (AGENTS.md), how to behave (ask before big changes, update docs after), what quality standards to follow, and what to avoid. Once configured, you just open Cursor and start working.</p>
 
         <h3>Connecting Figma to Cursor via MCP</h3>
         <p>
@@ -359,9 +442,120 @@ Default to action, not explanation.`}</code></pre>
     content: (
       <>
         <p>
-          These best practices will help you get the most out of vibe coding. They cover design guidelines for working with Figma,
-          and error handling patterns to make your AI assistant more autonomous.
+          These best practices will help you get the most out of vibe coding: project memory, when to use which tool,
+          and common mistakes to avoid.
         </p>
+      </>
+    )
+  },
+  {
+    id: 'project-memory-system',
+    title: 'Project Memory System',
+    content: (
+      <>
+        <p><strong>The problem:</strong> AI forgets everything between sessions.</p>
+        <p><strong>The solution:</strong> Documentation files that AI reads automatically.</p>
+        <h3>The System</h3>
+        <p><strong>AGENTS.md</strong> — Quick reference. Current decisions and tech stack, what&apos;s built so far, active context AI needs. AI reads this FIRST every session.</p>
+        <p><strong>DECISIONS.md</strong> — Decision log. Full rationale for choices made, alternatives considered, when and why. &quot;Why did we choose X over Y?&quot;</p>
+        <p><strong>.cursorrules</strong> — Behavioral defaults. How Cursor should act, project-specific conventions, quality standards. Cursor reads this automatically.</p>
+        <h3>How It Works</h3>
+        <ol>
+          <li>You open Cursor</li>
+          <li>Cursor reads <code>.cursorrules</code> (knows how to behave)</li>
+          <li>Cursor reads <code>AGENTS.md</code> (knows project context)</li>
+          <li>You start working with full context loaded</li>
+        </ol>
+        <p>You don&apos;t explain the project every time. You just start working.</p>
+        <h3>Example AGENTS.md</h3>
+        <div className="code-block-wrapper">
+          <pre><code className="copyable-code">{`# Project Context
+
+**Last Updated**: 2026-01-30
+
+## Tech Stack
+- React Native + Expo (iOS/Android)
+- Supabase (database, auth, storage)
+- TypeScript
+
+## What's Built
+- ✅ Authentication (email/password + Google)
+- ✅ User profiles
+- ✅ Basic dashboard
+- 🚧 Friend management (in progress)
+
+## Current Focus
+Building friend orbit visualization for MVP v1
+
+## Key Decisions
+- Using Supabase Auth (not custom)
+- iOS first, Android later
+- Manual friend entry (no contact import yet)
+
+See DECISIONS.md for full rationale`}</code></pre>
+          <button className="copy-button" aria-label="Copy code">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </button>
+        </div>
+        <h3>Best Practices</h3>
+        <p><strong>Keep AGENTS.md current</strong> — Update when you build new features. Keep it concise. Link to detailed docs for more.</p>
+        <p><strong>Don&apos;t over-document</strong> — Start with just AGENTS.md. Add DECISIONS.md when you have decisions. Don&apos;t create empty files &quot;for later&quot;.</p>
+        <p><strong>Let Cursor update them</strong> — After finishing work: &quot;Update AGENTS.md with what we just built.&quot; Cursor will update the file. You don&apos;t manually maintain it. The system works when it&apos;s frictionless.</p>
+      </>
+    )
+  },
+  {
+    id: 'when-to-use-which-tool',
+    title: 'When to Use Which Tool',
+    content: (
+      <>
+        <h3>Use Claude for</h3>
+        <ul>
+          <li><strong>Strategy and planning</strong> — &quot;Should we build this feature?&quot; &quot;What&apos;s the best approach for X?&quot;</li>
+          <li><strong>Architecture decisions</strong> — &quot;Supabase or Firebase?&quot; &quot;REST API or GraphQL?&quot;</li>
+          <li><strong>Exploring tradeoffs</strong> — &quot;What are the pros and cons?&quot; &quot;What will we regret in 6 months?&quot;</li>
+          <li><strong>Learning new concepts</strong> — &quot;Explain how OAuth works&quot; &quot;JWT vs sessions?&quot;</li>
+          <li><strong>Reviewing and critiquing</strong> — &quot;Review this code for security&quot; &quot;Is this architecture sound?&quot;</li>
+          <li><strong>&quot;Is this a good idea?&quot;</strong> — &quot;Should we add this dependency?&quot; &quot;Am I overthinking this?&quot;</li>
+        </ul>
+        <h3>Use Cursor for</h3>
+        <ul>
+          <li><strong>Writing actual code</strong> — &quot;Add user authentication&quot; &quot;Create a dashboard component&quot;</li>
+          <li><strong>Implementing features from a plan</strong> — After discussing with Claude, execute in Cursor. Cursor reads your docs and writes the code.</li>
+          <li><strong>Debugging and fixing errors</strong> — &quot;Fix this TypeScript error&quot; &quot;Why isn&apos;t this API call working?&quot;</li>
+          <li><strong>Refactoring existing code</strong> — &quot;Extract this into a reusable component&quot; &quot;Add error handling here&quot;</li>
+          <li><strong>Creating files and project structure</strong> — &quot;Create a new React component&quot; &quot;Set up the database schema&quot;</li>
+          <li><strong>Running commands</strong> (when MCP configured) — &quot;Run the tests&quot; &quot;Create the Supabase table&quot; &quot;Deploy to staging&quot;</li>
+        </ul>
+        <h3>The Pattern</h3>
+        <ol>
+          <li><strong>Think in Claude</strong> → Get a plan, discuss tradeoffs, make decisions</li>
+          <li><strong>Build in Cursor</strong> → Execute the plan, write the code</li>
+          <li><strong>Iterate</strong> → Back and forth as needed</li>
+        </ol>
+        <p><strong>Example flow:</strong> Claude: &quot;Let&apos;s use Supabase Auth with row-level security. Here&apos;s why...&quot; You: &quot;Sounds good.&quot; Cursor: &quot;Add Supabase Auth with RLS policies for users table&quot; → implements it. Claude: &quot;Review this auth implementation for security issues&quot; → suggests improvements. Cursor: &quot;Apply those security improvements&quot; → updates code.</p>
+        <p>Don&apos;t try to do everything in one tool. They&apos;re optimized for different jobs.</p>
+      </>
+    )
+  },
+  {
+    id: 'common-mistakes',
+    title: 'Common Vibe Coding Mistakes',
+    content: (
+      <>
+        <p><strong>❌ Mistake 1: Making AI explain instead of do</strong> — Wrong: &quot;How would I add authentication?&quot; Right: &quot;Add Supabase authentication with email/password and Google Sign-In&quot;. The AI can do it. Let it.</p>
+        <p><strong>❌ Mistake 2: Not using project memory</strong> — Wrong: Re-explaining your project every session. Right: Create AGENTS.md once; AI reads it automatically. Every session starts with full context.</p>
+        <p><strong>❌ Mistake 3: Using one tool for everything</strong> — Wrong: All planning in Cursor or all coding in Claude. Right: Claude for strategy, Cursor for execution.</p>
+        <p><strong>❌ Mistake 4: Not configuring tools properly</strong> — Wrong: Default settings; AI gives instructions instead of acting. Right: Configure MCP, set behavioral defaults, connect to your tools. Action over explanation.</p>
+        <p><strong>❌ Mistake 5: Over-documenting</strong> — Wrong: Creating 20 empty docs &quot;for later&quot;. Right: Create docs when you have content. Start with AGENTS.md and .cursorrules. Empty files are noise.</p>
+        <p><strong>❌ Mistake 6: Under-specifying</strong> — Wrong: &quot;Make it better&quot;. Right: &quot;Add error handling for failed API calls with user-friendly messages&quot;. Be specific. AI can&apos;t read your mind.</p>
+        <p><strong>❌ Mistake 7: Not reviewing AI output</strong> — Wrong: Blindly accepting everything. Right: Review code, test features, verify logic. You&apos;re still the developer.</p>
+        <p><strong>❌ Mistake 8: Fighting with AI instead of redirecting</strong> — Wrong: &quot;No that&apos;s not what I meant&quot; → &quot;No still wrong&quot;. Right: &quot;Actually, I want X instead of Y. Here&apos;s why...&quot; Clarify. It&apos;s a conversation.</p>
+        <p><strong>❌ Mistake 9: Not leveraging AI&apos;s strengths</strong> — Wrong: Writing boilerplate manually. Right: &quot;Create all CRUD operations for the users table&quot;. AI excels at boilerplate, repetitive tasks, well-known solutions. Save your brain for the interesting problems.</p>
+        <p><strong>❌ Mistake 10: Forgetting you&apos;re still the architect</strong> — Wrong: &quot;Just build me an app that does X&quot;. Right: &quot;Here&apos;s my plan: [architecture]. Start with authentication using Supabase.&quot; You make the decisions. AI implements them. You&apos;re the senior engineer. AI is the junior dev who codes fast.</p>
       </>
     )
   },
@@ -1005,62 +1199,53 @@ Default to action, not explanation.`}</code></pre>
     )
   },
   {
-    id: 'what-about-backend',
-    title: 'What About Backend? (Optional)',
+    id: 'supabase-mcp',
+    title: 'Power Move: Connect Cursor Directly to Supabase',
     content: (
       <>
-        <p>
-          If your project needs a database, user authentication, or other backend features,
-          Supabase is a great option. It's like having a backend without managing servers yourself.
-        </p>
-
-        <h3>What is Supabase?</h3>
-        <p>Supabase provides:</p>
+        <p>This is the difference between vibe coding and regular coding.</p>
+        <p><strong>Instead of:</strong></p>
+        <ol>
+          <li>Writing SQL in Cursor</li>
+          <li>Copying it</li>
+          <li>Opening Supabase dashboard</li>
+          <li>Pasting into SQL editor</li>
+          <li>Running it manually</li>
+          <li>Going back to Cursor</li>
+        </ol>
+        <p><strong>You do this:</strong></p>
+        <ol>
+          <li>&quot;Create a users table with email and name columns&quot;</li>
+          <li>Cursor does it</li>
+        </ol>
+        <h3>What Supabase MCP Enables</h3>
         <ul>
-          <li><strong>PostgreSQL database</strong> - A full-featured database (think of it like a spreadsheet, but much more powerful)</li>
-          <li><strong>Built-in authentication</strong> - Let users sign up and log in (email, social logins, magic links)</li>
-          <li><strong>Real-time subscriptions</strong> - Your app can update instantly when data changes</li>
-          <li><strong>Storage</strong> - Upload and manage files (images, documents, etc.)</li>
-          <li><strong>Auto-generated APIs</strong> - Supabase automatically creates APIs from your database, so you don't have to write backend code</li>
-          <li><strong>Free tier</strong> - Generous limits for personal projects</li>
+          <li>Cursor can read your database schema</li>
+          <li>Cursor can execute SQL directly</li>
+          <li>Cursor can create tables, add columns, run migrations</li>
+          <li>Cursor can add RLS (Row Level Security) policies</li>
+          <li>You never leave your editor</li>
         </ul>
-
-        <h3>Creating a Supabase Project</h3>
-        <p>Ask Cursor to help you set up Supabase, or follow these steps:</p>
-        <ol>
-          <li>Go to <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">supabase.com</a> and sign up</li>
-          <li>Click "New Project"</li>
-          <li>Choose an organization (or create one)</li>
-          <li>Enter project name and database password</li>
-          <li>Select a region closest to your users</li>
-          <li>Click "Create new project" (takes 1-2 minutes)</li>
-        </ol>
-
-        <h3>Getting Your API Keys</h3>
-        <p>Once your project is ready:</p>
-        <ol>
-          <li>Go to Project Settings → API</li>
-          <li>Copy your Project URL (e.g., <code>https://xxxxx.supabase.co</code>)</li>
-          <li>Copy your anon/public key (safe for client-side use)</li>
-          <li>Copy your service_role key (keep secret, server-side only)</li>
-        </ol>
-
-        <p><strong>Pro tip:</strong> Ask Cursor to help you set up Supabase in your project. Just tell Cursor you want to use Supabase,
-        and it can help you install the client library and set up the connection.</p>
-
-        <h3>Using Supabase in Your Project</h3>
-        <p>Ask Cursor to help you connect Supabase, or use this as a starting point:</p>
+        <h3>Setup (5 minutes)</h3>
+        <h4>Step 1: Get your Supabase credentials</h4>
+        <p>Go to your Supabase project: Settings → API. Copy Project URL (e.g. <code>https://xxxxx.supabase.co</code>) and the <strong>service_role</strong> key (NOT the anon key).</p>
+        <h4>Step 2: Add to Cursor MCP config</h4>
+        <p>Mac: <code>~/Library/Application Support/Cursor/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json</code></p>
+        <p>Windows: <code>%APPDATA%\Cursor\User\globalStorage\saoudrizwan.claude-dev\settings\cline_mcp_settings.json</code></p>
         <div className="code-block-wrapper">
-          <pre><code className="copyable-code">{`// Install the Supabase client (ask Cursor to do this)
-// npm install @supabase/supabase-js
-
-// Create a Supabase client (Cursor can help you set this up)
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = 'https://your-project.supabase.co'
-const supabaseAnonKey = 'your-anon-key'
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)`}</code></pre>
+          <pre><code className="copyable-code">{`{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-supabase",
+        "YOUR_PROJECT_URL",
+        "YOUR_SERVICE_ROLE_KEY"
+      ]
+    }
+  }
+}`}</code></pre>
           <button className="copy-button" aria-label="Copy code">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -1068,9 +1253,23 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)`}</code></pre
             </svg>
           </button>
         </div>
-
-        <p>Then ask Cursor to help you use it. For example: "Help me query data from Supabase" or
-        "How do I add user authentication with Supabase?"</p>
+        <p>Replace <code>YOUR_PROJECT_URL</code> and <code>YOUR_SERVICE_ROLE_KEY</code> with your actual values.</p>
+        <h4>Step 3: Restart Cursor</h4>
+        <p>Close and reopen Cursor completely.</p>
+        <h3>Now You Can Say</h3>
+        <ul>
+          <li><strong>&quot;Create a users table with email and name columns&quot;</strong> → Cursor creates it in Supabase</li>
+          <li><strong>&quot;Add RLS policies to the people table so users can only see their own data&quot;</strong> → Cursor adds the policies</li>
+          <li><strong>&quot;Show me all tables in the database&quot;</strong> → Cursor shows you the schema</li>
+          <li><strong>&quot;Add a profile_photo_url column to users table&quot;</strong> → Cursor runs the migration</li>
+          <li><strong>&quot;Create a hangouts table with user_id, date, and notes columns&quot;</strong> → Cursor creates it with proper foreign keys</li>
+        </ul>
+        <h3>Why This Matters</h3>
+        <p>Without MCP: You&apos;re a translator between AI and tools. With MCP: AI operates the tools directly. This is vibe coding. You describe what you want. The AI does it. No more copying and pasting SQL, switching between windows, or manual migrations. Just: &quot;Make it so&quot; and it happens.</p>
+        <h3>Troubleshooting</h3>
+        <p><strong>&quot;MCP server not found&quot;</strong> — Restart Cursor completely. Check the file path for your OS. Verify the JSON is valid (no trailing commas).</p>
+        <p><strong>&quot;Authentication failed&quot;</strong> — Use service_role key, not anon key. Check project URL has no trailing slash.</p>
+        <p><strong>&quot;Command not found: npx&quot;</strong> — Install Node.js from nodejs.org and restart terminal/Cursor.</p>
       </>
     )
   },
@@ -1172,6 +1371,52 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)`}</code></pre
           Happy vibe coding! Remember, the best workflow is the one that works for you.
           Experiment, iterate, and refine your setup as you go.
         </p>
+      </>
+    )
+  },
+  {
+    id: 'example-projects',
+    title: 'Example Projects',
+    content: (
+      <>
+        <p>Links to real examples built with vibe coding:</p>
+        <ul>
+          <li><a href="https://cursor.sh/docs" target="_blank" rel="noopener noreferrer">Cursor Documentation</a></li>
+          <li><a href="https://www.figma.com/developers" target="_blank" rel="noopener noreferrer">Figma Developer Resources</a></li>
+          <li><a href="https://vercel.com/docs" target="_blank" rel="noopener noreferrer">Vercel Documentation</a></li>
+          <li><a href="https://supabase.com/docs" target="_blank" rel="noopener noreferrer">Supabase Documentation</a></li>
+          <li><a href="https://github.com/modelcontextprotocol" target="_blank" rel="noopener noreferrer">MCP GitHub</a></li>
+        </ul>
+      </>
+    )
+  },
+  {
+    id: 'real-example',
+    title: 'Real Example: Building Authentication in 5 Minutes',
+    content: (
+      <>
+        <p>Here&apos;s what vibe coding looks like for a real feature.</p>
+        <h3>Step 1: Strategy in Claude</h3>
+        <p><strong>You:</strong> &quot;I need to add authentication to my React Native app. Should I use Supabase Auth or build custom?&quot;</p>
+        <p><strong>Claude:</strong> For an MVP, use Supabase Auth. Production-ready security, email/password + OAuth built-in, Row Level Security, generous free tier. 5 minutes to implement vs 5 days custom. You can migrate later if you outgrow it.</p>
+        <p><strong>You:</strong> &quot;Sold. What&apos;s the implementation plan?&quot;</p>
+        <p><strong>Claude:</strong> 1) Install Supabase client. 2) Configure Supabase in your app. 3) Create login/signup screens. 4) Add Google Sign-In. 5) Set up auth state management. 6) Add protected routes. 7) Test the flow.</p>
+        <h3>Step 2: Implementation in Cursor</h3>
+        <p><strong>You (in Cursor):</strong> &quot;Add Supabase authentication with email/password and Google Sign-In to the app. Use the plan from Claude.&quot;</p>
+        <p><strong>Cursor</strong> (reads AGENTS.md, sees React Native + Expo + Supabase): Installs @supabase/supabase-js, creates lib/supabase.ts, screens/LoginScreen.tsx, SignupScreen.tsx, adds Google Sign-In button, sets up auth state in App.tsx, adds protected route logic, updates AGENTS.md.</p>
+        <p><strong>5 minutes later:</strong> Working authentication.</p>
+        <h3>Step 3: Test and Refine</h3>
+        <p>You test it. Login works. Signup works. Google Sign-In works. You notice error messages are generic.</p>
+        <p><strong>You (in Cursor):</strong> &quot;Improve error messages to be user-friendly. &apos;Invalid credentials&apos; instead of error codes.&quot;</p>
+        <p><strong>Cursor:</strong> Updates error handling with friendly messages. Done.</p>
+        <h3>What Just Happened</h3>
+        <ul>
+          <li><strong>Planning:</strong> 2 minutes with Claude</li>
+          <li><strong>Implementation:</strong> 5 minutes with Cursor</li>
+          <li><strong>Refinement:</strong> 1 minute with Cursor</li>
+          <li><strong>Total:</strong> 8 minutes</li>
+        </ul>
+        <p>Traditional approach: 2–4 hours minimum. That&apos;s vibe coding. You focused on the decision (which auth to use). AI handled implementation. Now you can ship.</p>
       </>
     )
   },
@@ -1466,26 +1711,36 @@ Ask me questions one at a time, and compile my answers into a structured markdow
   }
 ]
 
+// Exclude old memory sections (replaced by project-memory-system)
+const excludedSectionIds = ['memory-context', 'memory-simple', 'memory-nuanced', 'memory-cursor-setup']
+export const sections = allSections.filter(s => !excludedSectionIds.includes(s.id))
+
 // Navigation labels for sidebar
 export const navLabels = {
   'overview': 'Tech Stack',
   'contribute': 'Contribute',
+  'workflow': 'The Actual Workflow',
   'prerequisites': 'Pre-reqs',
+  'claude-setup': 'Claude',
+  'next-steps': 'Next Steps',
   'github-repository-setup': 'Github',
   'vercel-deployment': 'Vercel',
   'cursor-setup': 'Cursor',
+  'supabase-mcp': 'Supabase MCP',
   'best-practices': 'Best Practices',
+  'project-memory-system': 'Project Memory',
+  'when-to-use-which-tool': 'When to Use Which Tool',
+  'common-mistakes': 'Common Mistakes',
   'best-practices-design': 'Design Smart',
   'best-practices-errors': 'Error Handling',
   'best-practices-action': 'Action over Explanation',
-  'memory-context': 'Memory & Context',
-  'memory-simple': 'Simple',
-  'memory-nuanced': 'Nuanced',
-  'memory-cursor-setup': 'Cursor Setup'
+  'example-projects': 'Example Projects',
+  'real-example': 'Real Example'
 }
 
 // Sections that should be nested under Prerequisites
 export const nestedSections = [
+  'claude-setup',
   'github-repository-setup',
   'vercel-deployment',
   'cursor-setup'
@@ -1493,14 +1748,13 @@ export const nestedSections = [
 
 // Sections that should be nested under Best Practices
 export const bestPracticesNestedSections = [
+  'project-memory-system',
+  'when-to-use-which-tool',
+  'common-mistakes',
   'best-practices-design',
   'best-practices-errors',
   'best-practices-action'
 ]
 
-// Sections that should be nested under Memory & Context
-export const memoryNestedSections = [
-  'memory-simple',
-  'memory-nuanced',
-  'memory-cursor-setup'
-]
+// No longer used (memory consolidated into project-memory-system)
+export const memoryNestedSections = []

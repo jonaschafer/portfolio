@@ -16,7 +16,6 @@ export default function VibeCodingSetupPage() {
   const [activeSection, setActiveSection] = useState('')
   const [prerequisitesExpanded, setPrerequisitesExpanded] = useState(true)
   const [bestPracticesExpanded, setBestPracticesExpanded] = useState(true)
-  const [memoryExpanded, setMemoryExpanded] = useState(true)
   const [contributeUnlocked, setContributeUnlocked] = useState(false)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
   const [passwordInput, setPasswordInput] = useState('')
@@ -987,7 +986,6 @@ export default function VibeCodingSetupPage() {
                 .map((section) => {
                   const isPrerequisites = section.id === 'prerequisites'
                   const isBestPractices = section.id === 'best-practices'
-                  const isMemory = section.id === 'memory-context'
                   const isNested = nestedSections.includes(section.id) || bestPracticesNestedSections.includes(section.id) || memoryNestedSections.includes(section.id)
                   const label = navLabels[section.id] || section.title
 
@@ -1046,42 +1044,6 @@ export default function VibeCodingSetupPage() {
                         </a>
                         <ul className={`nested ${bestPracticesExpanded ? 'expanded' : ''}`}>
                           {bestPracticesNestedSections.map(nestedId => {
-                            const nestedSection = sections.find(s => s.id === nestedId)
-                            if (!nestedSection) return null
-                            const nestedLabel = navLabels[nestedId] || nestedSection.title
-                            return (
-                              <li key={nestedId}>
-                                <a
-                                  onClick={() => scrollToSection(nestedId)}
-                                  className={activeSection === nestedId ? 'active' : ''}
-                                >
-                                  {nestedLabel}
-                                </a>
-                              </li>
-                            )
-                          })}
-                        </ul>
-                      </li>
-                    )
-                  } else if (isMemory) {
-                    return (
-                      <li key={section.id}>
-                        <a
-                          onClick={() => {
-                            setMemoryExpanded(!memoryExpanded)
-                            scrollToSection(section.id)
-                          }}
-                          className={activeSection === section.id ? 'active' : ''}
-                        >
-                          <span>{label}</span>
-                          <span className={`chevron ${memoryExpanded ? 'expanded' : ''}`}>
-                            <svg fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                            </svg>
-                          </span>
-                        </a>
-                        <ul className={`nested ${memoryExpanded ? 'expanded' : ''}`}>
-                          {memoryNestedSections.map(nestedId => {
                             const nestedSection = sections.find(s => s.id === nestedId)
                             if (!nestedSection) return null
                             const nestedLabel = navLabels[nestedId] || nestedSection.title
