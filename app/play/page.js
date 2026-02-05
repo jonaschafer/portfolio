@@ -4,6 +4,15 @@ import Link from 'next/link'
 
 const projects = [
   {
+    id: 'music-blog',
+    name: 'Sounds',
+    description: 'A music blog. YouTube audio playback with links to Spotify, Apple Music, Tidal. Brutalist design, random colors on hover.',
+    date: '2026.02.05',
+    type: 'MUSIC',
+    tags: ['React', 'Next.js'],
+    path: '/play/music-blog'
+  },
+  {
     id: 'spina',
     name: 'Spina',
     description: 'Helping a friend with her illustration side hustle. A straightforward guide for selling art online without being tech savvy.',
