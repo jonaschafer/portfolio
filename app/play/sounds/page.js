@@ -376,6 +376,31 @@ export default function MusicBlogPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    // Client-side Supabase fetch bypasses broken server API on Vercel
+    if (url && anonKey) {
+      fetch(`${url.replace(/\/$/, '')}/rest/v1/sounds?select=*&order=created_at.desc`, {
+        headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}`, Accept: 'application/json' }
+      })
+        .then((res) => (res.ok ? res.json() : Promise.reject(res)))
+        .then((data) =>
+          setSongs(
+            (data || []).map((row) => ({
+              id: row.id,
+              title: row.title,
+              artist: row.artist,
+              date: row.date,
+              youtubeId: row.youtube_id,
+              note: row.note || '',
+              links: row.links || {}
+            }))
+          )
+        )
+        .catch(() => setSongs(staticSongs))
+        .finally(() => setLoading(false))
+      return
+    }
     fetch('/api/sounds')
       .then((res) => (res.ok ? res.json() : Promise.reject(res)))
       .then((data) => setSongs(Array.isArray(data) ? data : []))
