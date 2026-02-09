@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",
+    "fetch-retry": "^6.0.0",
     "lucide-react": "^0.544.0",
     "next": "14.0.0",
     "react": "^18",

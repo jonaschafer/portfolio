@@ -1,11 +1,20 @@
 import { createClient } from '@supabase/supabase-js'
+import fetchRetry from 'fetch-retry'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
+const fetchWithRetry = fetchRetry(fetch, {
+  retries: 3,
+  retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 10000),
+  retryOn: (attempt, error) => attempt < 3 && error?.message?.includes('fetch failed')
+})
+
 const supabaseAdmin =
   supabaseUrl && supabaseServiceKey
-    ? createClient(supabaseUrl, supabaseServiceKey)
+    ? createClient(supabaseUrl, supabaseServiceKey, {
+        global: { fetch: fetchWithRetry }
+      })
     : null
 
 // GET: List all sounds
@@ -14,18 +23,19 @@ export async function GET() {
     return Response.json({ error: 'Supabase not configured' }, { status: 503 })
   }
 
-  const { data, error } = await supabaseAdmin
-    .from('sounds')
-    .select('*')
-    .order('created_at', { ascending: false })
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('sounds')
+      .select('*')
+      .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('Sounds GET error:', error)
-    return Response.json({ error: error.message }, { status: 500 })
-  }
+    if (error) {
+      console.error('Sounds GET error:', error, 'cause:', error.cause)
+      return Response.json({ error: error.message, cause: error.cause?.message }, { status: 500 })
+    }
 
-  // Map DB rows to frontend format (id, title, artist, date, youtubeId, note, links)
-  const songs = (data || []).map((row) => ({
+    // Map DB rows to frontend format (id, title, artist, date, youtubeId, note, links)
+    const songs = (data || []).map((row) => ({
     id: row.id,
     title: row.title,
     artist: row.artist,
@@ -35,7 +45,14 @@ export async function GET() {
     links: row.links || {}
   }))
 
-  return Response.json(songs)
+    return Response.json(songs)
+  } catch (err) {
+    console.error('Sounds GET throw:', err.message, 'cause:', err.cause?.message ?? err.cause)
+    return Response.json({
+      error: err.message,
+      cause: err.cause?.message ?? err.cause
+    }, { status: 500 })
+  }
 }
 
 // POST: Add a new sound
