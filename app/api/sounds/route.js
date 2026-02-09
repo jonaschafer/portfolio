@@ -17,33 +17,44 @@ const supabaseAdmin =
       })
     : null
 
-// GET: List all sounds
+// GET: List all sounds — use direct PostgREST fetch (avoids supabase-js fetch issues on Vercel)
 export async function GET() {
-  if (!supabaseAdmin) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) {
     return Response.json({ error: 'Supabase not configured' }, { status: 503 })
   }
 
   try {
-    const { data, error } = await supabaseAdmin
-      .from('sounds')
-      .select('*')
-      .order('created_at', { ascending: false })
+    const res = await fetch(
+      `${url.replace(/\/$/, '')}/rest/v1/sounds?select=*&order=created_at.desc`,
+      {
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        signal: AbortSignal.timeout(15000)
+      }
+    )
 
-    if (error) {
-      console.error('Sounds GET error:', error, 'cause:', error.cause)
-      return Response.json({ error: error.message, cause: error.cause?.message }, { status: 500 })
+    if (!res.ok) {
+      const text = await res.text()
+      console.error('Sounds GET PostgREST:', res.status, text.slice(0, 200))
+      return Response.json({ error: `Supabase ${res.status}`, detail: text.slice(0, 100) }, { status: 500 })
     }
 
-    // Map DB rows to frontend format (id, title, artist, date, youtubeId, note, links)
+    const data = await res.json()
     const songs = (data || []).map((row) => ({
-    id: row.id,
-    title: row.title,
-    artist: row.artist,
-    date: row.date,
-    youtubeId: row.youtube_id,
-    note: row.note || '',
-    links: row.links || {}
-  }))
+      id: row.id,
+      title: row.title,
+      artist: row.artist,
+      date: row.date,
+      youtubeId: row.youtube_id,
+      note: row.note || '',
+      links: row.links || {}
+    }))
 
     return Response.json(songs)
   } catch (err) {
