@@ -11,22 +11,12 @@ export default function OverviewPage() {
     { name: 'Footer', path: 'components/Footer.js', description: 'Footer with scroll-to-top button' },
     { name: 'Hero', path: 'components/Hero.js', description: 'Hero section component' },
     { name: 'Typewriter', path: 'components/Typewriter.js', description: 'Typewriter effect component' },
-    { name: 'WallOfSoundNavigation', path: 'components/WallOfSoundNavigation.js', description: 'Navigation for Wall of Sound section' },
-  ]
-
-  const wallOfSoundComponents = [
-    { name: 'MusicWall', path: 'app/wall-of-sound/components/MusicWall.js', description: 'Main music wall display component' },
-    { name: 'AlbumCard', path: 'app/wall-of-sound/components/AlbumCard.js', description: 'Individual album/track card component' },
-    { name: 'Player', path: 'app/wall-of-sound/components/Player.js', description: 'Music player component' },
-    { name: 'AddTrackModal', path: 'app/wall-of-sound/components/AddTrackModal.js', description: 'Modal for adding new tracks' },
   ]
 
   const pages = [
     { path: '/', name: 'Home', description: 'Main portfolio page with project carousels' },
     { path: '/play', name: 'Play', description: 'Collection of vibe-coded projects' },
     { path: '/play/vibe-coding-setup', name: 'Vibe Coding Setup', description: 'Tutorial page for setting up development environment' },
-    { path: '/wall-of-sound', name: 'Wall of Sound', description: 'Music wall application with Spotify integration' },
-    { path: '/wall-of-sound/login', name: 'Wall of Sound Login', description: 'Login page for Wall of Sound' },
   ]
 
   const techStack = {
@@ -60,15 +50,6 @@ export default function OverviewPage() {
       { name: 'Text White', hex: '#FAFAFA', usage: 'Primary text color on dark backgrounds' },
       { name: 'White', hex: '#FFFFFF', usage: 'Pure white for cards and backgrounds' },
       { name: 'Black', hex: '#000000', usage: 'Pure black for text and accents' },
-    ],
-    wallOfSound: [
-      { name: 'Background Pink', hex: '#FFDAD9', usage: 'Primary background for Wall of Sound section' },
-      { name: 'Text Dark', hex: '#2D1F0F', usage: 'Dark brown text color' },
-      { name: 'Text Secondary', hex: '#1E2939', usage: 'Secondary dark text' },
-      { name: 'Text Dark Alt', hex: '#1e1e1e', usage: 'Alternative dark text color' },
-      { name: 'Shelf Top', hex: '#8B7355', usage: 'Top shelf color for album display' },
-      { name: 'Shelf Bottom', hex: '#6B5644', usage: 'Bottom shelf color' },
-      { name: 'Shelf Mid', hex: '#A0826D', usage: 'Middle shelf color' },
     ],
     play: [
       { name: 'Hero Yellow', hex: '#ebac1e', usage: 'Hero section background (unused component)' },
@@ -107,13 +88,6 @@ export default function OverviewPage() {
       usage: 'Secondary text and labels',
       weights: ['400', '500', '600', '700'],
       examples: ['Name labels (16px)', 'Small text']
-    },
-    { 
-      name: 'Geist', 
-      source: 'Google Fonts', 
-      usage: 'Wall of Sound section typography',
-      weights: ['400', '500', '600', '700', '800', '900'],
-      examples: ['Wall of Sound UI elements']
     },
   ]
 
@@ -237,23 +211,6 @@ export default function OverviewPage() {
                     ))}
                   </div>
                 </div>
-                <div>
-                  <h3 className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[#FAFAFA] mb-[12px] font-medium">
-                    Wall of Sound Components
-                  </h3>
-                  <div className="flex flex-col gap-[12px]">
-                    {wallOfSoundComponents.map((comp, i) => (
-                      <div key={i} className="bg-white/5 p-[16px] rounded-[8px]">
-                        <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] text-[#FAFAFA] leading-[16.44px] mb-[4px]">
-                          <span className="font-medium">{comp.name}</span> — {comp.path}
-                        </p>
-                        <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] text-[#FAFAFA]/70 leading-[16.44px]">
-                          {comp.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </section>
 
@@ -318,7 +275,7 @@ export default function OverviewPage() {
                     <strong>Tailwind CSS</strong> handles styling through utility classes, processed by <strong>PostCSS</strong> and <strong>Autoprefixer</strong> for browser compatibility.
                   </p>
                   <p>
-                    <strong>Supabase</strong> provides backend services (database, authentication) for the Wall of Sound feature, accessed via API routes in Next.js.
+                    <strong>Supabase</strong> provides backend services (database, authentication) for the Sounds play app, accessed via API routes in Next.js.
                   </p>
                   <p>
                     <strong>TypeScript</strong> adds type safety across the codebase, with type definitions from <strong>@types/node</strong> and <strong>@types/react</strong>.

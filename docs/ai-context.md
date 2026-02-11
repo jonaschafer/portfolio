@@ -16,8 +16,7 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 ## Key Decisions
 
 ### Architecture Decisions
-- [Date] - [Decision]: [Reasoning]
-  - Example: "2024-01-15 - Chose Next.js over plain React: Need SSR for SEO and better performance"
+- 2026-02-11 - **Prototypes and play content**: Static-only prototypes live in `public/play/prototypes/`; app-backed play features in `app/play/`. Unused features (e.g. Wall of Sound) live in `archive/`. Prototype docs live with the prototype (e.g. `public/play/prototypes/spina/docs/`) so each prototype is self-contained.
 
 ### Design Patterns
 - [Pattern used]: [Why it was chosen]
@@ -30,9 +29,10 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 ## Architecture Notes
 
 ### Project Structure
-```
-[Brief overview of how the codebase is organized]
-```
+- **public/** — Static assets (fonts, images, icons) and static HTML prototypes. Prototypes live under `public/play/prototypes/<name>/` (e.g. spina, sourdough, campsite-reporter). Each prototype can have a `docs/` subfolder for its writeups (e.g. `public/play/prototypes/spina/docs/`).
+- **app/play/** — Next.js routes for "play" features that need the app (e.g. `/play/sounds`, `/play/vibe-coding-setup`). The play landing page at `/play` lists all projects and links to either these routes or to `/play/prototypes/<name>` for static prototypes.
+- **archive/** — Unused or retired app features (e.g. `archive/wall-of-sound`). Not served as routes; code preserved for reference.
+- **docs/** — Project-wide docs (e.g. `ai-context.md`). Prototype-specific docs live next to the prototype under `public/play/prototypes/<name>/docs/`.
 
 ### Important Patterns
 - [Pattern name]: [Description and where it's used]
@@ -85,5 +85,5 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 
 ---
 
-**Last Updated:** [Date]
+**Last Updated:** 2026-02-11
 **Maintained By:** [Your name/team]
