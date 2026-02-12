@@ -1,2 +1,0 @@
-# portfolio
-Figma MCP powered
