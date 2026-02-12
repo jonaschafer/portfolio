@@ -54,19 +54,19 @@ export const howItWorks = {
 export const caseStudyEndorsed = {
   title: 'Case Study: Brand architecture',
   situation: {
-    label: 'The Situation',
+    label: 'Situation',
     text: 'The CEO used "house of brands" constantly in design reviews, leadership meetings, and Slack threads. But the team had no idea what that meant operationally or what the tradeoffs were.',
     caption: 'What the team heard: "We\'re a house of brands" (??)',
     image: '/advising/context.png',
   },
   translation: {
-    label: 'The Translation',
+    label: 'Translation',
     text: 'I created a teaching deck explaining different brand architecture models in simple terms, showing what "house of brands" would mean for brand, marketing, and product strategy. Included budgetary implications, hiring priorities, naming considerations, and why an "endorsed" model made more sense for their stage.',
     caption: 'What I delivered: A framework that made abstract strategy actionable',
     image: '/advising/deck.png',
   },
   outcome: {
-    label: 'The Outcome',
+    label: 'Outcome',
     text: 'The CEO shifted to using "endorsed" in conversations and confidently hired a naming agency one month later with clear direction. Prevented months of expensive misalignment between vision and execution.',
     caption: 'From confusion to clarity in 4 weeks',
     image: null, // Add path e.g. /images/advising/endorsed-outcome.png

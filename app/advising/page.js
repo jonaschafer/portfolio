@@ -19,6 +19,7 @@ const advisingBg = '#FFDAD9'
 const advisingText = '#1e1e1e'
 
 const sectionTitle = "font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px]"
+const sectionTitleSmall = "font-['Mondwest',_sans-serif] text-[20px] leading-[1.2] tracking-[0.31px]"
 const bodyText = "font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[19.4px] leading-[1.2] md:leading-[1.2] tracking-[0.167px]"
 const bodyMuted = "font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] leading-[16.44px] tracking-[0.167px] text-[#1e1e1e]/70"
 const card = 'bg-[#1e1e1e]/5 p-[16px] md:p-[20px] rounded-[8px]'
@@ -37,7 +38,7 @@ export default function AdvisingPage() {
 
         {/* You're a good fit if... */}
         <section className="pb-[50px] md:pb-[60px]">
-          <h2 className={`${sectionTitle} mb-[28px]`} style={{ color: advisingText }}>You're a good fit if you:</h2>
+          <h2 className={`${sectionTitleSmall} mb-[28px]`} style={{ color: advisingText }}>You're a good fit if you:</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[16px]">
             {whenToCallMe.bullets.map((b, i) => (
               <div
