@@ -1,0 +1,146 @@
+Discovery
+
+Step 1: Discovery Call (30-45 min)
+What you're trying to figure out:
+What are their actual pain points right now?
+What do they need first vs. later?
+Who would you work with (just Head of Design? The CEO? The team?)
+What does success look like in 3 months? 6 months?
+Budget reality check (do they actually have $8-10k/month?)
+Questions to ask:
+"Walk me through the rebrand—what's working, what's not?"
+"What surfaces need attention first?" (website? product? marketing?)
+"Who's on the design team currently?" (are they capable of executing?)
+"What would make this engagement successful for you?"
+Red flags 🔴🔴
+They want 40 hours of work for 10 hours of pay
+They're vague about budget
+They want you to "fix everything"
+Green flags 🟢🟢
+They're clear on priorities
+They have budget approved
+They understand fractional = strategic, not production
+They have a plan to hire full-time eventually
+
+
+
+Send a Proposal
+
+Don't just "get hired on retainer"—send a proper proposal. Here's why:
+Forces you to think through scope (what you WILL and WON'T do)
+Sets expectations (they won't expect 40 hours of work)
+Protects you (you can point back to it when scope creeps)
+Looks professional (you're not desperate, you're a consultant)
+Gives them something to get approved (they need to run it by their boss/finance)
+What to include:
+(Keep it 2-3 pages max. Should be able to read in 5 mins)
+
+PROPOSAL: FRACTIONAL CREATIVE DIRECTOR
+HOVER x JON 
+
+OVERVIEW
+[1-2 paragraphs summarizing what they need and how you'll help]
+
+SCOPE
+What I'll do:
+- Strategic brand direction and creative leadership
+- Monthly design reviews with leadership (2-3 hours)
+- Async feedback on key projects (3-4 hours)
+- Art direction on critical surfaces (website, product, marketing)
+- Help establish processes and frameworks for the marketing design team
+- Advise on hiring your full-time creative lead
+
+What I won't do:
+- Day-to-day production work
+- Attend every team meeting
+- Manage non-design team members
+- Be available 24/7 for urgent requests
+
+DELIVERABLES (FIRST 90 DAYS)
+Month 1: Current state audit, stakeholder interviews, priorities roadmap
+Month 2: Strategic direction on [X surfaces], process documentation
+Month 3: [Specific deliverables based on their needs]
+
+COMMITMENT
+- 10-15 hours per month
+- 6-month initial engagement (with option to extend or transition to full-time hire)
+- Monthly retainer: $8-10k/month
+- Either party can terminate with 30 days notice
+
+HOW WE'LL WORK
+- Monthly strategic session (video, 90 min)
+- Async feedback via Slack/email
+- Shared Notion or Google Doc for tracking work
+- Monthly invoice, due on 1st of month
+
+SUCCESS METRICS
+[Based on discovery call—what does "good" look like for them?]
+
+NEXT STEPS
+If this looks good, I'll send a simple consulting agreement and we can kick off [date].
+
+
+
+
+
+Contract
+
+Use a basic consulting agreement. You can find templates online or ask Daniel for his. Key clauses:
+Services: "Fractional Creative Director services as outlined in attached SOW"
+Payment: "$X/month, due on 1st of month, net 15"
+Term: "6 months starting [date], renewable"
+Termination: "Either party may terminate with 30 days written notice"
+IP: "All work product belongs to Client"
+Confidentiality: Standard NDA language
+Independent Contractor: "Contractor is not an employee"
+Don't:
+Overthink it
+Use a 20-page contract
+Negotiate for weeks
+Ask for equity (keep it simple on your first one)
+
+
+Kick off
+
+Your first month is discovery and alignment:
+Week 1: Stakeholder Interviews
+Talk to CEO, Head of Product, Head of Marketing, anyone else relevant
+Understand their POV on the brand
+Learn what's working and what's not
+Week 2: Current State Audit
+Review all brand touchpoints (website, product, marketing, emails, etc.)
+Document what's inconsistent, what's missing, what's broken
+Take screenshots and organize in Figma or Notion
+Week 3: Priorities Mapping
+Based on interviews + audit, create a prioritized roadmap
+What needs attention NOW vs. LATER
+Get alignment with leadership
+Week 4: First Deliverable
+Could be: strategic direction doc, brand principles, redesign of one key surface
+Something tangible they can react to
+
+
+
+
+Tips
+
+Time tracking:
+Track your hours honestly (even if you go over, you'll learn)
+Don't nickel-and-dime (a 15-min Slack thread isn't billable)
+If you consistently go over 15 hours, raise it in month 2
+Communication:
+Set expectations early (response time, availability, meeting cadence)
+Use async as much as possible (Loom videos, Figma comments, Google Docs)
+Be clear when you're "on" vs. "off"
+Scope creep:
+It WILL happen on your first gig
+When it does, say: "Happy to do that, but it's outside our current scope. Want to add it for next month?"
+Don't be a pushover, but also don't be rigid on your first one
+Managing contractors:
+If you need to bring someone in, add 20% to their rate for your management
+Example: Contractor costs $100/hr, you charge them $120/hr
+Make it clear in the proposal: "Contractor costs billed at cost + 20% management fee"
+Monthly check-ins:
+End of each month: "Here's what we accomplished, here's what's next, here's where we stand on hours"
+Gives them visibility, builds trust
+
