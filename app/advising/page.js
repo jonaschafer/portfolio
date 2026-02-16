@@ -86,16 +86,11 @@ export default function AdvisingPage() {
                     <p className={`${bodyMuted} mb-[20px]`} style={{ color: 'rgba(30,30,30,0.6)' }}>{c.notIncluded}</p>
                   )}
                   <div className="border-t border-[#1e1e1e]/20 pt-[16px] mt-auto">
-                    <p className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-medium uppercase tracking-[0.05em] mb-[16px]" style={{ color: 'rgba(30,30,30,0.8)' }}>
-                      Pause or cancel anytime
-                    </p>
-                    <p className="font-['Mondwest',_sans-serif] text-[28px] md:text-[32px] leading-[1.2] tracking-[0.31px] mb-[8px]" style={{ color: advisingText }}>
-                      {c.price}
-                    </p>
-                    {c.hours && (
-                      <p className={`${bodyMuted} mb-[20px]`} style={{ color: advisingText }}>{c.hours}</p>
-                    )}
-                    {!c.hours && <div className="mb-[20px]" />}
+                    {/* Pricing hidden for launch – discuss based on scope if asked */}
+                    {/* <p className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-medium uppercase tracking-[0.05em] mb-[16px]" style={{ color: 'rgba(30,30,30,0.8)' }}>Pause or cancel anytime</p>
+                    <p className="font-['Mondwest',_sans-serif] text-[28px] md:text-[32px] leading-[1.2] tracking-[0.31px] mb-[8px]" style={{ color: advisingText }}>{c.price}</p>
+                    {c.hours && <p className={`${bodyMuted} mb-[20px]`} style={{ color: advisingText }}>{c.hours}</p>}
+                    {!c.hours && <div className="mb-[20px]" />} */}
                     <a
                       href={`mailto:${nextSteps.email}?subject=Advising%20-%20${encodeURIComponent(c.planName)}`}
                       className="inline-flex items-center font-['Haas_Grot_Disp',_sans-serif] text-[14px] font-medium px-[20px] py-[12px] rounded-[8px] hover:opacity-90 transition-opacity w-fit"

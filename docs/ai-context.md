@@ -17,6 +17,7 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 
 ### Architecture Decisions
 - 2026-02-11 - **Prototypes and play content**: Static-only prototypes live in `public/play/prototypes/`; app-backed play features in `app/play/`. Unused features (e.g. Wall of Sound) live in `archive/`. Prototype docs live with the prototype (e.g. `public/play/prototypes/spina/docs/`) so each prototype is self-contained.
+- 2026-02-15 - **Case studies**: Case study index at `/case-studies` with cursor-follow image preview (vanilla JS + requestAnimationFrame, no GSAP). Individual case studies at `/case-studies/[slug]`; content from `content.md` in each slug folder, rendered with react-markdown/remark-gfm. New case studies: add entry to `app/case-studies/case-studies-data.js` and create `app/case-studies/[slug]/page.js` + `content.md`. Blog template from other project moved to `archive/blog` (excluded from build via tsconfig) and is not used; case study article template lives in main app.
 
 ### Design Patterns
 - [Pattern used]: [Why it was chosen]
@@ -31,7 +32,8 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 ### Project Structure
 - **public/** — Static assets (fonts, images, icons) and static HTML prototypes. Prototypes live under `public/play/prototypes/<name>/` (e.g. spina, sourdough, campsite-reporter). Each prototype can have a `docs/` subfolder for its writeups (e.g. `public/play/prototypes/spina/docs/`).
 - **app/play/** — Next.js routes for "play" features that need the app (e.g. `/play/sounds`, `/play/vibe-coding-setup`). The play landing page at `/play` lists all projects and links to either these routes or to `/play/prototypes/<name>` for static prototypes.
-- **archive/** — Unused or retired app features (e.g. `archive/wall-of-sound`). Not served as routes; code preserved for reference.
+- **archive/** — Unused or retired app features (e.g. `archive/wall-of-sound`, `archive/blog`). Excluded from TypeScript/build. Not served as routes; code preserved for reference.
+- **app/case-studies/** — Case studies index (cursor preview grid) and per-study pages. Data in `case-studies-data.js`; each study has its own folder with `page.js` and `content.md`.
 - **docs/** — Project-wide docs (e.g. `ai-context.md`). Prototype-specific docs live next to the prototype under `public/play/prototypes/<name>/docs/`.
 
 ### Important Patterns
@@ -57,8 +59,7 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
   - Example: "Slow API response on mobile: Investigating caching strategy"
 
 ### Recent Changes
-- [Date] - [Change]: [Impact]
-  - Example: "2024-01-20 - Migrated to new API version: All endpoints updated, breaking changes handled"
+- 2026-02-15 - Nav: Work, Case Studies, Advising, Play, Email me (removed Vibes; 👋 → "Email me"). Advising page launched without pricing (commented out); added "See how this works in practice →" link to Case Studies. Case studies index with cursor-follow preview; first case study "Organizational Infrastructure" at `/case-studies/organizational-infrastructure`.
 
 ## Important Context
 
@@ -85,5 +86,5 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 
 ---
 
-**Last Updated:** 2026-02-11
+**Last Updated:** 2026-02-15
 **Maintained By:** [Your name/team]

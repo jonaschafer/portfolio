@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+
+const NAV_HEIGHT = 82
 
 export default function Navigation({ 
   backgroundColor = '#435938', 
@@ -11,7 +13,25 @@ export default function Navigation({
   arrowColor = null
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [navVisible, setNavVisible] = useState(true)
+  const lastScrollY = useRef(0)
   const pathname = usePathname()
+
+  useEffect(() => {
+    const onScroll = () => {
+      const current = window.scrollY
+      if (current < 60) {
+        setNavVisible(true)
+      } else if (current > lastScrollY.current) {
+        setNavVisible(false)
+      } else {
+        setNavVisible(true)
+      }
+      lastScrollY.current = current
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   
   // Use arrowColor if provided, otherwise default to textColor
   const arrowStrokeColor = arrowColor !== null ? arrowColor : textColor
@@ -27,46 +47,62 @@ export default function Navigation({
   )
 
   return (
-    <div className="w-full relative" style={{ backgroundColor }}>
-      <div className="min-w-[375px] max-w-[1440px] mx-auto">
-        <nav className="flex items-center justify-between pb-[60px] pt-[30px] px-[20px] md:px-[60px]">
-          <p className="font-['Inter',_sans-serif] font-normal leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap" style={{ color: textColor }}>
+    <>
+      <div
+        className="fixed top-0 left-0 right-0 z-50 transition-transform duration-300"
+        style={{
+          transform: navVisible ? 'translateY(0)' : 'translateY(-100%)',
+          backgroundColor,
+        }}
+      >
+        <div className="min-w-[375px] max-w-[1440px] mx-auto">
+          <nav className="flex items-center justify-between py-[30px] px-[20px] md:px-[60px]">
+          <Link
+            href="/"
+            className="font-['Inter',_sans-serif] font-normal leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
+            style={{ color: textColor }}
+          >
             Jon Schafer
-          </p>
+          </Link>
           
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-[20px] md:gap-[30px]">
             <Link 
               href="/" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline underline-offset-1' : ''}`}
-              style={{ color: textColor, textDecorationColor: underlineColor }}
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname === '/' ? 'opacity-100' : 'opacity-50'}`}
+              style={{ color: textColor }}
             >
               Work
             </Link>
             <Link 
+              href="/strategy" 
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/strategy') ? 'opacity-100' : 'opacity-50'}`}
+              style={{ color: textColor }}
+            >
+              Strategy
+            </Link>
+            <Link 
+              href="/advising" 
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/advising') ? 'opacity-100' : 'opacity-50'}`}
+              style={{ color: textColor }}
+            >
+              Advising
+            </Link>
+            <Link 
               href="/play" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline underline-offset-1' : ''}`}
-              style={{ color: textColor, textDecorationColor: underlineColor }}
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
+              style={{ color: textColor }}
             >
               Play
             </Link>
             <a 
-              href="https://www.are.na/jon-schafer/blocks" 
+              href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
               target="_blank"
               rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity flex items-center gap-1"
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity"
               style={{ color: textColor }}
             >
-              Vibes <ArrowIcon size={17} />
-            </a>
-            <a 
-              href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
-              style={{ color: textColor }}
-            >
-              👋
+              Email me
             </a>
           </div>
 
@@ -112,44 +148,52 @@ export default function Navigation({
             <div className="flex flex-col space-y-8">
               <Link 
                 href="/" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname === '/' ? 'underline underline-offset-1' : ''}`}
-                style={{ color: textColor, textDecorationColor: underlineColor }}
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname === '/' ? 'opacity-100' : 'opacity-50'}`}
+                style={{ color: textColor }}
                 onClick={toggleMenu}
               >
                 Work
               </Link>
               <Link 
+                href="/strategy" 
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/strategy') ? 'opacity-100' : 'opacity-50'}`}
+                style={{ color: textColor }}
+                onClick={toggleMenu}
+              >
+                Strategy
+              </Link>
+              <Link 
+                href="/advising" 
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/advising') ? 'opacity-100' : 'opacity-50'}`}
+                style={{ color: textColor }}
+                onClick={toggleMenu}
+              >
+                Advising
+              </Link>
+              <Link 
                 href="/play" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity ${pathname?.startsWith('/play') ? 'underline underline-offset-1' : ''}`}
-                style={{ color: textColor, textDecorationColor: underlineColor }}
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
+                style={{ color: textColor }}
                 onClick={toggleMenu}
               >
                 Play
               </Link>
               <a 
-                href="https://www.are.na/jon-schafer/blocks" 
+                href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity flex items-center gap-2"
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] opacity-50 hover:opacity-100 transition-opacity"
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
-                Vibes <ArrowIcon size={17} />
-              </a>
-              <a 
-                href="mailto:hello@jonschafer.com?subject=Hello%20from%20MCP!%20" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-80 transition-opacity"
-                style={{ color: textColor }}
-                onClick={toggleMenu}
-              >
-                👋
+                Email me
               </a>
             </div>
           </div>
         )}
+        </div>
       </div>
-    </div>
+      <div aria-hidden style={{ height: NAV_HEIGHT }} />
+    </>
   )
 }

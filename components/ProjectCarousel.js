@@ -42,13 +42,13 @@ export default function ProjectCarousel({ title, description, images, folder }) 
                 <h2 className="font-['Mondwest',_sans-serif] text-[31px] text-[#FAFAFA] leading-[1.2] tracking-[0.31px]">
                   {title}
                 </h2>
-                <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] leading-[16.44px] text-[#FAFAFA] tracking-[0.167px]">
+                <p className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] leading-[1.4] text-[#FAFAFA] tracking-[0.16px]">
                   {description}
                 </p>
               </div>
               
               {/* Counter */}
-              <p className="font-['Mondwest',_sans-serif] text-[31px] text-[#FAFAFA] leading-[1.2] tracking-[0.31px]">
+              <p className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] leading-[1.4] text-[#FAFAFA] tracking-[0.16px]">
                 {currentIndex + 1}/{images.length}
               </p>
             </div>
