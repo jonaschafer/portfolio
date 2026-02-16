@@ -1,0 +1,36 @@
+The 25+ Problems Across 8 Categories:
+Category 1: Intake Process (6 problems)
+Dual submission methods create confusion - Requesters create both Asana task AND Google Doc, info lives in two places
+Poor brief quality is systemic - Missing deliverables, realistic due dates, clear requirements
+No visibility into current workload - Requesters can't see what team is working on
+No interactive workback schedule - No way to see how timeline affects process
+No boundary setting at submission - No automatic message about 2-week minimum
+Information scattered across channels - Slack channels, Figma, Google Docs, no single source
+Category 2: Communication & Collaboration (4 problems)
+Conversations happen across multiple surfaces - Slack, meetings, Figma comments, Google Docs—nowhere centralized
+New task notifications go to wrong channel - Routes to #brand (team-only) instead of #creative-requests where requesters can see
+No standardized feedback framework - Feedback quality varies, some people need 5+ rounds
+People request work outside the process - DMs, Slack threads without creating formal requests
+Category 3: Process & Workflow (4 problems)
+Monday reviews happen too early - Only an hour into the day, team unprepared
+Kanban sorting not standardized - Unclear categorization
+Requests balloon and evolve mid-project - Scope creep happens silently
+Unclear process for who starts what - Should illustration or design start first? Copy or design?
+Category 4: Tool & System Underutilization (2 problems)
+Asana severely underutilized - Don't use Workflow, Dashboard, Workload tab, Gantt chart
+Too many tracking systems - ✅ Now resolved
+Category 5: Capacity & Boundaries (3 problems)
+Can't say no effectively - Only team handling design requests, accept everything
+No clear criteria for what to decline - No decision tree or evaluation framework
+Reactive work dominates - Recurring projects "sneak up on us," scrambling with little time
+Category 6: Knowledge & Visibility (3 problems)
+No central source of truth - Notion page unused, no place to learn how team works
+No visibility into work performance - When big projects ship, no data on what worked/didn't
+Unclear what "good" looks like - Creative direction buried in Figma files
+Category 7: Approval & Quality Control (2 problems)
+Unclear decision making on requester side - Surprise approvers appear in round 5, "everyone is an approver"
+No process for handling scope changes - Silent additions, no way to police them
+Category 8: Strategic Positioning (2 problems)
+Team positioned as service provider - Treated as "appendix for their brain," can't focus on strategic work
+No tier system for work - All work treated the same regardless of complexity
+Total: 26 problems (one was marked resolved)

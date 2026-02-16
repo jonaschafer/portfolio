@@ -4,14 +4,14 @@ export const hero = {
   headline: "I help Seed to Series B founders translate unclear brand instincts into decisions their teams can execute—without hiring a full-time Creative Director.",
 }
 
-export const whenToCallMe = {
+export const otherWaysICanHelp = {
   bullets: [
-    'Just rebranded and need help translating it into product, marketing, and hiring decisions',
-    'Are hiring your first creative person and don\'t know what "good" looks like for your company',
-    'Have a founder with strong brand instincts who can\'t articulate them to the team',
-    'Need strategic brand thinking without the cost of a full-time Creative Director',
-    'Watch your team debate creative decisions without understanding the business implications',
-    'Need someone who translates "make it feel premium" into concrete budget, hiring, and product choices',
+    'You just rebranded and need help translating it into product, marketing, and hiring decisions',
+    "You're hiring your first creative person and don't know what \"good\" looks like for your company",
+    "You have a founder with strong brand instincts who can't articulate them to the team",
+    'You need strategic brand thinking without the cost of a full-time Creative Director',
+    'You watch your team debate creative decisions without understanding the business implications',
+    'You need someone who translates "make it feel premium" into concrete budget, hiring, and product choices',
   ],
 }
 
@@ -48,7 +48,6 @@ export const howItWorks = {
       ctaText: "Let's talk",
     },
   ],
-  customEngagements: 'For full creative buildouts (rebrand, product launch), project-based pricing starting at $25k.',
 }
 
 export const caseStudyEndorsed = {

@@ -1,0 +1,158 @@
+00:02 Hey, how's it going? This video, uh, is meant to serve as a walkthrough of this big brand and website overall project that we've been working on since May, I believe.
+00:13 Um, there's a lot to this project and even those words brand and website overall just, you know, gives of life and vicious vibes.
+00:22 So I wanted to d*** some time to talk about, like, where this started, um, what the opportunities are, what our vision was, slash is.
+00:33 It's just a kind of a quick view in some of the process that, um, we've gone through in this, in this big project.
+00:39 And then where we've landed. Um, the hope at the end of this video is that you have a clearer sense of some of the machinations that have been happening in the- the background, um, especially as you, you know, on board with the company and start to get your toes, uh, further in the water on, like, what-
+00:55 what we're doing and why we're doing it and- and giving some- some context to- to some of the things that you're seeing, um, you know, across slack and- and so on.
+01:05 So, yeah, I'll- I'll just get into it. Um, uh, okay, cool. So let's start with the strategy. So, um. I'm I joined, I think, in March, mid-March, and, um, I decided to run an audit of, um, Classdojo and by Classdojo, I mean, you know, Dojo, the company, Classdojo, the product, Sparks, Tudor, Plus, Islands
+01:29 , um, Social, Web, Design Systems, Teams process, I mean, everything. Just to really get- get my bearings. And I'm sure, you know, you're probably doing the same.
+01:40 So, um, uh, out of this presentation came a lot of opportunities, um, about kind of like what I was seeing in terms of brand strategy and design language and process.
+01:52 Um, which is to say, you know, not much in the way of a concrete rationale or strategy behind like what we're doing, why we're doing it.
+02:00 Mhm. Um, inconsistent or missing creative direction. You know, for example, a lot of the work that I was seeing was sort of reactive or like the loudest voice in the room is what shaped the sort of, um, direction of a given project.
+02:14 Um, the architecture of our brands are kind of funny, like everything says Dojo, but Dojo's at the end of Glass Dojo, and there are like multiple logos within- certain brands like Glass Dojo, Wiki, Glass Dojo, for mentors and so on.
+02:29 Our messaging was fairly narrow, you know, we were- we were sort of marketing towards, uh, K to 5, but really wanting to be K to 12 and even beyond.
+02:39 Um, you know, there- so there's a there's a big sort of opportunity here to really like, uh, level up, not only design language and visual design, but I'll- also design thinking and strategy and, uh, brand direction and positioning and so on.
+02:55 Um, so out of that, we kind of basically came up with this like really simplistic view. So like, yay, we are loved and trusted, especially K to 5.
+03:04 Um, but we're pretty messy and hard to make sense of, both, um, internally and externally. And so in order to be iconic, which is, you know, really the- the most simplistic goal out of all of this, uh, we need clarity.
+03:17 Um, so in order to get there, we devised this plan. Um, and so to kind of start everything, we had this idea of kind of like a vision board.
+03:27 So like, let's say 5 years, 50 years, 10 years, who knows in the future, what would that look like? So for us that's like, Mojo has the same level of IP as like Garfield and Snoop.
+03:37 . . and it was like a Macy's day parade. Uh, maybe there's like a Pixar movie or something like that DreamWorks movie about, um, sort of the core characters that represent each product.
+03:47 And at the time of this project, there was really only Mojo and a couple characters for islands and like this newish character sparks.
+03:57 Uh, we've talked a lot about like, uh, physical, like . . Disneyland kind of place. Um, and then a big one is like this idea of dojo con, this like teacher's conference.
+04:08 Like, what would it look like if we treated teachers and admins and school leaders like, you know, like we do the NBA?
+04:15 Um, and so out of that came this like charge. So like, alright, we should develop a strategy statement, you know, to ensure that we're building towards the right thing rather than just whatever the loudest voice in the room is.
+04:25 . . . Um, we should come up with this shared set of attributes, um, so that when we evaluate work, you know, it should feel cheeky and like, well, what does that mean?
+04:34 And how do we know that we're there and not there and so on? Um, we should universally ratchet up the emotion, um, to the point that it makes sense for a given brand.
+04:44 So what I mean by that is like, islands is like super unhinged, crazy. Easy. Wild. And there's a lot there that could be kind of pushed a little further.
+04:54 And then there's places where the emotion feels like misplaced, like districts. Like it's fun and bombastic when like, that's not what we know people are looking for when they're looking at the district's product.
+05:06 So these are some mood boards of kind of like the vibe of, you know, the overall sense of emotion. Um, but- to do that with intention.
+05:15 And so the idea was to introduce this. You have like a volume knob. Um, so you can imagine like for a given brand and a given surface.
+05:24 Like, I don't know, um, a zoom banner when you're loading a webinar or a Times Square billboard or a website.
+05:32 Like that kind of surface or the product or the audience. You know, if you it's a student or if it's a district admin.
+05:40 Like, there's a lot of levels there to kind of determine what the volume should be. And then to think about it, like how loud or how expressive it should be versus how quiet and sort of like grown up it should be.
+05:51 So, you know, audience can be district leaders or pre-k, basically what I just talked through. You know, from a district's point of view, it's in particular, um, the feedback we hear over and over.
+06:01 Over again, it's like, it's too kiddish. We need to age it up. It's not serious. It doesn't work with middle school and high school.
+06:07 Does it feel trustworthy? We need to get rid of mojo and smoothies and that kind of thing. So, having this idea of like, kind of a dial to play with, depending on all those different variables is really important to this new strategy.
+06:22 We also needed to rethink our logos. I touched on this at the beginning. again. You know, we have multiple logos of the same brand out in the wild.
+06:29 We have, like, this sort of, like, over-indexing on branding as much as we can. Like, Clastojo, you know, mentors, Clastojo wiki, Clastojo books, Clastojo magic.
+06:42 Like, we really need to kind of peel back, um, that drive to brand everything. Um. . And then really to give some cohesion to the monsters, you know, Mojo is, like, loved and adored.
+06:57 People get tattoos of him. Sparky is this new character for sparks, but there's not really, like, a core character, or there wasn't for islands, and there's, um, a lot of opportunity for Tudor to have that.
+07:09 Same thing with, like, a core color. Like, purple is what we know with Clastojo, blues. Kind of like what we're, we were leaning towards with sparks, but like, what was islands?
+07:17 Is it yellow? And what was Tudor? Is it also purple? Umm, really with this M goal, a lot like DojoCon to have, like, this core cast of characters that, at a glance, is representative of the product.
+07:31 And then the rest of these is sort of like, suggestive congestive pads that we wanted to kind of build. So, like, with the character, we wanted to give them more life with 3D animation.
+07:41 Um, these are just kind of pulls that pull, that kind of show that off. Um, really push our typeface so it feels more memorable, but still, uh, very readable, you know.
+07:53 Um, so like, Rowan probably doesn't make sense. That looks something like wholesome does. Um, have way more use of photography.
+08:01 Grographine. Um, but have it be candid, like, not posed and looking at the camera or, like, overly cheese ball. Um, which is obviously very difficult with stock photography because, um, everyone's pulling from that.
+08:13 And so to stand out is a real challenge. Um, and then the last thing was to create essentially, like, personalities or, or personas around, um, our core audience.
+08:24 So to develop, like, a fake, district and a fake district admin and a fake name and email and whatever and, like, reuse those as we tell stories about the product so people can kind of feel like, oh yeah, I've looked at that already.
+08:38 Figma does a really good job of that when they release a product they say like, oh, this is this, you know, global warming nonprofit or whatever.
+08:47 So, anyway, that's the high-level view. There's been, not a ton of work that's gone into this. Just as an example, and this is very, like, in the weeds, um, we really spend a ton of time on typography.
+08:58 Um, as I mentioned, a second ago we used this one called Haffer, which is totally fine, very workable. Um, but just not very memorable.
+09:07 Uh, it doesn't feel like anything unique that you would see in the world. It feels like kind of like Swiss design.
+09:13 So, You know, if you think about it, like, kind of from a knee-jerk perspective, like, this has a lot of personality, and this, like, just doesn't have that much personality at all.
+09:23 And so we really need to figure that out. Um, but we need to be really wary of this idea of blending.
+09:28 I'm not sure if you know that term or not, but, um, it's kind of a thing you see a lot today.
+09:33 Spotify did this, Facebook did this, Meta did this. Um, this Burberry quote is a really great example. Like, the old Burberry logo was beautiful and historic, and they basically stripped everything away, swapped it with a typeface that anyone could pick, and then made sure that you knew where London,
+09:50 uh, was geographically, which is a travesty. Um, and then also to give it a lot of, um, weights. Right now, the half of our typeface, I think, has, like, three, and so to have a lot to play with, depending on the brand, was- really important.
+10:02 So, this is, like, a snapshot of some of the, uh, typefaces we looked at, and then, uh, some, uh, contenders that we got to, this is, like, months ago.
+10:12 So, a lot of work went into just typefaces. And so, this, to me, feels like an analogous for- analogy for the whole project, right?
+10:20 We spent a ton of time on- type, a ton of time on color, and character, and website, and- and not gonna- I'm I'm I'm sorry.
+10:26 Okay. So, this is where we've landed. Um, there's a lot here, and obviously I'm- I'm giving more of an onus on districts, because that's what we're gonna talk about on Monday.
+10:36 My hope in you looking at this, it will give you, um, the contextual awareness to be like, oh, that's why we made that decision.
+10:44 Um, and- and really to kind of, like, reinforce that this is where we've landed, um, rather than- like, this is what we're thinking, and then we're still kind of working on it.
+10:52 Um, so the- the big one is type. We now have, uh, two new typefaces, um, which I just talked about, but Maloon is our headline typeface, and Ginto is our secondary, and that applies to all brands.
+11:05 Um, this is kind of nerdy and probably a level too deep, but we have a type scale, which just means that we have a mathematical system to make sure that our type isn't like- too big or too small, depending on a given surface.
+11:16 Um, we also went through this massive project to understand our tech stack on, um, the site and to come up with a whole new version of that, hired an external developer, and went through this exhaustive process to look at, like, um, the impact of all of our pages, what to keep, what to redirect, and 
+11:35 then we have this whole new system of components like GlobalNet. You have a global footer, and banners, and testimonials, and so on, so that would enable us to build, um, pages faster.
+11:44 A lot like the district's launch. Um, so just by way of example, I'll go through the creative direction for, uh, sparks and tutor, and then I'll land with the Class Dojo.
+11:55 All of this is really net new because, um, at least when I joined, there isn't really any creative- Great. Okay.
+12:02 So, um, the sort of the core concept of sparks, I'll try to go quickly through this.
+12:26 Is that, uh, right now the product is all about teaching, like, little kids how to read. And, um, really emphasizing, like, bite-sized 15-minute, um, no parent guidance needed lessons.
+12:38 So, it's like, as simple as 15 minutes. And, um, I think a big way to, kind of, like, reinforce, like, how easy it is, is to celebrate, like, the big wins.
+12:50 And so, so- celebration, to me, means, like, lots of color. Um, the, the sparks page, um, which I'm sure you've seen today, um, is, is okay.
+12:58 I, I made it, I think, is my one of my first projects. Um, it's, you know, mostly white, mostly blue, uh, kind of, like, sort of sass and, and really the, the drive here with this new direction is really to amp up that color, really, kind of, make it feel like a really fun, and- And then, One.
+13:14 Maximalist, um, product, especially here towards this, this younger audience. So, typeface, we talked about, um, now we have this, like, core color system, so, so this sort of, like, sky-blues, the core marketing color, and this purple is sort of the core product color, and then these secondary colors
+13:32 that pull from, um, sort of the greater ecosystem of the app. And you can see how it works really well with, Sparky, the character, you know, it always works.
+13:41 Um, we have this, like, video asset, and these, uh, photos stills from that video shoot that we're using, like, across the board.
+13:48 Um, we have this amazing illustrator squirrel that is, um, really setting the, the stage for, like, how this app shows up, so, like, really leaning hard on that style.
+14:00 Um, also using these, like, stickers, which, they get when they, uh, learn a new word or a new sound, and so kind of using that in marketing, and then leaning hard on, um, squirrels, uh, emoji set, rather than, like, smoothies, which is what we're using right now for everything.
+14:16 So really having a feel, like, very bespoke to the game. Um, with that became, uh, kind of some clarity around when and when not to use the 3D Sparky.
+14:26 . e versus the 2D Sparky, which is to say 3D rarely. A new logo. Uh, we worked with this agency to develop this with and without the dojo, um, sparks.
+14:37 Uh, that's kind of a bigger conversation about brand architecture. Um, how it shows up with the multiple colors. And then of course how it shows up, um, on surfaces.
+14:46 So this is the new page for, um, dojo sparks, which is getting. Built right now. Uh, this is the App Store screenshots, which are, I think, live or, or going to be live soon.
+14:58 Again, using like this broader spectrum of colors and this new typeface and these kind of emojis. And then, uh, product.
+15:06 Um, which is something that's, um, on the horizon to update. Again, adding a lot more color and fun and vibe and having it feel like its own.
+15:14 Identity, just like the video asset, uh, does on this slide. So, anyways, that sparks, um, on Tudor, same kind of, um, like, thematic approach here, right?
+15:27 So, the creative direction for Tudor is to, um, really reinforce like, we have, uh, this sort of feeling of transformation.
+15:37 You know, I think when you were- with the Tudor kind of feels like either you messed up, or you've been punished, or it's like summer school, you know?
+15:45 It's like a feeling of dread. And we want to really change that to make it feel like something that, you know, um, you're excited about.
+15:54 And I think anyone learning anything anywhere, when you finally, like, get it, like, something kind of, like, changes, like, you're like, oh, that's how quantum physics- works, or, oh, that's how sourdough is made, or whatever the thing is.
+16:06 And you feel, like, really excited. And so this direction is really trying to, like, capture that feeling of, sort of like, uh, like, looking off in the distance, and like, oh, okay, like, this, this is how this works now.
+16:18 Um, so same typeface. Um, the color system here is, we have this core green color, um, to, which is, like, kind of a social- to focus, and then this, like, bubbly effervescent secondary color set, which is supposed to be tied to that, transfer, uh, transformation feeling.
+16:34 Um, we are leaning harder in photography, and, uh, kind of treating it a little bit, to make it feel like it's almost, like, a, a print.
+16:42 So it has a little bit of green and warmth. Um, kind of, like, two modes of photography. There's, like, the, the focus focus mode, the work mode for the student or the teacher.
+16:51 And then, like, the result mode, that kind of, like, feeling you have. Um, we're also using this, um, shader, which is, like, uh, an animation of those secondary colors that kind of move and ebb and flow, and that's in development right now.
+17:03 Um, for iconography and illustration, we're taking, um, a different approach here. Again, really trying to distance ourselves away from smoothies for everything.
+17:14 Mojo for everything. Everything. Um, and coming up with this secondary, uh, icon system that really ages up the product. Um, the most, uh, popular grade for tutored right now, this third grade, but, um, middle school and high school are, um, obviously very important, so having a, um, a visual language
+17:32 that really works for those older audiences, so it doesn't feel too kiddish. So, like, this kind of, um, uh, almost like, uhh, doodle-esque with the secondary colors works really well, taking the smoothies, but giving them this, like, rizographic treatment.
+17:46 Again, making it feel like it's sort of teen, um, uh, focused. And then the big one here is that we introduced this new character called, um, Nova.
+17:55 Um, it's meant to be kind of like your, sort of like, TA in a way between you and the teacher, um, and it's like, .
+18:03 Just, just generally excited about, um, about the product and about learning and, and seeing new things and that kind of thing.
+18:09 So, in the end here, we have this kind of like system. So we have, like, kind of a small illustration, a medium, and then tutor, and then very rarely, or not tutor, um, Nova.
+18:18 Very rarely we have a 3D, uh, Nova. We'll just have a logo, uh, and we have some kind of ideas which you've seen already for, for how it shows up in product.
+18:27 Um, again, trying to create this like core identity around, around tutor. So anyways, those are just two examples. I'm, I'm not showing islands, um, just to kind of keep the video short, although it's already 18 minutes.
+18:38 Um, so I'll just kind of go into Classdojo. Um, so the core idea of Classdojo is basically that we connect the dots, um, for, our audience.
+18:52 And, um, our audience is really two audiences, and we haven't been very explicit about that, um, uh, in the past.
+19:01 And so what I mean by that is there's a kind of a consumer audience, this, like, kids, families, teachers, the people who are, um, kind of like, too close to the tree to see the forest in a way, you know, um, you're, you're, or looking at, like, moments, uh, of a kid in a class, a kid, uh, has shown 
+19:21 up all week. A kid got points, a kid did really well on a, on a test. These are very present in the moment, sort of, events, um, that kind of happened, like, over, like, a day time frame, or a week time frame, or maybe a month time frame, but, like, a very narrow window of, of moments that are connected
+19:41 . And the way that, that we've been talking about it, is, is in a way like ClassDojo is, um, kind of like creating this, like, living story for these, uh, three sort of groups within this, this audience, right?
+19:52 Like, you know, when you ask your kid, like, what are they doing school today? And they're like, nothing. You're like, ugh, this is awful.
+19:58 And so to have this app, you really have a window, be it, uh, a family member, be it a teacher.
+20:03 I'm not about, like, what's going on. The second audience, the pro audience, is school leaders, district leaders, and maybe in the future grad schools, or sports organizations, or whoever, who basically have those exact same, um, uh, like, interest in those moments, uh, at the consumer level, but on 
+20:25 a much longer time horizon, uh, at a much bigger scale. So, you know, my daughter is in tardy all week, and that means that the attendance rate for that class goes up, and then, you know, that's true for, let's say, three classes in a school, and then there's, like, ten schools in a district, and so,
+20:44 to take all of those little sort of dots that add up, really creates this outsides impact, and that's what, what class does.
+20:51 So, different districts does. It's, it's really this, like, intimate knowledge of those sort of connective tissues, but then also the ripple effect of all those changes.
+21:00 Um, so, the way this works, I think the reason why it works so well, is, um, one, it's authentic. So, that's true to what class dojo actually does, connecting people, connecting moments, you know, really lasting change.
+21:14 Um, it's a dual op- audience, so it scales naturally between these, like, family intimate moments of these, like, big district-wide patterns.
+21:22 Um, I hate this word, but I couldn't think of a better one. It's, like, future-proof in the sense that connecting moments is, like, a unwinnable war.
+21:33 Like, you're always gonna be doing that with whoever it is. So, if we go after marine biologists, you know. And their org doesn't know what's going on.
+21:42 Like, our app will always kind of reveal those moments. So, it's, it's, um, something that just lasts. It's evergreen. Um, and then it's flexible.
+21:52 So, on the consumer side, you know, we can really drive home. Like, it's celebratory. It's, it's vibrant. It's, um, these things that should be celebrated and looked into.
+22:02 And then, at the larger scale- Thank you. Or the pro scale. It's sophisticated. It's grown up. It's mature. It's powerful.
+22:08 It's data-driven. Um, so, it works across both levels. So, another way to think about it is, like, the same moments, the same connections, but just different lenses.
+22:17 So, in terms of what does it look like in practice, um, this is just like a quick comparison and of Clasto Joe versus districts, so you can think about it like they're really cut from the same cloth, right?
+22:29 They're both Clasto Joe, so they're the same color, um, uh, pallet, but the waiting is different. Because the consumer audience, uh, skews younger, um, there's kind of more of an onus on color and vibrancy and mojo and smoothies, and so there's more of a balance between purple and the secondary color
+22:50 , but conversely with districts who- have been very adamant that, like, mojo, smoothies, all this crazy color is just not what they're looking for.
+23:00 It doesn't feel like it's a serious product, doesn't really make sense for them. Then we peel that back. It's still there, just like it is in the district's pages, but, like, purple is sort of the defining color of districts.
+23:11 Um, same thing as true with photography, so with the consumer audience we're showing. Photography, like, that's, like, really core to the subjects, so students, teachers, families, and then photography for districts, um, partly because finding stack of photography of admins will end up looking cheesy
+23:32 . You know, it's, like, someone in an office building, like, it's just not exciting. Um, really trying to lean more on UGC.
+23:38 See? So this is a, a snapshot from a, a video we did. Um, and, or, like, the textures of school.
+23:46 The kind of, like, put our money where our mouth is, you know, when we hear districts talking about, like, walking in the halls, then we can kind of, like, show, you know, this idea of walking in the halls.
+23:54 Um, same thing with Mojo. So, with the consumer side, Mojo's still there. He's 3D. He's 2D. He's animated. It's all still very present.
+24:03 On the district- Mr. Side, he's a very minor note. Um, on the district's page right now, you may have noticed that we're using this handwriting typeface, and that's kind of to suggest that Mojo was here.
+24:15 Kind of like Santa, like, leaving a note. But he's not present anywhere. And that's really to keep the focus on the product and the seriousness of the product and how this is a, is a trustworthy solution.
+24:26 Um, same thing with- illustration. So with the consumer side, it's the characters, it's Mojo, it's Katie, it's, uh, Nova, it's these kind of like bands of color, it's almost like confetti in a way.
+24:41 With districts, it's really the language of admins. You know, um, so much of this world, and my mom was a- a librarian for a long time.
+24:48 So this is familiar to me. Um, you know, it's like looking at a- Very good. Even population against a certain access, it's looking at gang charts and calendars and sheets and maps, and so really pulling those elements out of that- that language and creating, um, a pattern system.
+25:05 So instead of leaning on smoothies for younger audiences, when we're talking about districts or- or middle schoolers or high schoolers, we're kind of having this like an international set of icons, so it feels more, uh, a- aged up, um, and then the same thing is true for products.
+25:19 So on the consumer side, product that feels like either simplified and true to how it is in real life, uh, whereas on the district side, it's a lot cleaner and, uh, targeted to, um, really the core story that we're trying to tell, so like multi-modal in this case.
+25:37 Um, and then also because there's just- like not a lot of UI that exists at the moment. So a lot of this is just trying to like, make something up for what we hope it will be, and the best way to do that is by kind of creating its own sort of style.
+25:51 Um, and we have done that in spades. So, um, I'm sure you know this already, but on the website launch, um, we created 35 feature graphics.
+26:00 Um, f-f for across all pages that we're also repurposing on e-mail, and booth graphics, and one-pagers, and so on.
+26:10 So a lot of work has gone into that. Um, the rest of this kind of talks into a little bit more about districts and the rationale.
+26:17 So, you know, really the core elements of districts is pattern which I just talked about. Um, product, also what I talked about, and then photography, um, depending on the surface.
+26:27 So, you know, really- trying to think about pattern is, like, a flexible element rather than something that's, like, stock and is just placed in there.
+26:35 So, for example, these sort of patterns were used all across the district's launch. But these are different ways we can think about pattern.
+26:43 You know, we can think about using pattern to tell the story. Um, like ripple effect or change. Or act as a vignette.
+26:50 And so this is how it's kind of showing up across- websites and open graph. The other pattern is dots. Again, like connecting the dots.
+26:57 And so that could be just a dot pattern. It could be a way to training imagery. It could be type or icons.
+27:03 Um, and there's kind of a story angle we could use here depending on the surface. You know, we could think about, um, our sort of core audiences, a bunch of dots.
+27:11 And like, maybe as we scroll, they get bigger and we kind of have these vignettes and stories. Um, it's kind of, it's also being explored right now as a way to treat Mojo on the district side because, uh, Mojo needs to live on districts in order for him to make sense.
+27:29 You know, if he's in a booth or whatever, if he's showing up in costume, we want to make sure that like, oh yeah, Mojo is the face of the product and that's why you're seeing them.
+27:38 Um, but, you know, treat it in a way in districts so that- feels like it's specific to this, this direction.
+27:43 Um, same thing with photography, you know, again, like, leaning on UGC as much as we can. Um, but when we can't, you know, trying to really age up the photographer that we're showing.
+27:54 So, middle schoolers, high schoolers, admins. And then, this is just some examples of how this is all kind of coming together, right?
+28:00 So, like, made up UI, uh, in this, like, colored field on the district- page. Umm, potentially having, like, e-book covers on a given subject and, and relying on pattern.
+28:11 Umm, same thing here with modals of photography, this new case study design using the sort of, like, secondary palette. Umm, this also on the, on the website and then also within the deck and having these kind of color pops.
+28:23 Uh, okay, that's a lot to talk about, but, um, hopefully that's helpful about this sort of b- big picture of this whole, um, project and where we've landed, where we have, um, and, uh, hopefully tees up our monthly conversation so that you have all the context about, um, what we've been doing.
+28:41 Alright, talk to you soon. Thanks.

@@ -1,0 +1,69 @@
+Resolution
+Jan 28, 2026
+
+Jon
+Hits pause on other projects, focuses fully on ClassDojo brand development in service of
+Remaining pages
+AH deck
+Wall of Love ticket
+Overlap with Canva
+
+And wrap up remaining work bc I have context:
+AI intake thingee
+Merch projects, Districts and ITT
+
+Mark
+Wraps up design token stuff, then hits pause and focuses fully on Districts templates. This work will involve a fair bit of systemization which Mark crushes. 
+
+Approach
+Gather all context from stakeholders - copy, context, constraints, etc
+Blog - Is it still important? If yes: update theme, create blog direction
+Paid Ads/Social - What is the exact content? Will that change? 
+Email graphics - What will we most likely market on emails? Just UI? 
+Explore solutions (for all needs), Fin as benchmark
+Finalize, get in production-mode, ready for Figma
+Systematize - how should folks use it? 
+Example: export any feature UI image
+
+
+❇️ = Design system/kit must-haves regardless of ask/immediate need (e.g. it will unblock them/us)
+🔥= high priority
+
+Tasks
+🔥Launch kit - Natalie – resources to include in district product for districts to reference
+Seems like a product ask
+❇️Photo library 
+🔥❇️Updated 1-pagers - Review/update Niftic work 
+See BDS for 1 pagers
+❇️LinkedIn templates - Loran, Hilary need
+Need copy examples
+How they’ll actually use - Figma Buzz, Canva, AI generator
+Email graphic direction
+LinkedIn Ad library
+Ghost theme + blog thumbnail system - unclear if needed, Ali said no but we get asks
+If needed: Anthropic, icon pattern, ASCII pattern
+Direction for photo, pattern, illustion
+❇️Email graphic direction - Brand
+❇️Literal UI for Districts - finish the library
+See OG comments from Greg, James
+Create “focused” views for mobile and desktop
+LP 
+❇️District features page
+❇️Announcement page
+🔥Victoria's "themes", Lorna's page requests – Wordpress
+🔥❇️Districts best practice guidelines for sharing on websites x badge
+❇️Webinar events page
+
+Else
+Customer Advisory Board Newsletter Template
+
+On pause
+Shopify store, images
+Monica x Jon Mojo guidelines
+
+
+Else
+Freelancer - Jon to start the search for someone  with a ~$6k/month budget, goal of finding someone in the next 25 days
+Weekly prioritization sync with Ali - thinking that an async thing might be easier here, but think we should discuss tomm
+Capacity convo with Ali & Jeff - Daniel starting, and we should talk about what our capacity is per month tomm
+

@@ -80,6 +80,7 @@ export default function ProjectCarousel({ title, description, images, folder }) 
                   width={1300}
                   height={731}
                   className="w-full h-full object-cover"
+                  quality={90}
                   priority
                 />
               )}

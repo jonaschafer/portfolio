@@ -1,0 +1,9 @@
+
+# How we tracked against our problems
+
+Intake Process (6 problems): We fully solved dual submission confusion, poor brief quality, lack of visibility into workload, missing boundary setting, and information scattered across channels. The workback schedule visibility remains partially solved through the How We Work page calculator.
+Communication & Collaboration (4 problems): Wrong channel notifications and people bypassing the process are fully solved. Conversation fragmentation and feedback quality are partially solved through teaching examples, though we still have work to do here.
+Approval & Quality Control (2 problems): The DACI section fully solved unclear decision making. Scope creep remains partially solved because while we can track it better, we still need better mechanisms to police changes mid-project.
+Knowledge & Visibility (3 problems): The How We Work page fully solved the lack of central source of truth. Understanding what "good" looks like is partially solved through feedback examples. Work performance visibility remains on our Phase 2 roadmap.
+Capacity & Boundaries (3 problems): All three are partially solved. We can say no more effectively with evidence. We have transparent capacity status. But reactive work still dominates because we need better forecasting tools.
+Strategic Positioning (2 problems): This was the biggest win. The infrastructure repositioned the team from service provider to strategic partner. We still don't have a tier system for work, but the positioning shift fundamentally changed how requesters approach us.

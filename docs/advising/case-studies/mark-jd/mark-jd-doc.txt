@@ -1,0 +1,88 @@
+Mark’s JD
+
+Problem
+Mark's caught between worlds - too product-minded for brand, too brand-involved for product, exceptional at systems but can disappear into rabbit holes, not interested in a brand title. 
+
+Solution
+Formalize his role and responsibilities
+
+—-
+
+
+[DRAFT]
+
+Design Systems Lead, Brand Studio
+Reports to: Head of Creative (Daniel Scrivner)
+
+Pro: marketable title, clear scope/boundaries
+Con: doesn’t immediately signal ‘creative’ responsibility
+
+Alt: Design Technologist
+Pro: captures his strength with tools/AI/prototyping, very marketable, implies technical depth
+Con: not clear the creative/brand collaboration aspect 
+
+
+
+As Design Systems Lead, you own the scalable foundations that power Dojo's brand(s) and product(s) experiences across web, email, app, and marketing touchpoints (MDS, PDS, EDS). You explore creative execution and contribute ideas, but primarily translate brand direction into functional, maintainable systems that teams can use confidently. You're the bridge between creative vision and technical reality, bringing expertise in interaction design, prototyping, animation, AI tooling, and cross-functional collaboration.
+
+Your work elevates the entire Dojo brand: interaction design and accessibility aren't afterthoughts, they're the standard. Your execution is a delight to use - the kind of experience people share.
+
+
+
+What you own
+Design Systems (MDS, PDS, EDS)
+Evolution, documentation, and tooling
+Component library architecture and maintenance
+Design tokens, patterns, and guidelines
+Animation principles and tokens across platforms
+Web System Architecture
+Interaction patterns and component behavior
+Animation systems and micro-interactions
+Responsive patterns and technical implementation
+Design-to-engineering handoff and collaboration
+Cross-System Stewardship
+Product Design System (PDS) liaison and alignment
+Email Design System (EDS) evolution and consistency
+Marketing Design System (MDS) evolution and consistency
+Resolving conflicts between systems - you make the call
+Ensuring brand coherence across all three systems
+Design Operations & Tooling
+AI and automation efficiencies for design workflows
+Prototyping tools and technical exploration
+Identifying and implementing new tools/approaches
+Technical problem-solving for brand execution
+
+
+How to contribute to brand stuff
+You participate in brand projects as a systems-thinking partner and executor. You explore creative approaches, contribute interaction ideas, and help brainstorm execution - but your primary role is translating concepts into functional, animated, production-ready work. You take projects from 70% creative direction to 100% shippable reality through systemization, interaction design, and technical implementation.
+You will:
+Jam on execution approaches during early exploration
+Propose, iterate and finalize interaction patterns or animation ideas
+Prototype concepts to test feasibility
+Be the systems-informed voice in creative discussions
+You don't:
+Lead brand strategy or concepting
+Design core brand identity elements
+Own campaign creative direction
+Drive early-stage creative exploration without clear direction
+
+Success is…
+In 6 months:
+MDS is documented, maintained, and usable by non-designers and engineers
+Web updates ship faster and more consistently through systematic approach
+Brand concepts translate into functional, animated, systematic reality with minimal hand-off
+You know when to timebox exploration vs. go deep on technical execution
+Cross-functional partners (product, eng, marketing) know when and how to involve you
+In 1 year:
+Leading systems thinking across the organization, not just within brand studio
+MDS adoption is measurable and growing
+You've identified and implemented AI/tooling efficiencies that save team time
+Clear patterns exist for how brand work flows through systems
+
+Growth areas
+Scoping & Timeboxing: Knowing when "good enough" unblocks progress vs. when depth matters. Timeboxing unknowns and nice-to-haves before diving deep.
+Systems Leadership: Expanding influence and systems thinking across the broader organization
+
+Why this makes sense
+You've been at ClassDojo for 6+ years and understand the product deeply. You have strong relationships across product, engineering, and marketing - making you an effective bridge between these worlds. You're energized by technical problem-solving, interaction design, and building systems that empower others. You're vocal about how you work best and are proactive about managing your focus. While you're not interested in becoming a pure brand designer, you care deeply about craft and bringing creative work to life through systematic, technical excellence.
+

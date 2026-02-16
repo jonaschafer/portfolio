@@ -46,13 +46,14 @@ export default function Navigation({
     </svg>
   )
 
+  const isTransparent = backgroundColor === 'transparent'
   return (
     <>
       <div
         className="fixed top-0 left-0 right-0 z-50 transition-transform duration-300"
         style={{
           transform: navVisible ? 'translateY(0)' : 'translateY(-100%)',
-          backgroundColor,
+          ...(isTransparent ? {} : { backgroundColor }),
         }}
       >
         <div className="min-w-[375px] max-w-[1440px] mx-auto">
@@ -75,11 +76,11 @@ export default function Navigation({
               Work
             </Link>
             <Link 
-              href="/strategy" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/strategy') ? 'opacity-100' : 'opacity-50'}`}
+              href="/play" 
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
               style={{ color: textColor }}
             >
-              Strategy
+              Play
             </Link>
             <Link 
               href="/advising" 
@@ -88,21 +89,15 @@ export default function Navigation({
             >
               Advising
             </Link>
-            <Link 
-              href="/play" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
-              style={{ color: textColor }}
-            >
-              Play
-            </Link>
             <a 
               href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
               target="_blank"
               rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity"
+              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity inline-flex items-center gap-[6px]"
               style={{ color: textColor }}
             >
               Email me
+              <ArrowIcon size={17} />
             </a>
           </div>
 
@@ -130,7 +125,7 @@ export default function Navigation({
 
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
-          <div className="sm:hidden absolute top-0 left-0 w-full h-screen z-50 flex flex-col justify-start pt-[140px] px-[20px]" style={{ backgroundColor }}>
+          <div className="sm:hidden absolute top-0 left-0 w-full h-screen z-50 flex flex-col justify-start pt-[140px] px-[20px]" style={{ backgroundColor: isTransparent ? 'rgba(0,0,0,0.92)' : backgroundColor }}>
             {/* Close button in overlay */}
             <div className="absolute top-[30px] right-[20px]">
               <button 
@@ -155,12 +150,12 @@ export default function Navigation({
                 Work
               </Link>
               <Link 
-                href="/strategy" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/strategy') ? 'opacity-100' : 'opacity-50'}`}
+                href="/play" 
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
-                Strategy
+                Play
               </Link>
               <Link 
                 href="/advising" 
@@ -170,23 +165,16 @@ export default function Navigation({
               >
                 Advising
               </Link>
-              <Link 
-                href="/play" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
-                style={{ color: textColor }}
-                onClick={toggleMenu}
-              >
-                Play
-              </Link>
               <a 
                 href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] opacity-50 hover:opacity-100 transition-opacity"
+                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] opacity-50 hover:opacity-100 transition-opacity inline-flex items-center gap-[8px]"
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
                 Email me
+                <ArrowIcon size={24} />
               </a>
             </div>
           </div>

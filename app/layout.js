@@ -9,6 +9,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='.9em' font-size='28' font-family='system-ui'>J</text></svg>" />
         <script id="made-with-claude" type="text/plain" dangerouslySetInnerHTML={{
           __html: ` __  __           _                 _ _   _     
 |  \\/  | __ _  __| | ___  __      _(_) |_| |__  

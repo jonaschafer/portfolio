@@ -1,0 +1,82 @@
+dec 17
+
+Jon  [4:02 PM]
+Hey! Just wanted to summarize where we're landing. But first: truly appreciate all the discussion here. Having deeper conversations about brand strategy is exactly what this channel should be for, so thank ya both for being generous with your time. :fist_bump:
+
+Here's what I'm hearing:
+
+Moving forward now:
+
+Sparks → use as-is
+Tutor → use as-is
+Islands → share with Liam and Brad, then follow up with you, @sam 
+
+
+Tabling for now:
+
+Dojo → do a focused iteration loop in January. Name unlikely to change, so we can focus on landing an execution
+ClassDojo → put this in the same bucket as Dojo and re-explore (ideally with you and Liam).
+
+
+Naming work:
+
+Lexicon → kicking off in January (sometime)
+
+
+One clarification on ClassDojo:
+Given the name recognition ClassDojo already has, changing it will be a significant lift and a long process. I trust that means that we're only looking at logo/wordmark refinement, vs name changes with Lexicon. Is that right?
+
+sam  [3:46 PM]
+Yea I think that’s right! @Daniel David placed just pinged me. Do we have budget for the lexicon work?
+
+Daniel  [4:33 PM]
+Yes, no budget set aside for Lexicon work.
+[4:33 PM]So we'll have to ask Pouya or set aside an amount there for 2026. What was the proposal you got Sam? I think for $15k?
+sam  [4:40 PM]
+Will look in email. If we want it, let's see if we can find it somewhere.
+
+dec 20, 22
+Nice write up, and an agency they liked: https://www.linkedin.com/pulse/superhuman-new-name-whats-next-shishir-mehrotra-qm4uc?utm_source=share&utm_medium=member_ios&utm_campaign=share_via
+linkedin.comSuperhuman: A New Name for What’s NextICYMI: In October, we announced that we changed our company name from Grammarly to Superhuman and launched a new suite that includes Grammarly, Coda, Superhuman Mail, and our newest product, Superhuman Go. And if you’d like to learn more about this refounding moment, here’s the story behind the storWritten byShishir MehrotraReading time4 min readhttps://www.linkedin.com/pulse/superhuman-new-name-whats-next-shishir-mehrotra-qm4uc?utm_source=share&utm_medium=member_ios&utm_campaign=share_viaJon  [3:12 PM]
+Great read @sam. This bit is the most important IMO:
+Not only was the decision difficult, but the implementation was tricky. Some corporate rebrands (Alphabet, Meta, etc.) were announced through a relatively quiet blog post. But in this case, we had to migrate a website, login systems, billing systems, etc.
+
+Smith & Diction, the agency they worked with, is top tier and beloved in the small world of brand design. I saw them speak at Config, the :figma: conference that was happening during our offsite. Didn't realize they did naming as well. When we get back from break, I'd like us to eval agencies that can do it all (vs hiring naming and then hiring a brand agency). To that article's point - the decision to name is hard, but the implementation is the hard part.
+
+Exciting! :exciteddog:
+
+
+Daniel  [8:47 AM]
+They didn’t do any real naming here. Grammarly acquired Superhuman, then rebranded as Superhuman.
+[8:48 AM]I think it will be hard to find a firm that does both exceptionally well. When it comes to naming, Lexicon is the best in the world and there’s not really another player that I’m aware of.
+Jon  [9:52 AM]
+Ah gotcha. I'm like, wow! S&D are full-service!
+
+Daniel  [8:58 PM]
++1. I think to pull that off we’ll need a substantial budget and commitment on seeing the work all the way through together. I’d like to see us be willing to invest say 1-2% of our annual operating budget into something like this. We have substantially more scope with our current mandate of rebranding 1x parent and 4x products. We need to be willing to make that investment if we want to work with someone like Smith & Diction.
+
+So far, we’ve funded the work we’ve done ourselves by scraping together what we can find because we think it’s important to evolve our brands. That approach works when this isn’t a company priority and we aren’t willing to invest more here in addition to the team’s operating budget to cover day-to-day needs.
+
+My fear is we’re not really in a position to do this next year and don’t have the additional capital to invest here. In part, because we’ve already made a lot of painful choices and I’m not sure there’s anything left to wring in terms of efficiency and cost savings to fund this by going that route. (edited) 
+[9:00 PM]Does it feel reasonable to you to invest 1-2% of our operating budget in a single year to see this work through @sam?
+[9:01 PM]That feels like the baseline expectation from my experience. And I think we’d see high ROI by giving up 1-2% OpEx and investing that into a deep, thorough, end to end elevation of our brands.
+[9:02 PM]We have the team internally to bring that to life across our products and marketing surface areas. We just don’t have any real time or capital to spare here without a new dedicated investment.  (edited)
+
+dec 24
+sam  [12:56 AM]
+Yea I can imagine us doing a more significant project here eventually. I’d like to do it as the financial picture makes more and more sense. But I don't think that's in H1, at the least.
+
+That said, I think gradual refinement is a good way to go. And rather than taking a bet on a big brand agency, I could imagine allocating smaller bits of budget towards the more strategic parts—eg the naming architecture, etc. I think it's why working with Lexicon sooner appeals: it's not an arm and a leg, they're the best in the world, and we could lay some solid strategic foundations.
+
+
+feb 6
+Jon  [9:34 AM]
+Hey @sam! Wanted to close the loop on :this: branding work stuff.
+
+Given where we're at now with team capacity and the latest expense reductions, we don't feel set up to take on work outside our core product roadmap. We need to stay focused on the biggest priorities, like yearbooks, which we hope is one of the biggest revenue drivers for Plus this year. :fingerscrossed:
+
+That said, we're moving forward with the new directions for Tutor, Sparks, ClassDojo, and Districts that we've already developed. For the ClassDojo and Dojo logos specifically, we'll keep those as typewritten treatments, which isn't perfect but works within our constraints.
+
+We're ofc v supportive of doing more comprehensive branding work when the timing and resources align better, but until then we need you to be okay with where we've landed or we'd need to pause everything, which feels counterproductive.
+
+Let us know if you have concerns with this approach. cc @Daniel

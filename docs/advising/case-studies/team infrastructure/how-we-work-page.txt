@@ -1,0 +1,35 @@
+"How We Work" Page Overview
+The "How We Work" page (/how-we-work) is a comprehensive internal guide that explains the Brand Studio team's processes and sets expectations. Here's what it includes:
+Main Sections:
+Overview - Key facts:
+Submit requests via intake form
+Weekly reviews on Mondays
+2+ weeks minimum turnaround
+Capacity - Live workload visibility:
+Shows real-time active projects from Asana (pulls via API)
+Visual capacity status (Optimal: 6 projects, Stretched: 7-8, Overloaded: 9+)
+Heat-mapped project cards showing size (XS/S/M/L/XL) with color coding
+Grid or list view toggle
+Shows trade-offs at each capacity level (quality, turnaround time, team health)
+Timing - Timeline expectations:
+Why 2-week minimum exists
+Interactive workback schedule slider (2 weeks = 1 design round, 3+ weeks = multiple rounds)
+Copy review calendar (Richard reviews Mondays/Fridays only)
+DACI - Decision-making framework:
+Clarifies who approves what on the requester side
+Prevents "surprise approvers" appearing in round 5
+Feedback - How to give effective feedback:
+"Critique vs Reaction" model examples
+Shows good feedback (problem-based, goal-aligned, user-grounded)
+Shows unhelpful feedback (vague, unanchored comparisons)
+File Organization - Figma structure:
+How files are organized (messy working pages → early rounds → final)
+Link to Marketing projects in Figma
+FAQ - Common questions:
+What if it's urgent?
+Can we skip the intake form?
+How to check project status
+What happens with scope changes
+What It Does:
+It solves problems #16 ("No central source of truth") and #17 ("No clear place to learn how we work") from the 25 problems. It's essentially a living knowledge base that shows real-time capacity and sets boundaries transparently.
+Would you like to include this in the article? It could fit in "The solutions we built" section as another example of the system beyond just the intake form.

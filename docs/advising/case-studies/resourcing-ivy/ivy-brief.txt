@@ -1,0 +1,58 @@
+Creative Brief: Districts system
+Jan 30, 2026
+
+Context
+ClassDojo is a communication platform that connects teachers, students, and parents to build amazing classroom communities. Used by millions of teachers and families worldwide, the platform helps educators share what's happening in the classroom, celebrate student growth, and strengthen the home-school connection.
+
+We have two distinct brand expressions that serve different audiences: 
+Core is vibrant, character-forward, and playful—designed for teachers, parents, and kids who use ClassDojo daily in their classrooms and homes. 
+Districts is an intentionally restrained, professional, and data-focused—designed for school and district administrators who need to evaluate, purchase, and implement ClassDojo across their organizations.
+
+While Core leans into our mascot Mojo and colorful illustrations, Districts takes a more sophisticated approach with patterns, limited color palettes, and professional presentation materials that work in board meetings and administrative contexts. This project focuses on 👉Districts. 
+Engagement deets
+Rate: $100/hour
+Budget: $6,000/month 
+Initial Period: 2-week pilot at the monthly budget level (about 30 hours total, roughly 15 hours per week—flexible on how you split it)
+Reporting: Direct collaboration with Jon
+Le challenge
+We've established an initial creative direction for Districts and created various materials as needs arose—e-books, conference materials, booth graphics, one-pagers, PDFs, UI components. We've explored patterns, color systems, and how Mojo shows up in this context. But these have been created reactively rather than systematically.
+
+Here's what we're after: We're not just looking to systematize what exists. We want to push the initial concept further—stress-test it, iterate on it, potentially evolve it into something stronger. The foundation is solid, but we suspect there's more to discover. We need a cohesive design system that our team can confidently draw upon, with clear guidance for application—but we also want to know if the system itself should evolve based on what we learn.
+Deliverables
+We're thinking about artifacts that span different use cases and constraints—things that'll help us understand how this system lives in the real world:
+
+Paid ads (3 variations) — Content-dense, image-heavy, and mixed approaches. These need to be eye-catching in a feed while allowing marketing to self-serve updates.
+E-book materials (2 pieces) — Cover and sample interior page. One light on content to show the system with breathing room, plus guidance on how marketing updates these.
+One-pager PDF (1) — Super dense, info-heavy. This is the stress test for how much we can pack into the system while keeping it cohesive. Your Guild newsletter is a good match here
+Homepage hero (1) — Desktop and mobile. Shows how the system scales and moves, with interaction details (ideally). 
+Pattern direction (1 + examples) — Either a small library of patterns with application examples (conference backdrop, email graphics), or strategic guidance on how patterns get created as new surfaces emerge. Your Guild OS stuff would be good here. 
+
+Each of these should come with strategic rationale: Why this approach? How does the team execute it? What are the cost/resource implications? What tools enable self-service? 
+
+
+Given the limited hours, here's a phased approach that balances strategic thinking with practical outputs:
+Phase 1: Divergent exploration
+Two dramatically different directions (rough executions to show potential). These should explore fundamentally different approaches—not just applying what exists, but questioning and iterating on the core concept itself. Are patterns the right anchor? Does the color system need expansion? Should Mojo's role shift? Not just color or pattern variations—genuinely different strategic takes on how the system could work and evolve.
+
+Each direction should include a few examples from the list above to paint a picture. Up to you on which or all of them at a lower fidelity if that makes sense.
+
+Process for this phase
+Question the foundation: What's working in the current direction? What could be stronger?
+Explore genuinely different approaches early—this is the time to test assumptions and push boundaries
+Use rough executions to test concepts before investing in refinement
+Stress-test the creative direction: Does the pattern system work in all contexts, or only some? Is the purple-only color approach sufficient, or do we need additional elements for versatility and life? What gives this direction its strength, and what are its limitations? Where could it evolve?
+Phase 2: Converged development
+One refined direction (first pass at full system above) Note: This might be an evolution of the current direction, a hybrid of explorations, or something new that emerged from testing. Note: We have no expectations that these will be production-ready. But they should be built with practicality in mind (e.g. grids, consistent margins, type sizing, radius, etc).
+
+Process for this phase
+Strategic documentation: Why these choices? How did we evolve from the initial concept? How do non-designers use these systems? What are the resource/cost implications? What tools or vendors would be required?
+This needs strategic design thinking, not just execution
+What success looks like
+At the end of this, we should have:
+
+A stronger system than what we started with—whether that's a refined version of the current direction or an evolution that emerged from exploration
+Deep understanding of the system's strengths, limitations, and optimal applications
+Strategic guidance for how to approach new design challenges within this system
+Ideas on how we might create templates and/or tools that enable marketing self-service
+Confidence in the process for taking amorphous concepts through strategic exploration to systematic execution
+

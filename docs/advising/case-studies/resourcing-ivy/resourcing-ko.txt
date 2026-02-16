@@ -1,0 +1,114 @@
+Resourcing convo
+Jan 27, 2026
+
+
+Hey folks! Continuing our conversation re: Lorna, but also being realistic about this new intake system and what this realistically means for our team. TL:DR I think it’s worth revisiting what we’re able to do to increase bandwidth (within obv budget constraints) and/or be a bit more transparent to other team leads about what we’re able to accomplish.
+
+Even with clearer intake rules and automation (what I’m working on), resourcing will/is still a problem, and we know that changing habits is hard - people still want their thing yesterday and see us as a service. Even if prioritization decisions are explicit. Which means urgency will continue to drive priority. That keeps us reactive and erodes quality over time.
+
+Here’s the gist:
+What I'm noticing
+We're getting a steady stream of requests from Marketing, especially from Lorna (we recently talked about this). Most requests are:
+High urgency
+Large in scope
+Overlapping or additive, rather than sequential
+New requests often arrive before previous ones are finished, which effectively sidelines earlier work. Examples:
+LinkedIn templates (not something Niftic can realistically handle)
+New Canva campaign**
+One-pagers (not something Niftic can realistically handle)
+Email + HubSpot templates
+Victoria's "themes" project
+Ad hoc asks outside the system (e.g., "can you make a quick GIF?")
+Casual requests that are actually substantial (e.g., an email graphic generator)
+In some ways this is how it's always been, but with Lorna joining there seems to be an increase, and post "rebrand" we have a lot to do to standardize.
+
+******The Canva campaign in particular makes me wary that we may be implicitly signing up to build or maintain something like a Canva image system or generator. I hope that's not the case — but it feels adjacent.
+The underlying tension
+The volume and urgency of work exceed our current bandwidth
+The work spans strategy, exploration, systems, and production — not just execution
+Our current resourcing model (primarily Niftic + me) doesn't match the demand or quality bar
+The paths forward (as I see them)
+
+Option 1: I pause everything else and focus fully on district templates
+daniel: I think we should entertain this idea and see what it would take to squeeze this into 2 weeks. I think full focus for a shorter period would be the goal here.
+
+
+This would mean:
+Intake system, ClassDojo, Merch stuff, Website work, etc pauses
+New incoming work pauses (including additional Marketing requests)
+Realistically, this would take 3–4 weeks minimum, likely closer to a month:
+Exploration
+Copy + design review
+Multiple stakeholder rounds (historically 4–5 revisions)
+Even with Mark's support, this feels unrealistic. Honestly, a no-go IMO ❌
+
+Option 2: Bring in additional design help
+
+Two variants:
+A freelance senior designer (e.g., my friend Ivy)
+A small agency (e.g., my friends at Work Is Play)
+A freelancer feels like the fastest, most cost-effective test:
+~$100/hr
+20 hrs/week
+2–4 week trial
+Roughly $4–8k total (comparable to what we paid Niftic)
+
+daniel: I think we should try this! I'd honestly love to see if we can find someone talented in Poland and look outside of the U.S. to try and keep costs down. Goal would be that this costs ~$6k/month. But it does feel like we can find someone better than Niftic if we take this approach and cut out having another producer which inflates our costs a lot.
+
+Tactically, we'd need to make a call in 30 days to move over fully to the freelancer or move back to Niftic. We don't have a lot of wiggle room, but I think we could pull off that switch and that would help a lot.
+
+
+
+This could:
+Support design exploration as well as production
+Maintain quality
+Reduce design debt
+An agency is more expensive, but potentially a longer-term replacement for Niftic since we need broader versatility.
+I recognize this might be an instant no-go because we tightened budgets last year, but IMO we could 1) reduce Niftic time - even try it out for a week - and look at ways our team has saved time with the AI Speed Run to justify the cost. 
+
+Option 3: Let Niftic do everything
+
+This is the worst option from a quality standpoint.
+It guarantees a noticeable drop in craft.
+We'd be knowingly creating design debt — something the rebrand is trying to avoid
+Ofc this doesn’t have to be all or nothing, but even something as simple as 1 pagers they’re unable to do, and we need things that are much more creatively challenging. IMO this is a no-go ❌
+The "AI option" (why it's not the answer IMO)
+I don’t think anyone here needs convincing since we’ve all seen first hand last week (and before then) what it can and cannot do. But jic: 
+
+AI can help with:
+Minor variations
+Copy/image swaps after systems exist
+It cannot currently:
+Replace exploration
+Replace execution at our quality bar
+Replace a freelancer or agency
+In practice:
+It requires heavy prompting, reference, and cleanup
+You might save an hour at the end, not days upfront
+Where AI does make sense:
+Once templates exist
+As a way to operationalize them (e.g., controlled edits, copy swaps)
+Mark could be a great partner there
+Using AI as a substitute for resourcing is not tenable.
+
+What if we can’t do anything? 
+Options 1 and 3 are non-starters, which leaves Option 2 — and that requires budget. If additional spend isn't possible, then we need to have a direct conversation with leadership (Jeff? Chad? Ali?) about realistic capacity. Something like: "We can handle 2 major projects + 3 minor requests per month" with explicit definitions of what qualifies as major vs. minor.
+
+daniel:
+We can get additional spend in the form of "we're going to spend $6k extra this month to see if we can't find a freelancer we can use to replace Niftic." Beyond that I think it will be really, really difficult — we're discussing making even more cuts now (I know, that's insane).
+
+So in parallel with exploring Option 2 and 1, I think we should do this with Ali & Jeff. I can take the lead there.
+
+
+That said, here's what I think is the most realistic path forward:
+
+Bring in limited freelance help, 10–20 hrs/week for a 2–4 week trial
+Temporarily reduce Niftic hours to offset cost (we've already ID’d ways they can't meet our needs)
+Run both in parallel with a capacity conversation with leadership. Who knows, they may have budget to support the current level of requests they’re asking for. Or they may need to reprioritize. Either way, we get clarity. 
+
+Why this works: It addresses the immediate crisis (we get design help now) while establishing sustainable boundaries for the future. And if the trial works, we have a model to point to when discussing longer-term resourcing.
+
+
+Looking forward to discussing! 
+✌️
+
