@@ -5,7 +5,6 @@ import {
   hero,
   whenToCallMe,
   howItWorks,
-  caseStudyEndorsed,
   about,
   nextSteps,
 } from './content'
@@ -112,58 +111,6 @@ export default function AdvisingPage() {
           <p className={`${bodyMuted} mt-[24px] max-w-[648px]`} style={{ color: advisingText }}>
             {howItWorks.customEngagements}
           </p>
-        </section>
-
-        {/* Case study */}
-        <section className="pb-[50px] md:pb-[60px] max-w-[648px]">
-          <h2 className={`${sectionTitle} mb-[24px]`} style={{ color: advisingText }}>{caseStudyEndorsed.title}</h2>
-          <div className="space-y-[32px]">
-            <div>
-              <p className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-medium uppercase tracking-[0.05em] mb-[12px]" style={{ color: 'rgba(30,30,30,0.8)' }}>
-                {caseStudyEndorsed.situation.label}
-              </p>
-              <p className={`${bodyMuted} mb-[12px]`} style={{ color: advisingText }}>{caseStudyEndorsed.situation.text}</p>
-              <div className="aspect-video bg-[#1e1e1e]/10 rounded-[8px] flex items-center justify-center mb-[8px] overflow-hidden">
-                {caseStudyEndorsed.situation.image ? (
-                  <img src={caseStudyEndorsed.situation.image} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px]" style={{ color: 'rgba(30,30,30,0.4)' }}>Image: Screenshot or diagram</span>
-                )}
-              </div>
-            </div>
-            <div>
-              <p className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-medium uppercase tracking-[0.05em] mb-[12px]" style={{ color: 'rgba(30,30,30,0.8)' }}>
-                {caseStudyEndorsed.translation.label}
-              </p>
-              <p className={`${bodyMuted} mb-[12px]`} style={{ color: advisingText }}>{caseStudyEndorsed.translation.text}</p>
-              <div className="aspect-video bg-[#1e1e1e]/10 rounded-[8px] flex items-center justify-center mb-[8px] overflow-hidden">
-                {caseStudyEndorsed.translation.image ? (
-                  <img src={caseStudyEndorsed.translation.image} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px]" style={{ color: 'rgba(30,30,30,0.4)' }}>Image: 1–2 slides from teaching deck</span>
-                )}
-              </div>
-              <p className="font-['Haas_Grot_Disp',_sans-serif] text-[12px] italic" style={{ color: 'rgba(30,30,30,0.6)' }}>
-                {caseStudyEndorsed.translation.caption}
-              </p>
-            </div>
-            <div>
-              <p className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-medium uppercase tracking-[0.05em] mb-[12px]" style={{ color: 'rgba(30,30,30,0.8)' }}>
-                {caseStudyEndorsed.outcome.label}
-              </p>
-              <p className={`${bodyMuted} mb-[12px]`} style={{ color: advisingText }}>{caseStudyEndorsed.outcome.text}</p>
-              {caseStudyEndorsed.outcome.image && (
-                <>
-                  <div className="aspect-video rounded-[8px] mb-[8px] overflow-hidden">
-                    <img src={caseStudyEndorsed.outcome.image} alt="" className="w-full h-full object-cover" />
-                  </div>
-                  <p className="font-['Haas_Grot_Disp',_sans-serif] text-[12px] italic" style={{ color: 'rgba(30,30,30,0.6)' }}>
-                    {caseStudyEndorsed.outcome.caption}
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
         </section>
 
         {/* About */}

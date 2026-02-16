@@ -4,7 +4,6 @@ import {
   hero,
   whenToCallMe,
   howItWorks,
-  caseStudyEndorsed,
   about,
   nextSteps,
 } from '../content'
@@ -33,7 +32,7 @@ export default function AdvisingV2Page() {
       <Navigation backgroundColor={advisingBg} textColor={advisingText} underlineColor={advisingText} />
       <div className="min-w-[375px] max-w-[1200px] mx-auto px-[24px] md:px-[48px] pb-[80px]">
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-[56px] lg:gap-x-[72px] pt-[48px] md:pt-[72px]">
-          {/* Left column (2/3): hero + bio, you're good fit if, case study */}
+          {/* Left column (2/3): hero, you're good fit if */}
           <div className="md:col-span-2 space-y-[48px] md:space-y-[56px]">
             {/* Hero */}
             <section>
@@ -58,52 +57,6 @@ export default function AdvisingV2Page() {
                     </p>
                   </div>
                 ))}
-              </div>
-            </section>
-
-            {/* Case study */}
-            <section>
-              <h2 className={`${styles.sectionHead} mb-[24px]`} style={{ color: advisingText }}>
-                {caseStudyEndorsed.title}
-              </h2>
-              <div className="space-y-[28px]">
-                <div>
-                  <h3 className={`${styles.personHead} mb-[8px]`} style={{ color: advisingText }}>
-                    {caseStudyEndorsed.situation.label}
-                  </h3>
-                  <p className={styles.body} style={{ color: advisingText }}>
-                    {caseStudyEndorsed.situation.text}
-                  </p>
-                  {caseStudyEndorsed.situation.image && (
-                    <div className="mt-[16px] aspect-video bg-[#1e1e1e]/10 rounded-[8px] overflow-hidden">
-                      <img src={caseStudyEndorsed.situation.image} alt="" className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <h3 className={`${styles.personHead} mb-[8px]`} style={{ color: advisingText }}>
-                    {caseStudyEndorsed.translation.label}
-                  </h3>
-                  <p className={styles.body} style={{ color: advisingText }}>
-                    {caseStudyEndorsed.translation.text}
-                  </p>
-              {caseStudyEndorsed.translation.image && (
-                <div className="mt-[16px] aspect-video bg-[#1e1e1e]/10 rounded-[8px] overflow-hidden">
-                  <img src={caseStudyEndorsed.translation.image} alt="" className="w-full h-full object-cover" />
-                </div>
-              )}
-            </div>
-                <div>
-                  <h3 className={`${styles.personHead} mb-[8px]`} style={{ color: advisingText }}>
-                    {caseStudyEndorsed.outcome.label}
-                  </h3>
-                  <p className={styles.body} style={{ color: advisingText }}>
-                    {caseStudyEndorsed.outcome.text}
-                  </p>
-                  <p className={`${styles.body} mt-[8px] italic`} style={{ color: 'rgba(30,30,30,0.7)' }}>
-                    {caseStudyEndorsed.outcome.caption}
-                  </p>
-                </div>
               </div>
             </section>
           </div>
