@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Navigation from './Navigation'
 
 const HOME_MEDIA = [
+  { folder: 'home-images', filename: 'cw-rebrand-montage.gif', title: 'Clockwise Rebrand' },
   { folder: 'home-images', filename: 'cw-rebrand-10.png', title: 'Clockwise Rebrand' },
   { folder: 'home-images', filename: 'growlers-1.png', title: 'Growlers' },
   { folder: 'home-images', filename: 'lineage-1.png', title: 'Lineage' },
@@ -39,18 +40,46 @@ function isVideo(filename) {
 
 export default function HomeCarousel() {
   const [media, setMedia] = useState(HOME_MEDIA)
-  const [index, setIndex] = useState(0)
+  const [position, setPosition] = useState(1)
+  const [transitionEnabled, setTransitionEnabled] = useState(true)
 
   useEffect(() => {
     setMedia(shuffle(HOME_MEDIA))
   }, [])
 
   const n = media.length
-  const go = (delta) => setIndex((i) => (i + delta + n) % n)
+  if (n <= 1) return null
+
+  const totalSlides = n + 2
+  const slidePercent = 100 / totalSlides
+
+  const go = (delta) => {
+    if (delta > 0) {
+      if (position === 0) return
+      if (position < n) setPosition((p) => p + 1)
+      else setPosition(n + 1)
+    } else {
+      if (position === n + 1) return
+      if (position > 1) setPosition((p) => p - 1)
+      else setPosition(0)
+    }
+  }
+
+  const handleTransitionEnd = (e) => {
+    if (e.target !== e.currentTarget || e.propertyName !== 'transform') return
+    if (position === n + 1) {
+      setTransitionEnabled(false)
+      setPosition(1)
+      requestAnimationFrame(() => requestAnimationFrame(() => setTransitionEnabled(true)))
+    } else if (position === 0) {
+      setTransitionEnabled(false)
+      setPosition(n)
+      requestAnimationFrame(() => requestAnimationFrame(() => setTransitionEnabled(true)))
+    }
+  }
 
   useEffect(() => {
-    if (n <= 1) return
-    const t = setInterval(() => setIndex((i) => (i + 1) % n), 5000)
+    const t = setInterval(() => go(1), 5000)
     return () => clearInterval(t)
   }, [n])
 
@@ -63,10 +92,9 @@ export default function HomeCarousel() {
     return () => window.removeEventListener('keydown', onKey)
   }, [n])
 
-  if (n === 0) return null
-
-  const item = media[index]
-  const slidePercent = 100 / n
+  const realIndex = position === 0 ? n - 1 : (position - 1) % n
+  const item = media[realIndex]
+  const stripSlides = [media[n - 1], ...media, media[0]]
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
@@ -75,18 +103,20 @@ export default function HomeCarousel() {
       <main className="flex-1 relative w-full min-h-screen flex items-center justify-center">
         <div className="fixed inset-0 overflow-hidden">
           <div
-            className="flex h-full min-h-[100vh] transition-transform duration-500 ease-out"
+            className="flex h-full min-h-[100vh] ease-out"
             style={{
-              width: `${n * 100}%`,
-              transform: `translateX(-${index * slidePercent}%)`,
+              width: `${totalSlides * 100}%`,
+              transform: `translateX(-${position * slidePercent}%)`,
+              transition: transitionEnabled ? 'transform 0.5s ease-out' : 'none',
             }}
+            onTransitionEnd={handleTransitionEnd}
           >
-            {media.map((slide, i) => {
+            {stripSlides.map((slide, i) => {
               const src = `/images/${slide.folder}/${slide.filename}`
               const isVid = isVideo(slide.filename)
               return (
                 <div
-                  key={`${slide.filename}-${i}`}
+                  key={`strip-${i}-${slide.filename}`}
                   className="relative flex-shrink-0 h-full min-h-[100vh]"
                   style={{ width: `${slidePercent}%` }}
                 >
@@ -152,7 +182,7 @@ export default function HomeCarousel() {
             {item.title}
           </span>
           <span className="font-['Haas_Grot_Disp',_sans-serif] text-[14px] text-white/90 leading-snug pb-0.5" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}>
-            {index + 1} / {n}
+            {realIndex + 1} / {n}
           </span>
         </div>
       </main>
