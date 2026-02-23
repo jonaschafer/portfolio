@@ -1,7 +1,7 @@
 // Content for the design advising page. Sourced from docs/advising (my-pitch, to-do).
 
 export const hero = {
-  headline: "I help Seed to Series B founders translate unclear brand instincts into decisions their teams can execute—without hiring a full-time Creative Director.",
+  headline: "I turn early-stage brand chaos into scalable creative systems, helping founders execute consistently.",
 }
 
 export const otherWaysICanHelp = {
