@@ -133,12 +133,6 @@ export default function OrganizationalInfrastructurePage() {
           >
             Moving a brand team from order-takers to strategic partners
           </h1>
-          <p
-            className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[19.4px] leading-[1.35] mt-4"
-            style={{ color: mutedColor }}
-          >
-            I didn't write a process doc. I built software.
-          </p>
         </header>
 
         <div className="prose max-w-none">
