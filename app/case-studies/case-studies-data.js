@@ -4,21 +4,21 @@
 export const caseStudies = [
   {
     slug: 'organizational-infrastructure',
-    title: 'Organizational infrastructure: Repositioning a brand team',
+    title: 'Moving a brand team from order-takers to strategic partners',
     description: 'Built software to shift team positioning from service provider to strategic partner',
     readTime: '5 min read',
     previewImage: '/case-studies/org-infra-preview.jpg', // Replace with your image path
   },
   {
     slug: 'resourcing-ivy',
-    title: 'Replacing Production Help with Strategic Partnership',
+    title: 'Replacing production help with strategic partnership',
     description: 'Replaced agency production help with part-time senior partnership to multiply team effectiveness',
     readTime: '5 min read',
     previewImage: '/case-studies/resourcing-ivy-preview.jpg',
   },
   {
     slug: 'brand-architecture-endorsed',
-    title: 'Brand Architecture: From House of Brands to Endorsed Model',
+    title: 'Teaching a CEO to speak in brand architecture',
     description: "Translated CEO's abstract strategy into actionable framework with budget/hiring implications",
     readTime: '5 min read',
     previewImage: '/case-studies/brand-arch-preview.jpg',

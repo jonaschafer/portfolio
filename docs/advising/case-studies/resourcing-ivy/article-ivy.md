@@ -1,4 +1,4 @@
-# Case Study: Replacing Production Help with Strategic Partnership
+# Case Study: Replacing production help with strategic partnership
 
 ## The Problem
 

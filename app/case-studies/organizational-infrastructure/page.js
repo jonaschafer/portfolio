@@ -114,9 +114,9 @@ function getContent() {
 }
 
 export const metadata = {
-  title: 'Organizational Infrastructure: Repositioning a Brand Team — Jon Schafer',
+  title: 'Moving a brand team from order-takers to strategic partners — Jon Schafer',
   description:
-    'Case study: Built software to shift team positioning from service provider to strategic partner.',
+    "I didn't write a process doc. I built software.",
 }
 
 export default function OrganizationalInfrastructurePage() {
@@ -131,8 +131,14 @@ export default function OrganizationalInfrastructurePage() {
             className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px]"
             style={{ color: textColor }}
           >
-            Organizational infrastructure: Repositioning a brand team
+            Moving a brand team from order-takers to strategic partners
           </h1>
+          <p
+            className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[19.4px] leading-[1.35] mt-4"
+            style={{ color: mutedColor }}
+          >
+            I didn't write a process doc. I built software.
+          </p>
         </header>
 
         <div className="prose max-w-none">

@@ -114,7 +114,7 @@ function getContent() {
 }
 
 export const metadata = {
-  title: 'Brand Architecture: From House of Brands to Endorsed Model — Jon Schafer',
+  title: 'Teaching a CEO to speak in brand architecture — Jon Schafer',
   description:
     "Case study: Translated CEO's abstract strategy into actionable framework with budget and hiring implications.",
 }
@@ -131,7 +131,7 @@ export default function BrandArchitectureEndorsedPage() {
             className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px]"
             style={{ color: textColor }}
           >
-            Brand Architecture: From House of Brands to Endorsed Model
+            Teaching a CEO to speak in brand architecture
           </h1>
         </header>
 

@@ -114,7 +114,7 @@ function getContent() {
 }
 
 export const metadata = {
-  title: 'Replacing Production Help with Strategic Partnership — Jon Schafer',
+  title: 'Replacing production help with strategic partnership — Jon Schafer',
   description:
     'Case study: Replaced agency production help with part-time senior partnership to multiply team effectiveness.',
 }
@@ -131,7 +131,7 @@ export default function ResourcingIvyPage() {
             className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px]"
             style={{ color: textColor }}
           >
-            Replacing Production Help with Strategic Partnership
+            Replacing production help with strategic partnership
           </h1>
         </header>
 
