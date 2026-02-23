@@ -47,6 +47,13 @@ export default function Navigation({
   )
 
   const isTransparent = backgroundColor === 'transparent'
+  const hasActivePage = pathname === '/work' || pathname?.startsWith('/play') || pathname?.startsWith('/advising')
+  const workActive = pathname === '/work'
+  const playActive = pathname?.startsWith('/play')
+  const advisingActive = pathname?.startsWith('/advising')
+  const isHomepage = pathname === '/'
+  const navLinkOpacity = (isActive) => (isActive || !hasActivePage || isHomepage) ? 'opacity-100' : 'opacity-50'
+
   return (
     <>
       <div
@@ -58,33 +65,33 @@ export default function Navigation({
       >
         <div className="min-w-[375px] max-w-[1440px] mx-auto">
           <nav className="flex items-center justify-between py-[30px] px-[20px] md:px-[60px]">
-          <Link
+            <Link
             href="/"
             className="font-['Inter',_sans-serif] font-normal leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
             style={{ color: textColor }}
           >
             Jon Schafer
           </Link>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center gap-[20px] md:gap-[30px]">
-            <Link 
-              href="/" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname === '/' ? 'opacity-100' : 'opacity-50'}`}
+            <Link
+              href="/work"
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${navLinkOpacity(workActive)}`}
               style={{ color: textColor }}
             >
               Work
             </Link>
             <Link 
               href="/play" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${navLinkOpacity(playActive)}`}
               style={{ color: textColor }}
             >
               Play
             </Link>
             <Link 
               href="/advising" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${pathname?.startsWith('/advising') ? 'opacity-100' : 'opacity-50'}`}
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${navLinkOpacity(advisingActive)}`}
               style={{ color: textColor }}
             >
               Advising
@@ -93,7 +100,7 @@ export default function Navigation({
               href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
               target="_blank"
               rel="noopener noreferrer"
-              className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap opacity-50 hover:opacity-100 transition-opacity inline-flex items-center gap-[6px]"
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity inline-flex items-center gap-[6px] ${navLinkOpacity(false)}`}
               style={{ color: textColor }}
             >
               Email me
@@ -141,9 +148,9 @@ export default function Navigation({
 
             {/* Menu Items */}
             <div className="flex flex-col space-y-8">
-              <Link 
-                href="/" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname === '/' ? 'opacity-100' : 'opacity-50'}`}
+              <Link
+                href="/work"
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${navLinkOpacity(workActive)}`}
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
@@ -151,7 +158,7 @@ export default function Navigation({
               </Link>
               <Link 
                 href="/play" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/play') ? 'opacity-100' : 'opacity-50'}`}
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${navLinkOpacity(playActive)}`}
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
@@ -159,7 +166,7 @@ export default function Navigation({
               </Link>
               <Link 
                 href="/advising" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${pathname?.startsWith('/advising') ? 'opacity-100' : 'opacity-50'}`}
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${navLinkOpacity(advisingActive)}`}
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
@@ -169,7 +176,7 @@ export default function Navigation({
                 href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] opacity-50 hover:opacity-100 transition-opacity inline-flex items-center gap-[8px]"
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity inline-flex items-center gap-[8px] ${navLinkOpacity(false)}`}
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
@@ -181,7 +188,7 @@ export default function Navigation({
         )}
         </div>
       </div>
-      <div aria-hidden style={{ height: NAV_HEIGHT }} />
+      {!isTransparent && <div aria-hidden style={{ height: NAV_HEIGHT }} />}
     </>
   )
 }

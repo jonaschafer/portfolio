@@ -1,6 +1,6 @@
 # Figma export and image quality
 
-How to export from Figma and use images so they stay sharp on the site (e.g. portfolio work, v2 carousel).
+How to export from Figma and use images so they stay sharp on the site (e.g. portfolio work, homepage carousel).
 
 ## Export from Figma
 
@@ -32,9 +32,9 @@ How to export from Figma and use images so they stay sharp on the site (e.g. por
 ## In this project
 
 - Work images live under `public/images/<project-folder>/`.
-- **Next.js Image** is used with `quality={90}` on the v2 carousel and can be set the same elsewhere.
+- **Next.js Image** is used with `quality={90}` on the homepage carousel and can be set the same elsewhere.
 - GIFs are used as-is with `unoptimized` so animation is preserved.
-- For new work: export from Figma at **2x**, PNG (or JPG 85–90 for photos), then add to the right folder. Update the main Work page data and `public/v2/data.json` if the piece appears on the v2 carousel.
+- For new work: export from Figma at **2x**, PNG (or JPG 85–90 for photos), then add to the right folder. Update the main Work page data and the homepage carousel list in `components/HomeCarousel.js` (HOME_MEDIA) if the piece appears there.
 
 ## Quick checklist
 

@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      { source: '/v2', destination: '/', permanent: true },
+      { source: '/v2/', destination: '/', permanent: true },
+    ]
+  },
   // Ensure static files in public/play/prototypes are served correctly
   async headers() {
     return [

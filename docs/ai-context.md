@@ -61,7 +61,7 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 ### Recent Changes
 - 2026-02-15 - Nav: Work, Case Studies, Advising, Play, Email me (removed Vibes; 👋 → "Email me"). Advising page launched without pricing (commented out); added "See how this works in practice →" link to Case Studies. Case studies index with cursor-follow preview; first case study "Organizational Infrastructure" at `/case-studies/organizational-infrastructure`.
 - 2026-02-15 - V2 homepage (`/v2`): Carousel runs only after client mount (`mounted` state) so arrows and auto-advance work; no ru-dy baseline. Image quality: `quality={90}` on v2 and ProjectCarousel; Figma export + compression guide in `docs/figma-export-and-images.md`.
-- 2026-02-16 - V2 hydration fix: media order is deterministic on first render (`useState(HOME_MEDIA)`), then shuffled in `useEffect` so server and client HTML match. Nav on v2: transparent background; `useLightBackground` hook samples center pixel of current image to switch nav and bottom bar to black text on light slides. Arrow circles softened to `bg-black/10`. Navigation supports `backgroundColor="transparent"` (mobile overlay uses dark backdrop when open).
+- 2026-02-16 - Homepage is now the full-bleed carousel (formerly at `/v2`). Component lives in `components/HomeCarousel.js`; `app/page.js` renders it and exports metadata. Redirects: `/v2` and `/v2/` → `/`. Removed `app/v2/`. To change carousel images, edit `HOME_MEDIA` in `components/HomeCarousel.js`.
 
 ## Important Context
 

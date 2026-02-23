@@ -1,13 +1,11 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import Navigation from '../../components/Navigation'
+import Navigation from './Navigation'
 
 const HOME_MEDIA = [
   { folder: 'home-images', filename: 'cw-rebrand-10.png', title: 'Clockwise Rebrand' },
-  { folder: 'home-images', filename: 'cw-rebrand-3.png', title: 'Clockwise Rebrand' },
-  { folder: 'home-images', filename: 'cw-rebrand-5.gif', title: 'Clockwise Rebrand' },
   { folder: 'home-images', filename: 'growlers-1.png', title: 'Growlers' },
   { folder: 'home-images', filename: 'lineage-1.png', title: 'Lineage' },
   { folder: 'home-images', filename: 'lineage-4.png', title: 'Lineage' },
@@ -23,7 +21,6 @@ const HOME_MEDIA = [
   { folder: 'home-images', filename: 'prism-5.png', title: 'Prism' },
   { folder: 'home-images', filename: 'prism-9.mp4', title: 'Prism' },
   { folder: 'home-images', filename: 'zapier-10.png', title: 'Zapier' },
-  { folder: 'home-images', filename: 'zapier-4.png', title: 'Zapier' },
   { folder: 'home-images', filename: 'zapier-5.png', title: 'Zapier' },
 ]
 
@@ -40,7 +37,7 @@ function isVideo(filename) {
   return filename.toLowerCase().endsWith('.mp4')
 }
 
-export default function V2Page() {
+export default function HomeCarousel() {
   const [media, setMedia] = useState(HOME_MEDIA)
   const [index, setIndex] = useState(0)
 
@@ -75,8 +72,8 @@ export default function V2Page() {
     <div className="min-h-screen bg-black flex flex-col">
       <Navigation backgroundColor="transparent" textColor="#FAFAFA" />
 
-      <main className="flex-1 relative min-h-screen flex items-center justify-center">
-        <div className="absolute inset-0 overflow-hidden">
+      <main className="flex-1 relative w-full min-h-screen flex items-center justify-center">
+        <div className="fixed inset-0 overflow-hidden">
           <div
             className="flex h-full min-h-[100vh] transition-transform duration-500 ease-out"
             style={{
