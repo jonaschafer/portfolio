@@ -16,13 +16,6 @@ export const caseStudies = [
     readTime: '5 min read',
     previewImage: '/case-studies/resourcing-ivy-preview.jpg',
   },
-  {
-    slug: 'brand-architecture-endorsed',
-    title: 'Teaching a CEO to speak in brand architecture',
-    description: "Translated CEO's abstract strategy into actionable framework with budget/hiring implications",
-    readTime: '5 min read',
-    previewImage: '/case-studies/brand-arch-preview.jpg',
-  },
   // Placeholder entries for future case studies (uncomment and add previewImage when ready)
   // {
   //   slug: 'strategic-hiring-ivy',
