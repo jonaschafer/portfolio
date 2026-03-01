@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>Dana's Plan — Dashboard</title>
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface2: #252540;
+      --text: #e8e8f0;
+      --text-muted: #9a9ab0;
+      --accent: #00d4aa;
+      --accent-dim: #00a884;
+      --restore: #ffb347;
+      --taper: #7ec8e3;
+      --danger: #ff6b6b;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; min-height: 100vh; }
+    .header {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--surface); border-bottom: 1px solid var(--surface2);
+      padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top));
+    }
+    .header h1 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--accent); }
+    .header .sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .week-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .week-row select {
+      flex: 1; min-width: 0; padding: 10px 12px; font-size: 0.95rem;
+      background: var(--surface2); border: 1px solid var(--surface2); border-radius: 8px; color: var(--text);
+      -webkit-appearance: none; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%239a9ab0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px;
+    }
+    .badge { font-size: 0.7rem; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+    .badge.build { background: rgba(0,212,170,0.2); color: var(--accent); }
+    .badge.restore { background: rgba(255,179,71,0.2); color: var(--restore); }
+    .badge.taper { background: rgba(126,200,227,0.2); color: var(--taper); }
+    .badge.race { background: rgba(255,107,107,0.2); color: var(--danger); }
+    .nav-row { display: flex; gap: 8px; margin-top: 8px; }
+    .nav-row button { padding: 6px 12px; font-size: 0.8rem; background: var(--surface2); border: none; border-radius: 6px; color: var(--text); cursor: pointer; }
+    .views { font-size: 0.8rem; margin-top: 8px; }
+    .views a { color: var(--text-muted); margin-right: 12px; }
+    .views a:hover { color: var(--accent); }
+    .content { padding: 16px; max-width: 420px; margin: 0 auto; padding-bottom: 40px; }
+    .target-bar {
+      background: var(--surface); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;
+      font-size: 0.95rem; text-align: center;
+    }
+    .target-bar strong { color: var(--accent); }
+    .day-row {
+      display: flex; align-items: baseline; gap: 10px; padding: 10px 14px;
+      border-bottom: 1px solid var(--surface2); font-size: 0.9rem;
+    }
+    .day-row .day { font-weight: 700; color: var(--text-muted); min-width: 64px; font-size: 0.8rem; }
+    .day-row .desc { color: var(--text); flex: 1; }
+    .day-row .meta { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
+    .day-row.off .desc { color: var(--text-muted); font-weight: 500; }
+    .loading, .error { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+    .error { color: var(--danger); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Dana's Plan — Dashboard</h1>
+    <div class="sub">Wy'East 50M · At-a-glance</div>
+    <div class="week-row">
+      <select id="weekSelect" aria-label="Week"></select>
+      <span id="weekBadge" class="badge"></span>
+    </div>
+    <div class="nav-row" id="quickNav"></div>
+    <div class="views">
+      <a href="view-full.html">Full text</a>
+      <a href="index.html">Cards</a>
+      <a href="view-table.html">Table</a>
+      <a href="view-dashboard.html"><strong>Dashboard</strong></a>
+    </div>
+  </header>
+  <main class="content">
+    <div id="targetBar" class="target-bar"></div>
+    <div id="list" class="loading">Loading…</div>
+  </main>
+  <script>
+    let planData = null;
+    const startDate = new Date('2026-02-03');
+    function getCurrentWeek() {
+      var today = new Date();
+      if (today < startDate) return 1;
+      var week = Math.floor((today - startDate) / (7 * 24 * 60 * 60 * 1000)) + 1;
+      return Math.min(Math.max(1, week), 27);
+    }
+    function getBadgeClass(type) {
+      if (!type) return '';
+      var t = type.toUpperCase();
+      if (t.includes('RESTORE')) return 'restore';
+      if (t.includes('TAPER') || t.includes('RACE')) return t.includes('RACE') ? 'race' : 'taper';
+      return 'build';
+    }
+    function oneLine(d) {
+      var s = d.summary;
+      var parts = [];
+      if (/PT|Exercises/i.test(d.title) && !/Run|Vert|Strength/i.test(d.title)) {
+        parts.push('PT');
+        if (s.duration) parts.push(s.duration);
+        return parts.join(' · ');
+      }
+      if (s.distance) parts.push(s.distance);
+      if (s.vert && s.vert.length < 12) parts.push(s.vert);
+      var runPart = parts.length ? parts.join(', ') : d.title.split('+')[0].trim();
+      var strengthPart = d.title.indexOf('+') !== -1 ? d.title.split('+').slice(1).join('+').replace(/\s*\([^)]*\)/g, '').trim() : '';
+      if (strengthPart) runPart = runPart + ' + ' + strengthPart;
+      if (s.duration && parts.length) runPart = runPart + ' · ' + s.duration;
+      return runPart || d.title;
+    }
+    function renderWeek(weekNum) {
+      if (!planData) return;
+      var w = planData.weeks.find(function(x) { return x.week === weekNum; });
+      if (!w) {
+        document.getElementById('list').innerHTML = '<div class="error">Week not found.</div>';
+        return;
+      }
+      document.getElementById('targetBar').innerHTML = w.target ? '<strong>Target:</strong> ' + w.target : '';
+      document.getElementById('weekBadge').textContent = w.type;
+      document.getElementById('weekBadge').className = 'badge ' + getBadgeClass(w.type);
+      var days = w.days || [];
+      document.getElementById('list').innerHTML = days.map(function(d) {
+        var isOff = /off|rest|yay!/i.test(d.title);
+        var desc = oneLine(d);
+        var meta = d.summary && d.summary.duration && !/PT|min|hour/.test(desc) ? d.summary.duration : '';
+        return '<div class="day-row' + (isOff ? ' off' : '') + '"><span class="day">' + d.day + '</span><span class="desc">' + desc + '</span>' + (meta ? '<span class="meta">' + meta + '</span>' : '') + '</div>';
+      }).join('');
+    }
+    function populateWeekSelect() {
+      var sel = document.getElementById('weekSelect');
+      var current = getCurrentWeek();
+      planData.weeks.forEach(function(w) {
+        var opt = document.createElement('option');
+        opt.value = w.week;
+        opt.textContent = 'Week ' + w.week + ' (' + w.dateRange + ') — ' + w.type + (w.week === current ? ' ★' : '');
+        sel.appendChild(opt);
+      });
+      sel.value = current;
+      sel.addEventListener('change', function() { renderWeek(parseInt(sel.value, 10)); });
+    }
+    function populateQuickNav() {
+      var nav = document.getElementById('quickNav');
+      var current = getCurrentWeek();
+      nav.innerHTML = '<button type="button">← Prev</button><button type="button">This week</button><button type="button">Next →</button>';
+      nav.children[0].onclick = function() { var n = Math.max(1, parseInt(document.getElementById('weekSelect').value, 10) - 1); document.getElementById('weekSelect').value = n; renderWeek(n); };
+      nav.children[1].onclick = function() { document.getElementById('weekSelect').value = current; renderWeek(current); };
+      nav.children[2].onclick = function() { var n = Math.min(27, parseInt(document.getElementById('weekSelect').value, 10) + 1); document.getElementById('weekSelect').value = n; renderWeek(n); };
+    }
+    (async function load() {
+      try {
+        var res = await fetch('plan-data.json');
+        if (!res.ok) throw new Error(res.statusText);
+        planData = await res.json();
+        populateWeekSelect();
+        populateQuickNav();
+        renderWeek(getCurrentWeek());
+      } catch (e) {
+        document.getElementById('list').innerHTML = '<div class="error">Could not load plan. Run from a local server (e.g. npx serve).</div>';
+      }
+    })();
+  </script>
+</body>
+</html>

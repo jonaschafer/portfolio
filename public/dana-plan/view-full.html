@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Dana's Plan — Full text</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface2: #252540;
+      --text: #e8e8f0;
+      --text-muted: #9a9ab0;
+      --accent: #00d4aa;
+      --accent-dim: #00a884;
+      --restore: #ffb347;
+      --taper: #7ec8e3;
+      --danger: #ff6b6b;
+    }
+    * { box-sizing: border-box; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--surface);
+      border-bottom: 1px solid var(--surface2);
+      padding: 12px 16px;
+      padding-top: calc(12px + env(safe-area-inset-top));
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .header .subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .week-picker {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .week-picker select {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 14px;
+      font-size: 1rem;
+      background: var(--surface2);
+      border: 1px solid var(--surface2);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239a9ab0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+    .week-badge {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .week-badge.build { background: rgba(0, 212, 170, 0.2); color: var(--accent); }
+    .week-badge.restore { background: rgba(255, 179, 71, 0.2); color: var(--restore); }
+    .week-badge.taper { background: rgba(126, 200, 227, 0.2); color: var(--taper); }
+    .week-badge.race { background: rgba(255, 107, 107, 0.2); color: var(--danger); }
+    .content {
+      padding: 16px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .target-bar {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+    .target-bar strong { color: var(--accent); }
+    .plan-body {
+      font-size: 0.95rem;
+    }
+    .plan-body h4 {
+      margin: 1.2em 0 0.5em;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+    .plan-body h4:first-child { margin-top: 0; }
+    .plan-body ul, .plan-body ol {
+      margin: 0.5em 0;
+      padding-left: 1.4em;
+    }
+    .plan-body li { margin: 0.3em 0; }
+    .plan-body p { margin: 0.6em 0; }
+    .plan-body strong { color: var(--text); }
+    .plan-body hr {
+      border: none;
+      border-top: 1px solid var(--surface2);
+      margin: 1.5em 0;
+    }
+    .plan-body blockquote {
+      margin: 1em 0;
+      padding-left: 1em;
+      border-left: 3px solid var(--accent);
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .plan-body .coach-comment {
+      background: rgba(0, 212, 170, 0.08);
+      border-radius: 8px;
+      padding: 12px;
+      margin: 1em 0;
+      border-left: 3px solid var(--accent);
+    }
+    .plan-body table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+      margin: 1em 0;
+    }
+    .plan-body th, .plan-body td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--surface2);
+    }
+    .plan-body th {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .loading, .error {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    .error { color: var(--danger); }
+    .quick-nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .quick-nav button {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      background: var(--surface2);
+      border: none;
+      border-radius: 6px;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .quick-nav button:hover, .quick-nav button:focus {
+      background: var(--accent-dim);
+      color: var(--bg);
+    }
+    .quick-nav button.current {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .view-links { font-size: 0.8rem; margin-top: 8px; }
+    .view-links a { color: var(--text-muted); margin-right: 12px; }
+    .view-links a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Dana's Plan — Full text</h1>
+    <div class="subtitle">Wy'East 50M · Aug 15, 2026 · v2 volume-corrected</div>
+    <div class="week-picker">
+      <select id="weekSelect" aria-label="Select week">
+        <option value="">Loading…</option>
+      </select>
+      <span id="weekBadge" class="week-badge"></span>
+    </div>
+    <div class="quick-nav" id="quickNav"></div>
+    <div class="view-links">
+      <strong>Views:</strong>
+      <a href="view-full.html"><strong>Full text</strong></a>
+      <a href="index.html">Cards</a>
+      <a href="view-table.html">Table</a>
+      <a href="view-dashboard.html">Dashboard</a>
+    </div>
+  </header>
+  <main class="content">
+    <div id="targetBar" class="target-bar"></div>
+    <div id="planBody" class="plan-body loading">Loading plan…</div>
+  </main>
+  <script>
+    let planData = null;
+    const startDate = new Date('2026-02-03');
+
+    function getCurrentWeek() {
+      const today = new Date();
+      if (today < startDate) return 1;
+      const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+      const elapsed = today - startDate;
+      const week = Math.floor(elapsed / msPerWeek) + 1;
+      return Math.min(Math.max(1, week), 27);
+    }
+
+    function renderMarkdown(md) {
+      if (!md) return '';
+      md = md.replace(/\*\*WEEK \d+ COACH COMMENT\*\*:[\s\S]*?(?=\n\n---|\n\n###|$)/g, (m) => {
+        return '<div class="coach-comment">' + marked.parse(m) + '</div>';
+      });
+      return marked.parse(md);
+    }
+
+    function getBadgeClass(type) {
+      if (!type) return '';
+      const t = type.toUpperCase();
+      if (t.includes('RESTORE')) return 'restore';
+      if (t.includes('TAPER') || t.includes('RACE')) return t.includes('RACE') ? 'race' : 'taper';
+      return 'build';
+    }
+
+    function renderWeek(weekNum) {
+      if (!planData) return;
+      const w = planData.weeks.find((x) => x.week === weekNum);
+      if (!w) {
+        document.getElementById('planBody').innerHTML = '<div class="error">Week not found.</div>';
+        return;
+      }
+      document.getElementById('targetBar').innerHTML = w.target
+        ? `<strong>Target:</strong> ${w.target}`
+        : '';
+      document.getElementById('planBody').innerHTML = renderMarkdown(w.content);
+      document.getElementById('weekBadge').textContent = w.type;
+      document.getElementById('weekBadge').className = 'week-badge ' + getBadgeClass(w.type);
+    }
+
+    function populateWeekSelect() {
+      const sel = document.getElementById('weekSelect');
+      const current = getCurrentWeek();
+      sel.innerHTML = planData.weeks
+        .map((w) => {
+          const label = `Week ${w.week} (${w.dateRange}) — ${w.type}`;
+          const opt = document.createElement('option');
+          opt.value = w.week;
+          opt.textContent = label;
+          if (w.week === current) opt.textContent += ' ★ This week';
+          return opt.outerHTML;
+        })
+        .join('');
+      sel.value = current;
+      sel.addEventListener('change', () => renderWeek(parseInt(sel.value, 10)));
+    }
+
+    function populateQuickNav() {
+      const nav = document.getElementById('quickNav');
+      const current = getCurrentWeek();
+      const buttons = [
+        { label: '← Prev', fn: () => navWeek(-1) },
+        { label: 'This week', fn: () => { document.getElementById('weekSelect').value = current; renderWeek(current); } },
+        { label: 'Next →', fn: () => navWeek(1) },
+      ];
+      nav.innerHTML = buttons
+        .map((b) => `<button type="button" data-action="${b.label}">${b.label}</button>`)
+        .join('');
+      nav.querySelectorAll('button').forEach((btn, i) => {
+        btn.addEventListener('click', buttons[i].fn);
+      });
+    }
+
+    function navWeek(delta) {
+      const sel = document.getElementById('weekSelect');
+      const next = Math.max(1, Math.min(27, parseInt(sel.value, 10) + delta));
+      sel.value = next;
+      renderWeek(next);
+    }
+
+    async function loadPlan() {
+      try {
+        const res = await fetch('plan-data.json');
+        if (!res.ok) throw new Error(res.statusText);
+        planData = await res.json();
+        populateWeekSelect();
+        populateQuickNav();
+        renderWeek(getCurrentWeek());
+      } catch (e) {
+        document.getElementById('planBody').innerHTML =
+          '<div class="error">Could not load plan. Run from a local server (e.g. <code>npx serve</code>).</div>';
+        document.getElementById('weekSelect').innerHTML = '<option>—</option>';
+      }
+    }
+
+    loadPlan();
+  </script>
+</body>
+</html>
