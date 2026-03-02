@@ -3,23 +3,27 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-export default function ProjectCarousel({ title, description, images, folder }) {
+export default function ProjectCarousel({ title, description, images = [], folder, placeholderDescriptions = [] }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showArrows, setShowArrows] = useState(false)
+
+  const isPlaceholderMode = placeholderDescriptions?.length > 0
+  const slides = isPlaceholderMode ? placeholderDescriptions : images
+  const slideCount = slides.length
 
   const handleImageClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const x = e.clientX - rect.left
     const centerPoint = rect.width / 2
-    
+
     if (x < centerPoint) {
-      setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1)
+      setCurrentIndex(currentIndex === 0 ? slideCount - 1 : currentIndex - 1)
     } else {
-      setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1)
+      setCurrentIndex(currentIndex === slideCount - 1 ? 0 : currentIndex + 1)
     }
   }
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = () => {
     setShowArrows(true)
   }
 
@@ -28,7 +32,7 @@ export default function ProjectCarousel({ title, description, images, folder }) 
   }
 
   const isVideo = (filename) => {
-    return filename.toLowerCase().endsWith('.mp4')
+    return typeof filename === 'string' && filename.toLowerCase().endsWith('.mp4')
   }
 
   return (
@@ -46,22 +50,28 @@ export default function ProjectCarousel({ title, description, images, folder }) 
                   {description}
                 </p>
               </div>
-              
+
               {/* Counter */}
               <p className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] leading-[1.4] text-[#FAFAFA] tracking-[0.16px]">
-                {currentIndex + 1}/{images.length}
+                {currentIndex + 1}/{slideCount}
               </p>
             </div>
 
-            {/* Image/Video Container */}
-            <div 
+            {/* Image/Video or Placeholder Container */}
+            <div
               className="w-full aspect-[1300/731] bg-white rounded-[10px] overflow-hidden cursor-pointer relative"
               onClick={handleImageClick}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
-              {isVideo(images[currentIndex]) ? (
-                <video 
+              {isPlaceholderMode ? (
+                <div className="w-full h-full flex items-center justify-center p-8 bg-[#e8e8e8]">
+                  <p className="font-['Haas_Grot_Disp',_sans-serif] text-center text-[16px] md:text-[18px] leading-[1.5] text-[#333] max-w-[800px]">
+                    {placeholderDescriptions[currentIndex]}
+                  </p>
+                </div>
+              ) : isVideo(images[currentIndex]) ? (
+                <video
                   key={`${folder}-${currentIndex}`}
                   className="w-full h-full object-cover"
                   autoPlay
@@ -74,7 +84,7 @@ export default function ProjectCarousel({ title, description, images, folder }) 
                   Video not supported
                 </video>
               ) : (
-                <Image 
+                <Image
                   src={`/images/${folder}/${images[currentIndex]}`}
                   alt={`${title} project`}
                   width={1300}
@@ -84,26 +94,23 @@ export default function ProjectCarousel({ title, description, images, folder }) 
                   priority
                 />
               )}
-              
+
               {/* Black Cursor Arrows */}
               {showArrows && (
                 <>
-                  {/* Left Arrow */}
                   <div className="absolute left-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="drop-shadow-lg">
-                      <path 
-                        d="M3 3L21 12L3 21V3Z" 
-                        fill="black" 
+                      <path
+                        d="M3 3L21 12L3 21V3Z"
+                        fill="black"
                         transform="rotate(180 12 12)"
                       />
                     </svg>
                   </div>
-                  
-                  {/* Right Arrow */}
                   <div className="absolute right-8 top-1/2 transform -translate-y-1/2 pointer-events-none">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="drop-shadow-lg">
-                      <path 
-                        d="M3 3L21 12L3 21V3Z" 
+                      <path
+                        d="M3 3L21 12L3 21V3Z"
                         fill="black"
                       />
                     </svg>

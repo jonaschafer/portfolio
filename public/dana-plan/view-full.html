@@ -165,7 +165,7 @@
       flex-wrap: wrap;
     }
     .quick-nav button {
-      padding: 6px 12px;
+      padding: 8px 14px;
       font-size: 0.85rem;
       background: var(--surface2);
       border: none;
@@ -173,6 +173,7 @@
       color: var(--text);
       cursor: pointer;
     }
+    .quick-nav button.nav-arrow { font-size: 1.2rem; padding: 8px 16px; line-height: 1; }
     .quick-nav button:hover, .quick-nav button:focus {
       background: var(--accent-dim);
       color: var(--bg);
@@ -199,6 +200,7 @@
     <div class="quick-nav" id="quickNav"></div>
     <div class="view-links">
       <strong>Views:</strong>
+      <a href="view-calendar.html">Calendar</a>
       <a href="view-full.html"><strong>Full text</strong></a>
       <a href="index.html">Cards</a>
       <a href="view-table.html">Table</a>
@@ -211,15 +213,23 @@
   </main>
   <script>
     let planData = null;
-    const startDate = new Date('2026-02-03');
+
+    function getStartDate() {
+      if (planData && planData.startDate) {
+        var p = planData.startDate.split('-');
+        return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+      }
+      return new Date(2026, 2, 2);
+    }
 
     function getCurrentWeek() {
+      const startDate = getStartDate();
       const today = new Date();
       if (today < startDate) return 1;
       const msPerWeek = 7 * 24 * 60 * 60 * 1000;
       const elapsed = today - startDate;
       const week = Math.floor(elapsed / msPerWeek) + 1;
-      return Math.min(Math.max(1, week), 27);
+      return Math.min(Math.max(1, week), (planData && planData.weeks) ? planData.weeks.length : 27);
     }
 
     function renderMarkdown(md) {
@@ -274,12 +284,12 @@
       const nav = document.getElementById('quickNav');
       const current = getCurrentWeek();
       const buttons = [
-        { label: '← Prev', fn: () => navWeek(-1) },
-        { label: 'This week', fn: () => { document.getElementById('weekSelect').value = current; renderWeek(current); } },
-        { label: 'Next →', fn: () => navWeek(1) },
+        { label: '←', fn: () => navWeek(-1), cls: 'nav-arrow', aria: 'Previous week' },
+        { label: 'This week', fn: () => { document.getElementById('weekSelect').value = current; renderWeek(current); }, cls: '', aria: '' },
+        { label: '→', fn: () => navWeek(1), cls: 'nav-arrow', aria: 'Next week' },
       ];
       nav.innerHTML = buttons
-        .map((b) => `<button type="button" data-action="${b.label}">${b.label}</button>`)
+        .map((b) => `<button type="button" class="${b.cls}" ${b.aria ? 'aria-label="' + b.aria + '"' : ''}>${b.label}</button>`)
         .join('');
       nav.querySelectorAll('button').forEach((btn, i) => {
         btn.addEventListener('click', buttons[i].fn);
@@ -288,19 +298,27 @@
 
     function navWeek(delta) {
       const sel = document.getElementById('weekSelect');
-      const next = Math.max(1, Math.min(27, parseInt(sel.value, 10) + delta));
+      const next = Math.max(1, Math.min((planData && planData.weeks) ? planData.weeks.length : 27, parseInt(sel.value, 10) + delta));
       sel.value = next;
       renderWeek(next);
     }
 
     async function loadPlan() {
       try {
-        const res = await fetch('plan-data.json');
+        const res = await fetch('plan-data-v3.json');
         if (!res.ok) throw new Error(res.statusText);
         planData = await res.json();
         populateWeekSelect();
         populateQuickNav();
         renderWeek(getCurrentWeek());
+        document.addEventListener('keydown', function(e) {
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+          const sel = document.getElementById('weekSelect');
+          const cur = parseInt(sel.value, 10);
+          const maxW = planData.weeks.length;
+          if (e.key === 'ArrowLeft' && cur > 1) { sel.value = cur - 1; renderWeek(cur - 1); e.preventDefault(); }
+          if (e.key === 'ArrowRight' && cur < maxW) { sel.value = cur + 1; renderWeek(cur + 1); e.preventDefault(); }
+        });
       } catch (e) {
         document.getElementById('planBody').innerHTML =
           '<div class="error">Could not load plan. Run from a local server (e.g. <code>npx serve</code>).</div>';

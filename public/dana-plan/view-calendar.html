@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <base href="/dana-plan/">
+  <meta name="theme-color" content="#1a1a2e">
+  <title>Dana's Plan — Calendar</title>
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --surface2: #252540;
+      --text: #e8e8f0;
+      --text-muted: #9a9ab0;
+      --accent: #00d4aa;
+      --accent-dim: #00a884;
+      --restore: #ffb347;
+      --taper: #7ec8e3;
+      --danger: #ff6b6b;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.4;
+      display: flex; flex-direction: column; min-height: 0;
+    }
+    .header {
+      flex-shrink: 0;
+      background: var(--surface); border-bottom: 1px solid var(--surface2);
+      padding: 10px 12px; padding-top: max(10px, env(safe-area-inset-top));
+    }
+    .header h1 { margin: 0; font-size: clamp(0.9rem, 2.2vw, 1rem); font-weight: 600; color: var(--accent); }
+    .header .sub { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+    .views { font-size: clamp(0.7rem, 1.8vw, 0.8rem); margin-top: 6px; }
+    .views a { color: var(--text-muted); margin-right: 10px; }
+    .views a:hover { color: var(--accent); }
+    .content {
+      flex: 1; min-height: 0; display: flex; flex-direction: column;
+      padding: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom));
+      width: 100%; max-width: 100%;
+    }
+    #calWrap {
+      flex: 1; min-height: 0; display: flex; flex-direction: column;
+    }
+    #calWrap.loading { justify-content: center; }
+
+    .cal-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0; margin-bottom: 8px; gap: 8px;
+    }
+    .cal-nav button {
+      padding: clamp(6px, 1.5vw, 10px) clamp(12px, 3vw, 18px);
+      font-size: clamp(1rem, 2.5vw, 1.2rem); background: var(--surface2); border: none; border-radius: 8px;
+      color: var(--text); cursor: pointer; line-height: 1;
+    }
+    .cal-nav button:hover { background: var(--accent-dim); color: var(--bg); }
+    .cal-month { font-size: clamp(0.9rem, 2.2vw, 1.1rem); font-weight: 700; color: var(--text); }
+
+    .cal-grid {
+      flex: 1; min-height: 0;
+      display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-rows: auto repeat(6, minmax(0, 1fr));
+      background: var(--surface); border: 1px solid var(--surface2); border-radius: 8px;
+      overflow: hidden;
+    }
+    .cal-day-name {
+      padding: clamp(4px, 1.2vw, 8px) 2px;
+      font-size: clamp(0.6rem, 1.6vw, 0.75rem); font-weight: 700; text-align: center;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--surface2);
+    }
+    .cal-cell {
+      min-height: 0; padding: clamp(4px, 1vw, 8px);
+      border-right: 1px solid var(--surface2); border-bottom: 1px solid var(--surface2);
+      font-size: clamp(0.75rem, 1.8vw, 0.9rem); background: var(--surface);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .cal-cell:nth-child(7n) { border-right: none; }
+    .cal-cell-clickable { cursor: pointer; }
+    .cal-cell-clickable:hover { background: var(--surface2); }
+    .cal-cell.other-month { background: var(--bg); color: var(--text-muted); opacity: 0.7; }
+    .cal-cell.today { background: var(--accent-dim); color: var(--bg); }
+    .cal-cell.today .cal-num { background: var(--bg); color: var(--accent); }
+    .cal-num {
+      font-weight: 700; font-size: clamp(0.8rem, 2vw, 1rem);
+      flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: clamp(22px, 5.5vw, 28px); height: clamp(22px, 5.5vw, 28px); border-radius: 50%;
+      margin-bottom: 2px;
+    }
+    .cal-cell.today .cal-num { background: var(--bg); color: var(--accent); }
+    .cal-snippet {
+      font-size: clamp(0.6rem, 1.4vw, 0.75rem); color: var(--text-muted); line-height: 1.25;
+      overflow: hidden; text-overflow: ellipsis; display: -webkit-box;
+      -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    }
+    .cal-cell.today .cal-snippet { color: rgba(15,15,26,0.85); }
+    .cal-phase { font-size: clamp(0.55rem, 1.3vw, 0.65rem); font-weight: 600; text-transform: uppercase; margin-top: 2px; flex-shrink: 0; }
+    .cal-phase.build { color: var(--accent); }
+    .cal-phase.restore { color: var(--restore); }
+    .cal-phase.test { color: #a78bfa; }
+    .cal-phase.taper { color: var(--taper); }
+    .cal-phase.race { color: var(--danger); }
+    .cal-week-total {
+      font-size: clamp(0.55rem, 1.2vw, 0.65rem); font-weight: 700; color: var(--accent);
+      margin-top: 2px; flex-shrink: 0;
+    }
+    .cal-cell.today .cal-week-total { color: var(--bg); }
+
+    .loading, .error { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+    .error { color: var(--danger); }
+
+    .day-modal-backdrop {
+      position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.6);
+      display: none; align-items: center; justify-content: center;
+      padding: 16px; box-sizing: border-box;
+    }
+    .day-modal-backdrop.open { display: flex; }
+    .day-modal {
+      background: var(--surface); border: 1px solid var(--surface2); border-radius: 12px;
+      max-width: 480px; width: 100%; max-height: 85vh; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .day-modal-header {
+      padding: 14px 16px; border-bottom: 1px solid var(--surface2);
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .day-modal-title { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .day-modal-date { font-size: 0.8rem; color: var(--text-muted); }
+    .day-modal-close {
+      padding: 6px 12px; font-size: 1.2rem; background: var(--surface2); border: none;
+      border-radius: 6px; color: var(--text); cursor: pointer; line-height: 1;
+    }
+    .day-modal-close:hover { background: var(--accent-dim); color: var(--bg); }
+    .day-modal-body {
+      padding: 16px; overflow-y: auto; font-size: 0.9rem; line-height: 1.5;
+      color: var(--text-muted); white-space: pre-wrap;
+    }
+    .day-modal-body strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Dana's Plan — Calendar</h1>
+    <div class="sub">Wy'East 50M</div>
+    <div class="views">
+      <a href="view-calendar.html"><strong>Calendar</strong></a>
+      <a href="view-full.html">Full text</a>
+      <a href="index.html">Cards</a>
+      <a href="view-table.html">Table</a>
+      <a href="view-dashboard.html">Dashboard</a>
+    </div>
+  </header>
+  <main class="content">
+    <div id="calWrap" class="loading">Loading…</div>
+  </main>
+  <div id="dayModalBackdrop" class="day-modal-backdrop" aria-hidden="true">
+    <div class="day-modal" role="dialog" aria-labelledby="dayModalTitle">
+      <div class="day-modal-header">
+        <div>
+          <div id="dayModalTitle" class="day-modal-title"></div>
+          <div id="dayModalDate" class="day-modal-date"></div>
+        </div>
+        <button type="button" class="day-modal-close" aria-label="Close" id="dayModalClose">×</button>
+      </div>
+      <div id="dayModalBody" class="day-modal-body"></div>
+    </div>
+  </div>
+  <script>
+    var planData = null;
+    var dateToDay = {};  // 'YYYY-MM-DD' -> { run, title, phase, content }
+    var currentCalYear = 2026;
+    var currentCalMonth = 2;  // 0-indexed, 2 = March
+
+    var DAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function dateKey(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function parseLocalDate(iso) {
+      if (!iso) return null;
+      var p = iso.split('-');
+      if (p.length !== 3) return new Date(iso);
+      return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+    }
+
+    function contentForDay(w, d) {
+      var raw = (d.content || '').trim();
+      if (raw.length >= 120) return raw;
+      var weekBlob = (w.content || '').trim();
+      if (!weekBlob) return raw;
+      var dayName = d.day;
+      var re = new RegExp('####\\s+' + dayName.replace(/\s+/g, '\\s+') + '[^\\n]*\\n([\\s\\S]*?)(?=####|$)', 'i');
+      var m = weekBlob.match(re);
+      if (m && m[1]) {
+        var section = m[1].trim();
+        if (section.length > raw.length) return section;
+      }
+      return raw;
+    }
+    function parseMiles(s) {
+      if (!s || typeof s !== 'string') return 0;
+      var m = s.replace(/,/g, '').match(/(\d+\.?\d*)/);
+      return m ? parseFloat(m[1], 10) : 0;
+    }
+    function parseVert(s) {
+      if (!s || typeof s !== 'string') return 0;
+      var m = (s + '').replace(/,/g, '').match(/(\d+\.?\d*)/);
+      return m ? parseFloat(m[1], 10) : 0;
+    }
+    function buildDateMap() {
+      dateToDay = {};
+      if (!planData || !planData.weeks || !planData.startDate) return;
+      var start = parseLocalDate(planData.startDate);
+      planData.weeks.forEach(function(w) {
+        var totalMiles = 0, totalVert = 0;
+        (w.days || []).forEach(function(d) {
+          var s = d.summary || {};
+          totalMiles += parseMiles(s.distance);
+          totalVert += parseVert(s.vert);
+        });
+        var weekTargetStr = (totalMiles ? Math.round(totalMiles) + ' mi' : '') + (totalMiles && totalVert ? ' · ' : '') + (totalVert ? totalVert.toLocaleString() + ' ft' : '');
+        var weekStart = new Date(start);
+        weekStart.setDate(weekStart.getDate() + (w.week - 1) * 7);
+        (w.days || []).forEach(function(d) {
+          var dayIdx = DAY_ORDER.indexOf(d.day);
+          if (dayIdx === -1) return;
+          var cellDate = new Date(weekStart);
+          cellDate.setDate(weekStart.getDate() + dayIdx);
+          var key = dateKey(cellDate);
+          var s = d.summary || {};
+          var run = [s.distance, s.vert].filter(Boolean).join(' ');
+          dateToDay[key] = {
+            run: run || (d.title || '').slice(0, 30),
+            title: d.title,
+            phase: w.type,
+            content: contentForDay(w, d),
+            weekTarget: weekTargetStr
+          };
+        });
+      });
+    }
+
+    function getPhaseClass(type) {
+      if (!type) return 'build';
+      var t = (type + '').toUpperCase();
+      if (t.includes('RESTORE')) return 'restore';
+      if (t.includes('TEST')) return 'test';
+      if (t.includes('RACE')) return 'race';
+      if (t.includes('TAPER')) return 'taper';
+      return 'build';
+    }
+    function formatCardContent(s) {
+      if (!s) return '';
+      var div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML.replace(/\n/g, '<br>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/^- /gm, '• ');
+    }
+
+    function renderMonth() {
+      if (!planData) return;
+      var first = new Date(currentCalYear, currentCalMonth, 1);
+      var today = new Date();
+      var todayKey = dateKey(today);
+      var startDow = first.getDay();
+      var daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
+      var prevMonth = new Date(currentCalYear, currentCalMonth, 0);
+      var prevDays = prevMonth.getDate();
+      var cells = [];
+      var i, d, key, info, other, num, snippet, phaseClass;
+
+      for (i = 0; i < 7; i++) {
+        cells.push('<div class="cal-day-name">' + ['SUN','MON','TUE','WED','THU','FRI','SAT'][i] + '</div>');
+      }
+
+      var leading = startDow;
+      for (i = 0; i < leading; i++) {
+        num = prevDays - leading + i + 1;
+        d = new Date(currentCalYear, currentCalMonth - 1, num);
+        key = dateKey(d);
+        info = dateToDay[key];
+        other = ' other-month';
+        var clickable = info ? ' cal-cell-clickable' : '';
+        var dataDate = info ? ' data-date="' + key + '"' : '';
+        snippet = info ? '<div class="cal-snippet">' + (info.run || '').replace(/</g, '&lt;') + '</div>' : '';
+        phaseClass = info && info.phase ? ' cal-phase ' + getPhaseClass(info.phase) : '';
+        var weekTotalHtml = (info && info.weekTarget && d.getDay() === 1) ? '<div class="cal-week-total">' + (info.weekTarget || '').replace(/</g, '&lt;') + '</div>' : '';
+        cells.push('<div class="cal-cell' + other + clickable + '"' + dataDate + '><span class="cal-num">' + num + '</span>' + snippet + weekTotalHtml + (info && info.phase ? '<div class="' + phaseClass + '">' + info.phase + '</div>' : '') + '</div>');
+      }
+
+      for (i = 1; i <= daysInMonth; i++) {
+        d = new Date(currentCalYear, currentCalMonth, i);
+        key = dateKey(d);
+        info = dateToDay[key];
+        other = key === todayKey ? ' today' : '';
+        clickable = info ? ' cal-cell-clickable' : '';
+        dataDate = info ? ' data-date="' + key + '"' : '';
+        snippet = info ? '<div class="cal-snippet">' + (info.run || '').replace(/</g, '&lt;') + '</div>' : '';
+        phaseClass = info && info.phase ? ' cal-phase ' + getPhaseClass(info.phase) : '';
+        weekTotalHtml = (info && info.weekTarget && d.getDay() === 1) ? '<div class="cal-week-total">' + (info.weekTarget || '').replace(/</g, '&lt;') + '</div>' : '';
+        cells.push('<div class="cal-cell' + other + clickable + '"' + dataDate + '><span class="cal-num">' + i + '</span>' + snippet + weekTotalHtml + (info && info.phase ? '<div class="' + phaseClass + '">' + info.phase + '</div>' : '') + '</div>');
+      }
+
+      var trailing = Math.max(0, 42 - leading - daysInMonth);
+      for (i = 1; i <= trailing; i++) {
+        d = new Date(currentCalYear, currentCalMonth + 1, i);
+        key = dateKey(d);
+        info = dateToDay[key];
+        other = ' other-month';
+        clickable = info ? ' cal-cell-clickable' : '';
+        dataDate = info ? ' data-date="' + key + '"' : '';
+        snippet = info ? '<div class="cal-snippet">' + (info.run || '').replace(/</g, '&lt;') + '</div>' : '';
+        phaseClass = info && info.phase ? ' cal-phase ' + getPhaseClass(info.phase) : '';
+        weekTotalHtml = (info && info.weekTarget && d.getDay() === 1) ? '<div class="cal-week-total">' + (info.weekTarget || '').replace(/</g, '&lt;') + '</div>' : '';
+        cells.push('<div class="cal-cell' + other + clickable + '"' + dataDate + '><span class="cal-num">' + i + '</span>' + snippet + weekTotalHtml + (info && info.phase ? '<div class="' + phaseClass + '">' + info.phase + '</div>' : '') + '</div>');
+      }
+
+      document.getElementById('calMonth').textContent = MONTH_NAMES[currentCalMonth] + ' ' + currentCalYear;
+      document.getElementById('calGrid').innerHTML = cells.join('');
+    }
+
+    function openDayModal(key) {
+      var info = dateToDay[key];
+      if (!info) return;
+      var d = new Date(key);
+      var dateStr = MONTH_NAMES[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+      document.getElementById('dayModalTitle').textContent = info.title || '';
+      document.getElementById('dayModalDate').textContent = dateStr;
+      document.getElementById('dayModalBody').innerHTML = formatCardContent(info.content || '');
+      var back = document.getElementById('dayModalBackdrop');
+      back.classList.add('open');
+      back.setAttribute('aria-hidden', 'false');
+    }
+    function closeDayModal() {
+      var back = document.getElementById('dayModalBackdrop');
+      back.classList.remove('open');
+      back.setAttribute('aria-hidden', 'true');
+    }
+
+    function goMonth(delta) {
+      currentCalMonth += delta;
+      if (currentCalMonth > 11) { currentCalMonth = 0; currentCalYear++; }
+      if (currentCalMonth < 0) { currentCalMonth = 11; currentCalYear--; }
+      renderMonth();
+    }
+
+    function initCalendar() {
+      var wrap = document.getElementById('calWrap');
+      wrap.innerHTML = '<div class="cal-nav">' +
+        '<button type="button" aria-label="Previous month" id="calPrev">←</button>' +
+        '<span id="calMonth" class="cal-month"></span>' +
+        '<button type="button" aria-label="Next month" id="calNext">→</button>' +
+        '</div><div id="calGrid" class="cal-grid"></div>';
+      document.getElementById('calPrev').onclick = function() { goMonth(-1); };
+      document.getElementById('calNext').onclick = function() { goMonth(1); };
+      document.getElementById('dayModalClose').onclick = closeDayModal;
+      document.getElementById('dayModalBackdrop').onclick = function(e) { if (e.target === this) closeDayModal(); };
+      document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'Escape') { closeDayModal(); return; }
+        if (e.key === 'ArrowLeft') { goMonth(-1); e.preventDefault(); }
+        if (e.key === 'ArrowRight') { goMonth(1); e.preventDefault(); }
+      });
+      document.getElementById('calGrid').addEventListener('click', function(e) {
+        var cell = e.target.closest('.cal-cell-clickable[data-date]');
+        if (cell) openDayModal(cell.getAttribute('data-date'));
+      });
+      var start = planData.startDate ? parseLocalDate(planData.startDate) : new Date(2026, 2, 2);
+      currentCalYear = start.getFullYear();
+      currentCalMonth = start.getMonth();
+      renderMonth();
+    }
+
+    (async function load() {
+      try {
+        var res = await fetch('plan-data-v3.json');
+        if (!res.ok) throw new Error(res.statusText);
+        planData = await res.json();
+        buildDateMap();
+        initCalendar();
+      } catch (e) {
+        document.getElementById('calWrap').innerHTML = '<div class="error">Could not load plan. Run from a local server.</div>';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -46,8 +46,10 @@
     .badge.taper { background: rgba(126,200,227,0.2); color: var(--taper); }
     .badge.race { background: rgba(255,107,107,0.2); color: var(--danger); }
     .nav-row { display: flex; gap: 8px; margin-top: 8px; }
-    .nav-row button { padding: 6px 12px; font-size: 0.8rem; background: var(--surface2); border: none; border-radius: 6px; color: var(--text); cursor: pointer; }
+    .nav-row { align-items: center; }
+    .nav-row button { padding: 8px 14px; font-size: 0.9rem; background: var(--surface2); border: none; border-radius: 8px; color: var(--text); cursor: pointer; }
     .nav-row button:hover { background: var(--accent-dim); color: var(--bg); }
+    .nav-row button.nav-arrow { font-size: 1.2rem; padding: 8px 16px; line-height: 1; }
     .views { font-size: 0.8rem; margin-top: 8px; }
     .views a { color: var(--text-muted); margin-right: 12px; }
     .views a:hover { color: var(--accent); }
@@ -89,6 +91,7 @@
     </div>
     <div class="nav-row" id="quickNav"></div>
     <div class="views">
+      <a href="view-calendar.html">Calendar</a>
       <a href="view-full.html">Full text</a>
       <a href="index.html"><strong>Cards</strong></a>
       <a href="view-table.html">Table</a>
@@ -101,12 +104,19 @@
   </main>
   <script>
     let planData = null;
-    const startDate = new Date('2026-02-03');
+    function getStartDate() {
+      if (planData && planData.startDate) {
+        var p = planData.startDate.split('-');
+        return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, parseInt(p[2], 10));
+      }
+      return new Date(2026, 2, 2);
+    }
     function getCurrentWeek() {
+      const startDate = getStartDate();
       const today = new Date();
       if (today < startDate) return 1;
       const week = Math.floor((today - startDate) / (7 * 24 * 60 * 60 * 1000)) + 1;
-      return Math.min(Math.max(1, week), 27);
+      return Math.min(Math.max(1, week), (planData && planData.weeks) ? planData.weeks.length : 27);
     }
     function getBadgeClass(type) {
       if (!type) return '';
@@ -179,19 +189,28 @@
     function populateQuickNav() {
       var nav = document.getElementById('quickNav');
       var current = getCurrentWeek();
-      nav.innerHTML = '<button type="button">← Prev</button><button type="button">This week</button><button type="button">Next →</button>';
+      var maxW = (planData && planData.weeks) ? planData.weeks.length : 27;
+      nav.innerHTML = '<button type="button" class="nav-arrow" aria-label="Previous week">←</button><button type="button">This week</button><button type="button" class="nav-arrow" aria-label="Next week">→</button>';
       nav.children[0].onclick = function() { var n = Math.max(1, parseInt(document.getElementById('weekSelect').value, 10) - 1); document.getElementById('weekSelect').value = n; renderWeek(n); };
       nav.children[1].onclick = function() { document.getElementById('weekSelect').value = current; renderWeek(current); };
-      nav.children[2].onclick = function() { var n = Math.min(27, parseInt(document.getElementById('weekSelect').value, 10) + 1); document.getElementById('weekSelect').value = n; renderWeek(n); };
+      nav.children[2].onclick = function() { var n = Math.min(maxW, parseInt(document.getElementById('weekSelect').value, 10) + 1); document.getElementById('weekSelect').value = n; renderWeek(n); };
     }
     (async function load() {
       try {
-        var res = await fetch('plan-data.json');
+        var res = await fetch('plan-data-v3.json');
         if (!res.ok) throw new Error(res.statusText);
         planData = await res.json();
         populateWeekSelect();
         populateQuickNav();
         renderWeek(getCurrentWeek());
+        document.addEventListener('keydown', function(e) {
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+          var sel = document.getElementById('weekSelect');
+          var cur = parseInt(sel.value, 10);
+          var maxW = planData.weeks.length;
+          if (e.key === 'ArrowLeft' && cur > 1) { sel.value = cur - 1; renderWeek(cur - 1); e.preventDefault(); }
+          if (e.key === 'ArrowRight' && cur < maxW) { sel.value = cur + 1; renderWeek(cur + 1); e.preventDefault(); }
+        });
       } catch (e) {
         document.getElementById('cards').innerHTML = '<div class="error">Could not load plan. Run from a local server (e.g. npx serve).</div>';
       }

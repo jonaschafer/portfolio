@@ -3,15 +3,14 @@
  * Supabase free tier pauses projects after 7 days of inactivity.
  * Vercel Cron hits this route periodically so the project stays active.
  *
- * Optional: set CRON_SECRET in Vercel and send Authorization: Bearer <CRON_SECRET>.
+ * Optional: set CRON_SECRET in Vercel. If the request includes an Authorization header,
+ * it must match Bearer <CRON_SECRET>; if no header is sent (e.g. Vercel cron), the route runs.
  */
 export async function GET(request) {
+  const auth = request.headers.get('authorization')
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret) {
-    const auth = request.headers.get('authorization')
-    if (auth !== `Bearer ${cronSecret}`) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+  if (auth != null && cronSecret != null && auth !== `Bearer ${cronSecret}`) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL

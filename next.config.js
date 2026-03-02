@@ -30,6 +30,9 @@ const nextConfig = {
         source: '/play/prototypes/:folder/:subfolder',
         destination: '/play/prototypes/:folder/:subfolder/index.html',
       },
+      // Serve dana-plan viewer index when requesting /dana-plan or /dana-plan/
+      { source: '/dana-plan', destination: '/dana-plan/index.html' },
+      { source: '/dana-plan/', destination: '/dana-plan/index.html' },
     ]
   },
 }

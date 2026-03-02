@@ -9,11 +9,30 @@ export const metadata = {
   description: 'Creative Director. Brand identity, design systems, and strategic design.',
 }
 
+const SHOW_DOJO_REBRAND = false
+
 export default function WorkPage() {
   return (
     <main>
       <Navigation />
       <IntroSection />
+
+      {SHOW_DOJO_REBRAND && (
+        <ProjectCarousel
+          title="Dojo rebrand"
+          description="ClassDojo serves 50 million families across 180 countries, but behind a beloved brand was a fragmented portfolio: some products robust, others with almost nothing. I drove the brand strategy, rebrand, and site overhaul: new logos, characters, color systems, and creative direction across four products, and an endorsed-brand model that gave all six a shared foundation for the first time."
+          placeholderDescriptions={[
+            'New homepage — hero and key blocks, desktop and/or mobile.',
+            'Global nav and footer — desktop, showing all products as one family.',
+            'Tutor — Nova character, color system, and/or key landing page.',
+            'Dojo Sparks — logo and product or web frame showing distinct expression.',
+            'Dojo Islands — product or web frame showing its expression within the system.',
+            'ClassDojo for districts — landing page or deck frame showing restrained, pro tone.',
+            'Design system — type scale, color, and 2–3 components showing scale and reusability.',
+            'Tone framework — audience/product/medium (playful vs. professional).',
+          ]}
+        />
+      )}
 
       <ProjectCarousel
         title="Novo"
