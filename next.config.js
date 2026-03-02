@@ -4,6 +4,8 @@ const nextConfig = {
     return [
       { source: '/v2', destination: '/', permanent: true },
       { source: '/v2/', destination: '/', permanent: true },
+      { source: '/dana-plan', destination: '/dana-plan-v2', permanent: true },
+      { source: '/dana-plan/', destination: '/dana-plan-v2', permanent: true },
     ]
   },
   // Ensure static files in public/play/prototypes are served correctly
@@ -30,9 +32,7 @@ const nextConfig = {
         source: '/play/prototypes/:folder/:subfolder',
         destination: '/play/prototypes/:folder/:subfolder/index.html',
       },
-      // Serve dana-plan viewer index when requesting /dana-plan or /dana-plan/
-      { source: '/dana-plan', destination: '/dana-plan/index.html' },
-      { source: '/dana-plan/', destination: '/dana-plan/index.html' },
+      // (Redirects send /dana-plan and /dana-plan/ to /dana-plan-v2; static files under /dana-plan/* still served from public.)
     ]
   },
 }

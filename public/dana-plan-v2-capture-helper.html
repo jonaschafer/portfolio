@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendar → Figma clipboard</title>
+  <style>
+    body { font-family: system-ui; padding: 24px; max-width: 480px; margin: 0 auto; }
+    h1 { font-size: 1.1rem; }
+    p { color: #555; font-size: 14px; }
+    button { padding: 10px 16px; background: #435938; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; }
+    button:hover { opacity: 0.9; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .step { margin: 12px 0; padding: 8px 0; border-bottom: 1px solid #eee; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Calendar screenshot → clipboard</h1>
+  <p>Use this so you can paste the calendar into Figma.</p>
+  <div class="step">
+    <strong>1.</strong> With dev server running, open the calendar: <a href="/dana-plan-v2/calendar" target="_blank">/dana-plan-v2/calendar</a>
+  </div>
+  <div class="step">
+    <strong>2.</strong> Either take a screenshot yourself (Cmd+Shift+4) or use Chrome DevTools MCP: navigate to <code>/dana-plan-v2/calendar</code>, capture (screenshot saved to <code>public/cal-capture.png</code>), then click below to copy that image to clipboard.
+  </div>
+  <div class="step">
+    <button type="button" id="copyBtn">Copy cal-capture.png to clipboard</button>
+    <span id="status" style="margin-left: 8px; font-size: 12px;"></span>
+  </div>
+  <div class="step">
+    <strong>3.</strong> In Figma, open your file and the frame (e.g. node 62-469). Press <code>Cmd+V</code> (Mac) or <code>Ctrl+V</code> (Win) to paste the image.
+  </div>
+  <p style="margin-top: 16px; font-size: 12px; color: #888;">
+    MCP flow: 1) Navigate to calendar, 2) take_screenshot with filePath <code>public/cal-capture.png</code>, 3) Navigate to this helper, 4) evaluate_script to click #copyBtn (or run the fetch+clipboard script), 5) Navigate to Figma, 6) evaluate_script to dispatch Cmd+V / paste.
+  </p>
+  <script>
+    document.getElementById('copyBtn').onclick = async function () {
+      const status = document.getElementById('status');
+      status.textContent = '';
+      try {
+        const r = await fetch('/cal-capture.png');
+        if (!r.ok) throw new Error('Image not found. Capture the calendar first (MCP or save screenshot as public/cal-capture.png).');
+        const blob = await r.blob();
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        status.textContent = 'Copied. Now go to Figma and Cmd+V.';
+        status.style.color = '#0a0';
+      } catch (e) {
+        status.textContent = e.message || 'Failed';
+        status.style.color = '#c00';
+      }
+    };
+  </script>
+</body>
+</html>
