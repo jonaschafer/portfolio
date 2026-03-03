@@ -7,9 +7,8 @@ import {
   getStartDate,
   dateKey,
   parseLocalDate,
-  parseMiles,
-  parseVert,
   getPhaseClass,
+  getCanonicalRun,
   DAY_ORDER,
   MONTH_NAMES,
 } from '../lib/dana-plan-utils'
@@ -37,9 +36,9 @@ function buildDateMap(planData) {
     let totalMiles = 0
     let totalVert = 0
     ;(w.days || []).forEach((d) => {
-      const s = d.summary || {}
-      totalMiles += parseMiles(s.distance)
-      totalVert += parseVert(s.vert)
+      const run = getCanonicalRun(d)
+      totalMiles += run.mi
+      totalVert += run.v
     })
     const weekTargetStr =
       (totalMiles ? Math.round(totalMiles) + ' mi' : '') +
@@ -53,8 +52,8 @@ function buildDateMap(planData) {
       const cellDate = new Date(weekStart)
       cellDate.setDate(weekStart.getDate() + dayIdx)
       const key = dateKey(cellDate)
-      const s = d.summary || {}
-      const run = [s.distance, s.vert].filter(Boolean).join(' ')
+      const { distance: dist, vert } = getCanonicalRun(d)
+      const run = [dist, vert].filter(Boolean).join(' ') || (d.title || '').slice(0, 30)
       map[key] = {
         run: run || (d.title || '').slice(0, 30),
         title: d.title,
@@ -195,7 +194,7 @@ export default function DanaPlanCalendar() {
     cells.push(
       <div
         key={'p-' + i}
-        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col bg-[#3d5132] ${info ? 'cursor-pointer hover:bg-[#465d3a]' : ''}`}
+        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col bg-[#252525] ${info ? 'cursor-pointer hover:bg-[#353535]' : ''}`}
         onClick={info ? () => setDayModal(key) : undefined}
         style={{ color: '#e8e8f0' }}
       >
@@ -227,12 +226,12 @@ export default function DanaPlanCalendar() {
     cells.push(
       <div
         key={'c-' + i}
-        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col ${isToday ? 'bg-[#FAFAFA]/25' : 'bg-[#4a6340]'} ${info ? 'cursor-pointer hover:opacity-95' : ''}`}
+        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col ${isToday ? 'bg-[#FAFAFA]/25' : 'bg-[#383838]'} ${info ? 'cursor-pointer hover:opacity-95' : ''}`}
         onClick={info ? () => setDayModal(key) : undefined}
         style={!isToday ? { color: '#FAFAFA' } : undefined}
       >
         <span
-          className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold flex-shrink-0 mb-1 ${isToday ? 'bg-[#435938] text-[#333]' : ''}`}
+          className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold flex-shrink-0 mb-1 ${isToday ? 'bg-[#2e2e2e] text-[#333]' : ''}`}
           style={!isToday ? { color: '#FAFAFA' } : undefined}
         >
           {i}
@@ -270,7 +269,7 @@ export default function DanaPlanCalendar() {
     cells.push(
       <div
         key={'n-' + i}
-        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col bg-[#3d5132] ${info ? 'cursor-pointer hover:bg-[#465d3a]' : ''}`}
+        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col bg-[#252525] ${info ? 'cursor-pointer hover:bg-[#353535]' : ''}`}
         onClick={info ? () => setDayModal(key) : undefined}
         style={{ color: '#e8e8f0' }}
       >
@@ -301,7 +300,7 @@ export default function DanaPlanCalendar() {
     : ''
 
   return (
-    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-[60px]">
+    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-24 md:pb-[60px]">
       <DanaPlanHeader
         planData={planData}
         selectedWeek={selectedWeek}
@@ -355,7 +354,7 @@ export default function DanaPlanCalendar() {
           aria-labelledby="dayModalTitle"
         >
           <div
-            className="bg-[#435938] border border-[#FAFAFA]/20 rounded-xl max-w-[480px] w-full max-h-[85vh] overflow-hidden flex flex-col shadow-xl"
+            className="bg-[#2e2e2e] border border-[#FAFAFA]/20 rounded-xl max-w-[480px] w-full max-h-[85vh] overflow-hidden flex flex-col shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between p-4 border-b border-[#FAFAFA]/15 flex-shrink-0">

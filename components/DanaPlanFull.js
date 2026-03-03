@@ -76,7 +76,7 @@ export default function DanaPlanFull() {
   if (lastEnd < content.length) segments.push({ type: 'md', text: content.slice(lastEnd) })
 
   return (
-    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-[60px]">
+    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-24 md:pb-[60px]">
       <DanaPlanHeader
         planData={planData}
         selectedWeek={selectedWeek}

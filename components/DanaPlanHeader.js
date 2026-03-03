@@ -1,14 +1,68 @@
 'use client'
 
 import Link from 'next/link'
-import { getBadgeClass, getCurrentWeek } from '../lib/dana-plan-utils'
+import { getCurrentWeek } from '../lib/dana-plan-utils'
+
+function ViewIcon({ name, active }) {
+  const c = active ? '#FAFAFA' : 'rgba(250,250,250,0.6)'
+  const size = 22
+  switch (name) {
+    case 'calendar':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+      )
+    case 'doc':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
+        </svg>
+      )
+    case 'cards':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="2" y="4" width="20" height="14" rx="2" ry="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+        </svg>
+      )
+    case 'table':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="1" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="3" y1="15" x2="21" y2="15" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <line x1="15" y1="3" x2="15" y2="21" />
+        </svg>
+      )
+    case 'dashboard':
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="7" height="9" />
+          <rect x="14" y="3" width="7" height="5" />
+          <rect x="14" y="12" width="7" height="9" />
+          <rect x="3" y="16" width="7" height="5" />
+        </svg>
+      )
+    default:
+      return null
+  }
+}
 
 const VIEWS = [
-  { slug: 'calendar', label: 'Calendar' },
-  { slug: 'full', label: 'Full text' },
-  { slug: '', label: 'Cards' },
-  { slug: 'table', label: 'Table' },
-  { slug: 'dashboard', label: 'Dashboard' },
+  { slug: 'calendar', label: 'Calendar', icon: 'calendar' },
+  { slug: 'full', label: 'Full text', icon: 'doc' },
+  { slug: '', label: 'Cards', icon: 'cards' },
+  { slug: 'table', label: 'Table', icon: 'table' },
+  { slug: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
 ]
 
 export default function DanaPlanHeader({
@@ -39,12 +93,12 @@ export default function DanaPlanHeader({
 
       {!loading && planData && (
         <>
-          <div className="flex flex-wrap items-center gap-3 mt-6">
+          <div className="w-full mt-6">
             <select
               value={selectedWeek}
               onChange={(e) => onWeekChange(Number(e.target.value))}
               aria-label="Week"
-              className="flex-1 min-w-0 max-w-[280px] py-3 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[15px] tracking-[0.16px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/20 text-[#FAFAFA] appearance-none cursor-pointer"
+              className="w-full py-3 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[15px] tracking-[0.16px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/20 text-[#FAFAFA] appearance-none cursor-pointer"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23FAFAFA' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
                 backgroundRepeat: 'no-repeat',
@@ -59,14 +113,9 @@ export default function DanaPlanHeader({
                 </option>
               ))}
             </select>
-            <span
-              className={`inline-block px-3 py-1.5 rounded-[6px] font-['Haas_Grot_Disp',_sans-serif] text-[12px] font-medium tracking-[0.05em] ${getBadgeClass(week?.type)}`}
-            >
-              {week?.type ?? ''}
-            </span>
           </div>
 
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 w-full mt-3">
             <button
               type="button"
               onClick={handlePrev}
@@ -78,7 +127,7 @@ export default function DanaPlanHeader({
             <button
               type="button"
               onClick={handleThisWeek}
-              className="py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[14px] bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
+              className="flex-1 py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[14px] bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
             >
               This week
             </button>
@@ -92,9 +141,10 @@ export default function DanaPlanHeader({
             </button>
           </div>
 
-          <p className="font-['Haas_Grot_Disp',_sans-serif] text-[12px] tracking-[0.05em] text-[#FAFAFA]/60 mt-3">
+          {/* Desktop: inline view links */}
+          <p className="hidden md:block font-['Haas_Grot_Disp',_sans-serif] text-[12px] tracking-[0.05em] text-[#FAFAFA]/60 mt-3">
             {VIEWS.map((v, i) => (
-              <span key={v.slug}>
+              <span key={v.slug || 'cards'}>
                 {i > 0 && ' · '}
                 <Link
                   href={v.slug ? `${basePath}/${v.slug}` : basePath}
@@ -105,6 +155,28 @@ export default function DanaPlanHeader({
               </span>
             ))}
           </p>
+
+          {/* Mobile: fixed bottom nav with icons */}
+          <nav
+            className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around py-2 px-2 bg-[#2e2e2e] border-t border-[#FAFAFA]/15 safe-area-pb"
+            aria-label="View switcher"
+          >
+            {VIEWS.map((v) => {
+              const isActive = currentView === (v.slug || 'cards')
+              const href = v.slug ? `${basePath}/${v.slug}` : basePath
+              return (
+                <Link
+                  key={v.slug || 'cards'}
+                  href={href}
+                  className={`flex flex-col items-center gap-0.5 py-1 px-2 min-w-0 flex-1 ${isActive ? 'text-[#FAFAFA]' : 'text-[#FAFAFA]/60'}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <ViewIcon name={v.icon} active={isActive} />
+                  <span className="font-['Haas_Grot_Disp',_sans-serif] text-[10px] truncate w-full text-center">{v.label}</span>
+                </Link>
+              )
+            })}
+          </nav>
         </>
       )}
     </section>

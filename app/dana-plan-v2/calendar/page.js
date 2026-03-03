@@ -9,10 +9,10 @@ export const metadata = {
 
 export default function DanaPlanCalendarPage() {
   return (
-    <main className="min-h-screen bg-[#435938]">
-      <Navigation />
+    <main className="min-h-screen bg-[#2e2e2e]">
+      <Navigation backgroundColor="#2e2e2e" />
       <DanaPlanCalendar />
-      <Footer />
+      <Footer backgroundColor="#2e2e2e" minimal />
     </main>
   )
 }

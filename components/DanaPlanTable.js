@@ -2,14 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import DanaPlanHeader from './DanaPlanHeader'
-import { getCurrentWeek } from '../lib/dana-plan-utils'
+import { getCurrentWeek, getCanonicalRun } from '../lib/dana-plan-utils'
 
 function runCell(d) {
-  const s = d.summary || {}
-  const meta = []
-  if (s.distance) meta.push(s.distance)
-  if (s.vert && String(s.vert).length < 20) meta.push(s.vert)
-  if (s.duration) meta.push(s.duration)
+  const { distance: dist, vert } = getCanonicalRun(d)
+  const meta = [dist, vert].filter(Boolean)
   return (
     <div>
       <div className="font-semibold text-[#FAFAFA] mb-1">{d.title}</div>
@@ -102,7 +99,7 @@ export default function DanaPlanTable() {
   }
 
   return (
-    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-[60px]">
+    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-24 md:pb-[60px]">
       <DanaPlanHeader
         planData={planData}
         selectedWeek={selectedWeek}

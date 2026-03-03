@@ -2,23 +2,24 @@
 
 import { useState, useEffect } from 'react'
 import DanaPlanHeader from './DanaPlanHeader'
-import { getCurrentWeek } from '../lib/dana-plan-utils'
+import { getCurrentWeek, getCanonicalRun } from '../lib/dana-plan-utils'
 
 function oneLine(d) {
   const s = d.summary || {}
-  const parts = []
-  if (/PT|Exercises/i.test(d.title) && !/Run|Vert|Strength/i.test(d.title)) {
-    parts.push('PT')
-    if (s.duration) parts.push(s.duration)
-    return parts.join(' · ')
+  const { distance: dist, vert } = getCanonicalRun(d)
+  // Run days: always show distance (and vert) when present, never duration
+  if (dist || vert) {
+    const parts = [dist, vert].filter(Boolean)
+    let runPart = parts.join(', ')
+    const strengthPart = d.title.indexOf('+') !== -1 ? d.title.split('+').slice(1).join('+').replace(/\s*\([^)]*\)/g, '').trim() : ''
+    if (strengthPart) runPart = runPart + ' + ' + strengthPart
+    return runPart || d.title.split('+')[0].trim()
   }
-  if (s.distance) parts.push(s.distance)
-  if (s.vert && String(s.vert).length < 12) parts.push(s.vert)
-  let runPart = parts.length ? parts.join(', ') : d.title.split('+')[0].trim()
-  const strengthPart = d.title.indexOf('+') !== -1 ? d.title.split('+').slice(1).join('+').replace(/\s*\([^)]*\)/g, '').trim() : ''
-  if (strengthPart) runPart = runPart + ' + ' + strengthPart
-  if (s.duration && parts.length) runPart = runPart + ' · ' + s.duration
-  return runPart || d.title
+  // PT-only days (no run distance)
+  if (/PT|Exercises/i.test(d.title) && !/Run|Vert|Strength/i.test(d.title)) {
+    return s.duration ? 'PT · ' + s.duration : 'PT'
+  }
+  return d.title.split('+')[0].trim() || d.title
 }
 
 export default function DanaPlanDashboard() {
@@ -79,7 +80,7 @@ export default function DanaPlanDashboard() {
   }
 
   return (
-    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-[60px]">
+    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-24 md:pb-[60px]">
       <DanaPlanHeader
         planData={planData}
         selectedWeek={selectedWeek}
@@ -96,7 +97,6 @@ export default function DanaPlanDashboard() {
         {week?.days?.map((d) => {
           const isOff = /off|rest|yay!/i.test(d.title)
           const desc = oneLine(d)
-          const meta = d.summary?.duration && !/PT|min|hour/.test(desc) ? d.summary.duration : ''
           return (
             <div
               key={d.day}
@@ -106,7 +106,6 @@ export default function DanaPlanDashboard() {
                 {d.day}
               </span>
               <span className="flex-1 text-[#FAFAFA]">{desc}</span>
-              {meta && <span className="text-[12px] text-[#FAFAFA]/60 whitespace-nowrap">{meta}</span>}
             </div>
           )
         })}
