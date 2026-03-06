@@ -9,6 +9,7 @@ import {
   parseLocalDate,
   getPhaseClass,
   getCanonicalRun,
+  getDayContentWithPT,
   DAY_ORDER,
   MONTH_NAMES,
 } from '../lib/dana-plan-utils'
@@ -58,7 +59,7 @@ function buildDateMap(planData) {
         run: run || (d.title || '').slice(0, 30),
         title: d.title,
         phase: w.type,
-        content: contentForDay(w, d),
+        content: getDayContentWithPT(d.day, contentForDay(w, d)),
         weekTarget: weekTargetStr,
       }
     })

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import DanaPlanHeader from './DanaPlanHeader'
-import { getCurrentWeek, formatRunSummary, getDayDate, formatShortDate } from '../lib/dana-plan-utils'
+import { getCurrentWeek, formatRunSummary, getDayDate, formatShortDate, getDayContentWithPT } from '../lib/dana-plan-utils'
 
 function formatMeta(day) {
   const { distance, vert } = formatRunSummary(day || {})
@@ -51,10 +51,10 @@ function DayCard({ dayData, day, title, summary, content, isOff, dateLabel }) {
           {open ? '▲' : '▼'}
         </span>
       </button>
-      {open && content && (
+      {open && (content || getDayContentWithPT(day)) && (
         <div
           className="px-4 pb-4 pt-0 border-t border-[#FAFAFA]/15 font-['Haas_Grot_Disp',_sans-serif] text-[15px] md:text-[13px] leading-[1.5] tracking-[0.167px] text-[#FAFAFA]/80 [&_strong]:text-[#FAFAFA] [&_br]:block [&_br]:h-2"
-          dangerouslySetInnerHTML={{ __html: formatContentHtml(content) }}
+          dangerouslySetInnerHTML={{ __html: formatContentHtml(getDayContentWithPT(day, content)) }}
         />
       )}
     </div>
