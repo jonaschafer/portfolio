@@ -55,13 +55,14 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
   - Example: "Dashboard redesign: 60% complete, need to finish responsive layout"
 
 ### Known Issues
-- [Issue]: [Impact and potential solutions]
+- **Supabase keepalive cron (2026-03-08)**: Vercel Cron for `/api/cron/keepalive` showed no logs—scheduled runs never executed, so Supabase saw no activity and paused after 7 days. Schedule changed from twice weekly (`0 12 * * 0,4`) to daily (`0 12 * * *`). After deploy, use Cron Jobs → Run to test; if logs still empty, consider external ping (e.g. cron-job.org) or Vercel support.
   - Example: "Slow API response on mobile: Investigating caching strategy"
 
 ### Recent Changes
 - 2026-02-15 - Nav: Work, Case Studies, Advising, Play, Email me (removed Vibes; 👋 → "Email me"). Advising page launched without pricing (commented out); added "See how this works in practice →" link to Case Studies. Case studies index with cursor-follow preview; first case study "Organizational Infrastructure" at `/case-studies/organizational-infrastructure`.
 - 2026-02-15 - V2 homepage (`/v2`): Carousel runs only after client mount (`mounted` state) so arrows and auto-advance work; no ru-dy baseline. Image quality: `quality={90}` on v2 and ProjectCarousel; Figma export + compression guide in `docs/figma-export-and-images.md`.
 - 2026-02-16 - Homepage is now the full-bleed carousel (formerly at `/v2`). Component lives in `components/HomeCarousel.js`; `app/page.js` renders it and exports metadata. Redirects: `/v2` and `/v2/` → `/`. Removed `app/v2/`. To change carousel images, edit `HOME_MEDIA` in `components/HomeCarousel.js`.
+- 2026-03-08 - Supabase Sounds: Vercel cron for keepalive had no execution logs; schedule updated to daily (`0 12 * * *`) in `vercel.json`. Restore Supabase project if paused; re-add Sounds data if needed.
 
 ## Important Context
 
@@ -88,5 +89,5 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
 
 ---
 
-**Last Updated:** 2026-02-22 (removed brand-architecture-endorsed case study)
+**Last Updated:** 2026-03-08 (removed brand-architecture-endorsed case study)
 **Maintained By:** [Your name/team]
