@@ -128,11 +128,11 @@ export default function DanaPlanViewer() {
         loading={false}
       />
       {week?.target && (
-        <div className="rounded-[10px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/15 px-4 py-3 mb-6 font-['Haas_Grot_Disp',_sans-serif] text-[14px] tracking-[0.16px] text-[#FAFAFA]">
+        <div className="rounded-[10px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/15 px-4 py-3 mb-6 font-['Haas_Grot_Disp',_sans-serif] text-[14px] tracking-[0.16px] text-[#FAFAFA] max-w-[520px] md:max-w-none">
           <strong className="text-[#FAFAFA]">Target:</strong> {week.target}
         </div>
       )}
-      <div className="space-y-3 max-w-[520px]">
+      <div className="space-y-3 max-w-[520px] md:max-w-none md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
         {week?.days?.map((d) => {
           const isOff = /off|rest|yay!/i.test(d.title)
           const dayDate = getDayDate(planData, week.week, d.day)

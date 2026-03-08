@@ -85,11 +85,11 @@ export default function DanaPlanFull() {
         loading={false}
       />
       {week?.target && (
-        <div className="rounded-[10px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/15 px-4 py-3 mb-6 font-['Haas_Grot_Disp',_sans-serif] text-[14px] tracking-[0.16px] text-[#FAFAFA]">
+        <div className="rounded-[10px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/15 px-4 py-3 mb-6 font-['Haas_Grot_Disp',_sans-serif] text-[14px] tracking-[0.16px] text-[#FAFAFA] max-w-[640px] md:max-w-[800px]">
           <strong>Target:</strong> {week.target}
         </div>
       )}
-      <div className="font-['Haas_Grot_Disp',_sans-serif] text-[15px] leading-[1.5] tracking-[0.167px] text-[#FAFAFA]/90 max-w-[640px] prose-invert [&_h4]:text-[#FAFAFA] [&_h4]:font-['Mondwest',_sans-serif] [&_h4]:text-[16px] [&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:first:mt-0 [&_ul]:pl-6 [&_ol]:pl-6 [&_li]:my-1 [&_p]:my-2 [&_strong]:text-[#FAFAFA] [&_hr]:border-[#FAFAFA]/20 [&_hr]:my-6">
+      <div className="font-['Haas_Grot_Disp',_sans-serif] text-[15px] leading-[1.5] tracking-[0.167px] text-[#FAFAFA]/90 max-w-[640px] md:max-w-[800px] prose-invert [&_h4]:text-[#FAFAFA] [&_h4]:font-['Mondwest',_sans-serif] [&_h4]:text-[16px] [&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:first:mt-0 [&_ul]:pl-6 [&_ol]:pl-6 [&_li]:my-1 [&_p]:my-2 [&_strong]:text-[#FAFAFA] [&_hr]:border-[#FAFAFA]/20 [&_hr]:my-6">
         {segments.map((seg, i) =>
           seg.type === 'coach' ? (
             <div

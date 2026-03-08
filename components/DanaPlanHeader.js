@@ -43,15 +43,6 @@ function ViewIcon({ name, active }) {
           <line x1="15" y1="3" x2="15" y2="21" />
         </svg>
       )
-    case 'dashboard':
-      return (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="7" height="9" />
-          <rect x="14" y="3" width="7" height="5" />
-          <rect x="14" y="12" width="7" height="9" />
-          <rect x="3" y="16" width="7" height="5" />
-        </svg>
-      )
     default:
       return null
   }
@@ -62,7 +53,6 @@ const VIEWS = [
   { slug: 'full', label: 'Full text', icon: 'doc' },
   { slug: '', label: 'Cards', icon: 'cards' },
   { slug: 'table', label: 'Table', icon: 'table' },
-  { slug: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
 ]
 
 export default function DanaPlanHeader({
@@ -82,79 +72,90 @@ export default function DanaPlanHeader({
 
   const basePath = '/dana-plan-v2'
 
+  const selectStyles = {
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23FAFAFA' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'right 12px center',
+    paddingRight: '36px',
+  }
+
   return (
-    <section className="pt-[40px] md:pt-[60px] pb-[30px]">
-      <h1 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px] text-[#FAFAFA]">
-        Dana&apos;s Plan
-      </h1>
-      <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[16px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
-        Wy&apos;East 50M · Aug 15, 2026
-      </p>
-
-      {!loading && planData && (
+    <section className="pt-[40px] md:pt-[52px] pb-[24px] md:pb-[28px]">
+      {!loading && planData ? (
         <>
-          <div className="w-full mt-6">
-            <select
-              value={selectedWeek}
-              onChange={(e) => onWeekChange(Number(e.target.value))}
-              aria-label="Week"
-              className="w-full py-3 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[15px] tracking-[0.16px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/20 text-[#FAFAFA] appearance-none cursor-pointer"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23FAFAFA' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right 12px center',
-                paddingRight: '36px',
-              }}
-            >
-              {planData.weeks.map((w) => (
-                <option key={w.week} value={w.week}>
-                  Week {w.week} ({w.dateRange}) — {w.type}
-                  {w.week === currentWeek ? ' ★' : ''}
-                </option>
-              ))}
-            </select>
+          {/* Desktop: single row — title left, week controls right */}
+          <div className="md:flex md:items-start md:justify-between md:gap-6">
+            <div>
+              <h1 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[28px] leading-[1.2] tracking-[0.31px] text-[#FAFAFA]">
+                Dana&apos;s Plan
+              </h1>
+              <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[15px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
+                Wy&apos;East 50M · Aug 15, 2026
+              </p>
+            </div>
+            <div className="mt-6 md:mt-0 md:flex md:items-center md:gap-3 md:flex-shrink-0">
+              <select
+                value={selectedWeek}
+                onChange={(e) => onWeekChange(Number(e.target.value))}
+                aria-label="Week"
+                className="w-full md:w-auto md:min-w-[260px] py-3 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[15px] tracking-[0.16px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/20 text-[#FAFAFA] appearance-none cursor-pointer"
+                style={selectStyles}
+              >
+                {planData.weeks.map((w) => (
+                  <option key={w.week} value={w.week}>
+                    Week {w.week} ({w.dateRange}) — {w.type}
+                    {w.week === currentWeek ? ' ★' : ''}
+                  </option>
+                ))}
+              </select>
+              <div className="flex items-center gap-2 mt-3 md:mt-0">
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  aria-label="Previous week"
+                  className="py-2 px-3 md:px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  onClick={handleThisWeek}
+                  className="flex-1 md:flex-none py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[14px] bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
+                >
+                  This week
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  aria-label="Next week"
+                  className="py-2 px-3 md:px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
+                >
+                  →
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 w-full mt-3">
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous week"
-              className="py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-            >
-              ←
-            </button>
-            <button
-              type="button"
-              onClick={handleThisWeek}
-              className="flex-1 py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[14px] bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-            >
-              This week
-            </button>
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next week"
-              className="py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-            >
-              →
-            </button>
-          </div>
-
-          {/* Desktop: inline view links */}
-          <p className="hidden md:block font-['Haas_Grot_Disp',_sans-serif] text-[12px] tracking-[0.05em] text-[#FAFAFA]/60 mt-3">
-            {VIEWS.map((v, i) => (
-              <span key={v.slug || 'cards'}>
-                {i > 0 && ' · '}
+          {/* Desktop: view links as pill row */}
+          <div className="hidden md:flex md:items-center md:gap-1 mt-4">
+            <span className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] uppercase tracking-wider text-[#FAFAFA]/50 mr-2">View</span>
+            {VIEWS.map((v) => {
+              const isActive = currentView === (v.slug || 'cards')
+              const href = v.slug ? `${basePath}/${v.slug}` : basePath
+              return (
                 <Link
-                  href={v.slug ? `${basePath}/${v.slug}` : basePath}
-                  className={currentView === (v.slug || 'cards') ? 'font-semibold text-[#FAFAFA]' : 'underline hover:opacity-80'}
+                  key={v.slug || 'cards'}
+                  href={href}
+                  className={`font-['Haas_Grot_Disp',_sans-serif] text-[13px] tracking-[0.02em] py-1.5 px-3 rounded-full transition-colors ${
+                    isActive ? 'bg-[#FAFAFA]/20 text-[#FAFAFA]' : 'text-[#FAFAFA]/70 hover:bg-[#FAFAFA]/10 hover:text-[#FAFAFA]'
+                  }`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   {v.label}
                 </Link>
-              </span>
-            ))}
-          </p>
+              )
+            })}
+          </div>
 
           {/* Mobile: fixed bottom nav with icons */}
           <nav
@@ -177,6 +178,15 @@ export default function DanaPlanHeader({
               )
             })}
           </nav>
+        </>
+      ) : (
+        <>
+          <h1 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px] text-[#FAFAFA]">
+            Dana&apos;s Plan
+          </h1>
+          <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[16px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
+            Wy&apos;East 50M · Aug 15, 2026
+          </p>
         </>
       )}
     </section>

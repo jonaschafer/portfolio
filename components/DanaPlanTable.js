@@ -112,9 +112,9 @@ export default function DanaPlanTable() {
           <strong>Target:</strong> {week.target}
         </div>
       )}
-      <div className="overflow-x-auto max-w-[720px]">
-        <table className="w-full font-['Haas_Grot_Disp',_sans-serif] text-[14px]">
-          <thead>
+      <div className="overflow-x-auto max-w-[720px] md:max-w-[960px]">
+        <table className="w-full font-['Haas_Grot_Disp',_sans-serif] text-[14px] md:text-[15px]">
+          <thead className="md:sticky md:top-0 md:z-10 md:bg-[#2e2e2e]">
             <tr className="border-b border-[#FAFAFA]/20">
               <th className="text-left py-3 px-4 text-[#FAFAFA]/70 font-semibold text-[11px] uppercase tracking-wider w-[22%]">
                 Day
