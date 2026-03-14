@@ -1,18 +1,5 @@
-import Navigation from '../../../components/Navigation'
-import Footer from '../../../components/Footer'
-import DanaPlanTable from '../../../components/DanaPlanTable'
+import { redirect } from 'next/navigation'
 
-export const metadata = {
-  title: "Dana's Plan — Table — Jon Schafer",
-  description: "Wy'East 50M training plan table view.",
-}
-
-export default function DanaPlanTablePage() {
-  return (
-    <main className="min-h-screen bg-[#2e2e2e]">
-      <Navigation backgroundColor="#2e2e2e" />
-      <DanaPlanTable />
-      <Footer backgroundColor="#2e2e2e" minimal />
-    </main>
-  )
+export default function DanaPlanTableRedirect() {
+  redirect('/dana-plan-v2')
 }

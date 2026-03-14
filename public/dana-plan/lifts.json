@@ -1,0 +1,56 @@
+{
+  "updated": "2026-03-14",
+  "lifts": [
+    {
+      "id": "deadlift",
+      "name": "Deadlift",
+      "oneRM": 197,
+      "oneRMNote": "Jan 2025",
+      "loads": [
+        { "pct": 50, "weight": 95, "plates": "2× 25", "perSide": 25 },
+        { "pct": 60, "weight": 115, "plates": "2× 35", "perSide": 35 },
+        { "pct": 65, "weight": 125, "plates": "2× 35, 2× 5", "perSide": 40 },
+        { "pct": 70, "weight": 135, "plates": "2× 45", "perSide": 45 },
+        { "pct": 75, "weight": 145, "plates": "2× 45, 2× 5", "perSide": 50 },
+        { "pct": 80, "weight": 155, "plates": "2× 45, 2× 10", "perSide": 55 },
+        { "weight": 165, "plates": "2× 25, 2× 35", "perSide": 60, "note": "12/6" },
+        { "pct": 90, "weight": 175, "plates": "2× 45, 4× 10", "perSide": 65, "note": "12/6" },
+        { "pct": 95, "weight": 180, "plates": "2× 45, 4× 10, 2× 2.5", "perSide": 67.5 },
+        { "pct": 100, "weight": 197, "plates": "2× 45, 2× 25, 2× 2.5", "perSide": 72.5, "note": "1RM Jan 2025" }
+      ]
+    },
+    {
+      "id": "back-squat",
+      "name": "Back squat",
+      "oneRM": 180,
+      "oneRMNote": null,
+      "loads": [
+        { "pct": 60, "weight": 135, "plates": "2× 45", "perSide": 45 },
+        { "pct": 70, "weight": 145, "plates": "2× 45, 2× 5", "perSide": 50 },
+        { "pct": 80, "weight": 155, "plates": "2× 45, 2× 10", "perSide": 55, "note": "Jul 18 – 2 reps, legs might give out. Trouble with J cups. Dana." },
+        { "pct": 90, "weight": 175, "plates": "2× 45, 4× 10", "perSide": 65 },
+        { "pct": 100, "weight": 180, "plates": "2× 45, 4× 10, 2× 2.5", "perSide": 67.5, "note": "1RM" }
+      ]
+    },
+    {
+      "id": "front-squat",
+      "name": "Front squat",
+      "oneRM": null,
+      "oneRMNote": null,
+      "loads": [
+        { "pct": 65, "note": "easy" },
+        { "pct": 85, "note": "medium-hard" }
+      ]
+    },
+    {
+      "id": "bench",
+      "name": "Bench press",
+      "oneRM": null,
+      "oneRMNote": null,
+      "loads": [
+        { "pct": 50, "weight": 65, "plates": "2× 10" },
+        { "pct": 75, "weight": 95, "plates": "4× 10, 2× 5" }
+      ]
+    }
+  ]
+}

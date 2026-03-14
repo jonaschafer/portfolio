@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import DanaPlanHeader from './DanaPlanHeader'
-import { getCurrentWeek, formatRunSummary, getDayDate, formatShortDate, getDayContentWithPT } from '../lib/dana-plan-utils'
+import { getCurrentWeek, formatRunSummary, getDayDate, formatShortDate, getDayContentWithPT, getCanonicalRun } from '../lib/dana-plan-utils'
 
 function formatMeta(day) {
   const { distance, vert } = formatRunSummary(day || {})
@@ -61,6 +63,42 @@ function DayCard({ dayData, day, title, summary, content, isOff, dateLabel }) {
   )
 }
 
+function WeekDayCell({ dayData, day, title, content, dateLabel }) {
+  const { distance, vert } = getCanonicalRun(dayData)
+  const runLine = [distance, vert].filter(Boolean).join(' ') || null
+  const isOff = /off|rest|yay!/i.test(title)
+  return (
+    <div
+      className={`min-h-[280px] flex flex-col border-r last:border-r-0 border-[#FAFAFA]/15 overflow-hidden ${
+        isOff ? 'bg-[#252525]' : 'bg-[#383838]'
+      }`}
+    >
+      <div className="p-2 flex-shrink-0 border-b border-[#FAFAFA]/15">
+        <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#FAFAFA]/60">
+          {day.toUpperCase().slice(0, 3)}
+        </div>
+        {dateLabel && (
+          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] text-[#FAFAFA]/50 mt-0.5">
+            {dateLabel}
+          </div>
+        )}
+        <div className={`font-['Haas_Grot_Disp',_sans-serif] text-[13px] font-semibold mt-1 leading-tight ${isOff ? 'text-[#FAFAFA]/70' : 'text-[#FAFAFA]'}`}>
+          {title}
+        </div>
+        {runLine && (
+          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] text-[#c4e0d4] mt-1">
+            {runLine}
+          </div>
+        )}
+      </div>
+      <div
+        className="p-2 flex-1 overflow-y-auto font-['Haas_Grot_Disp',_sans-serif] text-[12px] leading-[1.45] text-[#FAFAFA]/85 [&_strong]:text-[#FAFAFA] [&_br]:block [&_br]:h-1.5"
+        dangerouslySetInnerHTML={{ __html: formatContentHtml(getDayContentWithPT(day, content)) }}
+      />
+    </div>
+  )
+}
+
 export default function DanaPlanViewer() {
   const [planData, setPlanData] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -102,6 +140,18 @@ export default function DanaPlanViewer() {
 
   const week = planData?.weeks?.find((w) => w.week === selectedWeek)
 
+  const weekContent = week?.content ?? ''
+  const coachCommentRe = /\*\*WEEK \d+ COACH COMMENT\*\*:[\s\S]*?(?=\n\n---|\n\n###|$)/g
+  const contentSegments = []
+  let lastEnd = 0
+  let match
+  while ((match = coachCommentRe.exec(weekContent)) !== null) {
+    if (match.index > lastEnd) contentSegments.push({ type: 'md', text: weekContent.slice(lastEnd, match.index) })
+    contentSegments.push({ type: 'coach', text: match[0] })
+    lastEnd = match.index + match[0].length
+  }
+  if (lastEnd < weekContent.length) contentSegments.push({ type: 'md', text: weekContent.slice(lastEnd) })
+
   if (loading) {
     return (
       <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] py-[40px] text-center font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[#FAFAFA]/70">
@@ -128,11 +178,30 @@ export default function DanaPlanViewer() {
         loading={false}
       />
       {week?.target && (
-        <div className="rounded-[10px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/15 px-4 py-3 mb-6 font-['Haas_Grot_Disp',_sans-serif] text-[14px] tracking-[0.16px] text-[#FAFAFA] max-w-[520px] md:max-w-none">
+        <div className="rounded-[10px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/15 px-4 py-3 mb-6 font-['Haas_Grot_Disp',_sans-serif] text-[14px] tracking-[0.16px] text-[#FAFAFA] max-w-[640px] md:max-w-[800px] text-left">
           <strong className="text-[#FAFAFA]">Target:</strong> {week.target}
         </div>
       )}
-      <div className="space-y-3 max-w-[520px] md:max-w-none md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
+      {contentSegments.length > 0 && (
+        <div className="font-['Haas_Grot_Disp',_sans-serif] text-[15px] leading-[1.5] tracking-[0.167px] text-[#FAFAFA]/90 max-w-[640px] md:max-w-[800px] prose-invert mb-8 text-left [&_h4]:text-[#FAFAFA] [&_h4]:font-['Mondwest',_sans-serif] [&_h4]:text-[16px] [&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:first:mt-0 [&_ul]:pl-6 [&_ol]:pl-6 [&_li]:my-1 [&_p]:my-2 [&_strong]:text-[#FAFAFA] [&_hr]:border-[#FAFAFA]/20 [&_hr]:my-6">
+          {contentSegments.map((seg, i) =>
+            seg.type === 'coach' ? (
+              <div
+                key={i}
+                className="bg-[#FAFAFA]/10 rounded-lg p-4 my-4 border-l-4 border-[#FAFAFA]/40"
+              >
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{seg.text}</ReactMarkdown>
+              </div>
+            ) : (
+              <ReactMarkdown key={i} remarkPlugins={[remarkGfm]}>
+                {seg.text}
+              </ReactMarkdown>
+            )
+          )}
+        </div>
+      )}
+      {/* Mobile: single column, collapsible cards */}
+      <div className="md:hidden space-y-3 max-w-[520px] mx-auto">
         {week?.days?.map((d) => {
           const isOff = /off|rest|yay!/i.test(d.title)
           const dayDate = getDayDate(planData, week.week, d.day)
@@ -146,6 +215,23 @@ export default function DanaPlanViewer() {
               summary={d.summary}
               content={d.content}
               isOff={isOff}
+              dateLabel={dateLabel}
+            />
+          )
+        })}
+      </div>
+      {/* Desktop: one row, 7 equal cells, calendar-style, all expanded */}
+      <div className="hidden md:grid md:grid-cols-7 rounded-[10px] border border-[#FAFAFA]/15 overflow-hidden bg-[#FAFAFA]/5">
+        {week?.days?.map((d) => {
+          const dayDate = getDayDate(planData, week.week, d.day)
+          const dateLabel = dayDate ? formatShortDate(dayDate) : null
+          return (
+            <WeekDayCell
+              key={`${week.week}-${d.day}`}
+              dayData={d}
+              day={d.day}
+              title={d.title}
+              content={d.content}
               dateLabel={dateLabel}
             />
           )

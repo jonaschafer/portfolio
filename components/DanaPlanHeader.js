@@ -16,16 +16,6 @@ function ViewIcon({ name, active }) {
           <line x1="3" y1="10" x2="21" y2="10" />
         </svg>
       )
-    case 'doc':
-      return (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" y1="13" x2="8" y2="13" />
-          <line x1="16" y1="17" x2="8" y2="17" />
-          <polyline points="10 9 9 9 8 9" />
-        </svg>
-      )
     case 'cards':
       return (
         <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -33,14 +23,14 @@ function ViewIcon({ name, active }) {
           <line x1="2" y1="10" x2="22" y2="10" />
         </svg>
       )
-    case 'table':
+    case 'lifts':
       return (
         <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="1" />
-          <line x1="3" y1="9" x2="21" y2="9" />
-          <line x1="3" y1="15" x2="21" y2="15" />
-          <line x1="9" y1="3" x2="9" y2="21" />
-          <line x1="15" y1="3" x2="15" y2="21" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="8" x2="4" y2="16" />
+          <line x1="20" y1="8" x2="20" y2="16" />
+          <circle cx="4" cy="12" r="2.5" />
+          <circle cx="20" cy="12" r="2.5" />
         </svg>
       )
     default:
@@ -49,10 +39,9 @@ function ViewIcon({ name, active }) {
 }
 
 const VIEWS = [
-  { slug: 'calendar', label: 'Calendar', icon: 'calendar' },
-  { slug: 'full', label: 'Full text', icon: 'doc' },
-  { slug: '', label: 'Cards', icon: 'cards' },
-  { slug: 'table', label: 'Table', icon: 'table' },
+  { slug: 'calendar', label: 'Month', icon: 'calendar' },
+  { slug: '', label: 'Week', icon: 'cards' },
+  { slug: 'lifts', label: 'Lifts', icon: 'lifts' },
 ]
 
 export default function DanaPlanHeader({
@@ -87,12 +76,13 @@ export default function DanaPlanHeader({
           <div className="md:flex md:items-start md:justify-between md:gap-6">
             <div>
               <h1 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[28px] leading-[1.2] tracking-[0.31px] text-[#FAFAFA]">
-                Dana&apos;s Plan
-              </h1>
-              <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[15px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
                 {getPlanSubtitleLabel(planData)}
-                {formatRaceDate(planData) ? ` · ${formatRaceDate(planData)}` : ''}
-              </p>
+              </h1>
+              {formatRaceDate(planData) && (
+                <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[15px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
+                  {formatRaceDate(planData)}
+                </p>
+              )}
             </div>
             <div className="mt-6 md:mt-0 md:flex md:items-center md:gap-3 md:flex-shrink-0">
               <select
@@ -141,7 +131,7 @@ export default function DanaPlanHeader({
           <div className="hidden md:flex md:items-center md:gap-1 mt-4">
             <span className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] uppercase tracking-wider text-[#FAFAFA]/50 mr-2">View</span>
             {VIEWS.map((v) => {
-              const isActive = currentView === (v.slug || 'cards')
+              const isActive = currentView === (v.slug === '' ? 'cards' : v.slug)
               const href = v.slug ? `${basePath}/${v.slug}` : basePath
               return (
                 <Link
@@ -164,7 +154,7 @@ export default function DanaPlanHeader({
             aria-label="View switcher"
           >
             {VIEWS.map((v) => {
-              const isActive = currentView === (v.slug || 'cards')
+              const isActive = currentView === (v.slug === '' ? 'cards' : v.slug)
               const href = v.slug ? `${basePath}/${v.slug}` : basePath
               return (
                 <Link
@@ -183,18 +173,13 @@ export default function DanaPlanHeader({
       ) : (
         <>
           <h1 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px] text-[#FAFAFA]">
-            Dana&apos;s Plan
+            {getPlanSubtitleLabel(planData)}
           </h1>
-          <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[16px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
-            {planData ? (
-              <>
-                {getPlanSubtitleLabel(planData)}
-                {formatRaceDate(planData) ? ` · ${formatRaceDate(planData)}` : ''}
-              </>
-            ) : (
-              "Wy'East 50M · Aug 15, 2026"
-            )}
-          </p>
+          {planData && formatRaceDate(planData) && (
+            <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[16px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
+              {formatRaceDate(planData)}
+            </p>
+          )}
         </>
       )}
     </section>
