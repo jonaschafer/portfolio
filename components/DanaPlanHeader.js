@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { getCurrentWeek } from '../lib/dana-plan-utils'
+import { getCurrentWeek, formatRaceDate, getPlanSubtitleLabel } from '../lib/dana-plan-utils'
 
 function ViewIcon({ name, active }) {
   const c = active ? '#FAFAFA' : 'rgba(250,250,250,0.6)'
@@ -90,7 +90,8 @@ export default function DanaPlanHeader({
                 Dana&apos;s Plan
               </h1>
               <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[15px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
-                Wy&apos;East 50M · Aug 15, 2026
+                {getPlanSubtitleLabel(planData)}
+                {formatRaceDate(planData) ? ` · ${formatRaceDate(planData)}` : ''}
               </p>
             </div>
             <div className="mt-6 md:mt-0 md:flex md:items-center md:gap-3 md:flex-shrink-0">
@@ -185,7 +186,14 @@ export default function DanaPlanHeader({
             Dana&apos;s Plan
           </h1>
           <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[16px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
-            Wy&apos;East 50M · Aug 15, 2026
+            {planData ? (
+              <>
+                {getPlanSubtitleLabel(planData)}
+                {formatRaceDate(planData) ? ` · ${formatRaceDate(planData)}` : ''}
+              </>
+            ) : (
+              "Wy'East 50M · Aug 15, 2026"
+            )}
           </p>
         </>
       )}
