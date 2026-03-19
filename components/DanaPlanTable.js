@@ -41,11 +41,26 @@ function strengthCell(d) {
   return out || '—'
 }
 
+const STRAVA_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+
+function buildStravaCopyText(d) {
+  if (!d) return ''
+  const { distance, vert } = getCanonicalRun(d)
+  const parts = []
+  if (distance) parts.push(distance)
+  if (vert) parts.push(vert)
+  const runPart = parts.join(' · ') || d.title
+  const strengthOneLine = d.summary?.strengthOneLine && String(d.summary.strengthOneLine).trim()
+  const strengthPart = strengthOneLine || ''
+  return strengthPart ? `${d.day}: ${runPart} — ${strengthPart}` : `${d.day}: ${runPart}`
+}
+
 export default function DanaPlanTable() {
   const [planData, setPlanData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedWeek, setSelectedWeek] = useState(1)
+  const [copiedDay, setCopiedDay] = useState(null)
 
   useEffect(() => {
     fetch('/dana-plan/plan-data-v3.json')
@@ -61,6 +76,12 @@ export default function DanaPlanTable() {
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+    if (!copiedDay) return
+    const id = setTimeout(() => setCopiedDay(null), 1600)
+    return () => clearTimeout(id)
+  }, [copiedDay])
 
   useEffect(() => {
     if (!planData) return
@@ -81,6 +102,17 @@ export default function DanaPlanTable() {
   }, [planData, selectedWeek])
 
   const week = planData?.weeks?.find((w) => w.week === selectedWeek)
+
+  const handleCopy = async (day) => {
+    try {
+      const text = buildStravaCopyText(day)
+      if (!text) return
+      await navigator.clipboard.writeText(text)
+      setCopiedDay(day.day)
+    } catch (e) {
+      console.error('Copy failed', e)
+    }
+  }
 
   if (loading) {
     return (
@@ -137,7 +169,24 @@ export default function DanaPlanTable() {
                 >
                   <td className="py-3 px-4 font-semibold text-[#FAFAFA] w-[22%]">{d.day}</td>
                   <td className="py-3 px-4 w-[39%]">{runCell(d)}</td>
-                  <td className="py-3 px-4 w-[39%]">{strengthCell(d)}</td>
+                  <td className="py-3 px-4 w-[39%]">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1">{strengthCell(d)}</div>
+                      {STRAVA_DAYS.includes(d.day) && (
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(d)}
+                          className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.08em] font-semibold text-[#FAFAFA]/60 hover:text-[#FAFAFA] border border-transparent hover:border-[#FAFAFA]/30 rounded-full px-2 py-1 bg-[#1f1f1f]/60 hover:bg-[#303030]"
+                        >
+                          <span className="w-3 h-3 relative inline-block">
+                            <span className="absolute inset-0 border border-[#FAFAFA]/40 rounded-[2px]" />
+                            <span className="absolute -top-[2px] -left-[2px] w-full h-full border border-[#FAFAFA]/80 rounded-[2px] bg-transparent" />
+                          </span>
+                          <span>{copiedDay === d.day ? 'Copied' : 'Copy'}</span>
+                        </button>
+                      )}
+                    </div>
+                  </td>
                 </tr>
               )
             })}
