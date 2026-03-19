@@ -3,17 +3,26 @@
 import Link from 'next/link'
 
 const projects = [
-
   {
-  id: 'sounds',
-  name: 'Sounds',
-  description: 'A music blog. YouTube audio playback with links to Spotify, Apple Music, Tidal. Brutalist design, random colors on hover.',
-  date: '2026.02.05',
-  type: 'MUSIC',
-  tags: ['React', 'Next.js'],
-  path: '/play/sounds'
-},
-
+    id: 'sounds',
+    name: 'Sounds',
+    description:
+      'A music blog. YouTube audio playback with links to Spotify, Apple Music, Tidal. Brutalist design, random colors on hover.',
+    date: '2026.02.05',
+    type: 'MUSIC',
+    tags: ['React', 'Next.js'],
+    path: '/play/sounds',
+  },
+  {
+    id: 'gels',
+    name: 'Gels',
+    description:
+      'DIY running gel calculator with tabs for fueling plan, recipe scaling, sodium sketching, and a tiny run log to record experiments.',
+    date: '2026.03.17',
+    type: 'HTML/CSS',
+    tags: ['HTML/CSS', 'JavaScript'],
+    path: '/play/gels',
+  },
   {
     id: 'spina',
     name: 'Spina',

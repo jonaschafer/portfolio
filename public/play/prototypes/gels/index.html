@@ -1,0 +1,1272 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gels – DIY Running Gel Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="DIY running gel calculator for endurance fueling: plan carbs, mix recipes, track sodium, and log runs."
+    />
+    <style>
+      :root {
+        --bg: #060608;
+        --bg-elevated: #101018;
+        --bg-softer: #151521;
+        --accent: #7bdcff;
+        --accent-soft: rgba(123, 220, 255, 0.1);
+        --accent-strong: #ffdd7b;
+        --text-main: #f7f7ff;
+        --text-muted: #a0a4c0;
+        --border-subtle: #28293a;
+        --danger: #ff6b7a;
+        --radius-lg: 18px;
+        --radius-md: 12px;
+        --shadow-soft: 0 18px 50px rgba(0, 0, 0, 0.55);
+        --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.4);
+        --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Inter", "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--font-sans);
+        background: radial-gradient(circle at top left, #161626 0, #050509 55%);
+        color: var(--text-main);
+        -webkit-font-smoothing: antialiased;
+        padding: 24px 16px 40px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .page {
+        width: 100%;
+        max-width: 1040px;
+      }
+
+      header {
+        margin-bottom: 24px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(123, 220, 255, 0.35);
+        background: radial-gradient(circle at top left, rgba(123, 220, 255, 0.2), rgba(0, 0, 0, 0.4));
+        color: var(--accent);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pill-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 30%, #ffffff, #7bdcff);
+        box-shadow: 0 0 10px rgba(123, 220, 255, 0.9);
+      }
+
+      h1 {
+        margin: 12px 0 4px;
+        font-size: clamp(26px, 3.4vw, 34px);
+        letter-spacing: -0.03em;
+      }
+
+      .subtitle {
+        margin: 0;
+        max-width: 560px;
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .tabs {
+        margin-top: 24px;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .tab-button {
+        flex: 0 0 auto;
+        border: 1px solid var(--border-subtle);
+        background: rgba(10, 10, 20, 0.9);
+        color: var(--text-muted);
+        padding: 9px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+          box-shadow 0.18s ease, transform 0.08s ease;
+        white-space: nowrap;
+      }
+
+      .tab-button span.label {
+        opacity: 0.9;
+      }
+
+      .tab-button span.dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(123, 220, 255, 0.6);
+      }
+
+      .tab-button.active {
+        border-color: rgba(123, 220, 255, 0.85);
+        background: radial-gradient(circle at top left, rgba(123, 220, 255, 0.2), rgba(10, 10, 20, 0.98));
+        color: var(--text-main);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+      }
+
+      .tab-button.active span.dot {
+        background: var(--accent);
+      }
+
+      .tab-button:active {
+        transform: translateY(1px);
+      }
+
+      .card {
+        margin-top: 20px;
+        background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.02), rgba(5, 5, 10, 0.98));
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-subtle);
+        box-shadow: var(--shadow-soft);
+        padding: 16px 16px 18px;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .panel-title {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .panel-caption {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      @media (min-width: 720px) {
+        .card {
+          padding: 20px 20px 22px;
+        }
+        .grid-2 {
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+        }
+      }
+
+      .field-group {
+        padding: 10px 12px 12px;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(40, 41, 58, 0.9);
+        background: linear-gradient(135deg, rgba(15, 15, 25, 0.95), rgba(10, 10, 18, 0.98));
+      }
+
+      .field-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      .field-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+      }
+
+      .field-value {
+        font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+        font-size: 13px;
+        color: var(--accent-strong);
+      }
+
+      .hint {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      input[type="range"] {
+        width: 100%;
+        margin: 2px 0 0;
+        -webkit-appearance: none;
+        background: transparent;
+      }
+
+      input[type="range"]:focus {
+        outline: none;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 4px;
+        cursor: pointer;
+        background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+        border-radius: 999px;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 999px;
+        background: #050507;
+        box-shadow: 0 0 0 1px rgba(123, 220, 255, 0.85), 0 6px 14px rgba(0, 0, 0, 0.5);
+        margin-top: -6px;
+      }
+
+      input[type="range"]::-moz-range-track {
+        height: 4px;
+        cursor: pointer;
+        background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+        border-radius: 999px;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 999px;
+        background: #050507;
+        box-shadow: 0 0 0 1px rgba(123, 220, 255, 0.85), 0 6px 14px rgba(0, 0, 0, 0.5);
+      }
+
+      .toggle-pill {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 3px;
+        background: rgba(10, 10, 20, 0.95);
+        border: 1px solid var(--border-subtle);
+        gap: 4px;
+      }
+
+      .toggle-pill button {
+        border: none;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.18s ease, color 0.18s ease;
+      }
+
+      .toggle-pill button span.dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      .toggle-pill button.active {
+        background: radial-gradient(circle at top left, rgba(123, 220, 255, 0.2), rgba(5, 5, 12, 0.98));
+        color: var(--text-main);
+      }
+
+      .toggle-pill button.active span.dot {
+        background: var(--accent);
+      }
+
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .metric {
+        border-radius: 12px;
+        border: 1px solid rgba(40, 41, 58, 0.9);
+        background: radial-gradient(circle at top left, rgba(123, 220, 255, 0.05), rgba(5, 5, 10, 0.98));
+        padding: 8px 10px 9px;
+      }
+
+      .metric-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+
+      .metric-value {
+        font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+        font-size: 14px;
+      }
+
+      .metric-sub {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+
+      .flask-visualizer {
+        margin-top: 10px;
+        padding: 10px 10px 12px;
+        border-radius: var(--radius-md);
+        border: 1px dashed rgba(60, 62, 88, 0.9);
+        background: radial-gradient(circle at top left, rgba(123, 220, 255, 0.05), rgba(5, 5, 10, 0.98));
+      }
+
+      .flask-row {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .flask {
+        position: relative;
+        flex: 0 0 60px;
+        height: 190px;
+        border-radius: 26px;
+        border: 1px solid rgba(123, 220, 255, 0.55);
+        background: linear-gradient(180deg, rgba(123, 220, 255, 0.08), rgba(10, 10, 18, 0.98));
+        box-shadow: var(--shadow-subtle);
+        overflow: hidden;
+      }
+
+      .flask::before {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 26px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(123, 220, 255, 0.7);
+      }
+
+      .flask-mark {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        border-top: 1px dashed rgba(255, 255, 255, 0.5);
+        opacity: 0.9;
+      }
+
+      .flask-mark-label {
+        position: absolute;
+        right: 4px;
+        top: -8px;
+        font-size: 9px;
+        color: var(--text-muted);
+      }
+
+      .flask-footer {
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 6px;
+      }
+
+      .flask-note {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .flask-note strong {
+        color: var(--accent);
+      }
+
+      .pill-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 7px;
+        border-radius: 999px;
+        border: 1px solid rgba(123, 220, 255, 0.4);
+        font-size: 10px;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .ingredients {
+        margin-top: 8px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .ingredient {
+        padding: 7px 9px 8px;
+        border-radius: 10px;
+        border: 1px solid rgba(40, 41, 58, 0.9);
+        background: linear-gradient(135deg, rgba(10, 10, 18, 0.96), rgba(5, 5, 13, 0.98));
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .ingredient-name {
+        font-size: 13px;
+      }
+
+      .ingredient-amount {
+        font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+        font-size: 13px;
+        color: var(--accent-strong);
+      }
+
+      .instructions {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(40, 41, 58, 0.9);
+      }
+
+      .instructions ol {
+        margin: 6px 0 4px 20px;
+        padding: 0;
+        font-size: 13px;
+        color: var(--text-main);
+      }
+
+      .instructions li + li {
+        margin-top: 4px;
+      }
+
+      .note {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .note strong {
+        color: var(--accent-strong);
+      }
+
+      .sodium-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      @media (min-width: 720px) {
+        .sodium-grid {
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        }
+      }
+
+      .sodium-summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .sodium-breakdown {
+        margin-top: 8px;
+        padding: 8px 10px 9px;
+        border-radius: 10px;
+        border: 1px dashed rgba(80, 82, 110, 0.9);
+        background: rgba(7, 7, 14, 0.98);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .sodium-breakdown strong {
+        color: var(--accent);
+      }
+
+      .run-log {
+        display: grid;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      @media (min-width: 720px) {
+        .run-log {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .run-card {
+        border-radius: 14px;
+        border: 1px solid rgba(40, 41, 58, 0.95);
+        background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.02), rgba(5, 5, 10, 0.98));
+        padding: 10px 12px 11px;
+        display: grid;
+        gap: 4px;
+      }
+
+      .run-title {
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .run-meta,
+      .run-nutrition {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .run-feel {
+        font-size: 12px;
+      }
+
+      .run-feel span {
+        color: var(--accent-strong);
+      }
+
+      footer {
+        margin-top: 18px;
+        font-size: 11px;
+        color: var(--text-muted);
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span>Play / Gels</span>
+        </div>
+        <h1>DIY running gel calculator</h1>
+        <p class="subtitle">
+          Four lightweight tools in one place: build a fueling plan, scale your gel recipe, sanity‑check sodium,
+          and log experiments.
+        </p>
+      </header>
+
+      <div class="tabs" role="tablist">
+        <button class="tab-button active" data-tab="fueling" role="tab" aria-selected="true">
+          <span class="dot"></span>
+          <span class="label">Fueling plan</span>
+        </button>
+        <button class="tab-button" data-tab="recipe" role="tab" aria-selected="false">
+          <span class="dot"></span>
+          <span class="label">Recipe</span>
+        </button>
+        <button class="tab-button" data-tab="sodium" role="tab" aria-selected="false">
+          <span class="dot"></span>
+          <span class="label">Sodium</span>
+        </button>
+        <button class="tab-button" data-tab="run-log" role="tab" aria-selected="false">
+          <span class="dot"></span>
+          <span class="label">Run log</span>
+        </button>
+      </div>
+
+      <!-- Tab 1: Fueling plan -->
+      <section class="card tab-panel active" id="tab-fueling" role="tabpanel">
+        <div class="panel-header">
+          <div class="panel-title">Fueling plan</div>
+          <div class="panel-caption">Dial in hours, carbs/hr, and flask size.</div>
+        </div>
+
+        <div class="grid grid-2">
+          <div>
+            <div class="field-group">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Hours out</div>
+                  <div class="hint">1–14&nbsp;h</div>
+                </div>
+                <div class="field-value" id="hoursOutValue">4.0&nbsp;h</div>
+              </div>
+              <input
+                id="hoursOutSlider"
+                type="range"
+                min="1"
+                max="14"
+                step="0.5"
+                value="4"
+                aria-label="Hours out"
+              />
+            </div>
+
+            <div class="field-group" style="margin-top: 8px">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Target carbs per hour</div>
+                  <div class="hint">60–90&nbsp;g/hr</div>
+                </div>
+                <div class="field-value" id="carbsPerHourValue">80&nbsp;g/hr</div>
+              </div>
+              <input
+                id="carbsPerHourSlider"
+                type="range"
+                min="60"
+                max="90"
+                step="5"
+                value="80"
+                aria-label="Carbs per hour"
+              />
+            </div>
+
+            <div class="field-group" style="margin-top: 8px">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Flask size</div>
+                  <div class="hint">Recipe tab shows what goes in each flask.</div>
+                </div>
+                <div>
+                  <div class="toggle-pill" aria-label="Flask size">
+                    <button type="button" class="active" data-flask-size="250">
+                      <span class="dot"></span>
+                      250&nbsp;ml
+                    </button>
+                    <button type="button" data-flask-size="500">
+                      <span class="dot"></span>
+                      500&nbsp;ml
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="hint" style="margin-top: 4px">
+                Uses ~187&nbsp;g carbs for 250&nbsp;ml and ~375&nbsp;g for 500&nbsp;ml.
+              </div>
+            </div>
+
+            <div class="metrics">
+              <div class="metric">
+                <div class="metric-label">Total carbs needed</div>
+                <div class="metric-value" id="totalCarbsNeeded">320&nbsp;g</div>
+                <div class="metric-sub">hours &times; carbs/hr</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Number of flasks</div>
+                <div class="metric-value" id="numberOfFlasks">2</div>
+                <div class="metric-sub">rounded up</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Hours per flask</div>
+                <div class="metric-value" id="hoursPerFlask">2.3&nbsp;h</div>
+                <div class="metric-sub">at this carbs/hr</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flask-visualizer">
+              <div class="field-row" style="margin-bottom: 8px">
+                <div class="field-label">Flask visualizer</div>
+                <div class="pill-tag">
+                  <span class="pill-dot" style="width: 5px; height: 5px"></span>
+                  <span>1‑hour marks</span>
+                </div>
+              </div>
+              <div class="flask-row" id="flaskRow"></div>
+              <div class="flask-footer">
+                <div class="flask-note" id="flaskNote">
+                  Marks are spaced at <strong>~0px</strong> from the top for each hour of fuel.
+                </div>
+                <div class="hint">Each flask is scaled to the same visual height.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 2: Recipe -->
+      <section class="card tab-panel" id="tab-recipe" role="tabpanel">
+        <div class="panel-header">
+          <div class="panel-title">Recipe</div>
+          <div class="panel-caption">Scale the mix to your flask and salt preference.</div>
+        </div>
+
+        <div class="grid grid-2">
+          <div>
+            <div class="field-group">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Flask size</div>
+                  <div class="hint">Matches the fueling plan math.</div>
+                </div>
+                <div>
+                  <div class="toggle-pill" aria-label="Recipe flask size">
+                    <button type="button" class="active" data-recipe-flask="250">
+                      <span class="dot"></span>
+                      250&nbsp;ml
+                    </button>
+                    <button type="button" data-recipe-flask="500">
+                      <span class="dot"></span>
+                      500&nbsp;ml
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-top: 8px">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Salt in gel</div>
+                  <div class="hint">Adds table salt directly into the mix.</div>
+                </div>
+                <div>
+                  <div class="toggle-pill" aria-label="Add salt to gel">
+                    <button type="button" class="active" data-recipe-salt="yes">
+                      <span class="dot"></span>
+                      Yes
+                    </button>
+                    <button type="button" data-recipe-salt="no">
+                      <span class="dot"></span>
+                      No
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="metrics">
+              <div class="metric" style="grid-column: span 2">
+                <div class="metric-label">Carb count per flask</div>
+                <div class="metric-value" id="carbCountPerFlask">187&nbsp;g</div>
+                <div class="metric-sub">using this recipe</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="field-label" style="margin-bottom: 4px">Ingredients</div>
+            <div class="ingredients" id="ingredientsList"></div>
+
+            <div class="instructions">
+              <div class="field-label">Steps</div>
+              <ol>
+                <li>Weigh out the fructose, maltodextrin, and pectin into a heat‑safe container.</li>
+                <li>In a separate vessel, bring the water to a full boil.</li>
+                <li>
+                  Pour the boiling water over the dry mix while whisking. Stir until the powders are completely
+                  dissolved and the gel is smooth.
+                </li>
+                <li>
+                  If using salt, stir it in while the gel is still hot so it dissolves evenly. Let the mixture sit
+                  for a few minutes to thicken.
+                </li>
+                <li>Let the gel cool to a safe temperature, then pour into your flask with a small funnel.</li>
+              </ol>
+              <p class="note">
+                Flavor is optional but nice on long days: a splash of <strong>vanilla</strong>, a drop of
+                <strong>peppermint</strong>, or a shot of very strong <strong>espresso</strong> all work well. Keep
+                liquids minimal so you don&apos;t dilute the carbs too much.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 3: Sodium -->
+      <section class="card tab-panel" id="tab-sodium" role="tabpanel">
+        <div class="panel-header">
+          <div class="panel-title">Sodium</div>
+          <div class="panel-caption">Quick sanity‑check for sweat loss vs replacement.</div>
+        </div>
+
+        <div class="sodium-grid">
+          <div>
+            <div class="field-group">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Sweat loss</div>
+                  <div class="hint">Fixed: 1,100&nbsp;mg/hr</div>
+                </div>
+                <div class="field-value">1,100&nbsp;mg/hr</div>
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-top: 8px">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Target replacement</div>
+                  <div class="hint">Fixed: ~800&nbsp;mg/hr (~73%)</div>
+                </div>
+                <div class="field-value">800&nbsp;mg/hr</div>
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-top: 8px">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Hours out</div>
+                  <div class="hint">Match whatever you used in the fueling tab.</div>
+                </div>
+                <div class="field-value" id="sodiumHoursOutValue">4.0&nbsp;h</div>
+              </div>
+              <input
+                id="sodiumHoursOutSlider"
+                type="range"
+                min="1"
+                max="14"
+                step="0.5"
+                value="4"
+                aria-label="Hours out (sodium)"
+              />
+            </div>
+
+            <div class="field-group" style="margin-top: 8px">
+              <div class="field-row">
+                <div>
+                  <div class="field-label">Salt in gel</div>
+                  <div class="hint">Toggles a chunk of sodium coming from the gel itself.</div>
+                </div>
+                <div>
+                  <div class="toggle-pill" aria-label="Salt in gel (sodium tab)">
+                    <button type="button" class="active" data-sodium-salt="yes">
+                      <span class="dot"></span>
+                      Yes
+                    </button>
+                    <button type="button" data-sodium-salt="no">
+                      <span class="dot"></span>
+                      No
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="field-label">Totals</div>
+            <div class="sodium-summary">
+              <div class="metric">
+                <div class="metric-label">Total lost</div>
+                <div class="metric-value" id="totalLost">4,400&nbsp;mg</div>
+                <div class="metric-sub">sweat loss &times; hours</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Total replaced</div>
+                <div class="metric-value" id="totalReplaced">3,200&nbsp;mg</div>
+                <div class="metric-sub">from gel + S‑caps</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Deficit</div>
+                <div class="metric-value" id="deficit">1,200&nbsp;mg</div>
+                <div class="metric-sub">lost − replaced</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">% replaced</div>
+                <div class="metric-value" id="percentReplaced">72.7%</div>
+                <div class="metric-sub">aim ~70–80%</div>
+              </div>
+            </div>
+
+            <div class="sodium-breakdown" id="sodiumBreakdown">
+              With salt in the gel, this sketch assumes about <strong>370&nbsp;mg/hr</strong> from the gel itself
+              plus <strong>430&nbsp;mg/hr</strong> from
+              <strong>2&nbsp;S‑caps/hr</strong> (~215&nbsp;mg each), which lands you near the 800&nbsp;mg/hr
+              target. Turn the gel salt off to see what happens if you rely on capsules alone.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 4: Run log -->
+      <section class="card tab-panel" id="tab-run-log" role="tabpanel">
+        <div class="panel-header">
+          <div class="panel-title">Run log</div>
+          <div class="panel-caption">Two reference days that informed these numbers.</div>
+        </div>
+
+        <div class="run-log">
+          <article class="run-card">
+            <div class="run-title">March 15, 2026</div>
+            <div class="run-meta">2h27min · 8.82&nbsp;mi · 3,205&nbsp;ft</div>
+            <div class="run-nutrition">
+              ~226&nbsp;g carbs total (~92&nbsp;g/hr), 2&nbsp;S‑caps/hr. No GI issues, steady energy.
+            </div>
+            <div class="run-feel">
+              Felt: <span>amazing</span>
+            </div>
+          </article>
+
+          <article class="run-card">
+            <div class="run-title">Arcellus → Larch Mtn</div>
+            <div class="run-meta">5h on feet</div>
+            <div class="run-nutrition">
+              Est. 5,500&nbsp;mg sodium lost. Replaced: 10&nbsp;gels (~900&nbsp;mg), 1.5&nbsp;L Gnarly (~1,500&nbsp;mg),
+              8&nbsp;S‑caps (~1,720&nbsp;mg) ⇒ ~4,120&nbsp;mg (~75%).
+            </div>
+            <div class="run-feel">
+              Felt: <span>great</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span>Static prototype. Numbers are back‑of‑the‑envelope, not medical advice.</span>
+        <span>Built as a small /play project for experimenting with fueling.</span>
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        const CARBS_PER_FLASK = {
+          250: 187,
+          500: 375,
+        };
+
+        const HOURS_MIN = 1;
+        const HOURS_MAX = 14;
+
+        const tabs = Array.from(document.querySelectorAll(".tab-button"));
+        const panels = {
+          fueling: document.getElementById("tab-fueling"),
+          recipe: document.getElementById("tab-recipe"),
+          sodium: document.getElementById("tab-sodium"),
+          "run-log": document.getElementById("tab-run-log"),
+        };
+
+        tabs.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const tab = btn.getAttribute("data-tab");
+            tabs.forEach((b) => {
+              b.classList.toggle("active", b === btn);
+              b.setAttribute("aria-selected", b === btn ? "true" : "false");
+            });
+            Object.entries(panels).forEach(([key, panel]) => {
+              panel.classList.toggle("active", key === tab);
+            });
+          });
+        });
+
+        const hoursOutSlider = document.getElementById("hoursOutSlider");
+        const hoursOutValue = document.getElementById("hoursOutValue");
+        const carbsPerHourSlider = document.getElementById("carbsPerHourSlider");
+        const carbsPerHourValue = document.getElementById("carbsPerHourValue");
+        const totalCarbsNeededEl = document.getElementById("totalCarbsNeeded");
+        const numberOfFlasksEl = document.getElementById("numberOfFlasks");
+        const hoursPerFlaskEl = document.getElementById("hoursPerFlask");
+        const flaskRow = document.getElementById("flaskRow");
+        const flaskNote = document.getElementById("flaskNote");
+
+        let fuelingFlaskSize = 250;
+
+        function formatNumber(value, decimals) {
+          const factor = Math.pow(10, decimals);
+          return (Math.round(value * factor) / factor).toLocaleString(undefined, {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+          });
+        }
+
+        function clamp(v, min, max) {
+          return Math.min(max, Math.max(min, v));
+        }
+
+        function updateFueling() {
+          const hours = clamp(parseFloat(hoursOutSlider.value) || 0, HOURS_MIN, HOURS_MAX);
+          const carbsPerHour = parseFloat(carbsPerHourSlider.value) || 0;
+          const carbsPerFlask = CARBS_PER_FLASK[fuelingFlaskSize];
+
+          hoursOutValue.innerHTML = formatNumber(hours, 1) + "&nbsp;h";
+          carbsPerHourValue.innerHTML = formatNumber(carbsPerHour, 0) + "&nbsp;g/hr";
+
+          const totalCarbs = hours * carbsPerHour;
+          const numberOfFlasks = Math.max(1, Math.ceil(totalCarbs / carbsPerFlask));
+          const hoursPerFlask = carbsPerFlask / carbsPerHour || 0;
+
+          totalCarbsNeededEl.innerHTML = formatNumber(totalCarbs, 0) + "&nbsp;g";
+          numberOfFlasksEl.textContent = numberOfFlasks.toString();
+          hoursPerFlaskEl.innerHTML = formatNumber(hoursPerFlask, 1) + "&nbsp;h";
+
+          drawFlasks(numberOfFlasks, hoursPerFlask);
+        }
+
+        function drawFlasks(count, hoursPerFlask) {
+          const MAX_FLASKS = 6;
+          const visibleCount = Math.min(count, MAX_FLASKS);
+          flaskRow.innerHTML = "";
+
+          const FLASK_HEIGHT_PX = 190;
+          const usableHeight = FLASK_HEIGHT_PX - 30;
+
+          const marksPerFlask = Math.floor(hoursPerFlask);
+          const spacingPx = marksPerFlask > 0 ? usableHeight / hoursPerFlask : 0;
+
+          for (let i = 0; i < visibleCount; i++) {
+            const flask = document.createElement("div");
+            flask.className = "flask";
+
+            for (let m = 1; m <= marksPerFlask; m++) {
+              const mark = document.createElement("div");
+              mark.className = "flask-mark";
+              const offset = 18 + (m * spacingPx);
+              mark.style.top = offset + "px";
+
+              const label = document.createElement("div");
+              label.className = "flask-mark-label";
+              label.textContent = m + "h";
+              mark.appendChild(label);
+              flask.appendChild(mark);
+            }
+
+            flaskRow.appendChild(flask);
+          }
+
+          const spacingText =
+            spacingPx > 0 ? Math.round(spacingPx) + "&nbsp;px" : "0px";
+          flaskNote.innerHTML =
+            "Marks are spaced at <strong>~" +
+            spacingText +
+            "</strong> from the top for each hour of fuel.";
+        }
+
+        document
+          .querySelectorAll('[data-flask-size]')
+          .forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const size = parseInt(btn.getAttribute("data-flask-size"), 10);
+              fuelingFlaskSize = size === 500 ? 500 : 250;
+              const group = btn.parentElement;
+              group
+                .querySelectorAll("button")
+                .forEach(function (b) {
+                  b.classList.toggle("active", b === btn);
+                });
+              updateFueling();
+            });
+          });
+
+        hoursOutSlider.addEventListener("input", updateFueling);
+        carbsPerHourSlider.addEventListener("input", updateFueling);
+
+        const ingredientsList = document.getElementById("ingredientsList");
+        const carbCountPerFlask = document.getElementById("carbCountPerFlask");
+
+        const recipeIngredients = {
+          250: function (includeSalt) {
+            const items = [
+              { name: "Fructose", amount: "100&nbsp;g" },
+              { name: "Maltodextrin", amount: "200&nbsp;g" },
+              { name: "Pectin", amount: "½&nbsp;tsp" },
+              { name: "Boiling water", amount: "200&nbsp;g" },
+            ];
+            if (includeSalt) {
+              items.push({ name: "Table salt", amount: "½&nbsp;tsp (optional)" });
+            }
+            return items;
+          },
+          500: function (includeSalt) {
+            const items = [
+              { name: "Fructose", amount: "125&nbsp;g" },
+              { name: "Maltodextrin", amount: "250&nbsp;g" },
+              { name: "Pectin", amount: "¾&nbsp;tsp" },
+              { name: "Boiling water", amount: "250&nbsp;g" },
+            ];
+            if (includeSalt) {
+              items.push({ name: "Table salt", amount: "1&nbsp;tsp (optional)" });
+            }
+            return items;
+          },
+        };
+
+        let recipeFlaskSize = 250;
+        let recipeSalt = true;
+
+        function renderIngredients() {
+          const includeSalt = recipeSalt;
+          const list = recipeIngredients[recipeFlaskSize](includeSalt);
+          ingredientsList.innerHTML = "";
+          list.forEach(function (item) {
+            const row = document.createElement("div");
+            row.className = "ingredient";
+
+            const name = document.createElement("div");
+            name.className = "ingredient-name";
+            name.innerHTML = item.name;
+
+            const amount = document.createElement("div");
+            amount.className = "ingredient-amount";
+            amount.innerHTML = item.amount;
+
+            row.appendChild(name);
+            row.appendChild(amount);
+            ingredientsList.appendChild(row);
+          });
+
+          const carbCount =
+            recipeFlaskSize === 250 ? CARBS_PER_FLASK[250] : CARBS_PER_FLASK[500];
+          carbCountPerFlask.innerHTML = carbCount.toLocaleString() + "&nbsp;g";
+        }
+
+        document
+          .querySelectorAll("[data-recipe-flask]")
+          .forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const size = parseInt(btn.getAttribute("data-recipe-flask"), 10);
+              recipeFlaskSize = size === 500 ? 500 : 250;
+              btn.parentElement
+                .querySelectorAll("button")
+                .forEach(function (b) {
+                  b.classList.toggle("active", b === btn);
+                });
+              renderIngredients();
+            });
+          });
+
+        document
+          .querySelectorAll("[data-recipe-salt]")
+          .forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const value = btn.getAttribute("data-recipe-salt");
+              recipeSalt = value === "yes";
+              btn.parentElement
+                .querySelectorAll("button")
+                .forEach(function (b) {
+                  b.classList.toggle("active", b === btn);
+                });
+              renderIngredients();
+            });
+          });
+
+        const sodiumHoursOutSlider = document.getElementById(
+          "sodiumHoursOutSlider"
+        );
+        const sodiumHoursOutValue = document.getElementById(
+          "sodiumHoursOutValue"
+        );
+        const totalLostEl = document.getElementById("totalLost");
+        const totalReplacedEl = document.getElementById("totalReplaced");
+        const deficitEl = document.getElementById("deficit");
+        const percentReplacedEl = document.getElementById("percentReplaced");
+        const sodiumBreakdown = document.getElementById("sodiumBreakdown");
+
+        const SWEAT_LOSS_PER_HR = 1100;
+        const TARGET_REPLACEMENT_PER_HR = 800;
+        const S_CAP_PER_HR = 2;
+        const S_CAP_SODIUM = 215;
+
+        let sodiumSaltInGel = true;
+
+        function updateSodium() {
+          const hours = clamp(
+            parseFloat(sodiumHoursOutSlider.value) || 0,
+            HOURS_MIN,
+            HOURS_MAX
+          );
+          sodiumHoursOutValue.innerHTML = formatNumber(hours, 1) + "&nbsp;h";
+
+          const lostTotal = SWEAT_LOSS_PER_HR * hours;
+
+          const capsPerHr = S_CAP_PER_HR * S_CAP_SODIUM;
+          const gelPerHr = sodiumSaltInGel ? TARGET_REPLACEMENT_PER_HR - capsPerHr : 0;
+          const replacedPerHr = gelPerHr + capsPerHr;
+          const replacedTotal = replacedPerHr * hours;
+
+          const deficit = lostTotal - replacedTotal;
+          const percentReplaced =
+            lostTotal > 0 ? (replacedTotal / lostTotal) * 100 : 0;
+
+          totalLostEl.innerHTML =
+            lostTotal.toLocaleString() + "&nbsp;mg";
+          totalReplacedEl.innerHTML =
+            replacedTotal.toLocaleString() + "&nbsp;mg";
+          deficitEl.innerHTML =
+            (deficit > 0 ? deficit : 0).toLocaleString() + "&nbsp;mg";
+          percentReplacedEl.textContent = formatNumber(percentReplaced, 1) + "%";
+
+          const gelPerHrRounded = Math.round(gelPerHr);
+          const capsPerHrRounded = Math.round(capsPerHr);
+
+          if (sodiumSaltInGel) {
+            sodiumBreakdown.innerHTML =
+              "With salt in the gel, this sketch assumes about <strong>" +
+              gelPerHrRounded.toLocaleString() +
+              "&nbsp;mg/hr</strong> from the gel itself plus <strong>" +
+              capsPerHrRounded.toLocaleString() +
+              "&nbsp;mg/hr</strong> from <strong>" +
+              S_CAP_PER_HR +
+              "&nbsp;S‑caps/hr</strong> (" +
+              S_CAP_SODIUM +
+              "&nbsp;mg each), which lands you near the 800&nbsp;mg/hr target.";
+          } else {
+            sodiumBreakdown.innerHTML =
+              "With no salt in the gel, this sketch only counts <strong>" +
+              capsPerHrRounded.toLocaleString() +
+              "&nbsp;mg/hr</strong> from <strong>" +
+              S_CAP_PER_HR +
+              "&nbsp;S‑caps/hr</strong>. That&apos;s roughly <strong>" +
+              formatNumber(percentReplaced, 1) +
+              "%</strong> of a 1,100&nbsp;mg/hr sweat rate – use this to gauge how much you&apos;d like to lean on drink mix, gel salt, or more capsules.";
+          }
+        }
+
+        document
+          .querySelectorAll("[data-sodium-salt]")
+          .forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const value = btn.getAttribute("data-sodium-salt");
+              sodiumSaltInGel = value === "yes";
+              btn.parentElement
+                .querySelectorAll("button")
+                .forEach(function (b) {
+                  b.classList.toggle("active", b === btn);
+                });
+              updateSodium();
+            });
+          });
+
+        sodiumHoursOutSlider.addEventListener("input", updateSodium);
+
+        updateFueling();
+        renderIngredients();
+        updateSodium();
+      })();
+    </script>
+  </body>
+</html>
+
