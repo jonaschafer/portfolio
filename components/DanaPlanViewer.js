@@ -6,6 +6,17 @@ import remarkGfm from 'remark-gfm'
 import DanaPlanHeader from './DanaPlanHeader'
 import { getCurrentWeek, formatRunSummary, getDayDate, formatShortDate, getDayContentWithPT, getCanonicalRun } from '../lib/dana-plan-utils'
 
+const STRAVA_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+
+function buildStravaCopyText(dayData) {
+  if (!dayData) return ''
+  const { distance, vert } = getCanonicalRun(dayData)
+  const runMeta = [distance, vert].filter(Boolean).join(' · ')
+  const content = getDayContentWithPT(dayData.day, dayData.content)
+  const header = `${dayData.day}: ${dayData.title}${runMeta ? ` (${runMeta})` : ''}`
+  return content ? `${header}\n\n${content}` : header
+}
+
 function formatMeta(day) {
   const { distance, vert } = formatRunSummary(day || {})
   const parts = []
@@ -23,7 +34,7 @@ function formatContentHtml(text) {
     .replace(/\n/g, '<br/>')
 }
 
-function DayCard({ dayData, day, title, summary, content, isOff, dateLabel }) {
+function DayCard({ dayData, day, title, summary, content, isOff, dateLabel, copiedDay, onCopy }) {
   const [open, setOpen] = useState(false)
   return (
     <div
@@ -49,9 +60,29 @@ function DayCard({ dayData, day, title, summary, content, isOff, dateLabel }) {
             </div>
             {formatMeta(dayData)}
           </div>
-        <span className="text-[#FAFAFA]/60 text-sm flex-shrink-0" aria-hidden>
-          {open ? '▲' : '▼'}
-        </span>
+        <div className="flex items-start gap-2 flex-shrink-0">
+          {dayData && STRAVA_DAYS.includes(dayData.day) && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onCopy?.(dayData)
+              }}
+              className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.08em] font-semibold text-[#FAFAFA]/60 hover:text-[#FAFAFA] border border-transparent hover:border-[#FAFAFA]/30 rounded-full px-2 py-1 bg-[#1f1f1f]/60 hover:bg-[#303030]"
+              aria-label={`Copy ${dayData.day} to clipboard`}
+            >
+              <span className="w-3 h-3 relative inline-block">
+                <span className="absolute inset-0 border border-[#FAFAFA]/40 rounded-[2px]" />
+                <span className="absolute -top-[2px] -left-[2px] w-full h-full border border-[#FAFAFA]/80 rounded-[2px] bg-transparent" />
+              </span>
+              <span>{copiedDay === dayData.day ? 'Copied' : 'Copy'}</span>
+            </button>
+          )}
+          <span className="text-[#FAFAFA]/60 text-sm" aria-hidden>
+            {open ? '▲' : '▼'}
+          </span>
+        </div>
       </button>
       {open && (content || getDayContentWithPT(day)) && (
         <div
@@ -63,7 +94,7 @@ function DayCard({ dayData, day, title, summary, content, isOff, dateLabel }) {
   )
 }
 
-function WeekDayCell({ dayData, day, title, content, dateLabel }) {
+function WeekDayCell({ dayData, day, title, content, dateLabel, copiedDay, onCopy }) {
   const { distance, vert } = getCanonicalRun(dayData)
   const runLine = [distance, vert].filter(Boolean).join(' ') || null
   const isOff = /off|rest|yay!/i.test(title)
@@ -74,8 +105,24 @@ function WeekDayCell({ dayData, day, title, content, dateLabel }) {
       }`}
     >
       <div className="p-2 flex-shrink-0 border-b border-[#FAFAFA]/15">
-        <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#FAFAFA]/60">
-          {day.toUpperCase().slice(0, 3)}
+        <div className="flex items-start justify-between gap-2">
+          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#FAFAFA]/60">
+            {day.toUpperCase().slice(0, 3)}
+          </div>
+          {dayData && STRAVA_DAYS.includes(dayData.day) && (
+            <button
+              type="button"
+              onClick={() => onCopy?.(dayData)}
+              className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.08em] font-semibold text-[#FAFAFA]/55 hover:text-[#FAFAFA] border border-transparent hover:border-[#FAFAFA]/30 rounded-full px-2 py-1 bg-[#1f1f1f]/50 hover:bg-[#303030]"
+              aria-label={`Copy ${dayData.day} to clipboard`}
+            >
+              <span className="w-3 h-3 relative inline-block">
+                <span className="absolute inset-0 border border-[#FAFAFA]/35 rounded-[2px]" />
+                <span className="absolute -top-[2px] -left-[2px] w-full h-full border border-[#FAFAFA]/70 rounded-[2px] bg-transparent" />
+              </span>
+              <span>{copiedDay === dayData.day ? 'Copied' : 'Copy'}</span>
+            </button>
+          )}
         </div>
         {dateLabel && (
           <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] text-[#FAFAFA]/50 mt-0.5">
@@ -104,6 +151,7 @@ export default function DanaPlanViewer() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedWeek, setSelectedWeek] = useState(1)
+  const [copiedDay, setCopiedDay] = useState(null)
 
   useEffect(() => {
     fetch('/dana-plan/plan-data-v3.json')
@@ -138,7 +186,24 @@ export default function DanaPlanViewer() {
     return () => window.removeEventListener('keydown', onKey)
   }, [planData, selectedWeek])
 
+  useEffect(() => {
+    if (!copiedDay) return
+    const id = setTimeout(() => setCopiedDay(null), 1600)
+    return () => clearTimeout(id)
+  }, [copiedDay])
+
   const week = planData?.weeks?.find((w) => w.week === selectedWeek)
+
+  const handleCopy = async (dayData) => {
+    try {
+      const text = buildStravaCopyText(dayData)
+      if (!text) return
+      await navigator.clipboard.writeText(text)
+      setCopiedDay(dayData.day)
+    } catch (e) {
+      console.error('Copy failed', e)
+    }
+  }
 
   const weekContent = week?.content ?? ''
   const coachCommentRe = /\*\*WEEK \d+ COACH COMMENT\*\*:[\s\S]*?(?=\n\n---|\n\n###|$)/g
@@ -216,6 +281,8 @@ export default function DanaPlanViewer() {
               content={d.content}
               isOff={isOff}
               dateLabel={dateLabel}
+              copiedDay={copiedDay}
+              onCopy={handleCopy}
             />
           )
         })}
@@ -233,6 +300,8 @@ export default function DanaPlanViewer() {
               title={d.title}
               content={d.content}
               dateLabel={dateLabel}
+              copiedDay={copiedDay}
+              onCopy={handleCopy}
             />
           )
         })}
