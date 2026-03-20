@@ -133,7 +133,7 @@ export default function GelsPage() {
         <div
           className={
             activeTab === 'fueling'
-              ? 'grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(280px,400px)] gap-6 lg:gap-6 lg:items-stretch'
+              ? 'grid grid-cols-1 lg:grid-cols-[max-content_minmax(0,1fr)] gap-6 lg:items-stretch'
               : 'grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-6'
           }
         >
@@ -141,16 +141,16 @@ export default function GelsPage() {
           <section
             className={
               activeTab === 'fueling'
-                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col'
+                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col lg:justify-self-start lg:w-max lg:max-w-full'
                 : 'space-y-4'
             }
           >
             {activeTab === 'fueling' && (
               <>
                 {/* Two panels to the left of flask visualizer — stretch to match visualizer column height */}
-                <div className="flex flex-col md:flex-row w-full items-stretch flex-1 min-h-0 h-full gap-6">
-                  {/* Wide: sliders + total carbs (own box; gap matches grid gap to visualizer) */}
-                  <div className="border-2 border-black p-[18px] flex-1 min-w-0 min-h-0 h-full flex flex-col">
+                <div className="flex flex-col md:flex-row w-full lg:w-auto lg:max-w-full items-stretch flex-1 min-h-0 h-full gap-6">
+                  {/* Wide: same max width as visualizer column (minmax(280px, 400px)) */}
+                  <div className="border-2 border-black p-[18px] w-full max-w-[400px] lg:w-[400px] lg:max-w-[400px] lg:flex-none shrink-0 min-w-0 min-h-0 h-full flex flex-col">
                     <div className="flex justify-between items-start gap-4">
                       <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                         Hours out
@@ -664,7 +664,7 @@ export default function GelsPage() {
           <aside
             className={
               activeTab === 'fueling'
-                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col'
+                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col lg:min-w-0 w-full'
                 : 'space-y-4 items-start'
             }
           >
@@ -673,9 +673,6 @@ export default function GelsPage() {
                 <div className="border-2 border-black p-[18px] w-full h-full min-h-[200px] flex flex-col flex-1">
                   <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                     Flask visualizer
-                  </div>
-                  <div className="mt-1 text-[11px] text-black/60">
-                    ~{CARBS_PER_FLASK[250]}g for 250 ml · ~{CARBS_PER_FLASK[500]}g for 500 ml
                   </div>
 
                   <div className="mt-6 flex gap-3 overflow-x-auto pb-2 flex-1 min-h-0 items-start">
