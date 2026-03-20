@@ -80,6 +80,22 @@ export default function GelsPage() {
   const remainderFlaskFraction = Math.min(1, Math.max(0, flasksExact - fullFlasks))
   const SEGMENTS_PER_FLASK = 4
 
+  const HOURS_MIN = 1
+  const HOURS_MAX = 14
+  const CARBS_MIN = 60
+  const CARBS_MAX = 90
+  const hoursOutPercent = Math.min(
+    100,
+    Math.max(
+      0,
+      ((fueling.clampedHours - HOURS_MIN) / (HOURS_MAX - HOURS_MIN)) * 100
+    )
+  )
+  const carbsPerHourPercent = Math.min(
+    100,
+    Math.max(0, ((carbsPerHour - CARBS_MIN) / (CARBS_MAX - CARBS_MIN)) * 100)
+  )
+
   return (
     <div className="font-mono bg-white text-black min-h-screen">
       <style jsx global>{`
@@ -115,90 +131,156 @@ export default function GelsPage() {
 
         {/* Panels */}
         <div
-          className={`grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-6 ${
-            ''
-          }`}
+          className={
+            activeTab === 'fueling'
+              ? 'grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(280px,400px)] gap-6 lg:gap-6 lg:items-stretch'
+              : 'grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-6'
+          }
         >
           {/* Left side: main content per tab */}
-          <section className="space-y-4">
+          <section
+            className={
+              activeTab === 'fueling'
+                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col'
+                : 'space-y-4'
+            }
+          >
             {activeTab === 'fueling' && (
               <>
-                {/* Left panel (matches reference layout) */}
-                <div className="border-2 border-black p-5">
-                  {/* Hours out */}
-                  <div className="mb-8">
-                    <div className="flex justify-between items-baseline">
-                      <div>
-                        <div className="uppercase text-[11px] tracking-[0.16em]">
-                          Hours out
-                        </div>
-                      </div>
-                      <div className="text-[18px] md:text-[20px]">
-                        {fueling.clampedHours.toFixed(1)}&nbsp;hr
-                      </div>
+                {/* Two panels to the left of flask visualizer — stretch to match visualizer column height */}
+                <div className="flex flex-col md:flex-row w-full items-stretch flex-1 min-h-0 h-full gap-6">
+                  {/* Wide: sliders + total carbs (own box; gap matches grid gap to visualizer) */}
+                  <div className="border-2 border-black p-[18px] flex-1 min-w-0 min-h-0 h-full flex flex-col">
+                    <div className="flex justify-between items-start gap-4">
+                      <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                        Hours out
+                      </span>
+                      <span className="text-[20px] leading-none tabular-nums">
+                        {fueling.clampedHours.toFixed(1)} hr
+                      </span>
                     </div>
-                    <div className="mt-1 text-[11px] text-black/60">1–14 h</div>
-                    <input
-                      type="range"
-                      min={1}
-                      max={14}
-                      step={0.5}
-                      value={hoursOut}
-                      onChange={(e) => setHoursOut(parseFloat(e.target.value))}
-                      className="mt-3 w-full accent-black"
-                    />
-                  </div>
+                    <div className="relative mt-3 h-[34px]">
+                      <div className="absolute left-0 right-0 top-[14px] h-[8px] bg-[#efefef] border border-[#b2b2b2] rounded-[30px]" />
+                      <div
+                        className="absolute left-0 top-[14px] h-[8px] bg-black rounded-[30px]"
+                        style={{ width: `${hoursOutPercent}%` }}
+                      />
+                      <div
+                        className="absolute top-[8px] w-[18px] h-[18px] bg-black rounded-full"
+                        style={{
+                          left: `${hoursOutPercent}%`,
+                          transform: 'translateX(-50%)',
+                        }}
+                      />
+                      <input
+                        type="range"
+                        min={HOURS_MIN}
+                        max={HOURS_MAX}
+                        step={0.5}
+                        value={hoursOut}
+                        onChange={(e) =>
+                          setHoursOut(parseFloat(e.target.value))
+                        }
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                    </div>
 
-                  {/* Target carbs/hr */}
-                  <div className="mb-10">
-                    <div className="flex justify-between items-baseline">
+                    <div className="flex justify-between items-start gap-4 mt-8">
                       <div>
-                        <div className="uppercase text-[11px] tracking-[0.16em]">
+                        <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                           Target carbs/hr
                         </div>
+                        <div className="mt-1 text-[11px] text-black/60">
+                          Target 60–90 g/hr
+                        </div>
                       </div>
-                      <div className="text-[18px] md:text-[20px]">
-                        {carbsPerHour.toFixed(0)}&nbsp;g/hr
+                      <span className="text-[20px] leading-none tabular-nums shrink-0">
+                        {carbsPerHour.toFixed(0)} g/hr
+                      </span>
+                    </div>
+                    <div className="relative mt-3 h-[34px]">
+                      <div className="absolute left-0 right-0 top-[14px] h-[8px] bg-[#efefef] border border-[#b2b2b2] rounded-[30px]" />
+                      <div
+                        className="absolute left-0 top-[14px] h-[8px] bg-black rounded-[30px]"
+                        style={{ width: `${carbsPerHourPercent}%` }}
+                      />
+                      <div
+                        className="absolute top-[8px] w-[18px] h-[18px] bg-black rounded-full"
+                        style={{
+                          left: `${carbsPerHourPercent}%`,
+                          transform: 'translateX(-50%)',
+                        }}
+                      />
+                      <input
+                        type="range"
+                        min={CARBS_MIN}
+                        max={CARBS_MAX}
+                        step={5}
+                        value={carbsPerHour}
+                        onChange={(e) =>
+                          setCarbsPerHour(parseInt(e.target.value, 10))
+                        }
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      />
+                    </div>
+
+                    <div className="mt-auto pt-10">
+                      <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                        Total carbs needed
+                      </div>
+                      <div className="mt-2 text-[48px] leading-none tabular-nums">
+                        {Math.round(fueling.totalCarbs).toLocaleString()}g
                       </div>
                     </div>
-                    <div className="mt-1 text-[11px] text-black/60">60–90 g/hr</div>
-                    <input
-                      type="range"
-                      min={60}
-                      max={90}
-                      step={5}
-                      value={carbsPerHour}
-                      onChange={(e) =>
-                        setCarbsPerHour(parseInt(e.target.value, 10))
-                      }
-                      className="mt-3 w-full accent-black"
-                    />
                   </div>
 
-                  {/* Bottom stats row */}
-                  <div className="grid grid-cols-3 gap-6">
-                    <div>
-                      <div className="uppercase text-[11px] tracking-[0.16em]">
-                        Total carbs(g) needed
-                      </div>
-                      <div className="mt-2 text-[40px] leading-none">
-                        {Math.round(fueling.totalCarbs).toLocaleString()}
-                      </div>
+                  {/* Narrow: flask size + counts */}
+                  <div className="border-2 border-black p-[18px] w-full md:w-[194px] shrink-0 min-h-0 h-full flex flex-col">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      Flask size (ml)
                     </div>
-                    <div>
-                      <div className="uppercase text-[11px] tracking-[0.16em]">
-                        No. of flasks
-                      </div>
-                      <div className="mt-2 text-[40px] leading-none">
-                        {fueling.numberOfFlasks.toLocaleString()}
-                      </div>
+                    <div className="mt-3 flex gap-[11px]">
+                      <button
+                        type="button"
+                        onClick={() => setFlaskSize(250)}
+                        disabled={fueling.clampedHours >= 12}
+                        className={`flex-1 min-w-0 border border-black py-2 text-[17px] leading-none ${
+                          flaskSize === 250 && fueling.clampedHours < 12
+                            ? 'bg-black text-white'
+                            : fueling.clampedHours >= 12
+                              ? 'bg-white text-black/30 border-black/30 cursor-not-allowed'
+                              : 'bg-white text-black'
+                        }`}
+                      >
+                        250
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setFlaskSize(500)}
+                        className={`flex-1 min-w-0 border border-black py-2 text-[17px] leading-none ${
+                          flaskSize === 500
+                            ? 'bg-black text-white'
+                            : 'bg-white text-black'
+                        }`}
+                      >
+                        500
+                      </button>
                     </div>
-                    <div>
-                      <div className="uppercase text-[11px] tracking-[0.16em]">
-                        Hr per flask
+
+                    <div className="mt-8 uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      No. of flasks
+                    </div>
+                    <div className="mt-2 text-[48px] leading-none tabular-nums">
+                      {fueling.numberOfFlasks.toLocaleString()}
+                    </div>
+
+                    {/* Same mt-auto + pt-10 as left "Total carbs needed" so labels align */}
+                    <div className="mt-auto pt-10">
+                      <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                        Carbs per flask
                       </div>
-                      <div className="mt-2 text-[40px] leading-none">
-                        {fueling.hoursPerFlask.toFixed(1)}&nbsp;hr
+                      <div className="mt-2 text-[48px] leading-none tabular-nums">
+                        {Math.round(fueling.carbsPerFlask).toLocaleString()}g
                       </div>
                     </div>
                   </div>
@@ -579,47 +661,24 @@ export default function GelsPage() {
           </section>
 
           {/* Right side */}
-          <aside className="space-y-4 items-start">
+          <aside
+            className={
+              activeTab === 'fueling'
+                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col'
+                : 'space-y-4 items-start'
+            }
+          >
             {activeTab === 'fueling' && (
               <>
-                <div className="border-2 border-black p-5 w-full">
-                  <div className="flex justify-between items-start gap-4">
-                    <div>
-                      <div className="uppercase text-[11px] tracking-[0.16em]">
-                        Flask visualizer
-                      </div>
-                      <div className="mt-1 text-[11px] text-black/60">
-                        ~{CARBS_PER_FLASK[250]} g carbs for 250 ml, ~{CARBS_PER_FLASK[500]} g for 500 ml
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      <div className="uppercase text-[11px] tracking-[0.16em] text-black/60">
-                        Flask size
-                      </div>
-                      <div className="flex gap-2">
-                        {[250, 500].map((size) => (
-                          <button
-                            key={size}
-                            type="button"
-                            onClick={() => setFlaskSize(size)}
-                            disabled={size === 250 && fueling.clampedHours >= 12}
-                            className={`px-2.5 py-1 border border-black text-[12px] ${
-                              size === 250 && fueling.clampedHours >= 12
-                                ? 'bg-white text-black/30 border-black/30 cursor-not-allowed'
-                                : flaskSize === size
-                                  ? 'bg-black text-white'
-                                  : 'bg-white hover:bg-black hover:text-white transition-colors'
-                            }`}
-                          >
-                            {size}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                <div className="border-2 border-black p-[18px] w-full h-full min-h-[200px] flex flex-col flex-1">
+                  <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                    Flask visualizer
+                  </div>
+                  <div className="mt-1 text-[11px] text-black/60">
+                    ~{CARBS_PER_FLASK[250]}g for 250 ml · ~{CARBS_PER_FLASK[500]}g for 500 ml
                   </div>
 
-                  <div className="mt-6 flex gap-4 overflow-x-auto pb-2">
+                  <div className="mt-6 flex gap-3 overflow-x-auto pb-2 flex-1 min-h-0 items-start">
                     {Array.from({
                       length: Math.min(fueling.numberOfFlasks, 6),
                     }).map((_, i) => {
@@ -684,7 +743,7 @@ export default function GelsPage() {
       </main>
 
       {/* Footer – mirrors Sounds tone */}
-      <footer className="border-t-2 border-black mt-12" />
+      <footer className="mt-12" />
     </div>
   )
 }
