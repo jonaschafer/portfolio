@@ -4,6 +4,7 @@ import Footer from '../../components/Footer'
 import {
   caseStudies,
   hero,
+  scopeColumns,
   otherWaysICanHelp,
   howItWorks,
   calendlyBookingUrl,
@@ -20,6 +21,10 @@ const advisingText = '#333333'
 const sectionTitle = "font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px]"
 const bodyText = "font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[19.4px] leading-[1.2] md:leading-[1.2] tracking-[0.167px]"
 const bodyMuted = "font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] leading-[16.44px] tracking-[0.167px] text-[#333333]/70"
+const scopeLabelClass =
+  "font-['Haas_Grot_Disp',_sans-serif] text-[11px] tracking-[0.14em] uppercase text-[#333333] mb-8"
+const scopeItemClass =
+  "font-['Haas_Grot_Disp',_sans-serif] text-[17px] md:text-[19px] font-normal leading-[1.5] tracking-[0.02em] text-[#333333]"
 
 export default function AdvisingPage() {
   return (
@@ -37,6 +42,32 @@ export default function AdvisingPage() {
           <p className={`${bodyText} mt-[14px]`} style={{ color: advisingText }}>
             {hero.subhead}
           </p>
+        </section>
+
+        {/* Hats worn / Surfaces — 2-column minimalist lists */}
+        <section className="pb-[50px] md:pb-[60px] border-t border-black/10 pt-[40px] md:pt-[48px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 md:gap-x-20 gap-y-14 md:gap-y-0">
+            <div>
+              <p className={scopeLabelClass}>{scopeColumns.left.label}</p>
+              <ul className="list-none m-0 p-0 space-y-[0.65rem]">
+                {scopeColumns.left.items.map((item) => (
+                  <li key={item} className={scopeItemClass}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className={scopeLabelClass}>{scopeColumns.right.label}</p>
+              <ul className="list-none m-0 p-0 space-y-[0.65rem]">
+                {scopeColumns.right.items.map((item) => (
+                  <li key={item} className={scopeItemClass}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </section>
 
         {/* Case studies */}

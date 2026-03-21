@@ -8,6 +8,42 @@ export const hero = {
     'I work with founders, marketing, and creative staff at companies of all sizes to turn unclear brand instincts into decisions the whole team can execute from.',
 }
 
+/** Two-column capability lists (above case studies), minimalist SERVICES-style layout */
+export const scopeColumns = {
+  left: {
+    label: 'Hats worn',
+    items: [
+      'Design lead',
+      'Manager',
+      'Product designer',
+      'Animator',
+      'Program manager',
+      'Illustrator',
+      'Production designer',
+      'Art Director',
+      'Hiring manager',
+      'Design educator',
+      'Writer',
+    ],
+  },
+  right: {
+    label: 'Surfaces',
+    items: [
+      'Identities',
+      'Illustrations',
+      'Animation',
+      'Marketing',
+      'Swag',
+      'Fabrication',
+      'Product',
+      'System design',
+      'Ops',
+      'Storyboarding',
+      'Education',
+    ],
+  },
+}
+
 export const otherWaysICanHelp = {
   bullets: [
     'You just rebranded and need help translating it into product, marketing, and hiring decisions',
