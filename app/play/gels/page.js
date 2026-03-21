@@ -11,9 +11,13 @@ const TARGET_REPLACEMENT_PER_HR = 800
 const S_CAPS_PER_HR = 2
 const S_CAP_SODIUM = 215
 
-export default function GelsPage() {
-  const [activeTab, setActiveTab] = useState('fueling')
+/** Flask visualizer: fixed width matches layout; height follows 250ml PNG so 500ml scales down to same height (no column jump). */
+const FLASK_VIS_WIDTH_PX = 84
+const FLASK_250_IMAGE_PX = { w: 344, h: 1024 }
+const FLASK_VIS_HEIGHT_PX =
+  (FLASK_VIS_WIDTH_PX * FLASK_250_IMAGE_PX.h) / FLASK_250_IMAGE_PX.w
 
+export default function GelsPage() {
   // Fueling state
   const [hoursOut, setHoursOut] = useState(4)
   const [carbsPerHour, setCarbsPerHour] = useState(80)
@@ -21,10 +25,6 @@ export default function GelsPage() {
 
   // Recipe state
   const [recipeSalt, setRecipeSalt] = useState('yes')
-
-  // Sodium state
-  const [sodiumHours, setSodiumHours] = useState(4)
-  const [sodiumSaltInGel, setSodiumSaltInGel] = useState('yes')
 
   const fueling = useMemo(() => {
     const clampedHours = Math.min(14, Math.max(1, hoursOut))
@@ -49,37 +49,12 @@ export default function GelsPage() {
     }
   }, [fueling.clampedHours, flaskSize])
 
-  const sodium = useMemo(() => {
-    const clampedHours = Math.min(14, Math.max(1, sodiumHours))
-    const totalLost = SWEAT_LOSS_PER_HR * clampedHours
-
-    const capsPerHour = S_CAPS_PER_HR * S_CAP_SODIUM
-    const gelPerHour =
-      sodiumSaltInGel === 'yes' ? TARGET_REPLACEMENT_PER_HR - capsPerHour : 0
-    const replacedPerHour = gelPerHour + capsPerHour
-    const totalReplaced = replacedPerHour * clampedHours
-
-    const deficit = Math.max(0, totalLost - totalReplaced)
-    const percentReplaced = totalLost > 0 ? (totalReplaced / totalLost) * 100 : 0
-
-    return {
-      clampedHours,
-      totalLost,
-      totalReplaced,
-      deficit,
-      percentReplaced,
-      gelPerHour,
-      capsPerHour,
-    }
-  }, [sodiumHours, sodiumSaltInGel])
-
-  // Sodium summary row (fueling tab): uses fueling hours + same hourly math as Sodium tab
+  // Sodium summary row: uses fueling hours
   const sodiumStrip = useMemo(() => {
     const h = fueling.clampedHours
     const totalLost = SWEAT_LOSS_PER_HR * h
     const capsPerHour = S_CAPS_PER_HR * S_CAP_SODIUM
-    const gelPerHour =
-      sodiumSaltInGel === 'yes' ? TARGET_REPLACEMENT_PER_HR - capsPerHour : 0
+    const gelPerHour = TARGET_REPLACEMENT_PER_HR - capsPerHour
     const replacedPerHour = gelPerHour + capsPerHour
     const totalReplaced = replacedPerHour * h
     const deficit = Math.max(0, totalLost - totalReplaced)
@@ -92,7 +67,7 @@ export default function GelsPage() {
       gelPerHour,
       capsPerHour,
     }
-  }, [fueling.clampedHours, sodiumSaltInGel])
+  }, [fueling.clampedHours])
 
   const recipeIngredients = useMemo(
     () =>
@@ -137,7 +112,7 @@ export default function GelsPage() {
   }, [carbsPerHour, flaskSize])
 
   return (
-    <div className="font-mono bg-white text-black min-h-screen">
+    <div className="font-mono bg-white text-black min-h-screen min-w-0 overflow-x-hidden">
       <style jsx global>{`
         html,
         body {
@@ -145,34 +120,23 @@ export default function GelsPage() {
         }
       `}</style>
       {/* Main */}
-      <main className="min-w-[375px] max-w-[1440px] mx-auto px-5 md:px-[60px] pt-5 pb-5 md:pt-[60px] md:pb-[60px]">
+      <main className="w-full max-w-[1440px] mx-auto min-w-0 px-5 md:px-8 lg:px-[60px] pt-5 pb-5 md:pt-[60px] md:pb-[60px]">
         {/* Tabs row — bottom margin matches horizontal page inset */}
         <div className="mb-5 md:mb-[60px] flex flex-wrap gap-2">
           {[
-            { id: 'fueling', label: 'Fueling plan' },
-            { id: 'recipe', label: 'Recipe', anchor: true },
-            { id: 'sodium', label: 'Sodium' },
-            { id: 'run-log', label: 'Run log' },
+            { id: 'fueling', label: 'Fueling plan', anchorId: 'fueling-plan' },
+            { id: 'recipe', label: 'Recipe', anchorId: 'recipe-section' },
           ].map((tab) => (
             <button
               key={tab.id}
               type="button"
               onClick={() => {
-                if (tab.anchor) {
-                  setActiveTab('fueling')
-                  setTimeout(
-                    () =>
-                      document
-                        .getElementById('recipe-section')
-                        ?.scrollIntoView({ behavior: 'smooth' }),
-                    100
-                  )
-                } else {
-                  setActiveTab(tab.id)
-                }
+                document
+                  .getElementById(tab.anchorId)
+                  ?.scrollIntoView({ behavior: 'smooth' })
               }}
               className={`px-3 py-1 border border-black text-[12px] uppercase tracking-[0.16em] ${
-                activeTab === tab.id
+                tab.id === 'fueling'
                   ? 'bg-black text-white'
                   : 'bg-white hover:bg-black hover:text-white transition-colors'
               }`}
@@ -184,22 +148,11 @@ export default function GelsPage() {
 
         {/* Panels */}
         <div
-          className={
-            activeTab === 'fueling'
-              ? 'grid grid-cols-1 lg:grid-cols-[max-content_minmax(0,1fr)] gap-x-6 gap-y-5 lg:gap-y-0 lg:items-stretch'
-              : 'grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-6'
-          }
+          id="fueling-plan"
+          className="grid grid-cols-1 lg:grid-cols-[max-content_minmax(0,1fr)] gap-x-6 gap-y-5 lg:gap-y-0 lg:items-stretch scroll-mt-5 md:scroll-mt-[60px]"
         >
-          {/* Left side: main content per tab */}
-          <section
-            className={
-              activeTab === 'fueling'
-                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col lg:justify-self-start lg:w-max lg:max-w-full'
-                : 'space-y-4'
-            }
-          >
-            {activeTab === 'fueling' && (
-              <>
+          {/* Left side: main content */}
+          <section className="space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col lg:justify-self-start lg:w-max lg:max-w-full">
                 {/* Two panels to the left of flask visualizer — stretch to match visualizer column height */}
                 <div className="flex flex-col md:flex-row w-full lg:w-auto lg:max-w-full items-stretch lg:flex-1 lg:min-h-0 lg:h-full gap-5">
                   {/* Wide: same max width as visualizer column (minmax(280px, 400px)) */}
@@ -370,242 +323,10 @@ export default function GelsPage() {
                     </div>
                   </div>
                 </div>
-              </>
-            )}
-
-            {activeTab === 'sodium' && (
-              <>
-                <h2 className="font-['Mondwest',_sans-serif] text-[24px] md:text-[28px] leading-tight tracking-tight">
-                  Sodium
-                </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-4">
-                    {/* Fixed inputs */}
-                    <div className="border-2 border-black p-4">
-                      <div className="flex justify-between mb-1">
-                        <div className="uppercase text-[11px] tracking-[0.16em]">
-                          Sweat loss
-                        </div>
-                        <div className="text-[13px]">
-                          {SWEAT_LOSS_PER_HR.toLocaleString()} mg/hr
-                        </div>
-                      </div>
-                      <div className="text-[11px] text-black/60">Fixed</div>
-                    </div>
-
-                    <div className="border-2 border-black p-4">
-                      <div className="flex justify-between mb-1">
-                        <div className="uppercase text-[11px] tracking-[0.16em]">
-                          Target replacement
-                        </div>
-                        <div className="text-[13px]">
-                          {TARGET_REPLACEMENT_PER_HR.toLocaleString()} mg/hr
-                        </div>
-                      </div>
-                      <div className="text-[11px] text-black/60">
-                        ~73% of sweat loss
-                      </div>
-                    </div>
-
-                    {/* Hours + salt toggle */}
-                    <div className="border-2 border-black p-4 space-y-3">
-                      <div>
-                        <div className="flex justify-between items-baseline mb-2">
-                          <div>
-                            <div className="uppercase text-[11px] tracking-[0.16em]">
-                              Hours out
-                            </div>
-                            <div className="text-[11px] text-black/60">
-                              Match whatever you used in fueling.
-                            </div>
-                          </div>
-                          <div className="text-[13px]">
-                            {sodium.clampedHours.toFixed(1)} h
-                          </div>
-                        </div>
-                        <input
-                          type="range"
-                          min={1}
-                          max={14}
-                          step={0.5}
-                          value={sodiumHours}
-                          onChange={(e) =>
-                            setSodiumHours(parseFloat(e.target.value))
-                          }
-                          className="w-full accent-black"
-                        />
-                      </div>
-
-                      <div className="flex justify-between items-baseline">
-                        <div>
-                          <div className="uppercase text-[11px] tracking-[0.16em]">
-                            Salt in gel
-                          </div>
-                          <div className="text-[11px] text-black/60">
-                            Toggle sodium coming from the gel.
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          {['yes', 'no'].map((value) => (
-                            <button
-                              key={value}
-                              type="button"
-                              onClick={() => setSodiumSaltInGel(value)}
-                              className={`px-3 py-1 border border-black text-[12px] uppercase tracking-[0.12em] ${
-                                sodiumSaltInGel === value
-                                  ? 'bg-black text-white'
-                                  : 'bg-white hover:bg-black hover:text-white transition-colors'
-                              }`}
-                            >
-                              {value}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    {/* Totals */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="border-2 border-black p-4">
-                        <div className="uppercase text-[11px] tracking-[0.16em] mb-1">
-                          Total lost
-                        </div>
-                        <div className="text-[18px]">
-                          {sodium.totalLost.toLocaleString()} mg
-                        </div>
-                        <div className="text-[11px] text-black/60">
-                          sweat loss × hours
-                        </div>
-                      </div>
-                      <div className="border-2 border-black p-4">
-                        <div className="uppercase text-[11px] tracking-[0.16em] mb-1">
-                          Total replaced
-                        </div>
-                        <div className="text-[18px]">
-                          {sodium.totalReplaced.toLocaleString()} mg
-                        </div>
-                        <div className="text-[11px] text-black/60">
-                          gel + S‑caps
-                        </div>
-                      </div>
-                      <div className="border-2 border-black p-4">
-                        <div className="uppercase text-[11px] tracking-[0.16em] mb-1">
-                          Deficit
-                        </div>
-                        <div className="text-[18px]">
-                          {sodium.deficit.toLocaleString()} mg
-                        </div>
-                        <div className="text-[11px] text-black/60">
-                          lost − replaced
-                        </div>
-                      </div>
-                      <div className="border-2 border-black p-4">
-                        <div className="uppercase text-[11px] tracking-[0.16em] mb-1">
-                          % replaced
-                        </div>
-                        <div className="text-[18px]">
-                          {sodium.percentReplaced.toFixed(1)}%
-                        </div>
-                        <div className="text-[11px] text-black/60">
-                          aim ~70–80%
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Breakdown copy */}
-                    <div className="border-2 border-black p-4 text-[12px] leading-relaxed">
-                      {sodiumSaltInGel === 'yes' ? (
-                        <p>
-                          With salt in the gel, this sketch assumes about{' '}
-                          <span className="underline">
-                            {Math.round(sodium.gelPerHour).toLocaleString()} mg/hr
-                          </span>{' '}
-                          from the gel itself plus{' '}
-                          <span className="underline">
-                            {Math.round(sodium.capsPerHour).toLocaleString()} mg/hr
-                          </span>{' '}
-                          from{' '}
-                          <span className="underline">
-                            {S_CAPS_PER_HR} S‑caps/hr
-                          </span>{' '}
-                          ({S_CAP_SODIUM} mg each), landing near the
-                          800&nbsp;mg/hr target.
-                        </p>
-                      ) : (
-                        <p>
-                          With no salt in the gel, this sketch only counts{' '}
-                          <span className="underline">
-                            {Math.round(sodium.capsPerHour).toLocaleString()} mg/hr
-                          </span>{' '}
-                          from{' '}
-                          <span className="underline">
-                            {S_CAPS_PER_HR} S‑caps/hr
-                          </span>
-                          . That&apos;s roughly{' '}
-                          <span className="underline">
-                            {sodium.percentReplaced.toFixed(1)}%
-                          </span>{' '}
-                          of a 1,100&nbsp;mg/hr sweat rate – use this to decide how
-                          much you want to lean on drink mix, gel salt, or more
-                          capsules.
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {activeTab === 'run-log' && (
-              <>
-                <ul className="space-y-4">
-                  <li className="border-2 border-black p-4 space-y-2 text-[13px]">
-                    <div className="font-['Mondwest',_sans-serif] text-[18px] leading-tight tracking-tight">
-                      March 15, 2026
-                    </div>
-                    <ul className="list-disc list-inside space-y-1">
-                      <li>2h27min · 8.82 mi · 3,205 ft</li>
-                      <li>~226 g carbs total (~92 g/hr), 2 S-caps/hr</li>
-                      <li>
-                        Felt: <span className="underline">amazing</span>
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li className="border-2 border-black p-4 space-y-2 text-[13px]">
-                    <div className="font-['Mondwest',_sans-serif] text-[18px] leading-tight tracking-tight">
-                      Arcellus → Larch Mtn
-                    </div>
-                    <ul className="list-disc list-inside space-y-1">
-                      <li>5h on feet</li>
-                      <li>Est. 5,500 mg sodium lost</li>
-                      <li>
-                        Replaced: 10 gels (~900 mg), 1.5 L Gnarly (~1,500 mg), 8 S-caps
-                        (~1,720 mg) ⇒ ~4,120 mg (~75%).
-                      </li>
-                      <li>
-                        Felt: <span className="underline">great</span>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </>
-            )}
           </section>
 
           {/* Right side */}
-          <aside
-            className={
-              activeTab === 'fueling'
-                ? 'space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col lg:min-w-0 w-full'
-                : 'space-y-4 items-start'
-            }
-          >
-            {activeTab === 'fueling' && (
-              <>
+          <aside className="space-y-0 lg:self-stretch lg:min-h-0 lg:flex lg:flex-col lg:min-w-0 w-full">
                 <div className="border-2 border-black p-[18px] w-full min-h-[200px] flex flex-col lg:h-full lg:flex-1">
                   <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                     Flask visualizer
@@ -630,50 +351,52 @@ export default function GelsPage() {
                       return (
                         <div
                           key={i}
-                          className="relative shrink-0"
-                          style={{ width: 84 }}
+                          className="relative shrink-0 flex justify-center"
+                          style={{ width: FLASK_VIS_WIDTH_PX }}
                         >
-                          <img
-                            src={
-                              flaskSize === 500
-                                ? '/play/gels/flask-500.png'
-                                : '/play/gels/flask-250.png'
-                            }
-                            alt={`${flaskSize}ml flask`}
-                            className="w-full h-auto select-none block"
-                            draggable="false"
-                          />
-
-                          {/* overlay fill segments */}
                           <div
-                            className="absolute left-[14%] right-[14%] top-[28%] bottom-[18%] grid grid-rows-4 gap-1 pointer-events-none"
-                            aria-hidden="true"
+                            className="relative inline-block"
+                            style={{ height: FLASK_VIS_HEIGHT_PX }}
                           >
-                            {Array.from({ length: SEGMENTS_PER_FLASK }).map(
-                              (__unused, segIdx) => {
-                                const filled =
-                                  segIdx >= SEGMENTS_PER_FLASK - filledSegments
-                                return (
-                                  <div
-                                    key={segIdx}
-                                    className={`border border-black ${
-                                      filled ? 'bg-black/50' : 'bg-transparent'
-                                    }`}
-                                  />
-                                )
+                            <img
+                              src={
+                                flaskSize === 500
+                                  ? '/play/gels/flask-500.png'
+                                  : '/play/gels/flask-250.png'
                               }
-                            )}
+                              alt={`${flaskSize}ml flask`}
+                              className="block h-full w-auto max-w-full select-none object-contain"
+                              draggable="false"
+                            />
+
+                            {/* overlay fill segments — positioned vs image box so 250/500 stay aligned */}
+                            <div
+                              className="absolute left-[14%] right-[14%] top-[28%] bottom-[18%] grid grid-rows-4 gap-1 pointer-events-none"
+                              aria-hidden="true"
+                            >
+                              {Array.from({ length: SEGMENTS_PER_FLASK }).map(
+                                (__unused, segIdx) => {
+                                  const filled =
+                                    segIdx >= SEGMENTS_PER_FLASK - filledSegments
+                                  return (
+                                    <div
+                                      key={segIdx}
+                                      className={`border border-black ${
+                                        filled ? 'bg-black/50' : 'bg-transparent'
+                                      }`}
+                                    />
+                                  )
+                                }
+                              )}
+                            </div>
                           </div>
                         </div>
                       )
                     })}
                   </div>
                 </div>
-              </>
-            )}
           </aside>
-        {activeTab === 'fueling' && (
-          <div className="lg:col-span-2 mt-0 py-6 w-full min-w-0 font-mono">
+        <div className="lg:col-span-2 mt-0 py-6 w-full min-w-0 font-mono">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-x-6 lg:gap-y-0">
               {/* Box 1 — hourly rates */}
               <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[132px] min-w-0 box-border">
@@ -761,60 +484,39 @@ export default function GelsPage() {
               {/* Box 4 — note */}
               <div className="border-2 border-black p-[18px] flex items-center min-h-[132px] min-w-0 box-border">
                 <p className="text-[11px] leading-[16px] text-black/55">
-                  {sodiumSaltInGel === 'yes' ? (
-                    <>
-                      Assumes{' '}
-                      <span className="text-black font-semibold underline underline-offset-2">
-                        ~{Math.round(sodiumStrip.gelPerHour).toLocaleString()}{' '}
-                        mg/hr
-                      </span>{' '}
-                      from gel +{' '}
-                      <span className="text-black font-semibold underline underline-offset-2">
-                        ~{Math.round(sodiumStrip.capsPerHour).toLocaleString()}{' '}
-                        mg/hr
-                      </span>{' '}
-                      from{' '}
-                      <span className="text-black font-semibold underline underline-offset-2">
-                        two S-caps/hr
-                      </span>{' '}
-                      landing near the 800 mg/hr target
-                    </>
-                  ) : (
-                    <>
-                      Assumes{' '}
-                      <span className="text-black font-semibold underline underline-offset-2">
-                        ~{Math.round(sodiumStrip.capsPerHour).toLocaleString()}{' '}
-                        mg/hr
-                      </span>{' '}
-                      from{' '}
-                      <span className="text-black font-semibold underline underline-offset-2">
-                        two S-caps/hr
-                      </span>{' '}
-                      only (no gel salt in this sketch)
-                    </>
-                  )}
+                  Assumes{' '}
+                  <span className="text-black font-semibold underline underline-offset-2">
+                    ~{Math.round(sodiumStrip.gelPerHour).toLocaleString()} mg/hr
+                  </span>{' '}
+                  from gel +{' '}
+                  <span className="text-black font-semibold underline underline-offset-2">
+                    ~{Math.round(sodiumStrip.capsPerHour).toLocaleString()} mg/hr
+                  </span>{' '}
+                  from{' '}
+                  <span className="text-black font-semibold underline underline-offset-2">
+                    two S-caps/hr
+                  </span>{' '}
+                  landing near the 800 mg/hr target
                 </p>
               </div>
             </div>
           </div>
-        )}
         </div>
 
-        {activeTab === 'fueling' && (
-          <div
+        <div
             id="recipe-section"
             className="mt-5 md:mt-0 scroll-mt-5 md:scroll-mt-[60px]"
           >
-            <div className="flex flex-col lg:flex-row items-stretch gap-6 text-left text-[11px] font-mono w-full">
+            {/* Below lg: stack. lg+ (1024px): two columns with flex-1 min-w-0 so they stay side by side and shrink */}
+            <div className="flex flex-col lg:flex-row lg:justify-center lg:items-stretch gap-4 md:gap-6 text-left text-[11px] font-mono w-full min-w-0">
               {/* Ingredients */}
-              <div className="w-full lg:w-[500px] lg:shrink-0 border-2 border-black box-border p-[18px] flex flex-col">
-                {/* Header row */}
-                <div className="flex items-start justify-between gap-4">
-                  <span className="uppercase tracking-[1.76px] leading-[16.5px] shrink-0">
+              <div className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none h-[380px] border-2 border-black box-border min-w-0 overflow-hidden">
+                <div className="absolute top-[24px] left-[19px] right-[19px] flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                  <span className="uppercase tracking-[1.76px] leading-[16.5px]">
                     ingredients
                   </span>
-                  <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1 sm:gap-2">
-                    <span className="uppercase tracking-[1.76px] leading-[16.5px] whitespace-nowrap">
+                  <div className="flex flex-wrap items-center justify-end gap-x-2 gap-y-1">
+                    <span className="uppercase tracking-[1.76px] leading-[16.5px]">
                       table salt
                     </span>
                     <div className="flex items-center gap-[8.2px]">
@@ -827,7 +529,9 @@ export default function GelsPage() {
                             : 'bg-white text-black'
                         }`}
                       >
-                        <span className="leading-[19.05px] text-[12.7px]">YES</span>
+                        <span className="leading-[19.05px] text-[12.7px]">
+                          YES
+                        </span>
                       </button>
                       <button
                         type="button"
@@ -838,40 +542,44 @@ export default function GelsPage() {
                             : 'bg-white text-black'
                         }`}
                       >
-                        <span className="leading-[19.05px] text-[12.7px]">NO</span>
+                        <span className="leading-[19.05px] text-[12.7px]">
+                          NO
+                        </span>
                       </button>
                     </div>
                   </div>
                 </div>
 
-                {/* Ingredient list */}
-                <div className="mt-[29px] bg-[#ececec]/50 text-[#1e1e1e] px-[20px] py-[19px] flex flex-col">
-                  {recipeIngredients.map((item, idx) => {
-                    const isLast = idx === recipeIngredients.length - 1
-                    return (
-                      <div
-                        key={item.label}
-                        className={`w-full flex items-center justify-between gap-[20px] pt-[10px] pb-[15px] text-[17px] leading-[25.5px] ${
-                          isLast ? '' : 'border-b border-black/40'
-                        }`}
-                      >
-                        <span>{item.label}</span>
-                        <span className="tabular-nums text-right">
-                          {item.amount}
-                        </span>
-                      </div>
-                    )
-                  })}
+                <div className="absolute top-[76px] left-[18px] right-[18px] bottom-[20px] bg-[#ececec]/50 text-[#1e1e1e]">
+                  <div className="absolute top-[19px] left-[12px] right-[12px] sm:left-[20px] sm:right-[20px] flex flex-col items-start gap-0 min-w-0">
+                    {recipeIngredients.map((item, idx) => {
+                      const isLast = idx === recipeIngredients.length - 1
+
+                      return (
+                        <div
+                          key={item.label}
+                          className={`w-full min-w-0 flex items-center justify-between gap-2 sm:gap-3 pt-[10px] pb-[15px] text-[15px] xl:text-[17px] leading-snug xl:leading-[25.5px] ${
+                            isLast ? '' : 'border-b border-black/40'
+                          }`}
+                        >
+                          <span className="min-w-0 shrink">{item.label}</span>
+                          <span className="tabular-nums text-right shrink-0">
+                            {item.amount}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
 
-              {/* Instructions */}
-              <div className="w-full lg:flex-1 border-2 border-black box-border p-[18px] lg:p-[30px] flex flex-col gap-6">
-                <div className="uppercase tracking-[1.76px] leading-[16.5px]">
+              {/* Instructions — flow layout (no overlapping absolutes when column is narrow) */}
+              <div className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none min-h-[380px] flex flex-col border-2 border-black box-border min-w-0">
+                <div className="shrink-0 pt-6 px-[30.5px] uppercase tracking-[1.76px] leading-[16.5px]">
                   instructions
                 </div>
 
-                <ol className="text-[#1e1e1e] text-[14px] lg:text-[17px] leading-[150%] lg:leading-[100%] list-decimal pl-[23px] space-y-[14px]">
+                <ol className="mt-4 px-[30.5px] text-[#1e1e1e] text-[15px] xl:text-[17px] leading-snug xl:leading-tight list-decimal list-inside space-y-[14px]">
                   <li>
                     Weigh out the fructose, maltodextrin, and pectin into a
                     heat‑safe container.
@@ -893,18 +601,17 @@ export default function GelsPage() {
                   </li>
                 </ol>
 
-                <p className="text-[14px] leading-[21.5px] text-[#1e1e1e]">
+                <div className="shrink-0 mt-4 px-[30.5px] pb-6 text-[13px] xl:text-[14px] leading-snug xl:leading-[21.5px] text-[#1e1e1e]">
                   Flavor is optional but nice on long days: a splash of{' '}
                   <span className="underline">vanilla</span>, a drop of{' '}
                   <span className="underline">peppermint</span>, or a shot of{' '}
                   <span className="underline">strong espresso</span> all work
                   well. Keep liquids minimal so you don't dilute the carbs too
                   much.
-                </p>
+                </div>
               </div>
             </div>
           </div>
-        )}
       </main>
 
       {/* Footer – mirrors Sounds tone */}

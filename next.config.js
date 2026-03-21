@@ -1,5 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    // Keep parallel webpack builds when a custom webpack hook is present (Next 14 warning)
+    webpackBuildWorker: true,
+  },
+  // Dev (webpack path only): disable persistent cache so stale chunk refs don't survive
+  // Dropbox/sync or multiple dev processes touching .next.
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.cache = false
+    }
+    return config
+  },
   async redirects() {
     return [
       { source: '/v2', destination: '/', permanent: true },
