@@ -186,7 +186,7 @@ export default function GelsPage() {
         <div
           className={
             activeTab === 'fueling'
-              ? 'grid grid-cols-1 lg:grid-cols-[max-content_minmax(0,1fr)] gap-x-6 gap-y-0 lg:items-stretch'
+              ? 'grid grid-cols-1 lg:grid-cols-[max-content_minmax(0,1fr)] gap-x-6 gap-y-5 lg:gap-y-0 lg:items-stretch'
               : 'grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] gap-6'
           }
         >
@@ -201,9 +201,9 @@ export default function GelsPage() {
             {activeTab === 'fueling' && (
               <>
                 {/* Two panels to the left of flask visualizer — stretch to match visualizer column height */}
-                <div className="flex flex-col md:flex-row w-full lg:w-auto lg:max-w-full items-stretch flex-1 min-h-0 h-full gap-6">
+                <div className="flex flex-col md:flex-row w-full lg:w-auto lg:max-w-full items-stretch lg:flex-1 lg:min-h-0 lg:h-full gap-5">
                   {/* Wide: same max width as visualizer column (minmax(280px, 400px)) */}
-                  <div className="border-2 border-black p-[18px] w-full max-w-[400px] lg:w-[400px] lg:max-w-[400px] lg:flex-none shrink-0 min-w-0 min-h-0 h-full flex flex-col">
+                  <div className="border-2 border-black p-[18px] w-full md:flex-1 lg:w-[400px] lg:max-w-[400px] lg:flex-none shrink-0 min-w-0 lg:h-full flex flex-col">
                     <div className="flex justify-between items-start gap-4">
                       <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                         Hours out
@@ -306,7 +306,7 @@ export default function GelsPage() {
                       />
                     </div>
 
-                    <div className="mt-auto pt-10">
+                    <div className="mt-6 lg:mt-auto pt-0 lg:pt-10">
                       <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                         Total carbs needed
                       </div>
@@ -317,7 +317,7 @@ export default function GelsPage() {
                   </div>
 
                   {/* Narrow: flask size + counts */}
-                  <div className="border-2 border-black p-[18px] w-full md:w-[194px] shrink-0 min-h-0 h-full flex flex-col">
+                  <div className="border-2 border-black p-[18px] w-full md:flex-1 lg:w-[194px] lg:flex-none shrink-0 lg:h-full flex flex-col">
                     <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                       Flask size (ml)
                     </div>
@@ -349,20 +349,23 @@ export default function GelsPage() {
                       </button>
                     </div>
 
-                    <div className="mt-8 uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      No. of flasks
-                    </div>
-                    <div className="mt-2 text-[48px] leading-none tabular-nums">
-                      {fueling.numberOfFlasks.toLocaleString()}
-                    </div>
-
-                    {/* Same mt-auto + pt-10 as left "Total carbs needed" so labels align */}
-                    <div className="mt-auto pt-10">
-                      <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                        Carbs per flask
+                    {/* Side by side on mobile only; stacked at md+ (box is 194px at tablet) */}
+                    <div className="mt-5 flex flex-row gap-4 md:flex-col md:gap-0 md:flex-1 md:mt-8">
+                      <div className="flex-1 md:flex-none">
+                        <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                          No. of flasks
+                        </div>
+                        <div className="mt-2 text-[48px] leading-none tabular-nums">
+                          {fueling.numberOfFlasks.toLocaleString()}
+                        </div>
                       </div>
-                      <div className="mt-2 text-[48px] leading-none tabular-nums">
-                        {Math.round(fueling.carbsPerFlask).toLocaleString()}g
+                      <div className="flex-1 md:mt-6 lg:mt-auto lg:pt-10">
+                        <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                          Carbs per flask
+                        </div>
+                        <div className="mt-2 text-[48px] leading-none tabular-nums">
+                          {Math.round(fueling.carbsPerFlask).toLocaleString()}g
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -603,7 +606,7 @@ export default function GelsPage() {
           >
             {activeTab === 'fueling' && (
               <>
-                <div className="border-2 border-black p-[18px] w-full h-full min-h-[200px] flex flex-col flex-1">
+                <div className="border-2 border-black p-[18px] w-full min-h-[200px] flex flex-col lg:h-full lg:flex-1">
                   <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                     Flask visualizer
                   </div>
@@ -671,7 +674,7 @@ export default function GelsPage() {
           </aside>
         {activeTab === 'fueling' && (
           <div className="lg:col-span-2 mt-0 py-6 w-full min-w-0 font-mono">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-x-6 lg:gap-y-0">
               {/* Box 1 — hourly rates */}
               <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[132px] min-w-0 box-border">
                 <div className="flex justify-between items-center gap-4">
@@ -802,19 +805,50 @@ export default function GelsPage() {
             id="recipe-section"
             className="mt-5 md:mt-0 scroll-mt-5 md:scroll-mt-[60px]"
           >
-            <div className="flex justify-center items-start gap-6 text-left text-[11px] font-mono w-full">
+            <div className="flex flex-col lg:flex-row items-stretch gap-6 text-left text-[11px] font-mono w-full">
               {/* Ingredients */}
-              <div className="relative w-[500px] h-[380px] border-2 border-black box-border">
-                <div className="absolute top-[31px] left-[19px] uppercase tracking-[1.76px] leading-[16.5px]">
-                  ingredients
+              <div className="w-full lg:w-[500px] lg:shrink-0 border-2 border-black box-border p-[18px] flex flex-col">
+                {/* Header row */}
+                <div className="flex items-start justify-between gap-4">
+                  <span className="uppercase tracking-[1.76px] leading-[16.5px] shrink-0">
+                    ingredients
+                  </span>
+                  <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1 sm:gap-2">
+                    <span className="uppercase tracking-[1.76px] leading-[16.5px] whitespace-nowrap">
+                      table salt
+                    </span>
+                    <div className="flex items-center gap-[8.2px]">
+                      <button
+                        type="button"
+                        onClick={() => setRecipeSalt('yes')}
+                        className={`w-[54.5px] border-[1.1px] border-black px-[10.6px] py-[4.2px] flex flex-col items-center justify-center ${
+                          recipeSalt === 'yes'
+                            ? 'bg-black text-white'
+                            : 'bg-white text-black'
+                        }`}
+                      >
+                        <span className="leading-[19.05px] text-[12.7px]">YES</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setRecipeSalt('no')}
+                        className={`w-[54.5px] border-[1.1px] border-black px-[10.6px] py-[4.2px] flex flex-col items-center justify-center ${
+                          recipeSalt === 'no'
+                            ? 'bg-black text-white'
+                            : 'bg-white text-black'
+                        }`}
+                      >
+                        <span className="leading-[19.05px] text-[12.7px]">NO</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="absolute top-[76px] left-[18.5px] w-[461px] h-[284px] bg-[#ececec]/50 text-[#1e1e1e]">
-                  <div className="absolute top-[19px] left-[20px] w-[421px] flex flex-col items-start gap-0">
-                    {recipeIngredients.map((item, idx) => {
-                      const isLast = idx === recipeIngredients.length - 1
-
-                      return (
+                {/* Ingredient list */}
+                <div className="mt-[29px] bg-[#ececec]/50 text-[#1e1e1e] px-[20px] py-[19px] flex flex-col">
+                  {recipeIngredients.map((item, idx) => {
+                    const isLast = idx === recipeIngredients.length - 1
+                    return (
                       <div
                         key={item.label}
                         className={`w-full flex items-center justify-between gap-[20px] pt-[10px] pb-[15px] text-[17px] leading-[25.5px] ${
@@ -826,77 +860,47 @@ export default function GelsPage() {
                           {item.amount}
                         </span>
                       </div>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                <div className="absolute top-[24px] left-[362.5px] flex items-center gap-[8.2px]">
-                  <button
-                    type="button"
-                    onClick={() => setRecipeSalt('yes')}
-                    className={`w-[54.5px] border-[1.1px] border-black px-[10.6px] py-[4.2px] flex flex-col items-center justify-center ${
-                      recipeSalt === 'yes'
-                        ? 'bg-black text-white'
-                        : 'bg-white text-black'
-                    }`}
-                  >
-                    <span className="leading-[19.05px] text-[12.7px]">YES</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRecipeSalt('no')}
-                    className={`w-[54.5px] border-[1.1px] border-black px-[10.6px] py-[4.2px] flex flex-col items-center justify-center ${
-                      recipeSalt === 'no'
-                        ? 'bg-black text-white'
-                        : 'bg-white text-black'
-                    }`}
-                  >
-                    <span className="leading-[19.05px] text-[12.7px]">NO</span>
-                  </button>
-                </div>
-
-                <div className="absolute top-[31px] left-[265.5px] uppercase tracking-[1.76px] leading-[16.5px]">
-                  table salt
+                    )
+                  })}
                 </div>
               </div>
 
               {/* Instructions */}
-              <div className="relative flex-1 min-w-[500px] h-[380px] border-2 border-black box-border">
-                <div className="absolute top-[24px] left-[30.5px] uppercase tracking-[1.76px] leading-[16.5px]">
+              <div className="w-full lg:flex-1 border-2 border-black box-border p-[18px] lg:p-[30px] flex flex-col gap-6">
+                <div className="uppercase tracking-[1.76px] leading-[16.5px]">
                   instructions
                 </div>
 
-                <ol className="absolute top-[76px] left-[30.5px] right-[30.5px] text-[#1e1e1e] text-[17px] leading-[100%] list-decimal pl-[23px]">
-                  <li className="mb-[14px]">
+                <ol className="text-[#1e1e1e] text-[14px] lg:text-[17px] leading-[150%] lg:leading-[100%] list-decimal pl-[23px] space-y-[14px]">
+                  <li>
                     Weigh out the fructose, maltodextrin, and pectin into a
                     heat‑safe container.
                   </li>
-                  <li className="mb-[14px]">
+                  <li>
                     Bring the water to a full boil in a separate vessel.
                   </li>
-                  <li className="mb-[14px]">
+                  <li>
                     Pour boiling water over the dry mix while whisking until
                     completely dissolved and smooth.
                   </li>
-                  <li className="mb-[14px]">
+                  <li>
                     If using salt, stir it in while the gel is still hot so
                     it dissolves evenly.
                   </li>
-                  <li className="mb-0">
+                  <li>
                     Let the gel cool, then pour into your flask using a small
                     funnel.
                   </li>
                 </ol>
 
-                <div className="absolute top-[288px] left-[30.5px] right-[30.5px] text-[14px] leading-[21.5px] text-[#1e1e1e]">
+                <p className="text-[14px] leading-[21.5px] text-[#1e1e1e]">
                   Flavor is optional but nice on long days: a splash of{' '}
                   <span className="underline">vanilla</span>, a drop of{' '}
                   <span className="underline">peppermint</span>, or a shot of{' '}
                   <span className="underline">strong espresso</span> all work
                   well. Keep liquids minimal so you don't dilute the carbs too
                   much.
-                </div>
+                </p>
               </div>
             </div>
           </div>
