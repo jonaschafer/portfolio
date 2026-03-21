@@ -1,54 +1,32 @@
 // Content for the design advising page. Sourced from docs/advising (my-pitch, to-do).
 
 export const hero = {
-  headline: "I turn early-stage brand chaos into scalable creative systems, helping founders execute consistently.",
+  eyebrow: 'Fractional creative leadership',
+  headline:
+    'Brand clarity for companies between where they are and where they want to be.',
+  subhead:
+    'I work with founders, marketing, and creative staff at companies of all sizes to turn unclear brand instincts into decisions the whole team can execute from.',
 }
 
 export const otherWaysICanHelp = {
   bullets: [
     'You just rebranded and need help translating it into product, marketing, and hiring decisions',
-    "You're hiring your first creative person and don't know what \"good\" looks like for your company",
+    `You're hiring your first creative person and don't know what "good" looks like for your company`,
     "You have a founder with strong brand instincts who can't articulate them to the team",
     'You need strategic brand thinking without the cost of a full-time Creative Director',
-    'You watch your team debate creative decisions without understanding the business implications',
-    'You need someone who translates "make it feel premium" into concrete budget, hiring, and product choices',
+    'Your team debates creative decisions without connecting them to business implications',
+    'You need someone who turns "make it feel premium" into budget, hiring, and product choices',
+    'You need help finding a creative partner, be it brand, product, motion, illustration, etc',
   ],
 }
 
 export const howItWorks = {
-  cards: [
-    {
-      planName: 'Option A',
-      subtitle: 'Strategic Partner',
-      youWillLoveThisIf: 'Strategic guidance and frameworks without hands-on execution or contractor management.',
-      whatDoIGet: [
-        'Bi-weekly 90-min strategy sessions with founder/leadership',
-        'Strategic frameworks delivered (positioning, messaging hierarchy, brand architecture)',
-        'Async review of key creative work (48hr turnaround)',
-        'Quarterly brand audits',
-      ],
-      notIncluded: 'Not included: Hands-on execution, contractor management, unlimited access',
-      price: '$8,000–10,000/m',
-      hours: '8–12 hours per month',
-      ctaText: "Let's talk",
-    },
-    {
-      planName: 'Option B',
-      subtitle: 'Fractional Creative Director',
-      youWillLoveThisIf: 'Strategic direction plus art direction—I direct and QA work from your team or contractors; you pay them separately.',
-      whatDoIGet: [
-        'Everything in Option A',
-        'I direct and QA work from your existing team/contractors (you pay them separately)',
-        'Monthly design system check-ins',
-        'On-call for hiring decisions, pitch decks, fundraising moments',
-      ],
-      notIncluded: 'Not included: Building deliverables myself, managing contractor payments',
-      price: '$12,000–15,000/m',
-      hours: '15–20 hours per month',
-      ctaText: "Let's talk",
-    },
-  ],
+  text: `Most engagements start with a single conversation. I'll ask what's breaking down, what you've already tried, and what "better" looks like in 6 months. From there we figure out if a short-term project, ongoing advisory, or a full fractional engagement is the right fit — and what that actually costs. No predefined packages, no retainers before relationships.`,
+  note: 'Usually responds within a day.',
 }
+
+/** Opens in browser — no Calendly badge widget (avoids fixed bottom-right button). */
+export const calendlyBookingUrl = 'https://calendly.com/jonaschafer/35min'
 
 export const caseStudyEndorsed = {
   title: 'Case Study: Brand architecture',
@@ -76,24 +54,21 @@ export const about = {
   bio: "22 years building brands at agencies (Nike, RGA, AKQA) and startups (Clockwise, Zapier, ClassDojo). I know how to build from 0→1 and scale through growth.",
 }
 
+/** Advising page case studies (links to /case-studies/[slug]) */
 export const caseStudies = [
   {
-    title: 'Clockwise Rebrand',
-    description: 'Led full rebrand from strategy through launch. 29% increase in search visibility, 600+ reactivations on launch day.',
-    folder: '05 Clockwise Rebrand',
-    images: ['cw-rebrand-14.gif', 'cw-rebrand-5.gif', 'cw-rebrand-1.png', 'cw-rebrand-2.png', 'cw-rebrand-3.png', 'cw-rebrand-4.png', 'cw-rebrand-6.png', 'cw-rebrand-7.png', 'cw-rebrand-8.png', 'cw-rebrand-9.png', 'cw-rebrand-10.png', 'cw-rebrand-11.png', 'cw-rebrand-12.png', 'cw-rebrand-13.png'],
+    title: 'From order-takers to strategic partners',
+    description:
+      "Repositioned a brand team's role inside a Series D company — changing how leadership used design, not just what it produced.",
+    readTime: '5 min',
+    slug: 'organizational-infrastructure',
   },
   {
-    title: 'Novo',
-    description: 'Refreshed visual identity and redesigned marketing site. 3% increase in engagement, NPS rose from 9 to 32.',
-    folder: '02 Novo',
-    images: ['novo-stina-compressed.mp4', 'novo-1.png', 'novo-2.png', 'novo-3.png', 'novo-4.png', 'novo-5.png', 'novo-6.png', 'novo-7.png', 'novo-8.png'],
-  },
-  {
-    title: 'Zapier',
-    description: 'Built the brand design team from 0 to 1, creating scalable design systems across email, social, and web. Collaborated with Instrument on rebrand, led in-house brand work.',
-    folder: '07 Zapier',
-    images: ['zapier-1.png', 'zapier-2.png', 'zapier-3.png', 'zapier-4.png', 'zapier-5.png', 'zapier-6.png', 'zapier-7.png', 'zapier-8.png', 'zapier-9.png', 'zapier-10.png'],
+    title: 'Replacing production help with senior creative partnership',
+    description:
+      'A founder swapped agency retainers for a part-time strategic partner — same budget, meaningfully different output.',
+    readTime: '5 min',
+    slug: 'resourcing-ivy',
   },
 ]
 
