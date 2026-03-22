@@ -562,7 +562,12 @@ export default function GelsPage() {
                             isLast ? '' : 'border-b border-black/40'
                           }`}
                         >
-                          <span className="min-w-0 shrink">{item.label}</span>
+                          <span className="min-w-0 shrink">
+                            {item.label}
+                            {item.link && (
+                              <> (<a href={item.link} target="_blank" rel="noopener noreferrer" className="underline opacity-60 hover:opacity-100">source</a>)</>
+                            )}
+                          </span>
                           <span className="tabular-nums text-right shrink-0">
                             {item.amount}
                           </span>
@@ -624,15 +629,15 @@ function getIngredients(size, includeSalt, scale = 1) {
   const base =
     size === 250
       ? [
-          { label: 'Fructose', grams: 100 },
-          { label: 'Maltodextrin', grams: 200 },
-          { label: 'Pectin', tsp: 0.5 },
+          { label: 'Fructose', grams: 100, link: 'https://www.amazon.com/dp/B0799XXRZK?th=1' },
+          { label: 'Maltodextrin', grams: 200, link: 'https://www.amazon.com/dp/B01H4BTWGA?th=1' },
+          { label: 'Pectin', tsp: 0.5, link: 'https://www.amazon.com/dp/B09DTK9BVN' },
           { label: 'Water (boiling)', grams: 200 },
         ]
       : [
-          { label: 'Fructose', grams: 125 },
-          { label: 'Maltodextrin', grams: 250 },
-          { label: 'Pectin', tsp: 0.75 },
+          { label: 'Fructose', grams: 125, link: 'https://www.amazon.com/dp/B0799XXRZK?th=1' },
+          { label: 'Maltodextrin', grams: 250, link: 'https://www.amazon.com/dp/B01H4BTWGA?th=1' },
+          { label: 'Pectin', tsp: 0.75, link: 'https://www.amazon.com/dp/B09DTK9BVN' },
           { label: 'Water (boiling)', grams: 250 },
         ]
 
@@ -673,9 +678,9 @@ function getIngredients(size, includeSalt, scale = 1) {
 
   return base.map((item) => {
     if (typeof item.grams === 'number') {
-      return { label: item.label, amount: formatGrams(item.grams) }
+      return { label: item.label, amount: formatGrams(item.grams), link: item.link }
     }
-    return { label: item.label, amount: formatTsp(item.tsp) }
+    return { label: item.label, amount: formatTsp(item.tsp), link: item.link }
   })
 }
 
