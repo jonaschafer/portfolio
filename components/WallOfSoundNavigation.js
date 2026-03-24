@@ -32,7 +32,7 @@ export default function WallOfSoundNavigation({ user, onAddTrack, onLogin, onLog
               Play
             </a>
             <a 
-              href="mailto:hello@jonschafer.com?subject=Hello%20from%20Wall%20of%20Sound!" 
+              href="mailto:jonaschafer+website@gmail.com?subject=Hello%20from%20Wall%20of%20Sound!"
               target="_blank"
               rel="noopener noreferrer"
               className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] text-[#1e1e1e] tracking-[0.16px] whitespace-nowrap hover:opacity-80 transition-opacity"
@@ -127,7 +127,7 @@ export default function WallOfSoundNavigation({ user, onAddTrack, onLogin, onLog
                 Play
               </a>
               <a 
-                href="mailto:hello@jonschafer.com?subject=Hello%20from%20Wall%20of%20Sound!" 
+                href="mailto:jonaschafer+website@gmail.com?subject=Hello%20from%20Wall%20of%20Sound!"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] text-[#1e1e1e] tracking-[0.16px] hover:opacity-80 transition-opacity"

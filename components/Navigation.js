@@ -97,7 +97,7 @@ export default function Navigation({
               Advising
             </Link>
             <a 
-              href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
+              href="mailto:jonaschafer+website@gmail.com?subject=Hello%20from%20portfolio"
               target="_blank"
               rel="noopener noreferrer"
               className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity inline-flex items-center gap-[6px] ${navLinkOpacity(false)}`}
@@ -173,7 +173,7 @@ export default function Navigation({
                 Advising
               </Link>
               <a 
-                href="mailto:hello@jonschafer.com?subject=Hello%20from%20portfolio" 
+                href="mailto:jonaschafer+website@gmail.com?subject=Hello%20from%20portfolio"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity inline-flex items-center gap-[8px] ${navLinkOpacity(false)}`}

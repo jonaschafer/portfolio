@@ -111,5 +111,5 @@ export const caseStudies = [
 export const nextSteps = {
   intro: 'Ready to talk?',
   cta: 'Schedule a call',
-  email: 'hello@jonschafer.com',
+  email: 'jonaschafer+website@gmail.com',
 }
