@@ -305,7 +305,7 @@
 
     async function loadPlan() {
       try {
-        const res = await fetch('plan-data-v3.json');
+        const res = await fetch('plan-data-v9.json');
         if (!res.ok) throw new Error(res.statusText);
         planData = await res.json();
         populateWeekSelect();

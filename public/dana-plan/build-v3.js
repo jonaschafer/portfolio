@@ -1,5 +1,5 @@
 /**
- * One-off: build plan-data-v3.json from plan-data.json with updated Mon/Wed/Fri maintenance circuits.
+ * One-off: build plan-data-v9.json from plan-data.json with updated Mon/Wed/Fri maintenance circuits.
  * Run: node build-v3.js
  */
 
@@ -60,5 +60,5 @@ data.weeks.forEach(week => {
   });
 });
 
-fs.writeFileSync(path.join(dir, 'plan-data-v3.json'), JSON.stringify(data, null, 2), 'utf8');
-console.log('Wrote plan-data-v3.json');
+fs.writeFileSync(path.join(dir, 'plan-data-v9.json'), JSON.stringify(data, null, 2), 'utf8');
+console.log('Wrote plan-data-v9.json');
