@@ -51,33 +51,6 @@ const projects = [
     path: '/play/prototypes/sourdough'
   },
   {
-    id: 'campsite-reporter',
-    name: 'Campsite Reporter',
-    description: 'Making the process of reporting a campsite easier (hopefully). A simple form-based tool that helps campers document and share campsite conditions, availability, and amenities with the community.',
-    date: '2025.12.10',
-    type: 'HTML/CSS',
-    tags: ['HTML/CSS', 'Claude', 'Portland'],
-    path: '/play/prototypes/campsite-reporter'
-  },
-  {
-    id: 'vacation-planner',
-    name: 'Vacation planner',
-    description: 'Interactive travel planning tool with destination cards, cost breakdowns, detailed itineraries, and comparison mode. Helps travelers organize trips, compare options, and visualize their journey from start to finish.',
-    date: '2025.11.15',
-    type: 'HTML/CSS',
-    tags: ['HTML/CSS', 'Travel'],
-    path: '/play/prototypes/vacation-planner'
-  },
-  {
-    id: 'mouse-repel',
-    name: 'Mouse repel',
-    description: 'Photos and message pills that subtly move away from your cursor while maintaining collective drift movement. An interactive experience that creates organic, fluid motion as users explore the interface.',
-    date: '2025.10.20',
-    type: 'HTML/CSS',
-    tags: ['HTML/CSS', 'JavaScript'],
-    path: '/play/prototypes/mouse-repel'
-  },
-  {
     id: 'pull-ups',
     name: 'Get yer first pull-up',
     description: 'He owns two pull up bars. Isn\'t time he can do a pull up? Let\'s find out. A progressive training guide with video demonstrations, workout tracking, and personalized routines to build strength.',
@@ -85,15 +58,6 @@ const projects = [
     type: 'REACT',
     tags: ['React', 'JavaScript'],
     path: '/play/prototypes/pull-ups/v2'
-  },
-  {
-    id: 'ocean-viewer',
-    name: 'Ocean views',
-    description: 'Tried to create a page of randomized ocean views by using publicly-available web cams but....no dice. An experimental interface exploring live feeds and ambient visual experiences for relaxation.',
-    date: '2025.08.12',
-    type: 'YOUTUBE',
-    tags: ['HTML/CSS', 'JavaScript'],
-    path: '/play/prototypes/ocean-viewer'
   }
 ]
 
@@ -113,18 +77,8 @@ export default function PlayPage() {
       <div className="bg-white w-full">
         <section className="min-w-[375px] max-w-[1440px] mx-auto pt-[60px] pb-[40px]">
           <div className="w-full px-5 md:px-[60px] lg:px-[60px]">
-            <p className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] lg:text-[31px] text-black leading-[1.2] tracking-[0.31px] max-w-[335px] md:max-w-[648px] lg:max-w-[747px] whitespace-pre-wrap">
-              A small, growing collection of vibed coded projects just 'cause.{' '}
-              <span>👉 </span>
-              <a 
-                className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity"
-                href="https://github.com/jonaschafer"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Github
-              </a>
-              <span> if'n you're curious.</span>
+            <p className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] lg:text-[31px] text-black leading-[1.2] tracking-[0.31px] max-w-[335px] md:max-w-[648px] lg:max-w-[900px] whitespace-pre-wrap">
+              A small, but growing collection of vibe coded ideas, full-on projects and side quests. 🧙
             </p>
           </div>
         </section>
@@ -147,11 +101,17 @@ export default function PlayPage() {
                   className="flex flex-col gap-[28px] text-inherit no-underline transition-opacity hover:opacity-80"
                 >
                   <div className="flex flex-col gap-[8px]">
-                    <div className="flex flex-col gap-[8px] pb-[10px]">
-                      <h2 className="font-['Mondwest',_sans-serif] text-[31px] text-black leading-[37.20px] tracking-[0.31px]">
+                    <div
+                      className={
+                        project.id === 'gels'
+                          ? 'flex flex-col gap-[2px] pb-[10px]'
+                          : 'flex flex-col gap-[8px] pb-[10px]'
+                      }
+                    >
+                      <h2 className="font-['Mondwest',_sans-serif] text-[24px] text-black text-left align-bottom leading-[28.8px] tracking-[0.31px]">
                         {project.name}
                       </h2>
-                      <div className="font-['Haas_Grot_Disp',_sans-serif] text-[13px] leading-[18.20px] tracking-[0.13px] text-black/70">
+                      <div className="font-['Haas_Grot_Disp',_sans-serif] text-[13px] leading-[18.20px] tracking-[0.13px] text-[rgba(120,120,120,0.7)]">
                         {formatDate(project.date)}
                       </div>
                     </div>

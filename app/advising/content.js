@@ -57,8 +57,8 @@ export const otherWaysICanHelp = {
 }
 
 export const howItWorks = {
-  text: `Most engagements start with a single conversation. I'll ask what's breaking down, what you've already tried, and what "better" looks like in 6 months. From there we figure out if a short-term project, ongoing advisory, or a full fractional engagement is the right fit — and what that actually costs. No predefined packages, no retainers before relationships.`,
-  note: 'Usually responds within a day.',
+  text: `Most engagements start with a single conversation. I'll ask what's breaking down, what you've already tried, and what "better" looks like in 6 months. From there we figure out if a short-term project, ongoing advisory, or a full fractional engagement is the right fit — and what that actually costs.`,
+  note: 'Usually respond within a day or so.',
 }
 
 /** Opens in browser — no Calendly badge widget (avoids fixed bottom-right button). */

@@ -134,34 +134,10 @@ export default function OverviewPage() {
 
   const playProjects = [
     {
-      name: 'Campsite Reporter',
-      description: 'Making the process of reporting a campsite easier (hopefully). A simple form-based tool that helps campers document and share campsite conditions, availability, and amenities with the community.',
-      date: '2024.12.10',
-      tags: ['HTML/CSS', 'Claude', 'Portland'],
-    },
-    {
-      name: 'Vacation planner',
-      description: 'Interactive travel planning tool with destination cards, cost breakdowns, detailed itineraries, and comparison mode. Helps travelers organize trips, compare options, and visualize their journey from start to finish.',
-      date: '2024.11.15',
-      tags: ['HTML/CSS', 'Travel'],
-    },
-    {
-      name: 'Mouse repel',
-      description: 'Photos and message pills that subtly move away from your cursor while maintaining collective drift movement. An interactive experience that creates organic, fluid motion as users explore the interface.',
-      date: '2024.10.20',
-      tags: ['HTML/CSS', 'JavaScript'],
-    },
-    {
       name: 'Get yer first pull-up',
       description: 'He owns two pull up bars. Isn\'t time he can do a pull up? Let\'s find out. A progressive training guide with video demonstrations, workout tracking, and personalized routines to build strength.',
       date: '2024.09.05',
       tags: ['React', 'JavaScript'],
-    },
-    {
-      name: 'Ocean views',
-      description: 'Tried to create a page of randomized ocean views by using publicly-available web cams but....no dice. An experimental interface exploring live feeds and ambient visual experiences for relaxation.',
-      date: '2024.08.12',
-      tags: ['HTML/CSS', 'JavaScript'],
     },
     {
       name: 'Sourdough Reference Guide',
