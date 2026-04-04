@@ -11,6 +11,18 @@ const TARGET_REPLACEMENT_PER_HR = 800
 const S_CAPS_PER_HR = 2
 const S_CAP_SODIUM = 215
 
+/** Sodium per single gel batch when electrolytes are included (sodium citrate; 500ml ≈ ¾ tsp ≈ 1,800mg). */
+const SODIUM_MG_PER_FLASK_BATCH = {
+  250: 900,
+  500: 1800,
+}
+
+/** Base electrolyte amounts per one batch (before scaling by number of flasks). */
+const ELECTROLYTE_TSP_PER_BATCH = {
+  250: { sodiumCitrate: 0.375, potassiumChloride: 1 / 16 },
+  500: { sodiumCitrate: 0.75, potassiumChloride: 0.125 },
+}
+
 /** Flask visualizer: fixed width matches layout; height follows 250ml PNG so 500ml scales down to same height (no column jump). */
 const FLASK_VIS_WIDTH_PX = 84
 const FLASK_250_IMAGE_PX = { w: 344, h: 1024 }
@@ -24,7 +36,7 @@ export default function GelsPage() {
   const [flaskSize, setFlaskSize] = useState(250)
 
   // Recipe state
-  const [recipeSalt, setRecipeSalt] = useState('yes')
+  const [recipeElectrolytes, setRecipeElectrolytes] = useState('yes')
 
   const fueling = useMemo(() => {
     const clampedHours = Math.min(14, Math.max(1, hoursOut))
@@ -49,12 +61,18 @@ export default function GelsPage() {
     }
   }, [fueling.clampedHours, flaskSize])
 
-  // Sodium summary row: uses fueling hours
+  // Sodium summary: gel Na scales with carbs/hr vs carbs per flask; caps fixed per hour
   const sodiumStrip = useMemo(() => {
     const h = fueling.clampedHours
+    const cpf = fueling.carbsPerFlask
+    const cph = carbsPerHour
     const totalLost = SWEAT_LOSS_PER_HR * h
     const capsPerHour = S_CAPS_PER_HR * S_CAP_SODIUM
-    const gelPerHour = TARGET_REPLACEMENT_PER_HR - capsPerHour
+    const sodiumPerBatch = SODIUM_MG_PER_FLASK_BATCH[flaskSize]
+    const gelPerHour =
+      recipeElectrolytes === 'yes' && cpf > 0 && cph > 0
+        ? sodiumPerBatch * (cph / cpf)
+        : 0
     const replacedPerHour = gelPerHour + capsPerHour
     const totalReplaced = replacedPerHour * h
     const deficit = Math.max(0, totalLost - totalReplaced)
@@ -66,13 +84,24 @@ export default function GelsPage() {
       percentReplaced,
       gelPerHour,
       capsPerHour,
+      replacedPerHour,
     }
-  }, [fueling.clampedHours])
+  }, [
+    fueling.clampedHours,
+    fueling.carbsPerFlask,
+    carbsPerHour,
+    flaskSize,
+    recipeElectrolytes,
+  ])
 
   const recipeIngredients = useMemo(
     () =>
-      getIngredients(flaskSize, recipeSalt === 'yes', fueling.numberOfFlasks),
-    [flaskSize, recipeSalt, fueling.numberOfFlasks]
+      getIngredients(
+        flaskSize,
+        recipeElectrolytes === 'yes',
+        fueling.numberOfFlasks
+      ),
+    [flaskSize, recipeElectrolytes, fueling.numberOfFlasks]
   )
 
   // Filled overlay (fractional last flask)
@@ -484,19 +513,24 @@ export default function GelsPage() {
               {/* Box 4 — note */}
               <div className="border-2 border-black p-[18px] flex items-center min-h-[132px] min-w-0 box-border">
                 <p className="text-[11px] leading-[16px] text-black/55">
-                  Assumes{' '}
+                  Model:{' '}
                   <span className="text-black font-semibold underline underline-offset-2">
                     ~{Math.round(sodiumStrip.gelPerHour).toLocaleString()} mg/hr
                   </span>{' '}
-                  from gel +{' '}
+                  sodium from gel (recipe × carbs/hr) +{' '}
                   <span className="text-black font-semibold underline underline-offset-2">
                     ~{Math.round(sodiumStrip.capsPerHour).toLocaleString()} mg/hr
                   </span>{' '}
                   from{' '}
                   <span className="text-black font-semibold underline underline-offset-2">
                     two S-caps/hr
-                  </span>{' '}
-                  landing near the 800 mg/hr target
+                  </span>
+                  . Combined ~{' '}
+                  <span className="text-black font-semibold underline underline-offset-2">
+                    {Math.round(sodiumStrip.replacedPerHour).toLocaleString()}{' '}
+                    mg/hr
+                  </span>
+                  ; rough intake target ~{TARGET_REPLACEMENT_PER_HR} mg/hr.
                 </p>
               </div>
             </div>
@@ -510,21 +544,21 @@ export default function GelsPage() {
             {/* Below lg: stack. lg+ (1024px): two columns with flex-1 min-w-0 so they stay side by side and shrink */}
             <div className="flex flex-col lg:flex-row lg:justify-center lg:items-stretch gap-4 md:gap-6 text-left text-[11px] font-mono w-full min-w-0">
               {/* Ingredients */}
-              <div className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none h-[380px] border-2 border-black box-border min-w-0 overflow-hidden">
+              <div className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none min-h-[380px] h-[440px] border-2 border-black box-border min-w-0 overflow-hidden">
                 <div className="absolute top-[24px] left-[19px] right-[19px] flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                   <span className="uppercase tracking-[1.76px] leading-[16.5px]">
                     ingredients
                   </span>
                   <div className="flex flex-wrap items-center justify-end gap-x-2 gap-y-1">
                     <span className="uppercase tracking-[1.76px] leading-[16.5px]">
-                      table salt
+                      Na citrate + KCl
                     </span>
                     <div className="flex items-center gap-[8.2px]">
                       <button
                         type="button"
-                        onClick={() => setRecipeSalt('yes')}
+                        onClick={() => setRecipeElectrolytes('yes')}
                         className={`w-[54.5px] border-[1.1px] border-black px-[10.6px] py-[4.2px] flex flex-col items-center justify-center ${
-                          recipeSalt === 'yes'
+                          recipeElectrolytes === 'yes'
                             ? 'bg-black text-white'
                             : 'bg-white text-black'
                         }`}
@@ -535,9 +569,9 @@ export default function GelsPage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setRecipeSalt('no')}
+                        onClick={() => setRecipeElectrolytes('no')}
                         className={`w-[54.5px] border-[1.1px] border-black px-[10.6px] py-[4.2px] flex flex-col items-center justify-center ${
-                          recipeSalt === 'no'
+                          recipeElectrolytes === 'no'
                             ? 'bg-black text-white'
                             : 'bg-white text-black'
                         }`}
@@ -579,7 +613,7 @@ export default function GelsPage() {
               </div>
 
               {/* Instructions — flow layout (no overlapping absolutes when column is narrow) */}
-              <div className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none min-h-[380px] flex flex-col border-2 border-black box-border min-w-0">
+              <div className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none min-h-[440px] flex flex-col border-2 border-black box-border min-w-0">
                 <div className="shrink-0 pt-6 px-[30.5px] uppercase tracking-[1.76px] leading-[16.5px]">
                   instructions
                 </div>
@@ -597,8 +631,8 @@ export default function GelsPage() {
                     completely dissolved and smooth.
                   </li>
                   <li>
-                    If using salt, stir it in while the gel is still hot so
-                    it dissolves evenly.
+                    If using sodium citrate and potassium chloride, stir them
+                    in while the gel is still hot so they dissolve evenly.
                   </li>
                   <li>
                     Let the gel cool, then pour into your flask using a small
@@ -616,6 +650,50 @@ export default function GelsPage() {
                 </div>
               </div>
             </div>
+
+            <div className="mt-4 md:mt-6 border-2 border-black p-[18px] w-full min-w-0 box-border">
+              <p className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-3">
+                Sodium citrate &amp; potassium chloride
+              </p>
+              <div className="space-y-3 text-[12px] sm:text-[13px] leading-[1.55] text-[#1e1e1e]">
+                <p>
+                  <span className="font-semibold text-black">
+                    Sodium citrate
+                  </span>{' '}
+                  is what most commercial gels use instead of table salt. Same
+                  sodium content but no chloride bite, so it tastes cleaner
+                  and slightly tart rather than salty. At high intake rates
+                  (80–90g carbs/hr over 5+ hours) the &quot;salty gel&quot;
+                  flavor can become unpleasant — sodium citrate sidesteps that.
+                  Maurten uses it. GU uses it. It&apos;s also slightly easier on
+                  the stomach for some people.
+                </p>
+                <p>
+                  <span className="font-semibold text-black">
+                    Potassium chloride
+                  </span>{' '}
+                  (salt substitute) covers a secondary electrolyte loss. You
+                  sweat potassium too, just less than sodium — roughly 150–200mg/hr
+                  vs your 1,100mg/hr sodium. It&apos;s not a priority fix but
+                  rounds out the electrolyte profile on very long efforts.
+                  Tastes slightly bitter/metallic in large amounts, so a little
+                  goes a long way.
+                </p>
+                <p className="text-black/70">
+                  Practical swap for a 500ml batch (scaled on this page for
+                  flask size and number of flasks): instead of 1 tsp table salt,
+                  use{' '}
+                  <span className="text-black font-semibold">
+                    ¾ tsp sodium citrate
+                  </span>{' '}
+                  (~1,800mg sodium, cleaner taste) and{' '}
+                  <span className="text-black font-semibold">
+                    ⅛ tsp potassium chloride
+                  </span>{' '}
+                  (~200mg potassium).
+                </p>
+              </div>
+            </div>
           </div>
       </main>
 
@@ -625,7 +703,7 @@ export default function GelsPage() {
   )
 }
 
-function getIngredients(size, includeSalt, scale = 1) {
+function getIngredients(size, includeElectrolytes, scale = 1) {
   const base =
     size === 250
       ? [
@@ -641,16 +719,16 @@ function getIngredients(size, includeSalt, scale = 1) {
           { label: 'Water (boiling)', grams: 250 },
         ]
 
-  if (includeSalt) {
-    base.push({
-      label: 'Table salt',
-      tsp: size === 250 ? 0.5 : 1,
-    })
+  if (includeElectrolytes) {
+    const ec = ELECTROLYTE_TSP_PER_BATCH[size]
+    base.push(
+      { label: 'Sodium citrate', tspFine: ec.sodiumCitrate },
+      { label: 'Potassium chloride', tspFine: ec.potassiumChloride }
+    )
   }
 
   const formatGrams = (value) => {
     const scaled = value * scale
-    // Round to the nearest 5g (per your spec).
     const rounded5 = Math.round(scaled / 5) * 5
     return `${rounded5}g`
   }
@@ -659,12 +737,11 @@ function getIngredients(size, includeSalt, scale = 1) {
 
   const formatTsp = (value) => {
     const scaled = value * scale
-    // Round to the nearest 1/4 tsp (per your spec).
     const roundedQuarterTsp = Math.round(scaled * 4) / 4
 
-    const whole = Math.floor(roundedQuarterTsp + 1e-9) // tiny epsilon for float safety
+    const whole = Math.floor(roundedQuarterTsp + 1e-9)
     const frac = roundedQuarterTsp - whole
-    const quarterNum = Math.round(frac * 4) // 0..3
+    const quarterNum = Math.round(frac * 4)
 
     if (quarterNum === 0) return `${whole} tsp`
 
@@ -676,9 +753,35 @@ function getIngredients(size, includeSalt, scale = 1) {
     return `${whole} ${n}/${d} tsp`
   }
 
+  /** Rounds to nearest 1/16 tsp so ⅛ and smaller base amounts stay accurate when scaled. */
+  const formatTspFine = (value) => {
+    const scaled = value * scale
+    const rounded = Math.round(scaled * 16) / 16
+    const whole = Math.floor(rounded + 1e-9)
+    let sixteenths = Math.round((rounded - whole) * 16)
+    if (sixteenths === 16) {
+      return `${whole + 1} tsp`
+    }
+    if (sixteenths === 0) return `${whole} tsp`
+
+    const g = gcd(sixteenths, 16)
+    const n = sixteenths / g
+    const d = 16 / g
+
+    if (whole === 0) return `${n}/${d} tsp`
+    return `${whole} ${n}/${d} tsp`
+  }
+
   return base.map((item) => {
     if (typeof item.grams === 'number') {
       return { label: item.label, amount: formatGrams(item.grams), link: item.link }
+    }
+    if (typeof item.tspFine === 'number') {
+      return {
+        label: item.label,
+        amount: formatTspFine(item.tspFine),
+        link: item.link,
+      }
     }
     return { label: item.label, amount: formatTsp(item.tsp), link: item.link }
   })
