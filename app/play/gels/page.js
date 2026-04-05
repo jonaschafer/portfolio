@@ -694,6 +694,20 @@ export default function GelsPage() {
                 </p>
               </div>
             </div>
+
+            <div className="mt-4 md:mt-6 border-2 border-black bg-black p-[18px] w-full min-w-0 box-border text-white">
+              <p className="text-[12px] sm:text-[13px] leading-[1.55] text-white">
+                <span className="font-semibold text-white">Recipe source:</span>{' '}
+                <a
+                  href="https://www.youtube.com/watch?v=Dj4oYcRLxEo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white underline underline-offset-2 opacity-90 hover:opacity-100 break-all"
+                >
+                  https://www.youtube.com/watch?v=Dj4oYcRLxEo
+                </a>
+              </p>
+            </div>
           </div>
       </main>
 
@@ -722,8 +736,16 @@ function getIngredients(size, includeElectrolytes, scale = 1) {
   if (includeElectrolytes) {
     const ec = ELECTROLYTE_TSP_PER_BATCH[size]
     base.push(
-      { label: 'Sodium citrate', tspFine: ec.sodiumCitrate },
-      { label: 'Potassium chloride', tspFine: ec.potassiumChloride }
+      {
+        label: 'Sodium citrate',
+        tspFine: ec.sodiumCitrate,
+        link: 'https://www.amazon.com/dp/B07B1G3MSL',
+      },
+      {
+        label: 'Potassium chloride',
+        tspFine: ec.potassiumChloride,
+        link: 'https://www.amazon.com/dp/B00ENS39Z8',
+      }
     )
   }
 
