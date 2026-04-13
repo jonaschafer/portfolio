@@ -8,13 +8,31 @@ const CARBS_PER_FLASK = {
 }
 const SWEAT_LOSS_PER_HR = 1100
 const TARGET_REPLACEMENT_PER_HR = 800
-const S_CAPS_PER_HR = 2
-const S_CAP_SODIUM = 215
+/** S-caps sodium intake model (mg/hr). */
+const S_CAPS_SODIUM_PER_HR = 380
 
-/** Sodium per single gel batch when electrolytes are included (sodium citrate; 500ml ≈ ¾ tsp ≈ 1,800mg). */
+/** Supplement label — sodium citrate. */
+const SODIUM_CITRATE_SUPPLEMENT = {
+  servingSize: '1 tsp',
+  sodiumPerServingMg: 680,
+}
+
+/** Supplement label — potassium chloride. */
+const POTASSIUM_CHLORIDE_SUPPLEMENT = {
+  servingSizeMg: 200,
+  potassiumPerServingMg: 105,
+}
+
+/** Elemental sodium from sodium citrate per single gel batch (500ml recipe copy ≈ 1,800mg Na). */
 const SODIUM_MG_PER_FLASK_BATCH = {
   250: 900,
   500: 1800,
+}
+
+/** Elemental potassium from KCl per single gel batch (500ml recipe copy ≈ 200mg K). */
+const POTASSIUM_MG_PER_FLASK_BATCH = {
+  250: 100,
+  500: 200,
 }
 
 /** Base electrolyte amounts per one batch (before scaling by number of flasks). */
@@ -67,24 +85,27 @@ export default function GelsPage() {
     const cpf = fueling.carbsPerFlask
     const cph = carbsPerHour
     const totalLost = SWEAT_LOSS_PER_HR * h
-    const capsPerHour = S_CAPS_PER_HR * S_CAP_SODIUM
+    const capsPerHour = S_CAPS_SODIUM_PER_HR
     const sodiumPerBatch = SODIUM_MG_PER_FLASK_BATCH[flaskSize]
     const gelPerHour =
       recipeElectrolytes === 'yes' && cpf > 0 && cph > 0
         ? sodiumPerBatch * (cph / cpf)
         : 0
-    const replacedPerHour = gelPerHour + capsPerHour
-    const totalReplaced = replacedPerHour * h
-    const deficit = Math.max(0, totalLost - totalReplaced)
-    const percentReplaced = totalLost > 0 ? (totalReplaced / totalLost) * 100 : 0
+    const sodiumReplacedPerHour = gelPerHour + capsPerHour
+    const sodiumReplacedTotal = sodiumReplacedPerHour * h
+    const percentReplaced =
+      totalLost > 0 ? (sodiumReplacedTotal / totalLost) * 100 : 0
+    const totalSodiumDeficit = totalLost - sodiumReplacedTotal
+    const hourlySodiumDeficit = SWEAT_LOSS_PER_HR - sodiumReplacedPerHour
     return {
       totalLost,
-      totalReplaced,
-      deficit,
       percentReplaced,
       gelPerHour,
       capsPerHour,
-      replacedPerHour,
+      sodiumReplacedPerHour,
+      sodiumReplacedTotal,
+      totalSodiumDeficit,
+      hourlySodiumDeficit,
     }
   }, [
     fueling.clampedHours,
@@ -92,6 +113,30 @@ export default function GelsPage() {
     carbsPerHour,
     flaskSize,
     recipeElectrolytes,
+  ])
+
+  /** K from KCl scales like gel sodium (carbs/hr vs carbs per flask). Na reuses sodiumStrip.gelPerHour. */
+  const electrolyteFromGel = useMemo(() => {
+    const h = fueling.clampedHours
+    const cpf = fueling.carbsPerFlask
+    const cph = carbsPerHour
+    const on = recipeElectrolytes === 'yes' && cpf > 0 && cph > 0
+    const ratio = on ? cph / cpf : 0
+    const kPerBatch = POTASSIUM_MG_PER_FLASK_BATCH[flaskSize]
+    const potassiumPerHour = on ? kPerBatch * ratio : 0
+    return {
+      sodiumPerHour: sodiumStrip.gelPerHour,
+      sodiumTotal: sodiumStrip.gelPerHour * h,
+      potassiumPerHour,
+      potassiumTotal: potassiumPerHour * h,
+    }
+  }, [
+    fueling.clampedHours,
+    fueling.carbsPerFlask,
+    carbsPerHour,
+    flaskSize,
+    recipeElectrolytes,
+    sodiumStrip.gelPerHour,
   ])
 
   const recipeIngredients = useMemo(
@@ -426,12 +471,12 @@ export default function GelsPage() {
                 </div>
           </aside>
         <div className="lg:col-span-2 mt-0 py-6 w-full min-w-0 font-mono">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-x-6 lg:gap-y-0">
-              {/* Box 1 — hourly rates */}
-              <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[132px] min-w-0 box-border">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-x-6 lg:gap-y-0">
+              {/* Box 1 — benchmarks + % replaced */}
+              <div className="border-2 border-black px-[18px] pt-[48px] pb-[48px] flex flex-col justify-between min-h-[228px] min-w-0 box-border">
                 <div className="flex justify-between items-center gap-4">
                   <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                    Sweat loss hr
+                    Sweat loss/hr
                   </span>
                   <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
                     {SWEAT_LOSS_PER_HR.toLocaleString()}mg
@@ -440,23 +485,37 @@ export default function GelsPage() {
                 <div className="my-3 h-px w-full bg-[#c8c8c8]" />
                 <div className="flex justify-between items-center gap-4">
                   <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                    Replacement hr
+                    Replacement/hr
                   </span>
                   <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
                     {TARGET_REPLACEMENT_PER_HR.toLocaleString()}mg
                   </span>
                 </div>
+                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
+                <div className="flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      % replaced
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      Model vs sweat loss
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {sodiumStrip.percentReplaced.toFixed(0)}%
+                  </span>
+                </div>
               </div>
 
-              {/* Box 2 — totals */}
-              <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[132px] min-w-0 box-border">
+              {/* Box 2 — totals for the outing */}
+              <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[280px] min-w-0 box-border">
                 <div className="flex justify-between items-center gap-4">
                   <div className="min-w-0 pr-2">
                     <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
                       Total lost
                     </div>
                     <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Sweat loss x hours
+                      Sweat loss × hours
                     </div>
                   </div>
                   <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
@@ -467,71 +526,138 @@ export default function GelsPage() {
                 <div className="flex justify-between items-center gap-4">
                   <div className="min-w-0 pr-2">
                     <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Total replaced
+                      Total S-caps
                     </div>
                     <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Gels + S Caps
+                      {S_CAPS_SODIUM_PER_HR} mg/hr assumed · sodium
                     </div>
                   </div>
                   <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(sodiumStrip.totalReplaced).toLocaleString()}mg
-                  </span>
-                </div>
-              </div>
-
-              {/* Box 3 — deficit & % */}
-              <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[132px] min-w-0 box-border">
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Deficit
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Lost - replaced
-                    </div>
-                  </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(sodiumStrip.deficit).toLocaleString()}mg
+                    {Math.round(
+                      sodiumStrip.capsPerHour * fueling.clampedHours
+                    ).toLocaleString()}
+                    mg
                   </span>
                 </div>
                 <div className="my-3 h-px w-full bg-[#c8c8c8]" />
                 <div className="flex justify-between items-center gap-4">
                   <div className="min-w-0 pr-2">
                     <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      % replaced
+                      Sodium citrate total
                     </div>
                     <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Aim ~70-80%
+                      Serving {SODIUM_CITRATE_SUPPLEMENT.servingSize} ·{' '}
+                      {SODIUM_CITRATE_SUPPLEMENT.sodiumPerServingMg}mg sodium
                     </div>
                   </div>
                   <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {sodiumStrip.percentReplaced.toFixed(1)}%
+                    {Math.round(electrolyteFromGel.sodiumTotal).toLocaleString()}mg
+                  </span>
+                </div>
+                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
+                <div className="flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      Potassium chloride total
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      Serving {POTASSIUM_CHLORIDE_SUPPLEMENT.servingSizeMg}mg ·{' '}
+                      {POTASSIUM_CHLORIDE_SUPPLEMENT.potassiumPerServingMg}mg
+                      potassium
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {Math.round(electrolyteFromGel.potassiumTotal).toLocaleString()}mg
+                  </span>
+                </div>
+                <div className="mt-4 pt-4 border-t-2 border-black flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      Total deficit
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      Sweat Na lost − Na replaced (S-caps + gel)
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {Math.round(sodiumStrip.totalSodiumDeficit).toLocaleString()}mg
                   </span>
                 </div>
               </div>
 
-              {/* Box 4 — note */}
-              <div className="border-2 border-black p-[18px] flex items-center min-h-[132px] min-w-0 box-border">
-                <p className="text-[11px] leading-[16px] text-black/55">
-                  Model:{' '}
-                  <span className="text-black font-semibold underline underline-offset-2">
-                    ~{Math.round(sodiumStrip.gelPerHour).toLocaleString()} mg/hr
-                  </span>{' '}
-                  sodium from gel (recipe × carbs/hr) +{' '}
-                  <span className="text-black font-semibold underline underline-offset-2">
-                    ~{Math.round(sodiumStrip.capsPerHour).toLocaleString()} mg/hr
-                  </span>{' '}
-                  from{' '}
-                  <span className="text-black font-semibold underline underline-offset-2">
-                    two S-caps/hr
+              {/* Box 3 — same rows, per hour */}
+              <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[280px] min-w-0 box-border">
+                <div className="flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      Lost/hr
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      Sweat sodium model
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {SWEAT_LOSS_PER_HR.toLocaleString()}mg
                   </span>
-                  . Combined ~{' '}
-                  <span className="text-black font-semibold underline underline-offset-2">
-                    {Math.round(sodiumStrip.replacedPerHour).toLocaleString()}{' '}
-                    mg/hr
+                </div>
+                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
+                <div className="flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      S-caps/hr
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      {S_CAPS_SODIUM_PER_HR} mg/hr · sodium
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {Math.round(sodiumStrip.capsPerHour).toLocaleString()}mg
                   </span>
-                  ; rough intake target ~{TARGET_REPLACEMENT_PER_HR} mg/hr.
-                </p>
+                </div>
+                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
+                <div className="flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      Sodium citrate/hr
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      Serving {SODIUM_CITRATE_SUPPLEMENT.servingSize} ·{' '}
+                      {SODIUM_CITRATE_SUPPLEMENT.sodiumPerServingMg}mg sodium
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {Math.round(electrolyteFromGel.sodiumPerHour).toLocaleString()}mg
+                  </span>
+                </div>
+                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
+                <div className="flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      Potassium chloride/hr
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      Serving {POTASSIUM_CHLORIDE_SUPPLEMENT.servingSizeMg}mg ·{' '}
+                      {POTASSIUM_CHLORIDE_SUPPLEMENT.potassiumPerServingMg}mg
+                      potassium
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {Math.round(electrolyteFromGel.potassiumPerHour).toLocaleString()}mg
+                  </span>
+                </div>
+                <div className="mt-4 pt-4 border-t-2 border-black flex justify-between items-center gap-4">
+                  <div className="min-w-0 pr-2">
+                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                      Deficit/hr
+                    </div>
+                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
+                      Sweat Na/hr − Na replaced/hr
+                    </div>
+                  </div>
+                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
+                    {Math.round(sodiumStrip.hourlySodiumDeficit).toLocaleString()}mg
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -692,6 +818,45 @@ export default function GelsPage() {
                   </span>{' '}
                   (~200mg potassium).
                 </p>
+                <div className="mt-4 border border-black/30 p-3 text-[11px] sm:text-[12px] leading-[1.5] text-black/80">
+                  <p className="uppercase tracking-[1.4px] text-black mb-2">
+                    Supplement facts (your products)
+                  </p>
+                  <dl className="space-y-2">
+                    <div>
+                      <dt className="font-semibold text-black">
+                        Potassium chloride
+                      </dt>
+                      <dd className="mt-0.5 pl-0 text-black/75">
+                        Serving size{' '}
+                        <span className="tabular-nums text-black">
+                          {POTASSIUM_CHLORIDE_SUPPLEMENT.servingSizeMg}mg
+                        </span>
+                        . Amount per serving (potassium){' '}
+                        <span className="tabular-nums text-black">
+                          {POTASSIUM_CHLORIDE_SUPPLEMENT.potassiumPerServingMg}mg
+                        </span>
+                        .
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="font-semibold text-black">
+                        Sodium citrate
+                      </dt>
+                      <dd className="mt-0.5 pl-0 text-black/75">
+                        Serving size{' '}
+                        <span className="text-black">
+                          {SODIUM_CITRATE_SUPPLEMENT.servingSize}
+                        </span>
+                        . Amount per serving (sodium){' '}
+                        <span className="tabular-nums text-black">
+                          {SODIUM_CITRATE_SUPPLEMENT.sodiumPerServingMg}mg
+                        </span>
+                        .
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
               </div>
             </div>
 
