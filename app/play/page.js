@@ -17,10 +17,10 @@ const projects = [
     id: 'gels',
     name: 'Gels',
     description:
-      'DIY running gel calculator with tabs for fueling plan, recipe scaling, sodium sketching, and a tiny run log to record experiments.',
+      'DIY running gel calculator: fueling plan, recipe scaling, interactive sodium citrate and potassium chloride (+ pacing caps), and live batch sodium.',
     date: '2026.03.17',
     type: 'HTML/CSS',
-    tags: ['HTML/CSS', 'JavaScript'],
+    tags: ['React', 'Next.js'],
     path: '/play/gels',
   },
   {

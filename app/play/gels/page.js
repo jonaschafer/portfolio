@@ -23,22 +23,50 @@ const POTASSIUM_CHLORIDE_SUPPLEMENT = {
   potassiumPerServingMg: 105,
 }
 
-/** Elemental sodium from sodium citrate per single gel batch (500ml recipe copy ≈ 1,800mg Na). */
-const SODIUM_MG_PER_FLASK_BATCH = {
-  250: 900,
-  500: 1800,
-}
-
-/** Elemental potassium from KCl per single gel batch (500ml recipe copy ≈ 200mg K). */
-const POTASSIUM_MG_PER_FLASK_BATCH = {
-  250: 100,
-  500: 200,
-}
-
-/** Base electrolyte amounts per one batch (before scaling by number of flasks). */
+/** v1 baseline tsp per single batch (same as /play/gels); hours/flasks scale the list via scale. */
 const ELECTROLYTE_TSP_PER_BATCH = {
   250: { sodiumCitrate: 0.375, potassiumChloride: 1 / 16 },
   500: { sodiumCitrate: 0.75, potassiumChloride: 0.125 },
+}
+
+/** v2: + adds on top of baseline; hard caps (GI pacing limits + tsp ceiling). */
+const V2_STEP_TSP_NA = 0.25
+const V2_STEP_TSP_K = 0.125
+const V2_MAX_TSP_NA = 4
+const V2_MAX_TSP_K = 0.5
+const NA_MG_PER_TSP_CITRATE = 680
+const K_MG_PER_TSP_KCL = 840
+const GI_NA_THRESHOLD_MG_HR = 500
+const FLAVOR_K_THRESHOLD_MG_HR = 200
+
+function roundTspQuarter(t) {
+  return Math.round(t * 4) / 4
+}
+
+function roundTspEighth(t) {
+  return Math.round(t * 8) / 8
+}
+
+function gcd(a, b) {
+  return b === 0 ? a : gcd(b, a % b)
+}
+
+/** Human-readable tsp from a fine (1/16) rational amount (no recipe scaling). */
+function formatTspFineDisplay(value) {
+  const rounded = Math.round(value * 16) / 16
+  const whole = Math.floor(rounded + 1e-9)
+  let sixteenths = Math.round((rounded - whole) * 16)
+  if (sixteenths === 16) {
+    return `${whole + 1} tsp`
+  }
+  if (sixteenths === 0) return `${whole} tsp`
+
+  const g = gcd(sixteenths, 16)
+  const n = sixteenths / g
+  const d = 16 / g
+
+  if (whole === 0) return `${n}/${d} tsp`
+  return `${whole} ${n}/${d} tsp`
 }
 
 /** Flask visualizer: fixed width matches layout; height follows 250ml PNG so 500ml scales down to same height (no column jump). */
@@ -55,6 +83,15 @@ export default function GelsPage() {
 
   // Recipe state
   const [recipeElectrolytes, setRecipeElectrolytes] = useState('yes')
+  /** Added on top of v1 per-batch baseline (same as /play/gels). Reset clears to 0. */
+  const [extraTspNa, setExtraTspNa] = useState(0)
+  const [extraTspK, setExtraTspK] = useState(0)
+
+  const baselineTspNa = ELECTROLYTE_TSP_PER_BATCH[flaskSize].sodiumCitrate
+  const baselineTspK = ELECTROLYTE_TSP_PER_BATCH[flaskSize].potassiumChloride
+
+  const tspSodiumCitrate = roundTspQuarter(baselineTspNa + extraTspNa)
+  const tspPotassiumChloride = roundTspEighth(baselineTspK + extraTspK)
 
   const fueling = useMemo(() => {
     const clampedHours = Math.min(14, Math.max(1, hoursOut))
@@ -86,7 +123,10 @@ export default function GelsPage() {
     const cph = carbsPerHour
     const totalLost = SWEAT_LOSS_PER_HR * h
     const capsPerHour = S_CAPS_SODIUM_PER_HR
-    const sodiumPerBatch = SODIUM_MG_PER_FLASK_BATCH[flaskSize]
+    const sodiumPerBatch =
+      recipeElectrolytes === 'yes'
+        ? tspSodiumCitrate * NA_MG_PER_TSP_CITRATE
+        : 0
     const gelPerHour =
       recipeElectrolytes === 'yes' && cpf > 0 && cph > 0
         ? sodiumPerBatch * (cph / cpf)
@@ -113,6 +153,7 @@ export default function GelsPage() {
     carbsPerHour,
     flaskSize,
     recipeElectrolytes,
+    tspSodiumCitrate,
   ])
 
   /** K from KCl scales like gel sodium (carbs/hr vs carbs per flask). Na reuses sodiumStrip.gelPerHour. */
@@ -122,7 +163,10 @@ export default function GelsPage() {
     const cph = carbsPerHour
     const on = recipeElectrolytes === 'yes' && cpf > 0 && cph > 0
     const ratio = on ? cph / cpf : 0
-    const kPerBatch = POTASSIUM_MG_PER_FLASK_BATCH[flaskSize]
+    const kPerBatch =
+      recipeElectrolytes === 'yes'
+        ? tspPotassiumChloride * K_MG_PER_TSP_KCL
+        : 0
     const potassiumPerHour = on ? kPerBatch * ratio : 0
     return {
       sodiumPerHour: sodiumStrip.gelPerHour,
@@ -137,16 +181,103 @@ export default function GelsPage() {
     flaskSize,
     recipeElectrolytes,
     sodiumStrip.gelPerHour,
+    tspPotassiumChloride,
   ])
+
+  const hForThreshold = fueling.clampedHours
+
+  const nextExtraNa = roundTspQuarter(extraTspNa + V2_STEP_TSP_NA)
+  const nextEffectiveNa = roundTspQuarter(baselineTspNa + nextExtraNa)
+  const sodiumPlusDisabled =
+    recipeElectrolytes !== 'yes' ||
+    nextEffectiveNa > V2_MAX_TSP_NA + 1e-9 ||
+    (hForThreshold > 0 &&
+      (nextEffectiveNa * NA_MG_PER_TSP_CITRATE) / hForThreshold >
+        GI_NA_THRESHOLD_MG_HR)
+
+  const nextExtraK = roundTspEighth(extraTspK + V2_STEP_TSP_K)
+  const nextEffectiveK = roundTspEighth(baselineTspK + nextExtraK)
+  const potassiumPlusDisabled =
+    recipeElectrolytes !== 'yes' ||
+    nextEffectiveK > V2_MAX_TSP_K + 1e-9 ||
+    (hForThreshold > 0 &&
+      (nextEffectiveK * K_MG_PER_TSP_KCL) / hForThreshold >
+        FLAVOR_K_THRESHOLD_MG_HR)
+
+  const hoursLabelForWarning =
+    Math.abs(hForThreshold - Math.round(hForThreshold)) < 0.05
+      ? String(Math.round(hForThreshold))
+      : (Math.round(hForThreshold * 10) / 10).toFixed(1)
+
+  const sodiumAtLimitMessage = useMemo(() => {
+    if (recipeElectrolytes !== 'yes' || !sodiumPlusDisabled) return null
+    if (nextEffectiveNa > V2_MAX_TSP_NA + 1e-9) {
+      return `Cannot add more: the next step would exceed the ${V2_MAX_TSP_NA} tsp sodium citrate per-batch limit.`
+    }
+    if (
+      hForThreshold > 0 &&
+      (nextEffectiveNa * NA_MG_PER_TSP_CITRATE) / hForThreshold >
+        GI_NA_THRESHOLD_MG_HR
+    ) {
+      return `Cannot add more: for your ${hoursLabelForWarning}-hour plan, the next step would push batch sodium past ~${GI_NA_THRESHOLD_MG_HR} mg/hr (GI pacing: tsp × ${NA_MG_PER_TSP_CITRATE} mg ÷ hours). Shorten hours or tap Reset.`
+    }
+    return null
+  }, [
+    recipeElectrolytes,
+    sodiumPlusDisabled,
+    nextEffectiveNa,
+    hForThreshold,
+    hoursLabelForWarning,
+  ])
+
+  const potassiumAtLimitMessage = useMemo(() => {
+    if (recipeElectrolytes !== 'yes' || !potassiumPlusDisabled) return null
+    if (nextEffectiveK > V2_MAX_TSP_K + 1e-9) {
+      return `Cannot add more: the next step would exceed the ${formatTspFineDisplay(V2_MAX_TSP_K)} tsp potassium chloride per-batch limit (taste / metallic).`
+    }
+    if (
+      hForThreshold > 0 &&
+      (nextEffectiveK * K_MG_PER_TSP_KCL) / hForThreshold >
+        FLAVOR_K_THRESHOLD_MG_HR
+    ) {
+      return `Cannot add more: for your ${hoursLabelForWarning}-hour plan, the next step would push batch potassium past ~${FLAVOR_K_THRESHOLD_MG_HR} mg/hr (flavor / gut pacing: tsp × ${K_MG_PER_TSP_KCL} mg ÷ hours). Shorten hours or tap Reset.`
+    }
+    return null
+  }, [
+    recipeElectrolytes,
+    potassiumPlusDisabled,
+    nextEffectiveK,
+    hForThreshold,
+    hoursLabelForWarning,
+  ])
+
+  const sodiumCitrateBatchMg = Math.round(
+    tspSodiumCitrate * NA_MG_PER_TSP_CITRATE
+  )
 
   const recipeIngredients = useMemo(
     () =>
-      getIngredients(
+      getIngredientsV2(
         flaskSize,
         recipeElectrolytes === 'yes',
-        fueling.numberOfFlasks
+        fueling.numberOfFlasks,
+        tspSodiumCitrate,
+        tspPotassiumChloride
       ),
-    [flaskSize, recipeElectrolytes, fueling.numberOfFlasks]
+    [
+      flaskSize,
+      recipeElectrolytes,
+      fueling.numberOfFlasks,
+      tspSodiumCitrate,
+      tspPotassiumChloride,
+    ]
+  )
+
+  const totalScaledTspNa = roundTspQuarter(
+    tspSodiumCitrate * fueling.numberOfFlasks
+  )
+  const totalScaledTspK = roundTspEighth(
+    tspPotassiumChloride * fueling.numberOfFlasks
   )
 
   // Filled overlay (fractional last flask)
@@ -669,9 +800,9 @@ export default function GelsPage() {
           >
             {/* Below lg: stack. lg+ (1024px): two columns with flex-1 min-w-0 so they stay side by side and shrink */}
             <div className="flex flex-col lg:flex-row lg:justify-center lg:items-stretch gap-4 md:gap-6 text-left text-[11px] font-mono w-full min-w-0">
-              {/* Ingredients */}
-              <div className="relative w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none min-h-[380px] h-[440px] border-2 border-black box-border min-w-0 overflow-hidden">
-                <div className="absolute top-[24px] left-[19px] right-[19px] flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+              {/* Ingredients — flex column so electrolyte controls never overlap the list */}
+              <div className="flex w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none min-h-[420px] flex-col border-2 border-black box-border min-w-0">
+                <div className="shrink-0 px-[19px] pt-6 pb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                   <span className="uppercase tracking-[1.76px] leading-[16.5px]">
                     ingredients
                   </span>
@@ -710,8 +841,131 @@ export default function GelsPage() {
                   </div>
                 </div>
 
-                <div className="absolute top-[76px] left-[18px] right-[18px] bottom-[20px] bg-[#ececec]/50 text-[#1e1e1e]">
-                  <div className="absolute top-[19px] left-[12px] right-[12px] sm:left-[20px] sm:right-[20px] flex flex-col items-start gap-0 min-w-0">
+                {recipeElectrolytes === 'yes' && (
+                  <div className="shrink-0 mx-[14px] sm:mx-[18px] mb-3 border border-black/30 bg-white p-3 space-y-3 text-[11px] sm:text-[12px] leading-snug">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="uppercase tracking-[1.2px] text-black">
+                        Electrolytes (per batch)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setExtraTspNa(0)
+                          setExtraTspK(0)
+                        }}
+                        className="border border-black px-2 py-1 text-[11px] uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                      >
+                        Reset
+                      </button>
+                    </div>
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-black">
+                          Sodium citrate
+                        </div>
+                        <div className="mt-1 text-[11px] text-black/50 tabular-nums">
+                          Base {formatTspFineDisplay(baselineTspNa)}
+                          {extraTspNa > 0 && (
+                            <>
+                              {' '}
+                              + extra {formatTspFineDisplay(extraTspNa)} →{' '}
+                              <span className="text-black">
+                                {formatTspFineDisplay(tspSodiumCitrate)}
+                              </span>{' '}
+                              / batch
+                            </>
+                          )}
+                          {extraTspNa <= 0 && (
+                            <span className="text-black">
+                              {' '}
+                              ({formatTspFineDisplay(tspSodiumCitrate)} / batch)
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-0.5 text-[10px] text-black/45">
+                          Total all flasks:{' '}
+                          {formatTspFineDisplay(totalScaledTspNa)} (
+                          {fueling.numberOfFlasks}× batch)
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 self-center sm:self-start">
+                        <button
+                          type="button"
+                          aria-label="Add sodium citrate"
+                          disabled={sodiumPlusDisabled}
+                          onClick={() =>
+                            setExtraTspNa((e) =>
+                              roundTspQuarter(e + V2_STEP_TSP_NA)
+                            )
+                          }
+                          className="w-9 h-9 border border-black text-[18px] leading-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    {sodiumAtLimitMessage && (
+                      <p className="text-[11px] text-red-900 bg-red-50 border border-red-200 px-2 py-1.5">
+                        {sodiumAtLimitMessage}
+                      </p>
+                    )}
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-black">
+                          Potassium chloride
+                        </div>
+                        <div className="mt-1 text-[11px] text-black/50 tabular-nums">
+                          Base {formatTspFineDisplay(baselineTspK)}
+                          {extraTspK > 0 && (
+                            <>
+                              {' '}
+                              + extra {formatTspFineDisplay(extraTspK)} →{' '}
+                              <span className="text-black">
+                                {formatTspFineDisplay(tspPotassiumChloride)}
+                              </span>{' '}
+                              / batch
+                            </>
+                          )}
+                          {extraTspK <= 0 && (
+                            <span className="text-black">
+                              {' '}
+                              ({formatTspFineDisplay(tspPotassiumChloride)} /
+                              batch)
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-0.5 text-[10px] text-black/45">
+                          Total all flasks:{' '}
+                          {formatTspFineDisplay(totalScaledTspK)} (
+                          {fueling.numberOfFlasks}× batch)
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 self-center sm:self-start">
+                        <button
+                          type="button"
+                          aria-label="Add potassium chloride"
+                          disabled={potassiumPlusDisabled}
+                          onClick={() =>
+                            setExtraTspK((e) =>
+                              roundTspEighth(e + V2_STEP_TSP_K)
+                            )
+                          }
+                          className="w-9 h-9 border border-black text-[18px] leading-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    {potassiumAtLimitMessage && (
+                      <p className="text-[11px] text-red-900 bg-red-50 border border-red-200 px-2 py-1.5">
+                        {potassiumAtLimitMessage}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex-1 min-h-[240px] mx-[10px] sm:mx-[18px] mb-[18px] bg-[#ececec]/50 text-[#1e1e1e] overflow-y-auto">
+                  <div className="px-[12px] sm:px-[20px] py-[19px] flex flex-col items-start gap-0 min-w-0">
                     {recipeIngredients.map((item, idx) => {
                       const isLast = idx === recipeIngredients.length - 1
 
@@ -812,12 +1066,28 @@ export default function GelsPage() {
                   <span className="text-black font-semibold">
                     ¾ tsp sodium citrate
                   </span>{' '}
-                  (~1,800mg sodium, cleaner taste) and{' '}
+                  (~510mg sodium from ¾ tsp × 680mg/tsp, cleaner taste) and{' '}
                   <span className="text-black font-semibold">
                     ⅛ tsp potassium chloride
                   </span>{' '}
-                  (~200mg potassium).
+                  (~{Math.round(baselineTspK * K_MG_PER_TSP_KCL)}mg potassium at
+                  base {formatTspFineDisplay(baselineTspK)} ×{' '}
+                  {K_MG_PER_TSP_KCL}mg K/tsp).
                 </p>
+                {recipeElectrolytes === 'yes' && (
+                  <p className="text-black/70">
+                    <span className="font-semibold text-black">
+                      Live batch sodium
+                    </span>{' '}
+                    from your slider:{' '}
+                    <span className="tabular-nums text-black font-semibold">
+                      {sodiumCitrateBatchMg}mg
+                    </span>{' '}
+                    per flask batch (
+                    {formatTspFineDisplay(tspSodiumCitrate)} ×{' '}
+                    {NA_MG_PER_TSP_CITRATE}mg Na/tsp).
+                  </p>
+                )}
                 <div className="mt-4 border border-black/30 p-3 text-[11px] sm:text-[12px] leading-[1.5] text-black/80">
                   <p className="uppercase tracking-[1.4px] text-black mb-2">
                     Supplement facts (your products)
@@ -882,7 +1152,13 @@ export default function GelsPage() {
   )
 }
 
-function getIngredients(size, includeElectrolytes, scale = 1) {
+function getIngredientsV2(
+  size,
+  includeElectrolytes,
+  scale = 1,
+  tspNaPerBatch,
+  tspKPerBatch
+) {
   const base =
     size === 250
       ? [
@@ -899,16 +1175,15 @@ function getIngredients(size, includeElectrolytes, scale = 1) {
         ]
 
   if (includeElectrolytes) {
-    const ec = ELECTROLYTE_TSP_PER_BATCH[size]
     base.push(
       {
         label: 'Sodium citrate',
-        tspFine: ec.sodiumCitrate,
+        tspFine: tspNaPerBatch,
         link: 'https://www.amazon.com/dp/B07B1G3MSL',
       },
       {
         label: 'Potassium chloride',
-        tspFine: ec.potassiumChloride,
+        tspFine: tspKPerBatch,
         link: 'https://www.amazon.com/dp/B00ENS39Z8',
       }
     )
@@ -919,8 +1194,6 @@ function getIngredients(size, includeElectrolytes, scale = 1) {
     const rounded5 = Math.round(scaled / 5) * 5
     return `${rounded5}g`
   }
-
-  const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b))
 
   const formatTsp = (value) => {
     const scaled = value * scale
