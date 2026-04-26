@@ -85,7 +85,7 @@ export default function DanaPlanLifts() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/dana-plan/plan-data-v9.json').then((r) => (r.ok ? r.json() : null)),
+      fetch('/dana-plan/plan-data-v10.json').then((r) => (r.ok ? r.json() : null)),
       fetch('/dana-plan/lifts.json').then((r) => {
         if (!r.ok) throw new Error(r.statusText)
         return r.json()

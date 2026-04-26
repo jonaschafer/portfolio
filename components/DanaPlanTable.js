@@ -63,7 +63,7 @@ export default function DanaPlanTable() {
   const [copiedDay, setCopiedDay] = useState(null)
 
   useEffect(() => {
-    fetch('/dana-plan/plan-data-v9.json')
+    fetch('/dana-plan/plan-data-v10.json')
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText)
         return res.json()
