@@ -1,5 +1,5 @@
 /**
- * Build plan-data-v9.json from plan-data-v2.json.
+ * Build plan-data-v10.json from plan-data-v2.json.
  * v3 = plan re-anchored to "where you're at": Mar 2-8 (next week) through race, with BPA test week + MWF circuits.
  * Does NOT modify v2.
  *
@@ -466,5 +466,5 @@ const v3 = {
   reference: V2.reference
 };
 
-fs.writeFileSync(path.join(DIR, 'plan-data-v9.json'), JSON.stringify(v3, null, 2), 'utf8');
-console.log('Wrote plan-data-v9.json (24 weeks, Mar 2–Aug 15, BPA test week 4, MWF circuits throughout). v2 unchanged.');
+fs.writeFileSync(path.join(DIR, 'plan-data-v10.json'), JSON.stringify(v3, null, 2), 'utf8');
+console.log('Wrote plan-data-v10.json (24 weeks, Mar 2–Aug 15, BPA test week 4, MWF circuits throughout). v2 unchanged.');
