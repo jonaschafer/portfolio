@@ -36,3 +36,7 @@ next-env.d.ts
 public/*.csv
 # Personal training notes (lives in Dropbox/Dana plan/ instead)
 docs/training-plan-update-*.md
+
+# Local agent/worktree files
+.claude/
+z-archive/
