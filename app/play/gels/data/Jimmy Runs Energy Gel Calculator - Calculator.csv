@@ -1,0 +1,35 @@
+Jimmy Runs Energy Gel Calculator,,,,,,
+Mode,Plan by Run Time,⏷ pick a mode,Scale Factor,2.783,,ⓘ Help & Read-me
+Target Volume (ml),150,,Final Volume (ml),417,flask size needed,"• You only need to input values into the blue cells in B2 - B10.
+• Start in Mode (B2): double-click to choose a mode. Most of the time, 'Plan by run time' will be what you want.
+• Default maltodextrin to fructose ratio is 1:0.8. You can change the ratio as desired in B5 & 6.
+• Plan by Run Time: enter run duration in h:mm then enter your target rate of carb consumption in g/h. Final Carbs equals total carbs for the run.
+• Adjust sodium target as desired (mg/h). Default value is a good starting point. I advise leaving potassium at 200mg/h but feel free to adjust as desired.
+• Grey + italic cells are inactive for selected mode.
+• Quantity (C20 - C26): these are the final quantities of each ingredient required based on the inputs you entered.
+• Look at the Final Volume value (E4) and make sure your packaging choices are sufficient.
+• Use the blue Reset Inputs button to reset to default values.
+• You can only set sodium and potassium targets in Plan by Run Time Mode."
+Target Carbs (g),200,,Final Carbs (g),320,,
+Maltodextrin part,1.00,,,,,
+Fructose part,0.80,,,,,
+Run Duration (h:mm),4:00,,,,,
+Carbs per hour (g/h),80,,,,,
+Sodium target (mg/h),400,,,,,
+Potassium target (mg/h),200,,,,,
+,,,,,,
+Summary,,,,,,
+Final Volume (ml),417,,,,,
+Final Carbs (g),320,,,,,
+Malto:Fructose (parts),1.:0.8,,,,,
+Run Duration (h:mm),4:00,,,,,
+Carbs per hour (g/h),80,,,,,
+,,,,,,Loving this calculator? Please subscribe to my channel for even more goodness!
+Ingredient,Base (g),Quantity (g),Notes,,,
+Maltodextrin,66.70,185.51,Split by ratio,,,
+Fructose,53.30,148.41,Split by ratio,,,
+BCAA's,4.80,13.36,Proportional scaling,,,
+Pectin,4.00,11.13,Proportional scaling,,,
+Sodium citrate,1.78,6.96,From sodium mg/h in Plan mode,,,
+Potassium chloride,0.45,1.53,From potassium mg/h in Plan mode,,,
+Water,80.00,222.61,Proportional scaling,,,

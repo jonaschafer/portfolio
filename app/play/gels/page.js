@@ -7,9 +7,63 @@ const CARBS_PER_FLASK = {
   500: 375,
 }
 const SWEAT_LOSS_PER_HR = 1100
-const TARGET_REPLACEMENT_PER_HR = 800
-/** S-caps sodium intake model (mg/hr). */
+/** S-caps sodium intake model (mg/hr) — used by the legacy 3-box strip. */
 const S_CAPS_SODIUM_PER_HR = 380
+/** Per-cap sodium for S-caps Plus (used by sodium strategy panel). */
+const S_CAPS_MG_PER_CAP = 190
+
+/**
+ * Bottle/bladder hydration mixes (per Sodium.csv).
+ * Sodium + carbs are PER UNIT (scoop or tab); user picks dose.
+ */
+const HYDRATION_PRODUCTS = {
+  none: {
+    label: 'Water',
+    sodiumMgPerUnit: 0,
+    carbsGPerUnit: 0,
+    unit: 'scoop',
+    defaultDose: 0,
+    url: null,
+  },
+  gnarly: {
+    label: 'Gnarly Orange Drank',
+    sodiumMgPerUnit: 500,
+    carbsGPerUnit: 25,
+    unit: 'scoop',
+    defaultDose: 3,
+    url: 'https://thefeed.com/products/gnarly-nutrition-fuel2o-orange-drank?variant=40185371951167',
+  },
+  pn1500: {
+    label: 'PN 1500 tab',
+    sodiumMgPerUnit: 750,
+    carbsGPerUnit: 15,
+    unit: 'tab',
+    defaultDose: 2,
+    url: 'https://thefeed.com/products/precision-fuel-and-hydration-powder-ph-1500',
+  },
+  skratch: {
+    label: 'Skratch Hydration',
+    sodiumMgPerUnit: 400,
+    carbsGPerUnit: 20,
+    unit: 'scoop',
+    defaultDose: 3,
+    url: 'https://thefeed.com/products/skratch-labs-exercise-hydration-mix',
+  },
+  tailwind: {
+    label: 'Tailwind',
+    sodiumMgPerUnit: 320,
+    carbsGPerUnit: 12,
+    unit: 'scoop',
+    defaultDose: 3,
+    url: 'https://thefeed.com/products/tailwind-rapid-hydration',
+  },
+}
+
+/** Per-flask sodium additive (drop a tab into each refill). */
+const FLASK_ADDITIVES = {
+  none: { label: 'None', sodiumMgPerFlask: 0, carbsGPerFlask: 0 },
+  pn1500: { label: 'PN 1500 tab', sodiumMgPerFlask: 750, carbsGPerFlask: 15 },
+}
 
 /** Supplement label — sodium citrate. */
 const SODIUM_CITRATE_SUPPLEMENT = {
@@ -86,6 +140,14 @@ export default function GelsPage() {
   /** Added on top of v1 per-batch baseline (same as /play/gels). Reset clears to 0. */
   const [extraTspNa, setExtraTspNa] = useState(0)
   const [extraTspK, setExtraTspK] = useState(0)
+
+  // Sodium strategy state — defaults match the user's typical training-day plan
+  const [targetSodiumPct, setTargetSodiumPct] = useState(75)
+  const [bladderProduct, setBladderProduct] = useState('gnarly')
+  const [bladderVolumeL, setBladderVolumeL] = useState(2)
+  const [bladderDose, setBladderDose] = useState(3)
+  const [flaskAdditive, setFlaskAdditive] = useState('none')
+  const [sCapsPerHour, setSCapsPerHour] = useState(2)
 
   const baselineTspNa = ELECTROLYTE_TSP_PER_BATCH[flaskSize].sodiumCitrate
   const baselineTspK = ELECTROLYTE_TSP_PER_BATCH[flaskSize].potassiumChloride
@@ -184,6 +246,69 @@ export default function GelsPage() {
     tspPotassiumChloride,
   ])
 
+  /**
+   * Sodium strategy panel: bladder + per-flask additive + S-caps + gel.
+   * Sits beside (does not drive) the carbs/recipe calc above.
+   */
+  const sodiumStrategy = useMemo(() => {
+    const h = fueling.clampedHours
+    const cpf = fueling.carbsPerFlask
+    const cph = carbsPerHour
+
+    const product = HYDRATION_PRODUCTS[bladderProduct]
+    const bladderSodiumTotal = product.sodiumMgPerUnit * bladderDose
+    const bladderCarbsTotal = product.carbsGPerUnit * bladderDose
+    const bladderSodiumPerHour = h > 0 ? bladderSodiumTotal / h : 0
+    const bladderCarbsPerHour = h > 0 ? bladderCarbsTotal / h : 0
+
+    const additive = FLASK_ADDITIVES[flaskAdditive]
+    // Race assumption: one tab per flask, ~one flask refill per hour at aid stations.
+    // Decoupled from the carbs/hr × carbs/flask math so it matches the user's real-world cadence.
+    const flaskAdditiveSodiumPerHour = additive.sodiumMgPerFlask
+    const flaskAdditiveCarbsPerHour = additive.carbsGPerFlask
+
+    const sCapsSodiumPerHour = sCapsPerHour * S_CAPS_MG_PER_CAP
+    const gelSodiumPerHour = electrolyteFromGel.sodiumPerHour
+
+    const totalSodiumPerHour =
+      bladderSodiumPerHour +
+      flaskAdditiveSodiumPerHour +
+      sCapsSodiumPerHour +
+      gelSodiumPerHour
+
+    const targetMgPerHour = (SWEAT_LOSS_PER_HR * targetSodiumPct) / 100
+    const pctOfTarget =
+      targetMgPerHour > 0
+        ? (totalSodiumPerHour / targetMgPerHour) * 100
+        : 0
+
+    return {
+      bladderSodiumPerHour,
+      bladderCarbsPerHour,
+      bladderSodiumTotal,
+      bladderCarbsTotal,
+      flaskAdditiveSodiumPerHour,
+      flaskAdditiveCarbsPerHour,
+      sCapsSodiumPerHour,
+      gelSodiumPerHour,
+      totalSodiumPerHour,
+      targetMgPerHour,
+      pctOfTarget,
+    }
+  }, [
+    fueling.clampedHours,
+    fueling.carbsPerFlask,
+    carbsPerHour,
+    bladderProduct,
+    bladderDose,
+    flaskAdditive,
+    sCapsPerHour,
+    targetSodiumPct,
+    electrolyteFromGel.sodiumPerHour,
+  ])
+
+  const targetSodiumPctPercent = ((targetSodiumPct - 60) / 40) * 100
+
   const hForThreshold = fueling.clampedHours
 
   const nextExtraNa = roundTspQuarter(extraTspNa + V2_STEP_TSP_NA)
@@ -203,6 +328,19 @@ export default function GelsPage() {
     (hForThreshold > 0 &&
       (nextEffectiveK * K_MG_PER_TSP_KCL) / hForThreshold >
         FLAVOR_K_THRESHOLD_MG_HR)
+
+  /** Minus disable: would the next step push effective tsp below 0? */
+  const minusEffectiveNa = roundTspQuarter(
+    baselineTspNa + roundTspQuarter(extraTspNa - V2_STEP_TSP_NA)
+  )
+  const sodiumMinusDisabled =
+    recipeElectrolytes !== 'yes' || minusEffectiveNa < -1e-9
+
+  const minusEffectiveK = roundTspEighth(
+    baselineTspK + roundTspEighth(extraTspK - V2_STEP_TSP_K)
+  )
+  const potassiumMinusDisabled =
+    recipeElectrolytes !== 'yes' || minusEffectiveK < -1e-9
 
   const hoursLabelForWarning =
     Math.abs(hForThreshold - Math.round(hForThreshold)) < 0.05
@@ -330,6 +468,7 @@ export default function GelsPage() {
         <div className="mb-5 md:mb-[60px] flex flex-wrap gap-2">
           {[
             { id: 'fueling', label: 'Fueling plan', anchorId: 'fueling-plan' },
+            { id: 'sodium', label: 'Sodium', anchorId: 'sodium-section' },
             { id: 'recipe', label: 'Recipe', anchorId: 'recipe-section' },
           ].map((tab) => (
             <button
@@ -601,193 +740,467 @@ export default function GelsPage() {
                   </div>
                 </div>
           </aside>
-        <div className="lg:col-span-2 mt-0 py-6 w-full min-w-0 font-mono">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-x-6 lg:gap-y-0">
-              {/* Box 1 — benchmarks + % replaced */}
-              <div className="border-2 border-black px-[18px] pt-[48px] pb-[48px] flex flex-col justify-between min-h-[228px] min-w-0 box-border">
-                <div className="flex justify-between items-center gap-4">
-                  <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                    Sweat loss/hr
-                  </span>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {SWEAT_LOSS_PER_HR.toLocaleString()}mg
-                  </span>
+        </div>
+
+        <div
+          id="sodium-section"
+          className="mt-5 md:mt-6 scroll-mt-5 md:scroll-mt-[60px]"
+        >
+          {/* Target % slider — drives the strategy panel below */}
+          <div className="border-2 border-black p-[18px] w-full min-w-0 box-border mb-5 md:mb-6">
+            <div className="flex justify-between items-start gap-4">
+              <div>
+                <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                  Sodium replacement target
                 </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                    Replacement/hr
-                  </span>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {TARGET_REPLACEMENT_PER_HR.toLocaleString()}mg
-                  </span>
-                </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      % replaced
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Model vs sweat loss
-                    </div>
-                  </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {sodiumStrip.percentReplaced.toFixed(0)}%
-                  </span>
+                <div className="mt-1 text-[11px] text-black/60">
+                  % of {SWEAT_LOSS_PER_HR}mg/hr sweat loss to replace
                 </div>
               </div>
+              <span className="text-[20px] leading-none tabular-nums shrink-0">
+                {targetSodiumPct}% ·{' '}
+                {Math.round(
+                  (SWEAT_LOSS_PER_HR * targetSodiumPct) / 100
+                )}
+                mg/hr
+              </span>
+            </div>
+            <div className="relative mt-3 h-[34px]">
+              <div className="absolute left-0 right-0 top-[14px] h-[8px] bg-[#efefef] border border-[#b2b2b2] rounded-[30px]" />
+              <div
+                className="absolute left-0 top-[14px] h-[8px] bg-black rounded-[30px]"
+                style={{ width: `${targetSodiumPctPercent}%` }}
+              />
+              <div
+                className="absolute top-[8px] w-[18px] h-[18px] bg-black rounded-full"
+                style={{
+                  left: `${targetSodiumPctPercent}%`,
+                  transform: 'translateX(-50%)',
+                }}
+              />
+              <input
+                type="range"
+                min={60}
+                max={100}
+                step={5}
+                value={targetSodiumPct}
+                onChange={(e) =>
+                  setTargetSodiumPct(parseInt(e.target.value, 10))
+                }
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+            </div>
+          </div>
 
-              {/* Box 2 — totals for the outing */}
-              <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[280px] min-w-0 box-border">
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Total lost
+          {/* Sodium strategy panel — bladder + per-flask additive + gel electrolytes + S-caps */}
+          <div className="border-2 border-black p-[18px] w-full min-w-0 box-border">
+            <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+              <span className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+                Sodium strategy
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBladderProduct('none')
+                    setBladderDose(0)
+                    setFlaskAdditive('pn1500')
+                    setSCapsPerHour(2)
+                  }}
+                  className="border border-black px-2 py-1 text-[11px] uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                >
+                  Race (aid stations)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBladderProduct('gnarly')
+                    setBladderVolumeL(2)
+                    setBladderDose(3)
+                    setFlaskAdditive('none')
+                    setSCapsPerHour(2)
+                  }}
+                  className="border border-black px-2 py-1 text-[11px] uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                >
+                  Long training
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBladderProduct('none')
+                    setBladderDose(0)
+                    setFlaskAdditive('none')
+                    setSCapsPerHour(2)
+                  }}
+                  className="border border-black px-2 py-1 text-[11px] uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                >
+                  Short
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {/* Inputs */}
+              <div className="divide-y divide-black/15">
+                <div className="pb-5">
+                  <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-2">
+                    S-caps per hour
+                  </div>
+                  <div className="flex gap-[8px]">
+                    {[0, 1, 2, 3].map((n) => (
+                      <button
+                        key={n}
+                        type="button"
+                        onClick={() => setSCapsPerHour(n)}
+                        className={`w-12 border border-black py-2 text-[14px] leading-none ${
+                          sCapsPerHour === n
+                            ? 'bg-black text-white'
+                            : 'bg-white text-black'
+                        }`}
+                      >
+                        {n}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-2 text-[11px] text-black/60">
+                    {S_CAPS_MG_PER_CAP}mg sodium per cap.
+                  </div>
+                </div>
+
+                <div className="py-5">
+                <div>
+                  <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-2">
+                    Bladder mix
+                  </div>
+                  <div className="flex flex-wrap gap-[8px]">
+                    {Object.entries(HYDRATION_PRODUCTS).map(([key, p]) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => {
+                          setBladderProduct(key)
+                          setBladderDose(p.defaultDose)
+                        }}
+                        className={`border border-black px-3 py-2 text-[12px] leading-none ${
+                          bladderProduct === key
+                            ? 'bg-black text-white'
+                            : 'bg-white text-black'
+                        }`}
+                      >
+                        {p.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {bladderProduct !== 'none' && (
+                  <div className="mt-4 space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-6 gap-y-3 items-start">
+                      <div>
+                        <div className="text-[11px] text-black/60 mb-2">
+                          Volume
+                        </div>
+                        <div className="flex gap-[8px]">
+                          {[1, 1.5, 2].map((v) => (
+                            <button
+                              key={v}
+                              type="button"
+                              onClick={() => setBladderVolumeL(v)}
+                              className={`border border-black px-3 py-2 text-[12px] leading-none ${
+                                bladderVolumeL === v
+                                  ? 'bg-black text-white'
+                                  : 'bg-white text-black'
+                              }`}
+                            >
+                              {v}L
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-[11px] text-black/60 mb-2">
+                          Dose
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            aria-label="Less dose"
+                            disabled={bladderDose <= 0}
+                            onClick={() =>
+                              setBladderDose((d) => Math.max(0, d - 1))
+                            }
+                            className="w-9 h-9 border border-black text-[18px] leading-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white"
+                          >
+                            −
+                          </button>
+                          <span className="text-[14px] tabular-nums min-w-[80px] text-center">
+                            {bladderDose}{' '}
+                            {HYDRATION_PRODUCTS[bladderProduct].unit}
+                            {bladderDose === 1 ? '' : 's'}
+                          </span>
+                          <button
+                            type="button"
+                            aria-label="More dose"
+                            onClick={() =>
+                              setBladderDose((d) => Math.min(8, d + 1))
+                            }
+                            className="w-9 h-9 border border-black text-[18px] leading-none hover:bg-black hover:text-white"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Sweat loss × hours
+
+                    <div className="text-[11px] text-black/60">
+                      {bladderDose *
+                        HYDRATION_PRODUCTS[bladderProduct].sodiumMgPerUnit}
+                      mg sodium ·{' '}
+                      {bladderDose *
+                        HYDRATION_PRODUCTS[bladderProduct].carbsGPerUnit}
+                      g carbs in {bladderVolumeL}L total.
                     </div>
                   </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(sodiumStrip.totalLost).toLocaleString()}mg
-                  </span>
+                )}
                 </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Total S-caps
+
+                <div className="py-5">
+                  <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-2">
+                    Per-flask additive
+                  </div>
+                  <div className="flex flex-wrap gap-[8px]">
+                    {Object.entries(FLASK_ADDITIVES).map(([key, a]) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => setFlaskAdditive(key)}
+                        className={`border border-black px-3 py-2 text-[12px] leading-none ${
+                          flaskAdditive === key
+                            ? 'bg-black text-white'
+                            : 'bg-white text-black'
+                        }`}
+                      >
+                        {a.label}
+                      </button>
+                    ))}
+                  </div>
+                  {flaskAdditive === 'pn1500' && (
+                    <div className="mt-2 text-[11px] text-black/60">
+                      One PN1500 tab per flask refill — assumes ~1 refill per
+                      hour at aid stations (750mg sodium, 15g carbs per hour).
                     </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      {S_CAPS_SODIUM_PER_HR} mg/hr assumed · sodium
+                  )}
+                </div>
+
+                {/* Gel electrolytes (per batch) — defaults from flask size, +/− share state with Recipe */}
+                <div className="pt-5">
+                  <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-3">
+                    Gel electrolytes (per batch)
+                  </div>
+                  {recipeElectrolytes === 'no' && (
+                    <div className="text-[11px] text-black/60 mb-3">
+                      Recipe electrolytes are{' '}
+                      <span className="text-black">off</span> — switch them on
+                      in the Recipe section to use these.
+                    </div>
+                  )}
+
+                  <div className="space-y-3">
+                    {/* Sodium citrate */}
+                    <div>
+                      <div className="grid grid-cols-[140px_auto] items-center gap-x-4">
+                        <span className="text-[12px]">Sodium citrate</span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            aria-label="Less sodium citrate"
+                            disabled={sodiumMinusDisabled}
+                            onClick={() =>
+                              setExtraTspNa((e) =>
+                                roundTspQuarter(e - V2_STEP_TSP_NA)
+                              )
+                            }
+                            className="w-9 h-9 border border-black text-[18px] leading-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white"
+                          >
+                            −
+                          </button>
+                          <span className="text-[14px] tabular-nums min-w-[64px] text-center">
+                            {formatTspFineDisplay(tspSodiumCitrate)}
+                          </span>
+                          <button
+                            type="button"
+                            aria-label="More sodium citrate"
+                            disabled={sodiumPlusDisabled}
+                            onClick={() =>
+                              setExtraTspNa((e) =>
+                                roundTspQuarter(e + V2_STEP_TSP_NA)
+                              )
+                            }
+                            className="w-9 h-9 border border-black text-[18px] leading-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                      <div className="mt-1 ml-[156px] text-[11px] text-black/55 tabular-nums">
+                        {Math.round(
+                          tspSodiumCitrate * NA_MG_PER_TSP_CITRATE
+                        )}
+                        mg / batch ·{' '}
+                        {Math.round(electrolyteFromGel.sodiumPerHour)}mg/hr
+                      </div>
+                    </div>
+
+                    {/* Potassium chloride */}
+                    <div>
+                      <div className="grid grid-cols-[140px_auto] items-center gap-x-4">
+                        <span className="text-[12px]">Potassium chloride</span>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            aria-label="Less potassium chloride"
+                            disabled={potassiumMinusDisabled}
+                            onClick={() =>
+                              setExtraTspK((e) =>
+                                roundTspEighth(e - V2_STEP_TSP_K)
+                              )
+                            }
+                            className="w-9 h-9 border border-black text-[18px] leading-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white"
+                          >
+                            −
+                          </button>
+                          <span className="text-[14px] tabular-nums min-w-[64px] text-center">
+                            {formatTspFineDisplay(tspPotassiumChloride)}
+                          </span>
+                          <button
+                            type="button"
+                            aria-label="More potassium chloride"
+                            disabled={potassiumPlusDisabled}
+                            onClick={() =>
+                              setExtraTspK((e) =>
+                                roundTspEighth(e + V2_STEP_TSP_K)
+                              )
+                            }
+                            className="w-9 h-9 border border-black text-[18px] leading-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black hover:text-white"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                      <div className="mt-1 ml-[156px] text-[11px] text-black/55 tabular-nums">
+                        {Math.round(
+                          tspPotassiumChloride * K_MG_PER_TSP_KCL
+                        )}
+                        mg / batch ·{' '}
+                        {Math.round(electrolyteFromGel.potassiumPerHour)}
+                        mg/hr potassium
+                      </div>
                     </div>
                   </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(
-                      sodiumStrip.capsPerHour * fueling.clampedHours
-                    ).toLocaleString()}
-                    mg
-                  </span>
-                </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Sodium citrate total
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Serving {SODIUM_CITRATE_SUPPLEMENT.servingSize} ·{' '}
-                      {SODIUM_CITRATE_SUPPLEMENT.sodiumPerServingMg}mg sodium
-                    </div>
+
+                  <div className="mt-3 text-[11px] text-black/60">
+                    Defaults scale with flask size from Plan above ({flaskSize}
+                    ml). Increases capped by GI / flavor thresholds.
                   </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(electrolyteFromGel.sodiumTotal).toLocaleString()}mg
-                  </span>
                 </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Potassium chloride total
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Serving {POTASSIUM_CHLORIDE_SUPPLEMENT.servingSizeMg}mg ·{' '}
-                      {POTASSIUM_CHLORIDE_SUPPLEMENT.potassiumPerServingMg}mg
-                      potassium
-                    </div>
-                  </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(electrolyteFromGel.potassiumTotal).toLocaleString()}mg
-                  </span>
-                </div>
-                <div className="mt-4 pt-4 border-t-2 border-black flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Total deficit
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Sweat Na lost − Na replaced (S-caps + gel)
-                    </div>
-                  </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(sodiumStrip.totalSodiumDeficit).toLocaleString()}mg
-                  </span>
-                </div>
+
               </div>
 
-              {/* Box 3 — same rows, per hour */}
-              <div className="border-2 border-black p-[18px] flex flex-col justify-between min-h-[280px] min-w-0 box-border">
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Lost/hr
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Sweat sodium model
-                    </div>
-                  </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {SWEAT_LOSS_PER_HR.toLocaleString()}mg
-                  </span>
+              {/* Output breakdown */}
+              <div className="border-2 border-black p-[18px] bg-[#fafafa] flex flex-col">
+                <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-3">
+                  Per hour
                 </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      S-caps/hr
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      {S_CAPS_SODIUM_PER_HR} mg/hr · sodium
-                    </div>
+                <div className="space-y-2 text-[13px]">
+                  <div className="flex justify-between items-baseline gap-3">
+                    <span className="min-w-0 truncate">
+                      Bladder · {HYDRATION_PRODUCTS[bladderProduct].label}
+                    </span>
+                    <span className="tabular-nums shrink-0">
+                      {Math.round(sodiumStrategy.bladderSodiumPerHour)}mg
+                    </span>
                   </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(sodiumStrip.capsPerHour).toLocaleString()}mg
-                  </span>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <span className="min-w-0 truncate">
+                      Flask additive · {FLASK_ADDITIVES[flaskAdditive].label}
+                    </span>
+                    <span className="tabular-nums shrink-0">
+                      {Math.round(
+                        sodiumStrategy.flaskAdditiveSodiumPerHour
+                      )}
+                      mg
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <span>S-caps · {sCapsPerHour}/hr</span>
+                    <span className="tabular-nums shrink-0">
+                      {Math.round(sodiumStrategy.sCapsSodiumPerHour)}mg
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <span>
+                      Gel{' '}
+                      {recipeElectrolytes !== 'yes' && (
+                        <span className="text-black/45">(off)</span>
+                      )}
+                    </span>
+                    <span className="tabular-nums shrink-0">
+                      {Math.round(sodiumStrategy.gelSodiumPerHour)}mg
+                    </span>
+                  </div>
                 </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Sodium citrate/hr
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Serving {SODIUM_CITRATE_SUPPLEMENT.servingSize} ·{' '}
-                      {SODIUM_CITRATE_SUPPLEMENT.sodiumPerServingMg}mg sodium
-                    </div>
+
+                <div className="mt-4 pt-3 border-t-2 border-black space-y-2 text-[14px]">
+                  <div className="flex justify-between items-baseline gap-3 font-semibold">
+                    <span>Total</span>
+                    <span className="tabular-nums">
+                      {Math.round(sodiumStrategy.totalSodiumPerHour)}mg/hr
+                    </span>
                   </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(electrolyteFromGel.sodiumPerHour).toLocaleString()}mg
-                  </span>
+                  <div className="flex justify-between items-baseline gap-3 text-[13px] text-black/60">
+                    <span>
+                      Target ({targetSodiumPct}% of {SWEAT_LOSS_PER_HR})
+                    </span>
+                    <span className="tabular-nums">
+                      {Math.round(sodiumStrategy.targetMgPerHour)}mg/hr
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <span className="font-semibold">% of target hit</span>
+                    <span
+                      className={`tabular-nums font-semibold ${
+                        sodiumStrategy.pctOfTarget >= 100
+                          ? 'text-green-700'
+                          : sodiumStrategy.pctOfTarget >= 80
+                            ? 'text-black'
+                            : 'text-red-700'
+                      }`}
+                    >
+                      {Math.round(sodiumStrategy.pctOfTarget)}%
+                    </span>
+                  </div>
                 </div>
-                <div className="my-3 h-px w-full bg-[#c8c8c8]" />
-                <div className="flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Potassium chloride/hr
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Serving {POTASSIUM_CHLORIDE_SUPPLEMENT.servingSizeMg}mg ·{' '}
-                      {POTASSIUM_CHLORIDE_SUPPLEMENT.potassiumPerServingMg}mg
-                      potassium
-                    </div>
-                  </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(electrolyteFromGel.potassiumPerHour).toLocaleString()}mg
+
+                <div className="mt-auto pt-4 text-[12px] text-black/70 leading-[1.55]">
+                  Bladder also delivers{' '}
+                  <span className="tabular-nums text-black">
+                    {Math.round(sodiumStrategy.bladderCarbsPerHour)}g
                   </span>
-                </div>
-                <div className="mt-4 pt-4 border-t-2 border-black flex justify-between items-center gap-4">
-                  <div className="min-w-0 pr-2">
-                    <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-                      Deficit/hr
-                    </div>
-                    <div className="mt-1 text-[11px] leading-[14px] text-black/45">
-                      Sweat Na/hr − Na replaced/hr
-                    </div>
-                  </div>
-                  <span className="text-[17px] font-semibold leading-none tabular-nums shrink-0 text-black">
-                    {Math.round(sodiumStrip.hourlySodiumDeficit).toLocaleString()}mg
+                  /hr carbs · gels still need to carry{' '}
+                  <span className="tabular-nums text-black">
+                    {Math.max(
+                      0,
+                      Math.round(
+                        carbsPerHour -
+                          sodiumStrategy.bladderCarbsPerHour -
+                          sodiumStrategy.flaskAdditiveCarbsPerHour
+                      )
+                    )}
+                    g
                   </span>
+                  /hr (your {carbsPerHour}g/hr target minus bladder &amp;
+                  flask additive carbs).
                 </div>
               </div>
             </div>
@@ -796,7 +1209,7 @@ export default function GelsPage() {
 
         <div
             id="recipe-section"
-            className="mt-5 md:mt-0 scroll-mt-5 md:scroll-mt-[60px]"
+            className="mt-5 md:mt-[60px] scroll-mt-5 md:scroll-mt-[60px]"
           >
             {/* Below lg: stack. lg+ (1024px): two columns with flex-1 min-w-0 so they stay side by side and shrink */}
             <div className="flex flex-col lg:flex-row lg:justify-center lg:items-stretch gap-4 md:gap-6 text-left text-[11px] font-mono w-full min-w-0">
