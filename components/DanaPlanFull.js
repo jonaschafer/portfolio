@@ -13,7 +13,7 @@ export default function DanaPlanFull() {
   const [selectedWeek, setSelectedWeek] = useState(1)
 
   useEffect(() => {
-    fetch('/dana-plan/plan-data-v10.json')
+    fetch('/dana-plan/plan-data-v13.json')
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText)
         return res.json()

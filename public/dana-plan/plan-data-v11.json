@@ -1,0 +1,2426 @@
+{
+  "planTitle": "Wy'East Trailfest 50M Training Plan (v11)",
+  "planDates": "Mar 16 - Aug 15, 2026",
+  "raceDate": "2026-08-15",
+  "startDate": "2026-03-16",
+  "weeks": [
+    {
+      "week": 1,
+      "dateRange": "Mar 16-22",
+      "type": "RESTORE",
+      "target": "20 miles, 2,000 ft",
+      "content": "Restore week coming off your peak build. Volume drops, structure stays. You earned this down week \u2014 let the adaptation happen. Tuesday group run continues as always but keep effort conversational.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors (10\u201315 min)**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Light Strength",
+          "content": "**Run**: 6 miles, ~1,200 ft. Group run \u2014 back off effort.\n\n**Light Strength:**\n2\u20133 rounds: light deadlifts or RDLs, single-arm rows, KB swings. No press.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "1,200 ft",
+            "duration": "75 min",
+            "runOneLine": "6 miles, ~1,200 ft",
+            "strengthOneLine": "Light: RDLs, single-arm rows, KB swings"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee (10\u201315 min)**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4 miles easy + strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy Hilly + Light Strength",
+          "content": "60 min hilly, nothing hard.\n- **Distance**: ~5 miles\n- **Vert**: ~700 ft\n\n**Light Strength:**\n2\u20133 rounds: goblet squats, reverse lunges, strict press or push-ups. No pulling.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "700 ft",
+            "duration": "75 min",
+            "runOneLine": "5 miles, ~700 ft",
+            "strengthOneLine": "Light: goblet squats, reverse lunges, strict press"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + PT",
+          "content": "40 min easy.\n- **Distance**: ~3 miles\n\n**Friday PT \u2014 Abductors + posterior chain (10\u201315 min)**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": "3 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "3 miles easy",
+            "strengthOneLine": "Abductors + posterior: monsters, KB calf raises, SL balance, banded hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "1:45 hours easy.\n- **Distance**: ~7 miles\n- **Vert**: ~900 ft\n- **Fueling**: 60g carbs/hr\n\nRestore pace \u2014 slower than last week. Notice what feels better after the down week.",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "900 ft",
+            "duration": "1:45 hours",
+            "runOneLine": "7 miles, ~900 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "dateRange": "Mar 23-29",
+      "type": "BUILD",
+      "target": "27 miles, 4,500 ft",
+      "content": "First real build week. The structure is established \u2014 now start loading it. Vert climbs on Tuesday and Sunday. PT moves to Tier 1 consistently. Keep effort aerobic across the board.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors (10\u201315 min)**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 7 miles, ~1,400 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + single-arm rows (Weeks 1\u20133):**\n\nWarm up: Good mornings, hip hinges, light deadlifts.\n\nSet 1 \u2014 3\u20134\u00d7 through:\n- 6\u00d7 deadlifts at 65\u201370%\n- 8\u00d7 single-arm row per side\n\nSet 2 \u2014 2\u20133\u00d7 through:\n- 8\u00d7 Romanian deadlift or SL RDL per side\n- 8\u00d7 bird dog rows per side\n\nProgression: Build to 4 rounds; add weight when 6 reps feel controlled.",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "1,400 ft",
+            "duration": "90 min",
+            "runOneLine": "7 miles, ~1,400 ft",
+            "strengthOneLine": "Deadlifts + single-arm rows; RDL, bird dog rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "60\u201370 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee (10\u201315 min)**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Back squats + strict press; reverse lunges, push-ups"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4 miles\n\n**Friday PT \u2014 Abductors + posterior chain (10\u201315 min)**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": "4 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters, KB calf raises, SL balance, banded hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "2:15 hours easy.\n- **Distance**: ~9 miles\n- **Vert**: ~2,500 ft\n- **Fueling**: 60g carbs/hr, every 20 min\n\nKeep effort fully aerobic. Power hike any steep sections.",
+          "summary": {
+            "distance": "9 miles",
+            "vert": "2,500 ft",
+            "duration": "2:15 hours",
+            "runOneLine": "9 miles, ~2,500 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "dateRange": "Mar 30-Apr 5",
+      "type": "BUILD",
+      "target": "30 miles, 5,500 ft",
+      "content": "Third week \u2014 the long run starts feeling like real work. Vert is creeping up but nothing aggressive yet. Tissue adaptation is the priority over aerobic load.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors (10\u201315 min)**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 7 miles, ~1,500 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + single-arm rows (Weeks 1\u20133):**\n\nWarm up: Good mornings, hip hinges, light deadlifts.\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 deadlifts at 70%\n- 8\u00d7 single-arm row per side\n\nSet 2 \u2014 3\u00d7 through:\n- 8\u00d7 SL RDL per side\n- 8\u00d7 bird dog rows per side",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "1,500 ft",
+            "duration": "90 min",
+            "runOneLine": "7 miles, ~1,500 ft",
+            "strengthOneLine": "Deadlifts + single-arm rows; RDL, bird dog rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65\u201370 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee (10\u201315 min)**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Back squats + strict press; reverse lunges, push-ups"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50\u201360 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain (10\u201315 min)**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters, KB calf raises, SL balance, banded hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "2:45 hours easy.\n- **Distance**: ~11 miles\n- **Vert**: ~3,200 ft\n- **Fueling**: 60g carbs/hr, every 20 min\n\nFind trails with sustained climbing. Practice power hiking the steep sections. More rolling than pure vert \u2014 keep running, not just hiking.",
+          "summary": {
+            "distance": "11 miles",
+            "vert": "3,200 ft",
+            "duration": "2:45 hours",
+            "runOneLine": "11 miles, ~3,200 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "dateRange": "Apr 6-12",
+      "type": "BUILD",
+      "target": "32 miles, 6,500 ft",
+      "content": "Third build week of Base I \u2014 completing the first full 3-week build cycle. Vert ticks up again on Tuesday and Sunday. Everything stays aerobic. PT circuits hold at Tier 1.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors (10\u201315 min)**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Light Strength",
+          "content": "**Run**: 7.5 miles, ~1,500 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + single-arm rows (Weeks 1\u20133):**\n\nWarm up: Good mornings, hip hinges, light deadlifts.\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 deadlifts at 70%\n- 8\u00d7 single-arm row per side\n\nSet 2 \u2014 3\u00d7 through:\n- 8\u00d7 SL RDL per side\n- 8\u00d7 bird dog rows per side",
+          "summary": {
+            "distance": "7.5 miles",
+            "vert": "1,500 ft",
+            "duration": "90 min",
+            "runOneLine": "7.5 miles, ~1,500 ft",
+            "strengthOneLine": "Deadlifts + single-arm rows; RDL, bird dog rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee (10\u201315 min)**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Back squats + strict press; reverse lunges, push-ups"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain (10\u201315 min)**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters, KB calf raises, SL balance, banded hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "3:15 hours easy.\n- **Distance**: ~13 miles\n- **Vert**: ~3,800 ft\n- **Fueling**: 60g carbs/hr, every 20 min\n\nFind trails with sustained climbing. Practice power hiking the steep sections. More rolling than pure vert \u2014 keep running, not just hiking.",
+          "summary": {
+            "distance": "13 miles",
+            "vert": "3,800 ft",
+            "duration": "3:15 hours",
+            "runOneLine": "13 miles, ~3,800 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "dateRange": "Apr 13-19",
+      "type": "RESTORE",
+      "target": "21 miles, 3,500 ft",
+      "content": "Restore week closing Base I \u2014 first full down week of the plan. Drop volume, keep structure. PT steps up to Tier 2 even on restore weeks. Use this week to notice how the body has responded to the first build cycle.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 2 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d720/leg\n- Psoas plank: 3\u00d730s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d730s\n- SL glute bridge: 3\u00d712 + 10lb",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: banded march, psoas plank, adduction, Copenhagen plank, weighted SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Light Strength",
+          "content": "**Run**: 6 miles, ~1,200 ft. Group run \u2014 back off pace.\n\n**Light Strength:**\n2\u20133 rounds: light deadlifts or RDLs, single-arm rows, KB swings. No press.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "1,200 ft",
+            "duration": "75 min",
+            "runOneLine": "6 miles, ~1,200 ft",
+            "strengthOneLine": "Light: RDLs, single-arm rows, KB swings"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 2 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d712 each\n- Step-downs: 3\u00d720 slow eccentric\n- Wall sit: 3\u00d755s\n- Med ball side-to-side: 3\u00d715",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4 miles easy + strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops \u00d712, slow step-downs \u00d720, wall sit 55s, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy Hilly + Light Strength",
+          "content": "60 min hilly, nothing hard.\n- **Distance**: ~5 miles\n- **Vert**: ~700 ft\n\n**Light Strength:**\n2\u20133 rounds: goblet squats, reverse lunges, strict press or push-ups. No pulling.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "700 ft",
+            "duration": "75 min",
+            "runOneLine": "5 miles, ~700 ft",
+            "strengthOneLine": "Light: goblet squats, reverse lunges, strict press"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "40 min easy.\n- **Distance**: ~3 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 2 (10\u201315 min)**\n- Monster walks: 3\u00d720ft\n- KB calf raises 44#: 3\u00d720\n- SL balance eyes closed: 3\u00d740s\n- Banded hip march: 3\u00d725",
+          "summary": {
+            "distance": "3 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "3 miles easy",
+            "strengthOneLine": "Abductors + posterior: monsters \u00d720ft, KB calf raises \u00d720, SL balance 40s, hip march \u00d725"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "2:00 hours easy.\n- **Distance**: ~8 miles\n- **Vert**: ~2,000 ft\n- **Fueling**: 60\u201370g carbs/hr\n\nRestore pace \u2014 slower than last week. Notice what feels better after the down week.",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "2,000 ft",
+            "duration": "2:00 hours",
+            "runOneLine": "8 miles, ~2,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "dateRange": "Apr 20-26",
+      "type": "BUILD",
+      "target": "33 miles, 6,000 ft",
+      "content": "Cycle 1, build wk 1. Crossing 30 mi for the first time this block. Sunday goes Saltzman vert. Hip flexor check at end of week.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 2 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d720/leg\n- Psoas plank: 3\u00d730s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d730s\n- SL glute bridge: 3\u00d712 + 10lb",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: banded march, psoas plank, adduction, Copenhagen plank, weighted SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 7 miles, ~1,600 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + box jumps + KB swings (Weeks 4\u20136):**\n\nWarm up: Glute lifts, hip hinges, light deadlifts.\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 deadlifts at 70%\n- 6\u00d7 box jumps (step down)\n\nSet 2 \u2014 3\u00d7 through:\n- 10\u00d7 heavy KB swings\n- 8\u00d7 bird dog rows per side\n\nSet 3:\n- 8\u00d7 alternating KB snatches",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "1,600 ft",
+            "duration": "90 min",
+            "runOneLine": "7 miles, ~1,600 ft",
+            "strengthOneLine": "Deadlifts + box jumps; KB swings, bird dog rows, snatches"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 2 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d712 each\n- Step-downs: 3\u00d720 slow eccentric\n- Wall sit: 3\u00d755s\n- Med ball side-to-side: 3\u00d715",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops \u00d712, slow step-downs \u00d720, wall sit 55s, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Pause squats + push press; weighted step-ups, step-downs"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 2 (10\u201315 min)**\n- Monster walks: 3\u00d720ft\n- KB calf raises 44#: 3\u00d720\n- SL balance eyes closed: 3\u00d740s\n- Banded hip march: 3\u00d725",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters \u00d720ft, KB calf raises \u00d720, SL balance 40s, hip march \u00d725"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**B-day shake-out.**\n- **Distance**: 4-5 miles easy\n- **Vert**: 500-800 ft if available\n- **Pace**: conversational\n\nDirt under the feet. Loosen up for Sunday's long. Skip if legs feel cooked from Tue/Thu.",
+          "summary": {
+            "distance": "4-5 miles",
+            "vert": "500-800 ft",
+            "duration": "45-75 min",
+            "runOneLine": "4-5 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 VERT",
+          "content": "**Saltzman repeats** (or equivalent sustained 5-7% grade).\n- **Distance**: 15-16 miles\n- **Vert**: 3,300-4,500 ft\n- **Pace**: shuffle on climbs (15-17 min/mi), run flats and descents 11-12 min/mi\n- **Fueling**: 60g carbs/hr\n\nRace-specific climbing rhythm. Segment 1-3 simulation.",
+          "summary": {
+            "distance": "15-16 miles",
+            "vert": "3,300-4,500 ft",
+            "duration": "3:00 hours",
+            "runOneLine": "15-16 miles, 3,300-4,500 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "dateRange": "Apr 27-May 3",
+      "type": "BUILD",
+      "target": "35 miles, 6,500 ft",
+      "content": "Cycle 1, build wk 2. Stamina-flavored Sunday \u2014 practice fueling cadence with low vert tax.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 2 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d720/leg\n- Psoas plank: 3\u00d730s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d730s\n- SL glute bridge: 3\u00d712 + 10lb",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: banded march, psoas plank, adduction, Copenhagen plank, weighted SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 7.5 miles, ~1,700 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + broad jumps + pulls (Weeks 7\u20139):**\n\nWarm up: Hip hinges, RDLs, light deadlifts.\n\nSet 1 \u2014 3\u20134\u00d7 through:\n- 6\u00d7 deadlifts at 70%\n- 5\u00d7 broad jumps (full reset between)\n\nSet 2 \u2014 2\u20133\u00d7 through:\n- 8\u00d7 SL RDL per side\n- 8\u00d7 single-arm row per side\n\nProgression: Add load on deadlift or distance on jumps.",
+          "summary": {
+            "distance": "7.5 miles",
+            "vert": "1,700 ft",
+            "duration": "90 min",
+            "runOneLine": "7.5 miles, ~1,700 ft",
+            "strengthOneLine": "Deadlifts + broad jumps; single-leg RDL, single-arm rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 2 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d712 each\n- Step-downs: 3\u00d720 slow eccentric\n- Wall sit: 3\u00d755s\n- Med ball side-to-side: 3\u00d715",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops \u00d712, slow step-downs \u00d720, wall sit 55s, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Back squats + squat jumps; Bulgarian split squats, side lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 2 (10\u201315 min)**\n- Monster walks: 3\u00d720ft\n- KB calf raises 44#: 3\u00d720\n- SL balance eyes closed: 3\u00d740s\n- Banded hip march: 3\u00d725",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters \u00d720ft, KB calf raises \u00d720, SL balance 40s, hip march \u00d725"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**B-day on dirt.**\n- **Distance**: 5-6 miles easy\n- **Vert**: 600-1,000 ft\n- **Pace**: conversational\n\nForest Park lower elevation loops work well. Adds ~5 mi/wk to bridge toward 2024 fitness.",
+          "summary": {
+            "distance": "5-6 miles",
+            "vert": "600-1,000 ft",
+            "duration": "45-75 min",
+            "runOneLine": "5-6 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 STAMINA",
+          "content": "**Stamina long** \u2014 Wildwood O&B or Forest Park firelane network.\n- **Distance**: 16-18 miles\n- **Vert**: 1,500-2,500 ft (rolling)\n- **Pace**: easy conversational throughout\n- **Fueling**: 60g carbs/hr\n\nLow-vert week. Practice fueling and time-on-feet. No music for the last 60 minutes \u2014 solo prep for race day (no pacers allowed).",
+          "summary": {
+            "distance": "16-18 miles",
+            "vert": "1,500-2,500 ft",
+            "duration": "3:00-3:30 hours",
+            "runOneLine": "16-18 miles, 1,500-2,500 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "dateRange": "May 4-10",
+      "type": "BUILD",
+      "target": "37 miles, 7,000 ft",
+      "content": "Cycle 1, build wk 3 \u2014 peak. RECON Mt Defiance Sunday. Last hard week before first restore.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 2 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d720/leg\n- Psoas plank: 3\u00d730s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d730s\n- SL glute bridge: 3\u00d712 + 10lb",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: banded march, psoas plank, adduction, Copenhagen plank, weighted SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Light Strength",
+          "content": "**Run**: 6 miles, ~1,300 ft. Group run \u2014 easy effort.\n\n**Light Strength:**\n2\u20133 rounds: light deadlifts or RDLs, single-arm rows, KB swings.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "1,300 ft",
+            "duration": "75 min",
+            "runOneLine": "6 miles, ~1,300 ft",
+            "strengthOneLine": "Light: RDLs, single-arm rows, KB swings"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 2 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d712 each\n- Step-downs: 3\u00d720 slow eccentric\n- Wall sit: 3\u00d755s\n- Med ball side-to-side: 3\u00d715",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4 miles easy + strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops \u00d712, slow step-downs \u00d720, wall sit 55s, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Light: goblet squats, reverse lunges, strict press"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + PT",
+          "content": "40 min easy.\n- **Distance**: ~3 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 2 (10\u201315 min)**\n- Monster walks: 3\u00d720ft\n- KB calf raises 44#: 3\u00d720\n- SL balance eyes closed: 3\u00d740s\n- Banded hip march: 3\u00d725",
+          "summary": {
+            "distance": "3 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "3 miles easy",
+            "strengthOneLine": "Abductors + posterior: monsters \u00d720ft, KB calf raises \u00d720, SL balance 40s, hip march \u00d725"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**Pre-recon shake.**\n- **Distance**: 4-5 miles very easy\n- **Vert**: 400-700 ft\n- **Pace**: shuffle, no efforts\n\nLight prep for tomorrow's Mt Defiance recon. Save legs.",
+          "summary": {
+            "distance": "4-5 miles",
+            "vert": "400-700 ft",
+            "duration": "45-75 min",
+            "runOneLine": "4-5 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 RECON Mt Defiance",
+          "content": "**RECON: Mt Defiance** (segment 1 climbing analog, ~3,000 ft up in 4 mi).\n- **Distance**: 12-15 miles\n- **Vert**: 4,000-5,500 ft\n- **Pace**: race effort on the climb, controlled descent\n- **Fueling**: 60g carbs/hr, full salty flask\n\nFirst recon. Drive out, climb Defiance, descend, optionally extend with neighboring trails. Note your pace at race effort \u2014 informs AS2 cutoff math.",
+          "summary": {
+            "distance": "12-15 miles",
+            "vert": "4,000-5,500 ft",
+            "duration": "4:00-5:00 hours",
+            "runOneLine": "12-15 miles, 4,000-5,500 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "dateRange": "May 11-17",
+      "type": "RESTORE",
+      "target": "22 miles, 3,000 ft",
+      "content": "Restore week 1 of 4 in this plan. Drop the volume, keep structure. Notice what feels better after the cycle.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 2 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d720/leg\n- Psoas plank: 3\u00d730s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d730s\n- SL glute bridge: 3\u00d712 + 10lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: banded march, psoas plank, adduction, Copenhagen plank, weighted SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 7.5 miles, ~1,700 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + broad jumps + pulls (Weeks 7\u20139):**\n\nWarm up: Hip hinges, RDLs, light deadlifts.\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 deadlifts at 70%\n- 5\u00d7 broad jumps (full reset)\n\nSet 2 \u2014 3\u00d7 through:\n- 8\u00d7 SL RDL per side\n- 8\u00d7 single-arm row per side\n\nProgression: Add load or distance.",
+          "summary": {
+            "distance": "7.5 miles",
+            "vert": "1,700 ft",
+            "duration": "90 min",
+            "runOneLine": "7.5 miles, ~1,700 ft",
+            "strengthOneLine": "Deadlifts + broad jumps; single-leg RDL, single-arm rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 2 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d712 each\n- Step-downs: 3\u00d720 slow eccentric\n- Wall sit: 3\u00d755s\n- Med ball side-to-side: 3\u00d715",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops \u00d712, slow step-downs \u00d720, wall sit 55s, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Power Hike Repeats + Heavy Strength",
+          "content": "Warm up with 15 minutes of easy running.\n\n**Main set: 4\u00d78 min POWER HIKE UPHILL**\nNo running \u2014 all power hiking, go hard. Jog easy down for recovery, then back up.\nEasy jog back to start.\n\n- **Total time**: ~90 min\n- **Distance**: ~5.5 miles\n- **Vert**: ~1,500 ft\n\nPower hiking at Z2\u2013Z3. Build effort across the 4 reps.\n\n**Heavy Strength \u2014 Back squats + squat jumps + split squats (Weeks 7\u20139):**\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 back squats at 70%\n- 6\u00d7 squat jumps\n\nSet 2 \u2014 3\u00d7 through:\n- 6\u00d7 per side Bulgarian split squats\n- 8\u00d7 side lunges with goblet weight",
+          "summary": {
+            "distance": "5.5 miles",
+            "vert": "1,500 ft",
+            "duration": "90 min",
+            "runOneLine": "5.5 miles, ~1,500 ft \u2014 4\u00d78 min power hike repeats",
+            "strengthOneLine": "Back squats + squat jumps; Bulgarian split squats, side lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 2 (10\u201315 min)**\n- Monster walks: 3\u00d720ft\n- KB calf raises 44#: 3\u00d720\n- SL balance eyes closed: 3\u00d740s\n- Banded hip march: 3\u00d725",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters \u00d720ft, KB calf raises \u00d720, SL balance 40s, hip march \u00d725"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 EASY",
+          "content": "**Easy long.** Restore week \u2014 drop pace, drop vert.\n- **Distance**: 9-11 miles\n- **Vert**: 1,500-2,000 ft\n- **Pace**: easy throughout, no efforts\n- **Fueling**: 50-60g carbs/hr\n\nMarquam easy or Wildwood easy. Notice how the body responds after the cycle.",
+          "summary": {
+            "distance": "9-11 miles",
+            "vert": "1,500-2,000 ft",
+            "duration": "2:00 hours",
+            "runOneLine": "9-11 miles, 1,500-2,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "dateRange": "May 18-24",
+      "type": "BUILD",
+      "target": "35 miles, 6,500 ft",
+      "content": "Cycle 2, build wk 1. Vert-flavored Sunday. Body should feel rebuilt off restore.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 2 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d720/leg\n- Psoas plank: 3\u00d730s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d730s\n- SL glute bridge: 3\u00d712 + 10lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: banded march, psoas plank, adduction, Copenhagen plank, weighted SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 7.5 miles, ~1,700 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + KB snatches + swings (Weeks 10\u201312):**\n\nWarm up: Hip mobility, RDLs, light KB work.\n\nSet 1 \u2014 3\u20134\u00d7 through:\n- 6\u00d7 deadlifts at 70%\n- 6\u00d7 per arm KB snatch\n\nSet 2 \u2014 2\u20133\u00d7 through:\n- 10\u00d7 alternating KB swings\n- 30 sec dead bug hold\n\nProgression: Add weight or reps; keep snatch technique sharp.",
+          "summary": {
+            "distance": "7.5 miles",
+            "vert": "1,700 ft",
+            "duration": "90 min",
+            "runOneLine": "7.5 miles, ~1,700 ft",
+            "strengthOneLine": "Deadlifts + KB snatches; alternating swings, dead bug"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 2 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d712 each\n- Step-downs: 3\u00d720 slow eccentric\n- Wall sit: 3\u00d755s\n- Med ball side-to-side: 3\u00d715",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops \u00d712, slow step-downs \u00d720, wall sit 55s, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Pause squats + single-arm press; weighted step-ups, step-downs"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 2 (10\u201315 min)**\n- Monster walks: 3\u00d720ft\n- KB calf raises 44#: 3\u00d720\n- SL balance eyes closed: 3\u00d740s\n- Banded hip march: 3\u00d725",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters \u00d720ft, KB calf raises \u00d720, SL balance 40s, hip march \u00d725"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**B-day on dirt.**\n- **Distance**: 5-6 miles easy\n- **Vert**: 600-1,000 ft\n\nEasy dirt before tomorrow's vert.",
+          "summary": {
+            "distance": "5-6 miles",
+            "vert": "600-1,000 ft",
+            "duration": "45-75 min",
+            "runOneLine": "5-6 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 VERT",
+          "content": "**Vert day** \u2014 Saltzman or Rollercoaster.\n- **Distance**: 15-17 miles\n- **Vert**: 3,500-4,500 ft\n- **Pace**: shuffle on climbs, controlled descents\n- **Fueling**: 60g carbs/hr\n\nFirst vert day post-restore. Should feel strong \u2014 body has absorbed the previous cycle.",
+          "summary": {
+            "distance": "15-17 miles",
+            "vert": "3,500-4,500 ft",
+            "duration": "3:30 hours",
+            "runOneLine": "15-17 miles, 3,500-4,500 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "dateRange": "May 25-31",
+      "type": "BUILD",
+      "target": "~52-59 miles, 7,000-8,000 ft",
+      "content": "Cycle 2, build wk 2. **Sunday is a 50K self-supported test** \u2014 your longest single run before race day, slotted here so you have 11 weeks to absorb gaps and adjust. Treat it as a full race-day rehearsal: kit, fuel, sodium plan, gear placement. Goal is proving the system works at 6+ hours, not chasing your 6:30 PR.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 2 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d720/leg\n- Psoas plank: 3\u00d730s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d730s\n- SL glute bridge: 3\u00d712 + 10lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: banded march, psoas plank, adduction, Copenhagen plank, weighted SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 8 miles, ~1,800 ft. Group run.\n\n**Heavy Strength \u2014 Deadlifts + KB snatches + swings (Weeks 10\u201312):**\n\nWarm up: Hip mobility, RDLs, light KB work.\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 deadlifts at 70%\n- 6\u00d7 per arm KB snatch\n\nSet 2 \u2014 3\u00d7 through:\n- 10\u00d7 alternating KB swings\n- 30 sec dead bug hold\n\nProgression: Add weight or reps; keep snatch technique sharp.",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "8 miles, ~1,800 ft",
+            "strengthOneLine": "Deadlifts + KB snatches; alternating swings, dead bug"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 2 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d712 each\n- Step-downs: 3\u00d720 slow eccentric\n- Wall sit: 3\u00d755s\n- Med ball side-to-side: 3\u00d715",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops \u00d712, slow step-downs \u00d720, wall sit 55s, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Pause squats + single-arm press; weighted step-ups, step-downs"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 2 (10\u201315 min)**\n- Monster walks: 3\u00d720ft\n- KB calf raises 44#: 3\u00d720\n- SL balance eyes closed: 3\u00d740s\n- Banded hip march: 3\u00d725",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: monsters \u00d720ft, KB calf raises \u00d720, SL balance 40s, hip march \u00d725"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**B-day on dirt \u2014 first true B2B.**\n- **Distance**: 5-6 miles easy\n- **Vert**: 600-1,000 ft\n\nThis sets up tomorrow's stamina-long-on-tired-legs. Closest race-day fatigue simulation you'll get.",
+          "summary": {
+            "distance": "5-6 miles",
+            "vert": "600-1,000 ft",
+            "duration": "45-75 min",
+            "runOneLine": "5-6 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 50K SELF-SUPPORTED TEST",
+          "content": "**50K self-supported test (race rehearsal).**\n- **Distance**: ~31 miles (longest single run before race day)\n- **Vert**: 2,000-3,000 ft (kept gentle \u2014 this is a stamina + nutrition test, not a climbing test)\n- **Pace**: race effort, expect ~7-7.5 hours (slower than your 6:30 PR \u2014 proving fuel, not chasing time)\n- **Fueling**: full race-day kit. 2 flasks pre-filled with PN1500 tabs + 1 S-cap/hr + neutral gels at 60-90g/hr carbs. Switch to S-caps every 30 min once flasks are empty.\n\n**Setup (Friday before)**: stash 2 water bottles + 2 gels at midpoint along route. Mark on Google Maps. Wildwood E2E playbook works \u2014 pick a 31mi loop or O&B with bail points.\n\n**What to audit**:\n- Did the fueling timer hold for 7+ hours?\n- Did palate fatigue show up? When?\n- Sodium replacement \u2014 any cramping, salt cravings?\n- Gear placement \u2014 anything you wished was easier to access?\n- Mental \u2014 what worked when you wanted to quit?\n\nNotes go straight into race-notes file. This is your highest-leverage training day in the plan.",
+          "summary": {
+            "distance": "~31 miles",
+            "vert": "2,000-3,000 ft",
+            "duration": "7:00-7:30 hours",
+            "runOneLine": "~31 miles, 2,000-3,000 ft (50K test)",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "dateRange": "Jun 1-7",
+      "type": "BUILD",
+      "target": "38 miles, 7,500 ft",
+      "content": "Cycle 2, build wk 3 \u2014 peak. RECON Larch Mountain Sunday. Biggest vert week of the plan so far.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Light Strength",
+          "content": "**Run**: 6 miles, ~1,400 ft. Group run \u2014 back off effort.\n\n**Light Strength:**\n2\u20133 rounds: light deadlifts or RDLs, single-arm rows, KB swings.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "1,400 ft",
+            "duration": "75 min",
+            "runOneLine": "6 miles, ~1,400 ft",
+            "strengthOneLine": "Light: RDLs, single-arm rows, KB swings"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each (single-leg focus)\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4 miles easy + strides",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Light: goblet squats, reverse lunges, strict press"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "40 min easy.\n- **Distance**: ~3 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "3 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "3 miles easy",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**Pre-recon shake.**\n- **Distance**: 3-4 miles very easy\n- **Vert**: 300-500 ft\n\nVery short before Larch tomorrow.",
+          "summary": {
+            "distance": "3-4 miles",
+            "vert": "300-500 ft",
+            "duration": "45-75 min",
+            "runOneLine": "3-4 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 RECON Larch",
+          "content": "**RECON: Larch Mountain** (sustained climbing volume).\n- **Distance**: 14-18 miles\n- **Vert**: 4,500-6,000 ft\n- **Pace**: race effort on climbs\n- **Fueling**: 60g carbs/hr, full kit\n\nPeak vert week of the plan so far. Larch via Multnomah Falls and back is the classic. Big day before Wk 13 restore.",
+          "summary": {
+            "distance": "14-18 miles",
+            "vert": "4,500-6,000 ft",
+            "duration": "5:00-6:00 hours",
+            "runOneLine": "14-18 miles, 4,500-6,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 13,
+      "dateRange": "Jun 8-14",
+      "type": "RESTORE",
+      "target": "23 miles, 3,500 ft",
+      "content": "Restore week 2 of 4. Real downshift \u2014 hit the target, don't drift over.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 8 miles, ~1,800 ft. Group run.\n\n**Heavy Strength \u2014 Heavy deadlifts + box jumps + rows (Weeks 13\u201315):**\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 deadlifts at 75\u201380%\n- 6\u00d7 box jumps (step down)\n\nSet 2 \u2014 3\u00d7 through:\n- 8\u00d7 single-arm row per side\n- 8\u00d7 bird dog rows per side",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "8 miles, ~1,800 ft",
+            "strengthOneLine": "Heavy deadlifts + box jumps; single-arm rows, bird dog rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65\u201370 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5.5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each (SL focus)\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "5.5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5.5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Tabor/Hill Repeats + Heavy Strength",
+          "content": "Warm up easy to the hill. Build into the repeats.\n\nFind an aerobic uphill and hold it. Last rep should be the fastest.\n\n- **Total**: ~90 min\n- **Distance**: ~5.5 miles\n- **Vert**: ~1,800 ft\n- Bring electrolytes and fuel.\n\n**Heavy Strength \u2014 Back squats + weighted step-ups + push press (Weeks 13\u201315):**\n\nSet 1 \u2014 4\u00d7 through:\n- 5\u00d7 back squats at 70\u201375%\n- 5\u00d7 push press\n\nSet 2 \u2014 3\u00d7 through:\n- 8\u00d7 per side weighted step-ups\n- 8\u00d7 reverse lunges per side",
+          "summary": {
+            "distance": "5.5 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "5.5 miles, ~1,800 ft \u2014 hill repeats",
+            "strengthOneLine": "Heavy squats + push press; weighted step-ups, reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 EASY",
+          "content": "**Easy long.** Restore.\n- **Distance**: 10-12 miles\n- **Vert**: 1,500-2,000 ft\n- **Pace**: easy throughout\n- **Fueling**: 50-60g carbs/hr\n\nDown week after the biggest vert push so far. Listen to the body.",
+          "summary": {
+            "distance": "10-12 miles",
+            "vert": "1,500-2,000 ft",
+            "duration": "2:15 hours",
+            "runOneLine": "10-12 miles, 1,500-2,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 14,
+      "dateRange": "Jun 15-21",
+      "type": "BUILD",
+      "target": "36 miles, 7,000 ft",
+      "content": "Cycle 3, single build week before Arizona. RECON Mt Hood Meadows partial Sunday \u2014 first on-course look.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 8 miles, ~1,800 ft. Group run.\n\n**Heavy Strength \u2014 Heavy deadlifts + box jumps + rows (Weeks 13\u201315):**\n\nSet 1 \u2014 4\u00d7 through:\n- 6\u00d7 deadlifts at 75\u201380%\n- 6\u00d7 box jumps (step down)\n\nSet 2 \u2014 3\u00d7 through:\n- 8\u00d7 single-arm row per side\n- 8\u00d7 bird dog rows per side",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "8 miles, ~1,800 ft",
+            "strengthOneLine": "Heavy deadlifts + box jumps; single-arm rows, bird dog rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65\u201370 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5.5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each (SL focus)\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "5.5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5.5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Heavy squats + push press; weighted step-ups, reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**Pre-recon shake.**\n- **Distance**: 3-4 miles easy\n- **Vert**: 300-500 ft\n\nLight before tomorrow's Mt Hood Meadows recon.",
+          "summary": {
+            "distance": "3-4 miles",
+            "vert": "300-500 ft",
+            "duration": "45-75 min",
+            "runOneLine": "3-4 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 RECON Mt Hood Meadows",
+          "content": "**RECON: Mt Hood Meadows trails** \u2014 Umbrella \u2192 Ski Patrol section (your AS5 \u2192 AS6 in the race).\n- **Distance**: 14-16 miles\n- **Vert**: 4,000-5,500 ft\n- **Pace**: race effort, focus on power-hike efficiency\n- **Fueling**: full race kit\n\nFirst on-course recon. Mild altitude (5-6k ft). Practice the section that comes right before the crux. Solo recon since Arizona is next week.",
+          "summary": {
+            "distance": "14-16 miles",
+            "vert": "4,000-5,500 ft",
+            "duration": "5:00-6:00 hours",
+            "runOneLine": "14-16 miles, 4,000-5,500 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 15,
+      "dateRange": "Jun 22-28",
+      "type": "RESTORE",
+      "target": "22 miles, 2,000 ft",
+      "content": "Vacation week \u2014 Arizona. Hot weather and mild altitude. Treat as restore: no vert goals, no quality. Run by time and feel only. Use the heat exposure as bonus acclimation.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Skip if heat or travel has already stressed the system.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy Run",
+          "content": "**Vacation week \u2014 Arizona.** Run easy by time only. No vert goals, no pace targets. Heat and altitude are stress enough.\n- 40\u201350 min easy, flat or low-vert terrain\n- **Distance**: ~5 miles\n- Skip group run format if logistics don't allow",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": "5 miles easy \u2014 flat, heat-adjusted",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + PT",
+          "content": "40 min easy. Skip strides if hot.\n- **Distance**: ~4 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "4 miles easy",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy Hilly",
+          "content": "**Vacation week.** If terrain and heat allow, easy hilly run. Otherwise flat.\n- 45\u201355 min easy\n- **Distance**: ~5 miles\n- **Vert**: ~500 ft (only if heat permits)\n- No strength this week",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "500 ft",
+            "duration": "55 min",
+            "runOneLine": "5 miles easy, ~500 ft if weather allows",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Rest or Easy Walk + PT",
+          "content": "Rest or easy walk 20\u201330 min.\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "2 miles",
+            "vert": null,
+            "duration": "30 min",
+            "runOneLine": "Easy walk or rest",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 Arizona by feel",
+          "content": "**Arizona vacation.** Run by time and feel \u2014 heat and mild altitude. No vert goals.\n- **Distance**: 8-12 miles\n- **Pace**: easy, very easy in heat\n- **Fueling**: extra electrolytes, ~700-1000mg sodium/hr\n\nRun before 8 AM or after 6 PM. Hydrate aggressively. Use the heat exposure as bonus acclimation, but don't push pace or duration.",
+          "summary": {
+            "distance": "8-12 miles",
+            "vert": "by feel",
+            "duration": "by time",
+            "runOneLine": "8-12 miles, by feel",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 16,
+      "dateRange": "Jun 29-Jul 5",
+      "type": "BUILD",
+      "target": "34 miles, 6,500 ft",
+      "content": "Cycle 4, build wk 1 \u2014 rebuild post-Arizona. Vert-flavored Sunday to re-establish climbing rhythm.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 8 miles, ~1,800 ft. Group run \u2014 back to full effort.\n\n**Heavy Strength \u2014 Light deadlifts + pulls (Weeks 16\u201319):**\n\nSet 1 \u2014 2\u20133\u00d7 through:\n- 6\u20138\u00d7 deadlifts at 55\u201365% (smooth, no grind)\n- 8\u00d7 single-arm row per side\n\nSet 2 \u2014 2\u00d7 through:\n- 10\u00d7 KB swings\n- 30 sec dead bug hold",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "8 miles, ~1,800 ft",
+            "strengthOneLine": "Light deadlifts + rows; KB swings, dead bug"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65\u201370 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5.5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "5.5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5.5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Back squats (maintenance) + press; step-ups, reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "55 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "55 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**B-day shake-out post-Arizona.**\n- **Distance**: 4-5 miles easy\n- **Vert**: 500-800 ft\n\nReintegration after the Arizona restore. Dirt under feet before tomorrow's vert.",
+          "summary": {
+            "distance": "4-5 miles",
+            "vert": "500-800 ft",
+            "duration": "45-75 min",
+            "runOneLine": "4-5 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 VERT (rebuild)",
+          "content": "**Vert rebuild post-Arizona.**\n- **Distance**: 15-17 miles\n- **Vert**: 4,000-5,000 ft\n- **Pace**: shuffle on climbs, controlled descents\n- **Fueling**: full kit\n\nFirst vert day after the heat restore week. Saltzman or Rollercoaster + BPA. Re-establish climbing rhythm.",
+          "summary": {
+            "distance": "15-17 miles",
+            "vert": "4,000-5,000 ft",
+            "duration": "3:30 hours",
+            "runOneLine": "15-17 miles, 4,000-5,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 17,
+      "dateRange": "Jul 6-12",
+      "type": "BUILD",
+      "target": "37 miles, 7,000 ft",
+      "content": "Cycle 4, build wk 2. Stamina-flavored Sunday. Sauna stack starts in 2 weeks \u2014 keep effort honest, not extra.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 8 miles, ~1,800 ft. Group run.\n\n**Heavy Strength \u2014 Light deadlifts + pulls (Weeks 16\u201319):**\n\nSet 1 \u2014 2\u20133\u00d7 through:\n- 6\u20138\u00d7 deadlifts at 55\u201365%\n- 8\u00d7 single-arm row per side\n\nSet 2 \u2014 2\u00d7 through:\n- 10\u00d7 KB swings\n- 30 sec dead bug hold",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "8 miles, ~1,800 ft",
+            "strengthOneLine": "Light deadlifts + rows; KB swings, dead bug"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Back squats (maintenance) + press; step-ups, reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": "4 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**B-day on dirt.**\n- **Distance**: 5-6 miles easy\n- **Vert**: 600-1,000 ft\n\nBefore tomorrow's longest stamina day. Practice fueling on this short run too \u2014 get cadence dialed.",
+          "summary": {
+            "distance": "5-6 miles",
+            "vert": "600-1,000 ft",
+            "duration": "45-75 min",
+            "runOneLine": "5-6 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 STAMINA (longest)",
+          "content": "**Longest stamina day** of the plan.\n- **Distance**: 18-22 miles\n- **Vert**: 2,000-3,000 ft\n- **Pace**: easy throughout\n- **Fueling**: full kit, treat as race rehearsal\n\nLast big mileage day. Wildwood O&B long or Sauvie + perimeter. Test EVERYTHING \u2014 shoes, socks, vest, fueling, hydration. Anything that bothers you here, change before race week.",
+          "summary": {
+            "distance": "18-22 miles",
+            "vert": "2,000-3,000 ft",
+            "duration": "4:00 hours",
+            "runOneLine": "18-22 miles, 2,000-3,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 18,
+      "dateRange": "Jul 13-19",
+      "type": "BUILD",
+      "target": "38 miles, 7,500 ft",
+      "content": "Cycle 4, build wk 3 \u2014 peak. RECON Mt Hood Meadows full crux Sunday (AS6 \u2192 AS7 turnaround). The most race-specific day of the plan.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 8 miles, ~1,800 ft. Group run.\n\n**Heavy Strength \u2014 Light deadlifts + pulls (Weeks 16\u201319):**\n\nSet 1 \u2014 2\u20133\u00d7 through:\n- 6\u20138\u00d7 deadlifts at 55\u201365%\n- 8\u00d7 single-arm row per side\n\nSet 2 \u2014 2\u00d7 through:\n- 10\u00d7 KB swings\n- 30 sec dead bug hold",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "8 miles, ~1,800 ft",
+            "strengthOneLine": "Light deadlifts + rows; KB swings, dead bug"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "65 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "70 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Back squats (maintenance) + press; step-ups, reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "50 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": "4 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "B-Day Easy",
+          "content": "**Pre-recon shake.**\n- **Distance**: 4-5 miles very easy\n- **Vert**: 400-600 ft\n\nLight before the most important training day of the plan (Mt Hood crux recon).",
+          "summary": {
+            "distance": "4-5 miles",
+            "vert": "400-600 ft",
+            "duration": "45-75 min",
+            "runOneLine": "4-5 miles easy on dirt",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 RECON Mt Hood crux",
+          "content": "**RECON: Mt Hood Meadows full crux** \u2014 AS6 \u2192 AS7 turnaround.\n- **Distance**: 16-20 miles\n- **Vert**: 5,000-6,500 ft\n- **Pace**: race effort, full power-hike kit including poles if you'll race with them\n- **Fueling**: full race kit\n\nThe most important training day of the plan. Run the crux: 1.6 mi at ~18% gaining 1,500 ft to 8,000 ft, scree-field switchbacks, then descend. Note your time and HR up the climb. This is your race-specific peak.",
+          "summary": {
+            "distance": "16-20 miles",
+            "vert": "5,000-6,500 ft",
+            "duration": "6:00-7:00 hours",
+            "runOneLine": "16-20 miles, 5,000-6,500 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 19,
+      "dateRange": "Jul 20-26",
+      "type": "RESTORE",
+      "target": "23 miles, 3,000 ft",
+      "content": "Final restore week. Sauna stack starts now. Sunday is easy \u2014 the work is done.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT + Optional Rowing",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 3 (10\u201315 min)**\n- Seated banded hip flexor march: 3\u00d725/leg, medium band\n- Psoas plank: 3\u00d740s\n- Side-lying adduction: 3\u00d720\n- Copenhagen plank: 3\u00d740s\n- SL glute bridge: 4\u00d712 + 15lb\n\n**Optional: Rowing (20\u201330 min, Z2)**\nOnly if hip flexors feel clear after PT. Easy effort throughout \u2014 this is aerobic maintenance, not training. If anything feels tight, skip it and rest.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: heavy banded march, psoas plank, adduction, Copenhagen plank, 15lb SL bridge"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Heavy Strength",
+          "content": "**Run**: 8 miles, ~1,800 ft. Group run.\n\n**Heavy Strength \u2014 Light deadlifts + pulls (Weeks 16\u201319):**\n\nSet 1 \u2014 2\u20133\u00d7 through:\n- 6\u20138\u00d7 deadlifts at 55\u201365%\n- 8\u00d7 single-arm row per side\n\nSet 2 \u2014 2\u00d7 through:\n- 10\u00d7 KB swings\n- 30 sec dead bug hold",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "8 miles, ~1,800 ft",
+            "strengthOneLine": "Light deadlifts + rows; KB swings, dead bug"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "60 min easy, 8\u00d720 sec hill strides.\n- **Distance**: ~5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 3 (10\u201315 min)**\n- Pogo / SL hops: 3\u00d715 each\n- Step-downs: 3\u00d720 slow eccentric + 5lb\n- Wall sit: 3\u00d760s\n- Med ball side-to-side: 3\u00d715 + light weight",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "65 min",
+            "runOneLine": "5 miles easy + 8\u00d720s hill strides",
+            "strengthOneLine": "Reactive + knee: SL hops \u00d715, weighted step-downs, wall sit 60s, weighted med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Power Hike with Poles + Heavy Strength",
+          "content": "Warm up 20 min. 5\u00d730 sec accelerations.\n\n**Main set: 4\u00d76 min uphill HIKING with poles.**\nPeak week effort \u2014 go hard.\n\n- **Distance**: ~5.5 miles\n- **Vert**: ~1,800 ft\n\n**Heavy Strength \u2014 Back squats (maintenance) + press + single-leg (Weeks 16\u201319):**\n\nSet 1 \u2014 3\u00d7 through:\n- 5\u00d7 back squats at 70%\n- 6\u00d7 strict or push press\n\nSet 2 \u2014 2\u00d7 through:\n- 6\u00d7 per side step-ups\n- 8\u00d7 reverse lunges per side",
+          "summary": {
+            "distance": "5.5 miles",
+            "vert": "1,800 ft",
+            "duration": "90 min",
+            "runOneLine": "5.5 miles, ~1,800 ft \u2014 4\u00d76 min pole hike repeats",
+            "strengthOneLine": "Back squats (maintenance) + press; step-ups, reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + PT",
+          "content": "Easy legs. Short run only.\n- **Distance**: ~3.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 3 (10\u201315 min)**\n- Monster walks: 3\u00d720ft medium band\n- KB calf raises 44#: 3\u00d720 + pause at top\n- SL balance eyes closed + reach: 3\u00d730s\n- Banded hip march: 3\u00d725 medium band",
+          "summary": {
+            "distance": "3.5 miles",
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": "3.5 miles easy",
+            "strengthOneLine": "Abductors + posterior: medium band monsters, pause calf raises, SL balance + reach, medium band march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Easy + Strides (Back-to-Back)",
+          "content": "10 miles easy with 8\u00d720 sec strides at the end.\n\nBack-to-back day. Keep effort easy \u2014 the goal is pre-fatigued legs for tomorrow's long run, not a second quality session.",
+          "summary": {
+            "distance": "10 miles",
+            "vert": null,
+            "duration": "100 min",
+            "runOneLine": "10 miles easy + 8\u00d720s strides",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run \u2014 EASY",
+          "content": "**Easy long.** Final restore before taper.\n- **Distance**: 11-13 miles\n- **Vert**: 1,500-2,000 ft\n- **Pace**: easy throughout\n- **Fueling**: 50-60g carbs/hr\n\n**Sauna stack starts this week.** 20-30 min post-run, 175-195\u00b0F (or hot car / hot bath alternative). Don't ride this run hard \u2014 you need to recover for the heat work.",
+          "summary": {
+            "distance": "11-13 miles",
+            "vert": "1,500-2,000 ft",
+            "duration": "2:30 hours",
+            "runOneLine": "11-13 miles, 1,500-2,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 20,
+      "dateRange": "Jul 27-Aug 2",
+      "type": "TAPER 1",
+      "target": "18 miles, 2,500 ft",
+      "content": "Taper I \u2014 Vancouver Island partial week constraint (Jul 25\u201328 overlap). Treat as a light restore. Mileage drops to ~70% of peak. PT drops to Tier 1 volume. No rowing during taper. No quality workouts, no new stimulus. The training is done.\n\n**Sauna stack:** Heat protocol is active. Post-run 20-30 min in 175-195\u00b0F sauna, daily through race day Aug 14. Plasma volume gains hold 7-14 days. **Hot car alternative**: park in sun, windows up, sit 20-30 min, hydrate going in, exit if HR > 140 or dizzy. **Hot bath alternative**: 104\u00b0F for 30-40 min.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Taper (reduced, Tier 1 volume)**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors (reduced): straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy Run \u2014 Vancouver Island",
+          "content": "**Vancouver Island constraint.** Easy run only \u2014 no group run format required.\n- 40\u201350 min easy\n- **Distance**: ~5 miles\n- Enjoy the scenery. No effort targets.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "5 miles easy",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + PT",
+          "content": "30\u201340 min easy.\n- **Distance**: ~3.5 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Taper (reduced)**\n- Pogo / SL hops: 2\u00d710 each\n- Step-downs: 2\u00d715\n- Wall sit: 2\u00d745s\n- Med ball side-to-side: 2\u00d712",
+          "summary": {
+            "distance": "3.5 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "3.5 miles easy",
+            "strengthOneLine": "Reactive + knee (reduced): pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy Hilly + Light Strength",
+          "content": "60 min hilly, easy.\n- **Distance**: ~5 miles\n- **Vert**: ~700 ft\n\n**Maintenance Strength \u2014 Thursday:**\n2\u00d7 through: 6\u00d7 back squats (light), 6\u00d7 strict press, 8\u00d7 reverse lunges per side.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "700 ft",
+            "duration": "75 min",
+            "runOneLine": "5 miles, ~700 ft",
+            "strengthOneLine": "Back squats (light) + strict press; reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy + PT",
+          "content": "30 min easy.\n- **Distance**: ~2.5 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Taper (reduced)**\n- Monster walks: 2\u00d715ft\n- KB calf raises 44#: 2\u00d715\n- SL balance eyes closed: 2\u00d730s\n- Banded hip march: 2\u00d720",
+          "summary": {
+            "distance": "2.5 miles",
+            "vert": null,
+            "duration": "35 min",
+            "runOneLine": "2.5 miles easy",
+            "strengthOneLine": "Abductors + posterior (reduced): monsters, KB calf raises, SL balance, hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "2:30 hours easy.\n- **Distance**: ~12 miles\n- **Vert**: ~2,000 ft\n- **Fueling**: 80g carbs/hr, every 20 min\n\nFind trails with sustained climbing. Practice power hiking the steep sections. More rolling than pure vert \u2014 keep running, not just hiking.",
+          "summary": {
+            "distance": "12 miles",
+            "vert": "2,000 ft",
+            "duration": "2:30 hours",
+            "runOneLine": "12 miles, ~2,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 21,
+      "dateRange": "Aug 3-9",
+      "type": "TAPER 2",
+      "target": "14 miles, 1,200 ft",
+      "content": "Taper II \u2014 final full week before race. Volume drops to ~50% of peak. Keep the legs sharp with a couple of short quality touches. Nothing new, nothing hard. Practice your race morning routine on Sunday.\n\n**Sauna stack:** Heat protocol is active. Post-run 20-30 min in 175-195\u00b0F sauna, daily through race day Aug 14. Plasma volume gains hold 7-14 days. **Hot car alternative**: park in sun, windows up, sit 20-30 min, hydrate going in, exit if HR > 140 or dizzy. **Hot bath alternative**: 104\u00b0F for 30-40 min.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Taper (reduced)**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors (reduced): straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy Run + Strides + Maintenance Strength",
+          "content": "**Run**: 4\u20135 miles easy with 4\u00d720 sec strides. Group run \u2014 just enjoy it.\n\n**Maintenance Strength \u2014 Tuesday:**\n2\u00d7 through: 6\u00d7 single-leg deadlifts (light), 8\u00d7 single-arm rows, 8\u00d7 bird dog rows.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": null,
+            "duration": "60 min",
+            "runOneLine": "5 miles easy + 4\u00d720s strides",
+            "strengthOneLine": "Light: SL deadlifts, single-arm rows, bird dog rows"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + PT",
+          "content": "30 min easy.\n- **Distance**: ~3 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Taper (reduced)**\n- Pogo / SL hops: 2\u00d710 each\n- Step-downs: 2\u00d715\n- Wall sit: 2\u00d745s\n- Med ball side-to-side: 2\u00d712",
+          "summary": {
+            "distance": "3 miles",
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": "3 miles easy",
+            "strengthOneLine": "Reactive + knee (reduced): pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy Hilly + Maintenance Strength",
+          "content": "60 min hilly, easy.\n- **Distance**: ~5 miles\n- **Vert**: ~700 ft\n\n**Maintenance Strength \u2014 Thursday:**\n2\u00d7 through: 6\u00d7 back squats (light), 6\u00d7 strict press, 8\u00d7 reverse lunges per side.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "700 ft",
+            "duration": "75 min",
+            "runOneLine": "5 miles, ~700 ft",
+            "strengthOneLine": "Back squats (light) + strict press; reverse lunges"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Rest or Easy Walk + PT",
+          "content": "Rest or 20 min easy walk.\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Taper (reduced)**\n- Monster walks: 2\u00d715ft\n- KB calf raises 44#: 2\u00d715\n- SL balance eyes closed: 2\u00d730s\n- Banded hip march: 2\u00d720",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "25 min",
+            "runOneLine": null,
+            "strengthOneLine": "Abductors + posterior (reduced): monsters, KB calf raises, SL balance, hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "2:00 hours easy.\n- **Distance**: ~10 miles\n- **Vert**: ~1,200 ft\n- **Fueling**: 80g carbs/hr, every 20 min\n\nKeep effort fully aerobic. Power hike any steep sections.",
+          "summary": {
+            "distance": "10 miles",
+            "vert": "1,200 ft",
+            "duration": "2:00 hours",
+            "runOneLine": "10 miles, ~1,200 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 22,
+      "dateRange": "Aug 10-15",
+      "type": "RACE WEEK",
+      "target": "~14 miles total before race",
+      "content": "Race week. Short shake-outs only. The fitness is locked in \u2014 nothing you do this week adds to it, but poor choices can take away from it. Sleep, eat, stay off your feet. Race day is Saturday, August 15.\n\n**Sauna stack:** Heat protocol is active. Post-run 20-30 min in 175-195\u00b0F sauna, daily through race day Aug 14. Plasma volume gains hold 7-14 days. **Hot car alternative**: park in sun, windows up, sit 20-30 min, hydrate going in, exit if HR > 140 or dizzy. **Hot bath alternative**: 104\u00b0F for 30-40 min.\n\n**RACE DAY: Saturday Aug 15, 5:30 AM start, 9:00 PM cutoff (15.5 hrs)**\n\nCut-off pace targets per segment (avg 18:36/mi overall):\n- Start \u2192 AS2 Surveyors (mi 18.9): 11:15 AM cutoff. **Target: arrive by 10:45 AM** for 30-min buffer (16:40/mi)\n- AS2 \u2192 AS3 High Prairie (mi 26.5): 1:45 PM cutoff (19:44/mi for the climb)\n- AS3 \u2192 AS4 Bennett Pass (mi 35.8): 4:30 PM (17:44/mi, technical descent + ridgeline)\n- AS4 \u2192 AS5 Umbrella (mi 40.1): 5:45 PM (17:26/mi)\n- AS5 \u2192 AS6 Ski Patrol (mi 42.6): 6:30 PM (18:00/mi, steep service road)\n- AS6 \u2192 Finish (mi 50.0): 9:00 PM (20:16/mi for the crux + descent)\n\n**Crux**: AS6 \u2192 AS7 = 1.6 mi at ~18% grade gaining 1,500 ft to 8,000 ft. Power-hike with consistent cadence. This is the BPA you've been training, at altitude.\n\n**Carb load (Aug 11-14):**\n- Mon-Tue: normal eating, 50% carbs, drop alcohol\n- Wed: last harder shake-out, normal carbs\n- Thu (Aug 13): start carb load. 5-7g carbs/kg. Reduce fiber, fat. White rice, pasta, white bread, bananas, jam, honey, dates\n- Fri (Aug 14): same carb load. Bib pickup 5-6:30 PM. Dinner by 6:30 PM (low-fiber pasta + small protein, white bread, banana). Hydrate with electrolytes. Bed by 8:30 PM\n\n**Race breakfast (Aug 15, alarm 2:30 AM):**\n- 2:45-3:00 AM: 80-120g carbs, low fiber, low fat\n  - Option: 1.5 cups white rice + 2 tbsp honey + 1 banana + pinch salt\n  - Option: 2 slices white toast + 2 tbsp jam + 1 banana\n- 16-20 oz water with electrolytes\n- Sip electrolytes on shuttle (3:30-5:00 AM)\n- 5:00 AM: 1 gel + sip water, don't over-hydrate\n\n**During race fueling:**\n- Gels every 30-40 min from start (your homemade)\n- Precision 750mg/hr flask: refill at AS2 (mi 18.9) and AS5 (mi 40.1). Carry 2 flasks if you can\n- S-caps backup if flask runs dry\n- Caffeinated gels: AS3 (mi 26.5), AS5 (mi 40.1), AS6 (mi 42.6) \u2014 ~300mg total over second half\n- Aid food: bananas, PB&J halves, Neversecond C30 backup if homemade runs out\n\n**Drop bag plan:**\n- AS2 (mi 18.9): backup gels, full Precision refill mix, sunscreen, anti-chafe, spare s-caps\n- AS5 (mi 40.1): **headlamp + spare batteries** (required if leaving after 5 PM), caffeinated gels, fresh socks, anti-chafe, second flask refill, ibuprofen if you take it\n\n**Other:**\n- Pacers NOT allowed\n- Trekking poles allowed, gaiters encouraged for AS6-AS7 scree\n- Crew: AS1, 2, 5, 6, 7, finish (NOT AS3 or AS4)\n",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 light**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors (light): straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy Shake-Out",
+          "content": "20\u201325 min easy with 4\u00d715 sec strides.\n- **Distance**: ~3 miles\n\nGroup run if it's easy and social. No effort. The goal is blood flow.",
+          "summary": {
+            "distance": "3 miles",
+            "vert": null,
+            "duration": "25 min",
+            "runOneLine": "3 miles easy + 4\u00d715s strides",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + PT",
+          "content": "20 min easy.\n- **Distance**: ~2.5 miles\n\n**Wednesday PT \u2014 light**\n- Pogo / SL hops: 2\u00d78 each\n- Step-downs: 2\u00d712\n- Wall sit: 2\u00d730s\n- Med ball side-to-side: 2\u00d710",
+          "summary": {
+            "distance": "2.5 miles",
+            "vert": null,
+            "duration": "30 min",
+            "runOneLine": "2.5 miles easy",
+            "strengthOneLine": "Reactive + knee (light): pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy Shake-Out",
+          "content": "20 min easy.\n- **Distance**: ~2.5 miles\n- 4\u00d715 sec strides if legs feel good\n\nStay off your feet the rest of the day. No heavy lifting, no yard work.",
+          "summary": {
+            "distance": "2.5 miles",
+            "vert": null,
+            "duration": "20 min",
+            "runOneLine": "2.5 miles easy",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Rest + PT",
+          "content": "Full rest day. Travel to race if needed.\n\n**Friday PT \u2014 light**\n- Monster walks: 2\u00d710ft\n- KB calf raises: 2\u00d710\n- SL balance: 2\u00d720s\n- Hip march: 2\u00d715\n\nPack your drop bags. Check your gear. Sleep early.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Abductors + posterior (light): monsters, calf raises, SL balance, hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "RACE DAY \u2014 Wy'East Trailfest 50M",
+          "content": "**Race Day \u2014 August 15, 2026**\n\nWy'East Trailfest 50M (~51.8 miles, ~7,274 ft)\n\nThis is what the last 22 weeks were for. Trust the training. Fuel early and often \u2014 70\u201380g carbs/hr from mile 1. Hike the steep stuff without shame. Run the flats and downhills with confidence.\n\nYou've been here before. Finish it.",
+          "summary": {
+            "distance": "51.8 miles",
+            "vert": "7,274 ft",
+            "duration": "Race day",
+            "runOneLine": "Wy'East Trailfest 50M",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Day Off",
+          "content": "Rest. Eat. Sleep. You just ran 50 miles.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 23,
+      "dateRange": "Aug 17-23",
+      "type": "RECOVERY 1",
+      "target": "0 running miles \u2014 walk and move only",
+      "content": "First week after the race. The goal is blood flow, sleep, and food \u2014 not fitness. Your cardiovascular system recovers in days; your muscles, tendons, and connective tissue take 3\u20134 weeks. Walk daily. Eat well. Do not be fooled by how good your legs feel by Thursday \u2014 the deep tissue repair is still happening.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT \u2014 Gentle",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 gentle Tier 1**\n- Seated straight leg raise: 3\u00d715 (slow)\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors (gentle): straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Walk",
+          "content": "Walk 20\u201330 min. No running.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "25 min",
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "PT + Optional Easy Movement",
+          "content": "**Wednesday PT \u2014 Reactive/athletic + knee \u2014 gentle Tier 1**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712\n\nOptional: easy bike or swim if available and body feels ready.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "20 min",
+            "runOneLine": null,
+            "strengthOneLine": "Reactive + knee (gentle): pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "PT \u2014 Gentle",
+          "content": "**Friday PT \u2014 Abductors + posterior chain \u2014 gentle Tier 1**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Abductors + posterior (gentle): monsters, KB calf raises, SL balance, hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Easy Walk",
+          "content": "Easy walk 45\u201360 min. Legs will feel surprisingly ok \u2014 do not run.",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 24,
+      "dateRange": "Aug 24-30",
+      "type": "RECOVERY 2",
+      "target": "10\u201312 miles, flat only, zero vert",
+      "content": "Back to running, but flat and easy only. No hills, no effort, no strides. This week is purely about reestablishing the habit and flushing the legs. If anything aches beyond normal post-race soreness, back off immediately. No strength training this week \u2014 connective tissue is still repairing.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 1**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy Flat Run",
+          "content": "Easy flat run. No hills, no effort.\n- **Distance**: ~3\u20134 miles\n- **Vert**: none",
+          "summary": {
+            "distance": "3.5 miles",
+            "vert": null,
+            "duration": "40 min",
+            "runOneLine": "3.5 miles easy, flat",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy Flat Run + PT",
+          "content": "Easy flat run.\n- **Distance**: ~3 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 1**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712",
+          "summary": {
+            "distance": "3 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "3 miles easy, flat",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Rest or Easy Walk + PT",
+          "content": "Rest or easy walk.\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 1**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "20 min",
+            "runOneLine": null,
+            "strengthOneLine": "Abductors + posterior: monsters, KB calf raises, SL balance, hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Easy Flat Run",
+          "content": "Easy flat run.\n- **Distance**: ~4\u20135 miles\n- Time-based if preferred: 45\u201355 min\n- No hills, no strides",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": "4.5 miles easy, flat",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 25,
+      "dateRange": "Aug 31-Sep 6",
+      "type": "RECOVERY 3",
+      "target": "18\u201320 miles, light vert ok",
+      "content": "Reintroducing structure and a little vert. Everything stays easy \u2014 no workouts, no strides, no tempo. Light strength is ok Tuesday and Thursday if energy is there. This week tells you a lot: if you feel good here, week 26 can be a full normal base week. If anything is nagging, stay conservative.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 1**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy Run + Optional Light Strength",
+          "content": "Easy run, rolling terrain ok.\n- **Distance**: ~5\u20136 miles\n- **Vert**: up to 600 ft\n\n**Light Strength (optional):**\n2\u20133 rounds: light deadlifts or RDLs, single-arm rows, KB swings.",
+          "summary": {
+            "distance": "5.5 miles",
+            "vert": "600 ft",
+            "duration": "70 min",
+            "runOneLine": "5.5 miles, up to 600 ft vert",
+            "strengthOneLine": "Light (optional): RDLs, single-arm rows, KB swings"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy Run + PT",
+          "content": "Easy run.\n- **Distance**: ~4 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 1**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": "4 miles easy",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Light (optional): goblet squats, reverse lunges, strict press"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy Run + PT",
+          "content": "Easy run.\n- **Distance**: ~3\u20134 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 1**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": "3.5 miles",
+            "vert": null,
+            "duration": "45 min",
+            "runOneLine": "3.5 miles easy",
+            "strengthOneLine": "Abductors + posterior: monsters, KB calf raises, SL balance, hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Easy Run",
+          "content": "Easy run, keep effort aerobic.\n- **Distance**: ~6\u20137 miles\n- **Vert**: up to 1,000 ft",
+          "summary": {
+            "distance": "6.5 miles",
+            "vert": "1,000 ft",
+            "duration": "75 min",
+            "runOneLine": "6.5 miles, up to 1,000 ft vert",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    },
+    {
+      "week": 26,
+      "dateRange": "Sep 7-13",
+      "type": "RETURN",
+      "target": "25\u201328 miles, 2,500\u20133,000 ft",
+      "content": "Welcome back. This is a normal base week \u2014 same structure as the start of your last training block. Keep mileage conservative. The goal isn't to prove fitness, it's to re-establish the weekly rhythm. If this week feels great, your next plan can start from week 2 or 3 rather than week 1.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "PT Exercises",
+          "content": "**Monday PT \u2014 Hip flexors + adductors \u2014 Tier 1**\n- Seated straight leg raise: 3\u00d715\n- SL glute bridge: 3\u00d710\n- Side-lying adduction: 3\u00d715\n- Copenhagen plank: 3\u00d720s",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": "15 min",
+            "runOneLine": null,
+            "strengthOneLine": "Hip flexors + adductors: straight leg raise, SL glute bridge, adduction, Copenhagen plank"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Vert Run + Light Strength",
+          "content": "Easy vert run.\n- **Distance**: ~6\u20137 miles\n- **Vert**: ~1,200 ft\n\n**Light Strength:**\n2\u20133 rounds: light deadlifts or RDLs, single-arm rows, KB swings.",
+          "summary": {
+            "distance": "6.5 miles",
+            "vert": "1,200 ft",
+            "duration": "80 min",
+            "runOneLine": "6.5 miles, ~1,200 ft",
+            "strengthOneLine": "Light: RDLs, single-arm rows, KB swings"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Easy + Hill Strides + PT",
+          "content": "60 min easy, 6\u00d720 sec hill strides.\n- **Distance**: ~4\u20135 miles\n\n**Wednesday PT \u2014 Reactive/athletic + knee \u2014 Tier 1**\n- Pogo / SL hops: 3\u00d710 each\n- Step-downs: 3\u00d715\n- Wall sit: 3\u00d745s\n- Med ball side-to-side: 3\u00d712",
+          "summary": {
+            "distance": "4.5 miles",
+            "vert": null,
+            "duration": "65 min",
+            "runOneLine": "4.5 miles easy + 6\u00d720s strides",
+            "strengthOneLine": "Reactive + knee: pogo/SL hops, step-downs, wall sit, med ball"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Race-Specific Climbing",
+          "content": "**Default: BPA with the group** (.97 mi / 889 ft / 16.6%).\n- **Reps**: 2 up + 2 down + .5 up/down (~5 mi / ~2,000 ft)\n- **Pace**: power-hike effort, consistent cadence, work toward 30-35 min per up\n\n**If group not going / no drive:**\n- Stairways x5 (close to home, power-hike form work) \u2014 4-5 mi / 1,200-1,500 ft\n- OR Mt Tabor 7-9% runnable repeats \u2014 5-7 mi / 1,000-1,500 ft\n\nBPA is the most race-specific Thursday option (matches the AS6 \u2192 AS7 crux at 18%). Default to it whenever the group is going.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "2,000 ft",
+            "duration": "75 min",
+            "runOneLine": "BPA reps (default) or Stairways/Tabor",
+            "strengthOneLine": "Light: goblet squats, reverse lunges, strict press"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Easy Run + PT",
+          "content": "50 min easy.\n- **Distance**: ~4 miles\n\n**Friday PT \u2014 Abductors + posterior chain \u2014 Tier 1**\n- Monster walks: 3\u00d715ft\n- KB calf raises 44#: 3\u00d715\n- SL balance eyes closed: 3\u00d730s\n- Banded hip march: 3\u00d720",
+          "summary": {
+            "distance": "4 miles",
+            "vert": null,
+            "duration": "50 min",
+            "runOneLine": "4 miles easy",
+            "strengthOneLine": "Abductors + posterior: monsters, KB calf raises, SL balance, hip march"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Day Off",
+          "content": "",
+          "summary": {
+            "distance": null,
+            "vert": null,
+            "duration": null,
+            "runOneLine": null,
+            "strengthOneLine": null
+          }
+        },
+        {
+          "day": "Sunday",
+          "title": "Long Run",
+          "content": "1:45\u20132:00 hours easy.\n- **Distance**: ~8\u20139 miles\n- **Vert**: ~1,000 ft\n- **Fueling**: Practice 60g carbs/hr\n\nKeep effort easy. Notice how good it feels to run without a race on the horizon.",
+          "summary": {
+            "distance": "8.5 miles",
+            "vert": "1,000 ft",
+            "duration": "2 hours",
+            "runOneLine": "8.5 miles, ~1,000 ft",
+            "strengthOneLine": null
+          }
+        }
+      ]
+    }
+  ]
+}
