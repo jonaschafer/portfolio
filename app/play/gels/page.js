@@ -7,11 +7,14 @@ const CARBS_PER_FLASK = {
   500: 375,
 }
 
-/** Baseline F / malto / water (g) for Ratio page — matches recipe dry + water before pectin. */
-const RATIO_BASELINE_G = {
+/** Baseline F / malto / water (g) for Math page — matches recipe dry + water before pectin. */
+const MATH_BASELINE_G = {
   250: { fructose: 100, maltodextrin: 200, water: 200 },
   500: { fructose: 125, maltodextrin: 250, water: 250 },
 }
+
+/** Empty Salomon Soft Flask 500ml — user-editable on Math page. */
+const SALOMON_500ML_FLASK_EMPTY_G_DEFAULT = 34
 
 const FRUCTOSE_LINK = 'https://www.amazon.com/dp/B0799XXRZK?th=1'
 const MALTODEXTRIN_LINK = 'https://www.amazon.com/dp/B01H4BTWGA?th=1'
@@ -144,16 +147,25 @@ export default function GelsPage() {
   const [carbsPerHour, setCarbsPerHour] = useState(80)
   const [flaskSize, setFlaskSize] = useState(250)
 
-  // Ratio lab: fructose + maltodextrin + water only (carbs = F + M)
+  // Math lab: fructose + maltodextrin + water only (carbs = F + M)
   const [ratioFructoseG, setRatioFructoseG] = useState(
-    () => RATIO_BASELINE_G[250].fructose
+    () => MATH_BASELINE_G[250].fructose
   )
   const [ratioMaltoG, setRatioMaltoG] = useState(
-    () => RATIO_BASELINE_G[250].maltodextrin
+    () => MATH_BASELINE_G[250].maltodextrin
   )
   const [ratioWaterG, setRatioWaterG] = useState(
-    () => RATIO_BASELINE_G[250].water
+    () => MATH_BASELINE_G[250].water
   )
+
+  const [mathFlaskEmptyG, setMathFlaskEmptyG] = useState(
+    SALOMON_500ML_FLASK_EMPTY_G_DEFAULT
+  )
+  /** Optional override; empty → use planned gel + flask from sliders. */
+  const [mathScaleBeforeStr, setMathScaleBeforeStr] = useState('')
+  const [mathScaleAfterStr, setMathScaleAfterStr] = useState('')
+  const [mathRunHoursStr, setMathRunHoursStr] = useState('')
+  const [mathRunMinutesStr, setMathRunMinutesStr] = useState('')
 
   // Recipe state
   const [recipeElectrolytes, setRecipeElectrolytes] = useState('yes')
@@ -421,6 +433,71 @@ export default function GelsPage() {
   const plannerHoursPerFlaskAtTarget =
     carbsPerHour > 0 ? plannerCarbsPerFlask / carbsPerHour : 0
 
+  const mathFlaskEmptySafe =
+    Number.isFinite(mathFlaskEmptyG) && mathFlaskEmptyG >= 0
+      ? mathFlaskEmptyG
+      : SALOMON_500ML_FLASK_EMPTY_G_DEFAULT
+
+  const mathPlannedCarryG = ratioBatchTotalMassG + mathFlaskEmptySafe
+
+  const parseScaleGrams = (str) => {
+    if (str == null || String(str).trim() === '') return null
+    const n = parseFloat(String(str).trim().replace(/,/g, ''))
+    if (!Number.isFinite(n) || n < 0) return null
+    return n
+  }
+
+  const mathBeforeCarryG =
+    parseScaleGrams(mathScaleBeforeStr) ?? mathPlannedCarryG
+  const mathAfterCarryG = parseScaleGrams(mathScaleAfterStr)
+
+  const mathGelRemainingG =
+    mathAfterCarryG != null ? mathAfterCarryG - mathFlaskEmptySafe : null
+
+  const mathGelConsumedG =
+    mathAfterCarryG != null ? mathBeforeCarryG - mathAfterCarryG : null
+
+  const mathCarbFraction =
+    ratioBatchTotalMassG > 0 ? ratioBatchCarbsG / ratioBatchTotalMassG : 0
+
+  const mathCarbsConsumedG =
+    mathGelConsumedG != null &&
+    mathGelConsumedG >= 0 &&
+    ratioBatchTotalMassG > 0
+      ? mathGelConsumedG * mathCarbFraction
+      : null
+
+  const mathRunHoursPart = (() => {
+    const n = parseInt(mathRunHoursStr, 10)
+    return Number.isFinite(n) && n >= 0 ? n : 0
+  })()
+  const mathRunMinutesPart = (() => {
+    const n = parseInt(mathRunMinutesStr, 10)
+    return Number.isFinite(n) && n >= 0 ? Math.min(59, n) : 0
+  })()
+  const mathRunDurationH = mathRunHoursPart + mathRunMinutesPart / 60
+
+  const mathCarbsPerHourFromRun =
+    mathCarbsConsumedG != null &&
+    mathRunDurationH > 0 &&
+    Number.isFinite(mathCarbsConsumedG)
+      ? mathCarbsConsumedG / mathRunDurationH
+      : null
+
+  const mathConsumptionWarning =
+    mathGelConsumedG != null && mathGelConsumedG < 0
+      ? 'After weight is higher than before — refill, different bottle, or typo?'
+      : mathGelRemainingG != null && mathGelRemainingG < -0.5
+        ? 'After weight minus empty flask is negative — check the flask mass field.'
+        : null
+
+  const mathOverBatchWarning =
+    mathGelConsumedG != null &&
+    ratioBatchTotalMassG > 0 &&
+    mathGelConsumedG > ratioBatchTotalMassG + 1
+      ? 'Gel consumed exceeds the gel mass from the sliders — “before” may include extra weight, or the sliders don’t match what was in the flask.'
+      : null
+
   const recipeIngredients = useMemo(
     () =>
       getIngredientsV2(
@@ -498,7 +575,7 @@ export default function GelsPage() {
             { id: 'fueling', label: 'Fueling plan', anchorId: 'fueling-plan' },
             { id: 'sodium', label: 'Sodium', anchorId: 'sodium-section' },
             { id: 'recipe', label: 'Recipe', anchorId: 'recipe-section' },
-            { id: 'ratio', label: 'Ratio', anchorId: 'ratio-section' },
+            { id: 'math', label: 'Math', anchorId: 'math-section' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -1588,11 +1665,11 @@ export default function GelsPage() {
           </div>
 
         <div
-          id="ratio-section"
+          id="math-section"
           className="mt-5 md:mt-[60px] scroll-mt-5 md:scroll-mt-[60px]"
         >
           <div className="mb-3 md:mb-4 uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
-            Ratio
+            Math
           </div>
           <p className="mb-4 md:mb-5 text-[12px] sm:text-[13px] leading-[1.55] text-black/70 max-w-[720px]">
             Carbs in the mix are{' '}
@@ -1600,7 +1677,19 @@ export default function GelsPage() {
             (grams). Water changes thickness and how full the flask is, not
             carb count. Compare your batch to{' '}
             <span className="text-black font-semibold">Target carbs/hr</span> on
-            Fueling plan — hours below use that same target.
+            Fueling plan — hours below use that same target.{' '}
+            <span className="text-black/80">
+              For carry weight, this page assumes an empty{' '}
+              <span className="text-black font-semibold">
+                Salomon Soft Flask 500ml
+              </span>{' '}
+              is{' '}
+              <span className="tabular-nums text-black font-semibold">
+                {SALOMON_500ML_FLASK_EMPTY_G_DEFAULT}g
+              </span>{' '}
+              (editable below); gel mass is still only F + M + water from the
+              sliders.
+            </span>
           </p>
           <div className="flex flex-col lg:flex-row lg:justify-center lg:items-stretch gap-4 md:gap-6 text-left text-[11px] font-mono w-full min-w-0">
             <div className="flex w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none flex-col border-2 border-black box-border min-w-0">
@@ -1611,7 +1700,7 @@ export default function GelsPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const b = RATIO_BASELINE_G[flaskSize]
+                    const b = MATH_BASELINE_G[flaskSize]
                     setRatioFructoseG(b.fructose)
                     setRatioMaltoG(b.maltodextrin)
                     setRatioWaterG(b.water)
@@ -1720,6 +1809,14 @@ export default function GelsPage() {
                     {ratioBatchTotalMassG}g
                   </dd>
                 </div>
+                <div className="flex justify-between items-baseline gap-3">
+                  <dt className="text-black/70 min-w-0">
+                    Planned carry (gel + empty flask)
+                  </dt>
+                  <dd className="tabular-nums shrink-0">
+                    {Math.round(mathPlannedCarryG)}g
+                  </dd>
+                </div>
                 <div className="flex justify-between items-baseline gap-3 pt-2 border-t border-black/20">
                   <dt className="text-black/70 min-w-0">Target carbs/hr (Fueling)</dt>
                   <dd className="tabular-nums shrink-0">
@@ -1765,6 +1862,190 @@ export default function GelsPage() {
                 </div>
               </dl>
             </div>
+          </div>
+
+          <div className="mt-4 md:mt-6 border-2 border-black p-[18px] w-full max-w-[1024px] mx-auto lg:mx-0 bg-white min-w-0">
+            <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-1">
+              Field weigh-in
+            </div>
+            <p className="mb-4 text-[12px] sm:text-[13px] leading-[1.55] text-black/65">
+              Put the <span className="text-black font-semibold">closed flask</span>{' '}
+              on the scale before and after your run. Consumed gel mass = before
+              minus after (flask cancels). Carbs from gel consumed use your
+              slider mix: carbs = gel consumed × (F + M) ÷ (F + M + water).
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-[13px]">
+              <label className="flex flex-col gap-1 min-w-0">
+                <span className="text-black/70 text-[11px] uppercase tracking-wide">
+                  Empty flask (g)
+                </span>
+                <input
+                  type="number"
+                  min={0}
+                  max={200}
+                  step={1}
+                  value={mathFlaskEmptyG}
+                  onChange={(e) => {
+                    const v = parseFloat(e.target.value)
+                    setMathFlaskEmptyG(
+                      Number.isFinite(v) ? Math.min(200, Math.max(0, v)) : 0
+                    )
+                  }}
+                  className="border border-black px-2 py-2 tabular-nums bg-white"
+                />
+                <span className="text-[10px] text-black/50 leading-snug">
+                  Default {SALOMON_500ML_FLASK_EMPTY_G_DEFAULT}g — Salomon 500ml
+                </span>
+              </label>
+              <label className="flex flex-col gap-1 min-w-0">
+                <span className="text-black/70 text-[11px] uppercase tracking-wide">
+                  Before — scale (g)
+                </span>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder={`e.g. ${Math.round(mathPlannedCarryG)}`}
+                  value={mathScaleBeforeStr}
+                  onChange={(e) => setMathScaleBeforeStr(e.target.value)}
+                  className="border border-black px-2 py-2 tabular-nums bg-white"
+                />
+                <span className="text-[10px] text-black/50 leading-snug">
+                  Blank → gel ({ratioBatchTotalMassG}g) + flask (
+                  {mathFlaskEmptySafe}g)
+                </span>
+              </label>
+              <label className="flex flex-col gap-1 min-w-0">
+                <span className="text-black/70 text-[11px] uppercase tracking-wide">
+                  After — scale (g)
+                </span>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder="e.g. 181"
+                  value={mathScaleAfterStr}
+                  onChange={(e) => setMathScaleAfterStr(e.target.value)}
+                  className="border border-black px-2 py-2 tabular-nums bg-white"
+                />
+                <span className="text-[10px] text-black/50 leading-snug">
+                  Flask + remaining gel
+                </span>
+              </label>
+              <div className="flex flex-col gap-2 min-w-0">
+                <span className="text-black/70 text-[11px] uppercase tracking-wide">
+                  Run time
+                </span>
+                <div className="flex flex-wrap items-end gap-2">
+                  <label className="flex flex-col gap-1">
+                    <span className="text-[10px] text-black/45">Hr</span>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      value={mathRunHoursStr}
+                      onChange={(e) => setMathRunHoursStr(e.target.value)}
+                      className="w-14 border border-black px-2 py-2 tabular-nums bg-white"
+                    />
+                  </label>
+                  <label className="flex flex-col gap-1">
+                    <span className="text-[10px] text-black/45">Min</span>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="0"
+                      value={mathRunMinutesStr}
+                      onChange={(e) => setMathRunMinutesStr(e.target.value)}
+                      className="w-14 border border-black px-2 py-2 tabular-nums bg-white"
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <dl className="mt-5 space-y-2.5 text-[13px] sm:text-[14px] border-t border-black/20 pt-4">
+              <div className="flex justify-between items-baseline gap-3">
+                <dt className="text-black/70 min-w-0">Using for “before”</dt>
+                <dd className="tabular-nums shrink-0 text-right">
+                  {Math.round(mathBeforeCarryG)}g
+                  {parseScaleGrams(mathScaleBeforeStr) === null && (
+                    <span className="text-[11px] text-black/45 block sm:inline sm:ml-1">
+                      (planned carry)
+                    </span>
+                  )}
+                </dd>
+              </div>
+              {mathAfterCarryG != null && (
+                <>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <dt className="text-black/70 min-w-0">Gel remaining (after − flask)</dt>
+                    <dd className="tabular-nums shrink-0">
+                      {Math.round(mathGelRemainingG)}g
+                    </dd>
+                  </div>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <dt className="text-black/70 min-w-0">Gel consumed (before − after)</dt>
+                    <dd className="tabular-nums font-semibold shrink-0">
+                      {mathGelConsumedG != null
+                        ? `${Math.round(mathGelConsumedG)}g`
+                        : '—'}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <dt className="text-black/70 min-w-0">
+                      Carbs in full slider batch (consumable total)
+                    </dt>
+                    <dd className="tabular-nums shrink-0">{ratioBatchCarbsG}g</dd>
+                  </div>
+                  <div className="flex justify-between items-baseline gap-3">
+                    <dt className="text-black/70 min-w-0">Carbs consumed (from mix)</dt>
+                    <dd className="tabular-nums font-semibold shrink-0">
+                      {mathCarbsConsumedG != null
+                        ? `${Math.round(mathCarbsConsumedG)}g`
+                        : '—'}
+                    </dd>
+                  </div>
+                  {mathRunDurationH > 0 && (
+                    <div className="flex justify-between items-baseline gap-3 text-[12px] text-black/55">
+                      <dt className="min-w-0">Run duration</dt>
+                      <dd className="tabular-nums shrink-0">
+                        {mathRunHoursPart}h {mathRunMinutesPart}m (
+                        {(Math.round(mathRunDurationH * 100) / 100).toFixed(2)} h)
+                      </dd>
+                    </div>
+                  )}
+                  {mathRunDurationH > 0 && (
+                    <div className="flex justify-between items-baseline gap-3 pt-2 border-t border-black/15">
+                      <dt className="font-semibold min-w-0">
+                        Carbs/hr (consumed ÷ run time)
+                      </dt>
+                      <dd className="tabular-nums font-semibold shrink-0">
+                        {mathCarbsPerHourFromRun != null
+                          ? `${(Math.round(mathCarbsPerHourFromRun * 10) / 10).toFixed(1)} g/hr`
+                          : '—'}
+                      </dd>
+                    </div>
+                  )}
+                </>
+              )}
+            </dl>
+            {mathConsumptionWarning && (
+              <p className="mt-3 text-[12px] text-amber-900 bg-amber-50 border border-amber-200 px-2 py-1.5">
+                {mathConsumptionWarning}
+              </p>
+            )}
+            {mathOverBatchWarning && (
+              <p className="mt-2 text-[12px] text-amber-900 bg-amber-50 border border-amber-200 px-2 py-1.5">
+                {mathOverBatchWarning}
+              </p>
+            )}
+            {mathAfterCarryG != null &&
+              mathGelConsumedG != null &&
+              mathGelConsumedG >= 0 &&
+              mathRunDurationH <= 0 && (
+                <p className="mt-2 text-[11px] text-black/50">
+                  Enter run hours and/or minutes to see carbs per hour from this
+                  weigh-in.
+                </p>
+              )}
           </div>
         </div>
       </main>
