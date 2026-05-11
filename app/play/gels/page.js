@@ -6,6 +6,15 @@ const CARBS_PER_FLASK = {
   250: 187,
   500: 375,
 }
+
+/** Baseline F / malto / water (g) for Ratio page — matches recipe dry + water before pectin. */
+const RATIO_BASELINE_G = {
+  250: { fructose: 100, maltodextrin: 200, water: 200 },
+  500: { fructose: 125, maltodextrin: 250, water: 250 },
+}
+
+const FRUCTOSE_LINK = 'https://www.amazon.com/dp/B0799XXRZK?th=1'
+const MALTODEXTRIN_LINK = 'https://www.amazon.com/dp/B01H4BTWGA?th=1'
 const SWEAT_LOSS_PER_HR = 1100
 /** S-caps sodium intake model (mg/hr) — used by the legacy 3-box strip. */
 const S_CAPS_SODIUM_PER_HR = 380
@@ -134,6 +143,17 @@ export default function GelsPage() {
   const [hoursOut, setHoursOut] = useState(4)
   const [carbsPerHour, setCarbsPerHour] = useState(80)
   const [flaskSize, setFlaskSize] = useState(250)
+
+  // Ratio lab: fructose + maltodextrin + water only (carbs = F + M)
+  const [ratioFructoseG, setRatioFructoseG] = useState(
+    () => RATIO_BASELINE_G[250].fructose
+  )
+  const [ratioMaltoG, setRatioMaltoG] = useState(
+    () => RATIO_BASELINE_G[250].maltodextrin
+  )
+  const [ratioWaterG, setRatioWaterG] = useState(
+    () => RATIO_BASELINE_G[250].water
+  )
 
   // Recipe state
   const [recipeElectrolytes, setRecipeElectrolytes] = useState('yes')
@@ -393,6 +413,14 @@ export default function GelsPage() {
     tspSodiumCitrate * NA_MG_PER_TSP_CITRATE
   )
 
+  const ratioBatchCarbsG = ratioFructoseG + ratioMaltoG
+  const ratioBatchTotalMassG = ratioFructoseG + ratioMaltoG + ratioWaterG
+  const ratioHoursAtTarget =
+    carbsPerHour > 0 ? ratioBatchCarbsG / carbsPerHour : 0
+  const plannerCarbsPerFlask = CARBS_PER_FLASK[flaskSize]
+  const plannerHoursPerFlaskAtTarget =
+    carbsPerHour > 0 ? plannerCarbsPerFlask / carbsPerHour : 0
+
   const recipeIngredients = useMemo(
     () =>
       getIngredientsV2(
@@ -470,6 +498,7 @@ export default function GelsPage() {
             { id: 'fueling', label: 'Fueling plan', anchorId: 'fueling-plan' },
             { id: 'sodium', label: 'Sodium', anchorId: 'sodium-section' },
             { id: 'recipe', label: 'Recipe', anchorId: 'recipe-section' },
+            { id: 'ratio', label: 'Ratio', anchorId: 'ratio-section' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -1557,6 +1586,187 @@ export default function GelsPage() {
               </p>
             </div>
           </div>
+
+        <div
+          id="ratio-section"
+          className="mt-5 md:mt-[60px] scroll-mt-5 md:scroll-mt-[60px]"
+        >
+          <div className="mb-3 md:mb-4 uppercase text-[11px] tracking-[1.76px] leading-[16.5px]">
+            Ratio
+          </div>
+          <p className="mb-4 md:mb-5 text-[12px] sm:text-[13px] leading-[1.55] text-black/70 max-w-[720px]">
+            Carbs in the mix are{' '}
+            <span className="text-black font-semibold">fructose + maltodextrin</span>{' '}
+            (grams). Water changes thickness and how full the flask is, not
+            carb count. Compare your batch to{' '}
+            <span className="text-black font-semibold">Target carbs/hr</span> on
+            Fueling plan — hours below use that same target.
+          </p>
+          <div className="flex flex-col lg:flex-row lg:justify-center lg:items-stretch gap-4 md:gap-6 text-left text-[11px] font-mono w-full min-w-0">
+            <div className="flex w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none flex-col border-2 border-black box-border min-w-0">
+              <div className="shrink-0 px-[19px] pt-6 pb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                <span className="uppercase tracking-[1.76px] leading-[16.5px]">
+                  ingredients
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const b = RATIO_BASELINE_G[flaskSize]
+                    setRatioFructoseG(b.fructose)
+                    setRatioMaltoG(b.maltodextrin)
+                    setRatioWaterG(b.water)
+                  }}
+                  className="border border-black px-2 py-1 text-[11px] uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
+                >
+                  Reset ({flaskSize}&nbsp;ml baseline)
+                </button>
+              </div>
+
+              <div className="flex-1 min-h-0 mx-[10px] sm:mx-[18px] mb-[18px] bg-[#ececec]/50 text-[#1e1e1e]">
+                <div className="px-[12px] sm:px-[20px] py-[19px] flex flex-col gap-0 min-w-0">
+                  {[
+                    {
+                      key: 'fructose',
+                      label: 'Fructose',
+                      link: FRUCTOSE_LINK,
+                      value: ratioFructoseG,
+                      set: setRatioFructoseG,
+                      min: 0,
+                      max: 400,
+                      step: 5,
+                    },
+                    {
+                      key: 'malto',
+                      label: 'Maltodextrin',
+                      link: MALTODEXTRIN_LINK,
+                      value: ratioMaltoG,
+                      set: setRatioMaltoG,
+                      min: 0,
+                      max: 400,
+                      step: 5,
+                    },
+                    {
+                      key: 'water',
+                      label: 'Water (boiling)',
+                      link: null,
+                      value: ratioWaterG,
+                      set: setRatioWaterG,
+                      min: 50,
+                      max: 450,
+                      step: 5,
+                    },
+                  ].map((row, idx, arr) => (
+                    <div
+                      key={row.key}
+                      className={`w-full min-w-0 pt-[10px] pb-[15px] ${
+                        idx < arr.length - 1 ? 'border-b border-black/40' : ''
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 sm:gap-3 text-[15px] xl:text-[17px] leading-snug xl:leading-[25.5px]">
+                        <span className="min-w-0 shrink">
+                          {row.label}
+                          {row.link && (
+                            <>
+                              {' '}
+                              (
+                              <a
+                                href={row.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline opacity-60 hover:opacity-100"
+                              >
+                                source
+                              </a>
+                              )
+                            </>
+                          )}
+                        </span>
+                        <span className="tabular-nums text-right shrink-0">
+                          {row.value}g
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min={row.min}
+                        max={row.max}
+                        step={row.step}
+                        value={row.value}
+                        onChange={(e) =>
+                          row.set(parseInt(e.target.value, 10))
+                        }
+                        className="mt-3 w-full h-2 cursor-pointer accent-black"
+                        aria-label={`${row.label} grams`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full max-w-[500px] mx-auto lg:mx-0 lg:flex-1 lg:min-w-0 lg:basis-0 lg:max-w-none border-2 border-black p-[18px] bg-[#fafafa] flex flex-col justify-center min-h-[200px]">
+              <div className="uppercase text-[11px] tracking-[1.76px] leading-[16.5px] mb-3">
+                Batch vs target
+              </div>
+              <dl className="space-y-3 text-[13px] sm:text-[14px]">
+                <div className="flex justify-between items-baseline gap-3">
+                  <dt className="text-black/70 min-w-0">Total carbs (F + M)</dt>
+                  <dd className="tabular-nums font-semibold shrink-0">
+                    {ratioBatchCarbsG}g
+                  </dd>
+                </div>
+                <div className="flex justify-between items-baseline gap-3">
+                  <dt className="text-black/70 min-w-0">Total mass (F + M + H₂O)</dt>
+                  <dd className="tabular-nums shrink-0">
+                    {ratioBatchTotalMassG}g
+                  </dd>
+                </div>
+                <div className="flex justify-between items-baseline gap-3 pt-2 border-t border-black/20">
+                  <dt className="text-black/70 min-w-0">Target carbs/hr (Fueling)</dt>
+                  <dd className="tabular-nums shrink-0">
+                    {carbsPerHour}g/hr
+                  </dd>
+                </div>
+                <div className="flex justify-between items-baseline gap-3">
+                  <dt className="min-w-0 font-semibold">
+                    Hours this batch @ target
+                  </dt>
+                  <dd className="tabular-nums font-semibold shrink-0">
+                    {ratioHoursAtTarget > 0
+                      ? (Math.round(ratioHoursAtTarget * 10) / 10).toFixed(1)
+                      : '—'}{' '}
+                    h
+                  </dd>
+                </div>
+                <div className="pt-2 border-t border-black/20 text-[12px] text-black/60 leading-[1.5]">
+                  Fueling planner treats one {flaskSize}&nbsp;ml flask as{' '}
+                  <span className="tabular-nums text-black">
+                    ~{plannerCarbsPerFlask}g
+                  </span>{' '}
+                  carbs →{' '}
+                  <span className="tabular-nums text-black">
+                    {plannerHoursPerFlaskAtTarget > 0
+                      ? (Math.round(plannerHoursPerFlaskAtTarget * 10) / 10).toFixed(1)
+                      : '—'}
+                  </span>{' '}
+                  h @ {carbsPerHour}g/hr. Your sliders:{' '}
+                  <span
+                    className={`tabular-nums font-semibold ${
+                      ratioBatchCarbsG > plannerCarbsPerFlask
+                        ? 'text-green-800'
+                        : ratioBatchCarbsG < plannerCarbsPerFlask
+                          ? 'text-amber-800'
+                          : 'text-black'
+                    }`}
+                  >
+                    {ratioBatchCarbsG >= plannerCarbsPerFlask ? '+' : ''}
+                    {Math.round(ratioBatchCarbsG - plannerCarbsPerFlask)}g
+                  </span>{' '}
+                  vs that assumption.
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
       </main>
 
       {/* Footer – mirrors Sounds tone */}
@@ -1575,14 +1785,14 @@ function getIngredientsV2(
   const base =
     size === 250
       ? [
-          { label: 'Fructose', grams: 100, link: 'https://www.amazon.com/dp/B0799XXRZK?th=1' },
-          { label: 'Maltodextrin', grams: 200, link: 'https://www.amazon.com/dp/B01H4BTWGA?th=1' },
+          { label: 'Fructose', grams: 100, link: FRUCTOSE_LINK },
+          { label: 'Maltodextrin', grams: 200, link: MALTODEXTRIN_LINK },
           { label: 'Pectin', tsp: 0.5, link: 'https://www.amazon.com/dp/B09DTK9BVN' },
           { label: 'Water (boiling)', grams: 200 },
         ]
       : [
-          { label: 'Fructose', grams: 125, link: 'https://www.amazon.com/dp/B0799XXRZK?th=1' },
-          { label: 'Maltodextrin', grams: 250, link: 'https://www.amazon.com/dp/B01H4BTWGA?th=1' },
+          { label: 'Fructose', grams: 125, link: FRUCTOSE_LINK },
+          { label: 'Maltodextrin', grams: 250, link: MALTODEXTRIN_LINK },
           { label: 'Pectin', tsp: 0.75, link: 'https://www.amazon.com/dp/B09DTK9BVN' },
           { label: 'Water (boiling)', grams: 250 },
         ]
