@@ -18,6 +18,17 @@ const SALOMON_500ML_FLASK_EMPTY_G_DEFAULT = 34
 
 const FRUCTOSE_LINK = 'https://www.amazon.com/dp/B0799XXRZK?th=1'
 const MALTODEXTRIN_LINK = 'https://www.amazon.com/dp/B01H4BTWGA?th=1'
+
+/** Math lab: maltodextrin : fructose mass ratio (malto = MALTO_FRUCTOSE_RATIO × fructose). */
+const MALTO_FRUCTOSE_RATIO = 2
+
+/** Fructose slider (g); maltodextrin is always 2× this value. */
+const MATH_FRUCTOSE_G_MIN = 5
+const MATH_FRUCTOSE_G_MAX = 135
+
+/** Fueling + Math carbs/hr slider (wide min so a small flask batch can cap the value). */
+const CARBS_MIN = 10
+const CARBS_MAX = 90
 const SWEAT_LOSS_PER_HR = 1100
 /** S-caps sodium intake model (mg/hr) — used by the legacy 3-box strip. */
 const S_CAPS_SODIUM_PER_HR = 380
@@ -147,16 +158,58 @@ export default function GelsPage() {
   const [carbsPerHour, setCarbsPerHour] = useState(80)
   const [flaskSize, setFlaskSize] = useState(250)
 
-  // Math lab: fructose + maltodextrin + water only (carbs = F + M)
+  // Math lab: fructose + maltodextrin + water; malto = 2× fructose; consumable carbs = F + M
   const [ratioFructoseG, setRatioFructoseG] = useState(
     () => MATH_BASELINE_G[250].fructose
-  )
-  const [ratioMaltoG, setRatioMaltoG] = useState(
-    () => MATH_BASELINE_G[250].maltodextrin
   )
   const [ratioWaterG, setRatioWaterG] = useState(
     () => MATH_BASELINE_G[250].water
   )
+
+  const ratioMaltoG = ratioFructoseG * MALTO_FRUCTOSE_RATIO
+
+  const snapFructoseG = (raw) => {
+    const stepped = Math.round(raw / 5) * 5
+    return Math.min(
+      MATH_FRUCTOSE_G_MAX,
+      Math.max(MATH_FRUCTOSE_G_MIN, stepped)
+    )
+  }
+
+  const applyFructoseFromMathSlider = (rawF) => {
+    const f = snapFructoseG(rawF)
+    setRatioFructoseG(f)
+    const batchCarbs = f * (1 + MALTO_FRUCTOSE_RATIO)
+    setCarbsPerHour((c) => Math.min(c, batchCarbs))
+  }
+
+  const applyMaltoFromMathSlider = (rawM) => {
+    const mStepped = Math.round(rawM / 10) * 10
+    const f = snapFructoseG(mStepped / MALTO_FRUCTOSE_RATIO)
+    setRatioFructoseG(f)
+    const batchCarbs = f * (1 + MALTO_FRUCTOSE_RATIO)
+    setCarbsPerHour((c) => Math.min(c, batchCarbs))
+  }
+
+  const applyCarbsPerHourFromMathSlider = (rawR) => {
+    const r = Math.min(CARBS_MAX, Math.max(CARBS_MIN, rawR))
+    const batchCarbs = ratioFructoseG * (1 + MALTO_FRUCTOSE_RATIO)
+    if (r <= batchCarbs) {
+      setCarbsPerHour(r)
+      return
+    }
+    let f = snapFructoseG(
+      Math.ceil(r / (1 + MALTO_FRUCTOSE_RATIO) / 5) * 5
+    )
+    while (
+      f * (1 + MALTO_FRUCTOSE_RATIO) < r &&
+      f < MATH_FRUCTOSE_G_MAX
+    ) {
+      f = snapFructoseG(f + 5)
+    }
+    setRatioFructoseG(f)
+    setCarbsPerHour(r)
+  }
 
   const [mathFlaskEmptyG, setMathFlaskEmptyG] = useState(
     SALOMON_500ML_FLASK_EMPTY_G_DEFAULT
@@ -209,6 +262,14 @@ export default function GelsPage() {
       setFlaskSize(500)
     }
   }, [fueling.clampedHours, flaskSize])
+
+  /** One-flask consumable carbs cannot exceed target carbs/hr. */
+  useEffect(() => {
+    const batchCarbs = ratioFructoseG * (1 + MALTO_FRUCTOSE_RATIO)
+    if (carbsPerHour > batchCarbs) {
+      setCarbsPerHour(batchCarbs)
+    }
+  }, [ratioFructoseG, carbsPerHour])
 
   // Sodium summary: gel Na scales with carbs/hr vs carbs per flask; caps fixed per hour
   const sodiumStrip = useMemo(() => {
@@ -531,8 +592,6 @@ export default function GelsPage() {
 
   const HOURS_MIN = 1
   const HOURS_MAX = 14
-  const CARBS_MIN = 60
-  const CARBS_MAX = 90
   const hoursOutPercent = Math.min(
     100,
     Math.max(
@@ -676,7 +735,8 @@ export default function GelsPage() {
                           Target carbs/hr
                         </div>
                         <div className="mt-1 text-[11px] text-black/60">
-                          Target 60–90 g/hr
+                          {CARBS_MIN}–{CARBS_MAX} g/hr (60–90 common for hard
+                          efforts)
                         </div>
                       </div>
                       <span className="text-[20px] leading-none tabular-nums shrink-0">
@@ -703,7 +763,9 @@ export default function GelsPage() {
                         step={5}
                         value={carbsPerHour}
                         onChange={(e) =>
-                          setCarbsPerHour(parseInt(e.target.value, 10))
+                          applyCarbsPerHourFromMathSlider(
+                            parseInt(e.target.value, 10)
+                          )
                         }
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                       />
@@ -1674,10 +1736,14 @@ export default function GelsPage() {
           <p className="mb-4 md:mb-5 text-[12px] sm:text-[13px] leading-[1.55] text-black/70 max-w-[720px]">
             Carbs in the mix are{' '}
             <span className="text-black font-semibold">fructose + maltodextrin</span>{' '}
-            (grams). Water changes thickness and how full the flask is, not
-            carb count. Compare your batch to{' '}
-            <span className="text-black font-semibold">Target carbs/hr</span> on
-            Fueling plan — hours below use that same target.{' '}
+            (grams).{' '}
+            <span className="text-black font-semibold">
+              Maltodextrin : fructose = 2 : 1
+            </span>{' '}
+            by mass — moving either sugar updates the other. Target carbs/hr is
+            capped by what fits in this flask; raising carbs/hr above the batch
+            bumps fructose (and malto) until the batch can support it. Water
+            changes thickness and how full the flask is, not carb count.{' '}
             <span className="text-black/80">
               For carry weight, this page assumes an empty{' '}
               <span className="text-black font-semibold">
@@ -1702,8 +1768,9 @@ export default function GelsPage() {
                   onClick={() => {
                     const b = MATH_BASELINE_G[flaskSize]
                     setRatioFructoseG(b.fructose)
-                    setRatioMaltoG(b.maltodextrin)
                     setRatioWaterG(b.water)
+                    const batch = b.fructose * (1 + MALTO_FRUCTOSE_RATIO)
+                    setCarbsPerHour((c) => Math.min(c, batch))
                   }}
                   className="border border-black px-2 py-1 text-[11px] uppercase tracking-wide hover:bg-black hover:text-white transition-colors"
                 >
@@ -1713,81 +1780,149 @@ export default function GelsPage() {
 
               <div className="flex-1 min-h-0 mx-[10px] sm:mx-[18px] mb-[18px] bg-[#ececec]/50 text-[#1e1e1e]">
                 <div className="px-[12px] sm:px-[20px] py-[19px] flex flex-col gap-0 min-w-0">
-                  {[
-                    {
-                      key: 'fructose',
-                      label: 'Fructose',
-                      link: FRUCTOSE_LINK,
-                      value: ratioFructoseG,
-                      set: setRatioFructoseG,
-                      min: 0,
-                      max: 400,
-                      step: 5,
-                    },
-                    {
-                      key: 'malto',
-                      label: 'Maltodextrin',
-                      link: MALTODEXTRIN_LINK,
-                      value: ratioMaltoG,
-                      set: setRatioMaltoG,
-                      min: 0,
-                      max: 400,
-                      step: 5,
-                    },
-                    {
-                      key: 'water',
-                      label: 'Water (boiling)',
-                      link: null,
-                      value: ratioWaterG,
-                      set: setRatioWaterG,
-                      min: 50,
-                      max: 450,
-                      step: 5,
-                    },
-                  ].map((row, idx, arr) => (
-                    <div
-                      key={row.key}
-                      className={`w-full min-w-0 pt-[10px] pb-[15px] ${
-                        idx < arr.length - 1 ? 'border-b border-black/40' : ''
-                      }`}
-                    >
-                      <div className="flex items-center justify-between gap-2 sm:gap-3 text-[15px] xl:text-[17px] leading-snug xl:leading-[25.5px]">
-                        <span className="min-w-0 shrink">
-                          {row.label}
-                          {row.link && (
-                            <>
-                              {' '}
-                              (
-                              <a
-                                href={row.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline opacity-60 hover:opacity-100"
-                              >
-                                source
-                              </a>
-                              )
-                            </>
-                          )}
-                        </span>
-                        <span className="tabular-nums text-right shrink-0">
-                          {row.value}g
-                        </span>
+                  <div className="w-full min-w-0 pb-[15px] border-b border-black/40">
+                    <div className="text-[11px] uppercase tracking-[1.2px] text-black/55">
+                      Consumable carbs (this flask)
+                    </div>
+                    <div className="mt-1 text-[28px] leading-none tabular-nums font-semibold text-black">
+                      {ratioBatchCarbsG}g
+                    </div>
+                    <div className="mt-1.5 text-[11px] text-black/50 leading-snug">
+                      F + M; malto is always {MALTO_FRUCTOSE_RATIO}× fructose.
+                    </div>
+                  </div>
+
+                  <div className="w-full min-w-0 pt-[10px] pb-[15px] border-b border-black/40">
+                    <div className="flex items-center justify-between gap-2 sm:gap-3 text-[15px] xl:text-[17px] leading-snug xl:leading-[25.5px]">
+                      <span className="min-w-0 shrink">
+                        Fructose (
+                        <a
+                          href={FRUCTOSE_LINK}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline opacity-60 hover:opacity-100"
+                        >
+                          source
+                        </a>
+                        )
+                      </span>
+                      <span className="tabular-nums text-right shrink-0">
+                        {ratioFructoseG}g
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={MATH_FRUCTOSE_G_MIN}
+                      max={MATH_FRUCTOSE_G_MAX}
+                      step={5}
+                      value={ratioFructoseG}
+                      onChange={(e) =>
+                        applyFructoseFromMathSlider(
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                      className="mt-3 w-full h-2 cursor-pointer accent-black"
+                      aria-label="Fructose grams"
+                    />
+                  </div>
+
+                  <div className="w-full min-w-0 pt-[10px] pb-[15px] border-b border-black/40">
+                    <div className="flex items-center justify-between gap-2 sm:gap-3 text-[15px] xl:text-[17px] leading-snug xl:leading-[25.5px]">
+                      <span className="min-w-0 shrink">
+                        Maltodextrin (
+                        <a
+                          href={MALTODEXTRIN_LINK}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline opacity-60 hover:opacity-100"
+                        >
+                          source
+                        </a>
+                        ) · 2:1 vs fructose
+                      </span>
+                      <span className="tabular-nums text-right shrink-0">
+                        {ratioMaltoG}g
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={MATH_FRUCTOSE_G_MIN * MALTO_FRUCTOSE_RATIO}
+                      max={MATH_FRUCTOSE_G_MAX * MALTO_FRUCTOSE_RATIO}
+                      step={10}
+                      value={ratioMaltoG}
+                      onChange={(e) =>
+                        applyMaltoFromMathSlider(parseInt(e.target.value, 10))
+                      }
+                      className="mt-3 w-full h-2 cursor-pointer accent-black"
+                      aria-label="Maltodextrin grams"
+                    />
+                  </div>
+
+                  <div className="w-full min-w-0 pt-[10px] pb-[15px] border-b border-black/40">
+                    <div className="flex justify-between items-start gap-4">
+                      <div>
+                        <div className="uppercase text-[11px] tracking-[1.2px] text-black/55">
+                          Target carbs/hr
+                        </div>
+                        <div className="mt-1 text-[11px] text-black/50">
+                          Linked to this flask; raises F/M if needed (
+                          {CARBS_MIN}–{CARBS_MAX} g/hr)
+                        </div>
                       </div>
+                      <span className="text-[20px] leading-none tabular-nums shrink-0">
+                        {carbsPerHour.toFixed(0)} g/hr
+                      </span>
+                    </div>
+                    <div className="relative mt-3 h-[34px]">
+                      <div className="absolute left-0 right-0 top-[14px] h-[8px] bg-[#efefef] border border-[#b2b2b2] rounded-[30px]" />
+                      <div
+                        className="absolute left-0 top-[14px] h-[8px] bg-black rounded-[30px]"
+                        style={{ width: `${carbsPerHourPercent}%` }}
+                      />
+                      <div
+                        className="absolute top-[8px] w-[18px] h-[18px] bg-black rounded-full"
+                        style={{
+                          left: `${carbsPerHourPercent}%`,
+                          transform: 'translateX(-50%)',
+                        }}
+                      />
                       <input
                         type="range"
-                        min={row.min}
-                        max={row.max}
-                        step={row.step}
-                        value={row.value}
+                        min={CARBS_MIN}
+                        max={CARBS_MAX}
+                        step={5}
+                        value={carbsPerHour}
                         onChange={(e) =>
-                          row.set(parseInt(e.target.value, 10))
+                          applyCarbsPerHourFromMathSlider(
+                            parseInt(e.target.value, 10)
+                          )
                         }
-                        className="mt-3 w-full h-2 cursor-pointer accent-black"
-                        aria-label={`${row.label} grams`}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        aria-label="Target carbs per hour"
                       />
                     </div>
-                  ))}
+                  </div>
+
+                  <div className="w-full min-w-0 pt-[10px] pb-[15px]">
+                    <div className="flex items-center justify-between gap-2 sm:gap-3 text-[15px] xl:text-[17px] leading-snug xl:leading-[25.5px]">
+                      <span className="min-w-0 shrink">Water (boiling)</span>
+                      <span className="tabular-nums text-right shrink-0">
+                        {ratioWaterG}g
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={50}
+                      max={450}
+                      step={5}
+                      value={ratioWaterG}
+                      onChange={(e) =>
+                        setRatioWaterG(parseInt(e.target.value, 10))
+                      }
+                      className="mt-3 w-full h-2 cursor-pointer accent-black"
+                      aria-label="Water grams"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
