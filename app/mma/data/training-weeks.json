@@ -1,0 +1,184 @@
+{
+  "source": "mma-surgery-recovery skill",
+  "guardrails": [
+    "Never advance running before surgeon clearance at week 6 imaging",
+    "10% weekly mileage rule — hard cap, same as ultra-plan-generator",
+    "Jaw pain during or after activity = stop and contact surgeon, not a \"push through it\" signal",
+    "Jaw clenching under heavy loads risks hardware displacement — no maximal-effort lifts until month 6+",
+    "Vert lags mileage by 2–4 weeks during rebuild",
+    "Feeling good is a yellow flag, not permission to add volume",
+    "Aerobic fitness recovers faster than tissue — don't let fitness metrics drive pacing of volume",
+    "No makeup miles after missed or reduced weeks"
+  ],
+  "phases": [
+    {
+      "id": "preop",
+      "label": "Pre-op",
+      "weekRange": "before surgery",
+      "dateRange": "2026-08-07 to 2026-10-02",
+      "notes": [
+        "Maintain current volume (50+ mpw), no new peak attempts",
+        "Full strength routine, emphasize posterior chain and lower body — upper body goes offline first post-op",
+        "Avoid exercises that cause jaw clenching (heavy deadlifts, max squats) close to surgery",
+        "Begin protein-loading awareness",
+        "Stock liquid/soft food supplies"
+      ]
+    },
+    {
+      "id": "phase1",
+      "label": "Phase 1 — Survival",
+      "weekRange": "weeks 1–2",
+      "dateRange": "2026-10-02 to 2026-10-16",
+      "weeks": [
+        {
+          "range": "1–2",
+          "startDate": "2026-10-02",
+          "endDate": "2026-10-16",
+          "running": "None",
+          "strength": "None",
+          "crossTrain": "None — short gentle walks only (5–10 min)"
+        }
+      ],
+      "notes": [
+        "No elevated heart rate — blood pressure and bleeding risk",
+        "Sleep elevated, ice protocol per surgeon",
+        "Liquid diet only — protein shakes, smoothies, broth",
+        "This is survival, not training"
+      ]
+    },
+    {
+      "id": "phase2",
+      "label": "Phase 2 — Walking",
+      "weekRange": "weeks 3–6",
+      "dateRange": "2026-10-16 to 2026-11-13",
+      "weeks": [
+        {
+          "range": "3–4",
+          "startDate": "2026-10-16",
+          "endDate": "2026-10-30",
+          "running": "None",
+          "strength": "None",
+          "crossTrain": "Easy walks 15–20 min, flat only, conversational effort"
+        },
+        {
+          "range": "5–6",
+          "startDate": "2026-10-30",
+          "endDate": "2026-11-13",
+          "running": "None",
+          "strength": "None (upper body waits until week 6–8 min.; lower body until 8–12; core until 8–10)",
+          "crossTrain": "Brisk walks up to 30–40 min; elliptical or stationary bike only if surgeon approves"
+        }
+      ],
+      "notes": [
+        "Week 6 milestone: post-op imaging confirms bone position — first clearance gate",
+        "Do not advance to Phase 3 without surgeon sign-off at week 6",
+        "Reason for strength delay: jaw clenching under load risks hardware displacement and non-union"
+      ]
+    },
+    {
+      "id": "phase3",
+      "label": "Phase 3 — Foundation rebuild",
+      "weekRange": "weeks 7–16",
+      "dateRange": "2026-11-13 to 2027-01-22",
+      "weeks": [
+        {
+          "range": "7–8",
+          "startDate": "2026-11-13",
+          "endDate": "2026-11-27",
+          "running": "None unless cleared early — wait for explicit surgeon clearance",
+          "strength": "Nothing yet — bodyweight lower body starts week 8",
+          "crossTrain": "None"
+        },
+        {
+          "range": "9–10",
+          "startDate": "2026-11-27",
+          "endDate": "2026-12-11",
+          "running": "Walk/jog intervals: 1 min jog / 2 min walk × 6–8 reps, 1–2 miles max, flat only",
+          "strength": "Bodyweight lower body (squats, lunges, step-ups, hip hinges)",
+          "crossTrain": "Rowing optional from week 10+: easy 20–30 min Z2, only if breathing feels clear"
+        },
+        {
+          "range": "11–12",
+          "startDate": "2026-12-11",
+          "endDate": "2026-12-25",
+          "running": "Easy jogging 2–3 miles, conversational pace only",
+          "strength": "Light lower body loading (goblet squats, RDLs — nothing that causes jaw clench)",
+          "crossTrain": "Rowing optional: easy 20–30 min Z2, stop if jaw pressure or elevated HR"
+        },
+        {
+          "range": "13–14",
+          "startDate": "2026-12-25",
+          "endDate": "2027-01-08",
+          "running": "Easy running 3–5 miles, 3x/week, no hills, no effort — pure aerobic",
+          "strength": "Gradual return to trap bar deadlifts and back squats at submaximal loads",
+          "crossTrain": "Rowing optional, same guardrails"
+        },
+        {
+          "range": "15–16",
+          "startDate": "2027-01-08",
+          "endDate": "2027-01-22",
+          "running": "Easy running 4–6 miles, building to 3–4x/week, first vert introduction at walk pace",
+          "strength": "Trap bar deadlifts/back squats continue at submaximal loads; upper body loading if surgeon clears jaw loading",
+          "crossTrain": "Rowing optional, same guardrails"
+        }
+      ],
+      "notes": [
+        "Red flags — stop and call surgeon: jaw pain during or after running, increased swelling post-activity, hardware sensation change, difficulty breathing through nose during effort"
+      ]
+    },
+    {
+      "id": "phase4",
+      "label": "Phase 4 — Volume build",
+      "weekRange": "weeks 17–28",
+      "dateRange": "2027-01-22 to 2027-04-16",
+      "weeklyTemplate": [
+        { "day": "Monday", "focus": "PT micro-dose, rest from running" },
+        { "day": "Tuesday", "focus": "Group run — start 4–5 mi, build toward 6–8 mi" },
+        { "day": "Wednesday", "focus": "Easy recovery run" },
+        { "day": "Thursday", "focus": "Quality — hills before tempo, vert introduced carefully" },
+        { "day": "Friday", "focus": "Easy recovery run" },
+        { "day": "Saturday", "focus": "Rest or optional cross-train" },
+        { "day": "Sunday", "focus": "Long run — start 8 mi, build toward pre-surgery long-run distance" }
+      ],
+      "stats": [
+        { "label": "Mileage cap", "value": "30–38 mi/week during build" },
+        { "label": "Weekly increase", "value": "Never more than 10%" },
+        { "label": "Restore week", "value": "Every 4th week, drop to 65–70%" },
+        { "label": "Vert", "value": "Lags mileage by 2–4 weeks; needs ≥3 stable weeks at a mileage level first" },
+        { "label": "Strength", "value": "Full compound lifts by week 20–24 if upper body cleared" }
+      ],
+      "notes": [
+        "Heavy jaw-clenching sets postponed to month 6+",
+        "PT micro-dose circuits resume Mon/Wed/Fri as running returns",
+        "Feeling good is not permission to add volume"
+      ]
+    },
+    {
+      "id": "phase5",
+      "label": "Phase 5 — Return to performance",
+      "weekRange": "weeks 29–52",
+      "dateRange": "2027-04-16 to 2027-10-01",
+      "timeline": [
+        { "tier": "Conservative", "detail": "9–12 months post-op" },
+        { "tier": "Moderate", "detail": "7–9 months post-op" },
+        { "tier": "Aggressive", "detail": "6–8 months post-op (only with zero complications and strong tissue response)" }
+      ],
+      "benchmarks": [
+        "8+ weeks of consistent 30–35 mpw with no setbacks",
+        "Vert tolerance confirmed through progressive hill introduction",
+        "Strength returning to pre-surgery loads",
+        "No jaw-related symptoms during or after training",
+        "Surgeon sign-off at 6-month post-op imaging"
+      ],
+      "notes": [
+        "Full training cycle possible — treated like re-entering a plan from scratch",
+        "If a race goal exists, transition to the ultra-plan-generator skill for a periodized block"
+      ]
+    }
+  ],
+  "nutrition": [
+    { "phase": "Phase 1–2", "label": "Liquid / soft diet (weeks 1–6+)", "notes": ["Protein shakes, smoothies, broth, yogurt, soft foods", "Target 1.6–2.0g protein/kg bodyweight to minimize muscle loss", "Expect 5–10 lb weight loss and muscle loss — this is unavoidable, don't try to train through it"] },
+    { "phase": "Phase 3–4", "label": "Transition diet", "notes": ["Soft solid foods as surgeon permits", "Resume normal fueling as running returns", "Long runs: resume carb + sodium fueling (70–80g carbs/hr) once runs exceed 60 min"] },
+    { "phase": "Phase 5", "label": "Full performance nutrition", "notes": ["Full return to race-day fueling protocol — gels, salt capsules, hydration mix as before"] }
+  ]
+}

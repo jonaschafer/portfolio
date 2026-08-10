@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "id": "wedge-pillow",
+      "name": "Wedge pillow",
+      "note": "For 30–45° elevated sleep — keeps swelling down and breathing easier",
+      "image": "https://m.media-amazon.com/images/I/71ll2rNCHHL._AC_UL320_.jpg",
+      "url": "https://www.amazon.com/dp/B0CC8RF1XC",
+      "chapters": ["week-of", "final-weeks"]
+    },
+    {
+      "id": "feeding-kit",
+      "name": "Jaw surgery feeding kit",
+      "note": "Syringes + squeeze bottles built for a wired/banded jaw, not improvised from a pharmacy syringe",
+      "image": "https://m.media-amazon.com/images/I/61xWeS5vAOL._AC_UY218_.jpg",
+      "url": "https://www.amazon.com/dp/B0FHJZ5BG1",
+      "chapters": ["final-weeks", "week-of"]
+    },
+    {
+      "id": "ice-pack",
+      "name": "Jaw/face ice pack wrap",
+      "note": "Purpose-shaped for oral surgery swelling, not a bag of frozen peas",
+      "image": "https://m.media-amazon.com/images/I/71vnqWaPj+L._AC_UL320_.jpg",
+      "url": "https://www.amazon.com/dp/B0CCTB4P76",
+      "chapters": ["week-of"]
+    },
+    {
+      "id": "humidifier",
+      "name": "Cool-mist humidifier",
+      "note": "For the mouth-breathing, dried-out-throat stretch",
+      "image": "https://m.media-amazon.com/images/I/71xIgTqSN6L._AC_UL320_.jpg",
+      "url": "https://www.amazon.com/dp/B0C2C9NHZW",
+      "chapters": ["week-of"]
+    },
+    {
+      "id": "blender",
+      "name": "Personal blender",
+      "note": "For weeks of liquid and soft-food meals",
+      "image": "https://m.media-amazon.com/images/I/61r45TB3VfL._AC_UY218_.jpg",
+      "url": "https://www.amazon.com/dp/B0FRH7FG25",
+      "chapters": ["final-weeks"]
+    },
+    {
+      "id": "water-bottle",
+      "name": "Wide-mouth bottle with straw",
+      "note": "Easier hydration around a wired jaw than a regular cap",
+      "image": "https://m.media-amazon.com/images/I/61bHqFeZ-aL._AC_UL320_.jpg",
+      "url": "https://www.amazon.com/dp/B0FP4FW4S7",
+      "chapters": ["final-weeks"]
+    },
+    {
+      "id": "saline-spray",
+      "name": "Saline nasal spray",
+      "note": "For congestion when mouth-breathing is already limited",
+      "image": "https://m.media-amazon.com/images/I/71RQ3IqG67L._AC_UL320_.jpg",
+      "url": "https://www.amazon.com/dp/B0C7DB8WXX",
+      "chapters": ["final-weeks"]
+    }
+  ]
+}

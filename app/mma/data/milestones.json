@@ -1,0 +1,23 @@
+{
+  "milestones": [
+    { "date": "2026-08-28", "time": "8:30 – 9:30 AM", "week": null, "label": "Dr. Denis — first appointment", "type": "appointment", "tentative": false, "anchor": "getting-ready" },
+    { "date": "2026-09-18", "time": "8:00 – 9:00 AM", "week": null, "label": "Dr. Denis — pre-op", "type": "appointment", "tentative": false, "anchor": "final-weeks" },
+    { "date": "2026-10-02", "week": 0, "label": "Surgery (MMA)", "type": "gate", "tentative": true, "anchor": "surgery-day" },
+    { "date": "2026-10-04", "week": 0, "label": "Peak swelling", "type": "note", "tentative": false, "anchor": "hell-week" },
+    { "date": "2026-10-09", "week": 1, "label": "Survive", "type": "note", "tentative": false, "anchor": "hell-week" },
+    { "date": "2026-10-16", "week": 2, "label": "Fog lifting slightly", "type": "note", "tentative": false, "anchor": "the-fog" },
+    { "date": "2026-10-30", "week": 4, "label": "Soft foods, walks 20–30 min", "type": "note", "tentative": false, "anchor": "emerging" },
+    { "date": "2026-11-06", "week": 5, "label": "Can manage alone if needed", "type": "note", "tentative": false, "anchor": "emerging" },
+    { "date": "2026-11-13", "week": 6, "label": "Post-op imaging — first clearance gate", "type": "gate", "tentative": false, "anchor": "emerging" },
+    { "date": "2026-11-20", "week": 7, "label": "Work near-normal", "type": "note", "tentative": false, "anchor": "first-movement" },
+    { "date": "2026-11-26", "week": 7.5, "label": "Thanksgiving (soft foods only)", "type": "holiday", "tentative": false, "anchor": "first-movement" },
+    { "date": "2026-12-11", "week": 10, "label": "First jog possible", "type": "gate", "tentative": false, "anchor": "first-run" },
+    { "date": "2026-12-25", "week": 12, "label": "Christmas — running 10–15 mpw", "type": "holiday", "tentative": false, "anchor": "first-run" },
+    { "date": "2027-01-15", "week": "13–16", "label": "Building to 25–30 mpw", "type": "note", "tentative": false, "anchor": "building-the-base" },
+    { "date": "2027-03-15", "week": "20–24", "label": "35–40 mpw", "type": "note", "tentative": false, "anchor": "building-the-base" },
+    { "date": "2027-04-02", "week": 26, "label": "6-month sleep study", "type": "gate", "tentative": false, "anchor": "building-the-base" },
+    { "date": "2027-06-11", "week": 36, "label": "50 mpw, quality work returns", "type": "note", "tentative": false, "anchor": "return-to-self" },
+    { "date": "2027-10-01", "week": 52, "label": "One year — full assessment", "type": "gate", "tentative": false, "anchor": "peak-again" },
+    { "date": "2028-01-15", "week": 78, "label": "First marathon back?", "type": "note", "tentative": true, "anchor": "first-marathon-back" }
+  ]
+}

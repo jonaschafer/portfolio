@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap');
 
 @font-face {
   font-family: 'Mondwest';
@@ -22,4 +23,62 @@
 
 body {
   background-color: #435938;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/*
+ * Shared motion primitives (emil-design-eng principles): strong custom easing rather than
+ * default CSS curves, press feedback on every pressable element, and a grid-based collapse
+ * that animates to real content height instead of a hard show/hide.
+ */
+.mma-btn-press {
+  transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1), opacity 120ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.mma-btn-press:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+.mma-collapsible-panel {
+  display: grid;
+  transition: grid-template-rows 260ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.mma-collapsible-panel > div {
+  overflow: hidden;
+}
+
+@keyframes mmaFadeSlideUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes mmaFadeSlideInRight {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes mmaFadeSlideInLeft {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mma-btn-press,
+  .mma-collapsible-panel {
+    transition: opacity 150ms ease !important;
+  }
+  .mma-btn-press:active {
+    transform: none !important;
+  }
+  [style*="mmaFadeSlideUp"],
+  [style*="mmaFadeSlideInRight"],
+  [style*="mmaFadeSlideInLeft"] {
+    animation: none !important;
+  }
 }

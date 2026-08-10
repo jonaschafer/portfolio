@@ -1,0 +1,385 @@
+{
+  "surgeryDate": "2026-10-02",
+  "surgeryTentative": true,
+  "parts": [
+    {
+      "id": "before",
+      "label": "Part One",
+      "title": "Before"
+    },
+    {
+      "id": "survival",
+      "label": "Part Two",
+      "title": "Survival"
+    },
+    {
+      "id": "rebuild",
+      "label": "Part Three",
+      "title": "Rebuild"
+    },
+    {
+      "id": "other",
+      "label": "Part Four",
+      "title": "The Other Journey"
+    }
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "part": "before",
+      "title": "Getting Ready",
+      "anchor": "getting-ready",
+      "dateRange": "8–4 weeks out",
+      "startDate": "2026-08-07",
+      "endDate": "2026-09-04",
+      "written": true,
+      "summary": "Medical clearances, imaging, and telling the people who need to know.",
+      "topics": [
+        "Medical clearances and specialist coordination: sign-off from cardiology, sleep medicine, and anesthesia given the Klinefelter/testosterone therapy history",
+        "3D imaging and surgical simulation: CT scan and a computer-modeled surgical plan showing the exact bone movement Dr. Denis will make",
+        "Understanding facial changes: reviewing the predicted before/after simulation so the new profile isn't a surprise later",
+        "Work coverage planning: filing FMLA paperwork and handing off active projects to the team at ClassDojo before going dark",
+        "Home preparation: wedge pillow, blender, soft-food stock, and confirming who's around for the first week"
+      ],
+      "psychologyNote": "Anticipation and logistics dominate. Name the fear instead of managing around it.",
+      "phaseIds": [
+        "preop"
+      ],
+      "skillRef": "SKILL.md pre-op block — training guidance for this phase",
+      "entries": []
+    },
+    {
+      "id": 2,
+      "part": "before",
+      "title": "Final Weeks",
+      "anchor": "final-weeks",
+      "dateRange": "4–1 weeks out",
+      "startDate": "2026-09-04",
+      "endDate": "2026-09-25",
+      "written": true,
+      "summary": "Banking the last hard fitness, and turning a house into a recovery ward.",
+      "topics": [
+        "Pre-op appointments: anesthesia consult, final surgical planning review with Dr. Denis, labs/blood work, EKG if required",
+        "Pharmacy prep: fill pain meds, antibiotics, and anti-nausea prescriptions ahead of time; get a syringe/feeding kit and saline nasal spray",
+        "Mental preparation: read up on week-1 expectations, line up a support person for the first 72 hours, confirm exact leave dates with work",
+        "Last hard training block: final long run and final heavy lift session, then start tapering ~10 days out",
+        "Logistics: confirm childcare coverage, any travel/rental logistics, file FMLA paperwork with HR",
+        "Stocking soft foods: protein shakes, bone broth, Greek yogurt, applesauce, a blender, a wide-mouth water bottle with a straw"
+      ],
+      "psychologyNote": "The last normal weeks. Use them — don't just survive them.",
+      "phaseIds": [
+        "preop"
+      ],
+      "skillRef": null,
+      "entries": []
+    },
+    {
+      "id": 3,
+      "part": "before",
+      "title": "The Week Of",
+      "anchor": "week-of",
+      "dateRange": "Surgery week",
+      "startDate": "2026-09-25",
+      "endDate": "2026-10-02",
+      "written": true,
+      "summary": "Final checklist, one last run, and the quiet before it.",
+      "topics": [
+        "Final prep checklist: confirm arrival time with the hospital, arrange a ride there and back, stop any blood thinners/supplements per surgeon instructions, note the last-meal cutoff time, shower with antibacterial soap the night before",
+        "What to pack for hospital: insurance card/ID, phone + charger, chapstick, own pillow, current medication list, a button-front shirt (nothing over the head)",
+        "Day-before protocols: nothing to eat or drink after midnight (per surgeon), final medication check, recovery station set up at home before leaving",
+        "Setting up recovery space at home: recliner or wedge pillow for 30–45° sleep, pre-frozen ice packs, syringe-feeding kit staged, humidifier, blackout curtains, notepad for writing (talking will be hard)",
+        "Last run — whatever feels good, no pressure, just closure"
+      ],
+      "psychologyNote": "Adrenaline and dread trade places by the hour. Both are normal.",
+      "phaseIds": [
+        "preop"
+      ],
+      "skillRef": null,
+      "entries": []
+    },
+    {
+      "id": 4,
+      "part": "survival",
+      "title": "Surgery Day",
+      "anchor": "surgery-day",
+      "dateRange": "Day 0",
+      "startDate": "2026-10-02",
+      "endDate": "2026-10-02",
+      "written": false,
+      "summary": "LeFort I + BSSO. In the OR, the recovery room, and the first night.",
+      "topics": [
+        "What happens in the OR: the LeFort I cuts and repositions the upper jaw, the BSSO does the same to the lower jaw, both plated into the new bite",
+        "Immediate post-op: waking up swollen and groggy in recovery, moved to a room, first night monitored closely",
+        "What family experiences: hours in a waiting room, then seeing a face that doesn't look like the one that went in",
+        "Hospital stay: 1–2 nights for pain control, swelling monitoring, and confirming safe breathing before discharge"
+      ],
+      "psychologyNote": null,
+      "phaseIds": [],
+      "skillRef": null,
+      "entries": []
+    },
+    {
+      "id": 5,
+      "part": "survival",
+      "title": "Hell Week",
+      "anchor": "hell-week",
+      "dateRange": "Days 1–7",
+      "startDate": "2026-10-02",
+      "endDate": "2026-10-09",
+      "written": false,
+      "summary": "Peak swelling, liquid food through a syringe, and not recognizing your own face.",
+      "topics": [
+        "Swelling peak: face at its most swollen around days 2–3, before it starts (slowly) going down",
+        "Pain management: prescribed meds on a fixed schedule, not waiting until it hurts to take them",
+        "Liquid diet via syringe: jaw wired/banded, all nutrition through a large oral syringe past the back teeth",
+        "Sleep at 30–45° angle: propped up on a wedge or recliner to keep swelling down and breathing easier",
+        "Breathing difficulties: nasal passages swollen shut, mouth-breathing restricted by the jaw — genuinely hard to get air for a few days",
+        "Numbness begins: lips, chin, and cheeks go numb as nerves react to the surgery — expected, not permanent",
+        "Can't recognize yourself: the mirror shows someone else's swollen, bruised face for the first several days"
+      ],
+      "psychologyNote": "Regret is universal. Don't judge the surgery yet.",
+      "phaseIds": [
+        "phase1"
+      ],
+      "skillRef": "references/psychology.md — Week 1 checkpoint",
+      "entries": []
+    },
+    {
+      "id": 6,
+      "part": "survival",
+      "title": "The Fog",
+      "anchor": "the-fog",
+      "dateRange": "Weeks 2–3",
+      "startDate": "2026-10-09",
+      "endDate": "2026-10-23",
+      "written": false,
+      "summary": "Off the heavy meds, onto soft foods, still nowhere near work-ready.",
+      "topics": [
+        "Swelling slowly improving: still puffy, but visibly less than hell week",
+        "Transitioning off heavy pain meds: moving from prescription painkillers to over-the-counter as pain becomes manageable",
+        "Soft foods beginning: yogurt, mashed potatoes, blended soups — anything that doesn't need chewing",
+        "Still can't work fully: fatigue and meds make more than an hour or two at a screen rough",
+        "Fatigue dominates: the body is spending most of its energy on healing, not much left for anything else",
+        "Walking 15–20 minutes: flat, easy walks — the only sanctioned activity right now",
+        "Numbness persists: still no full feeling in lips/chin, though it may be starting to tingle at the edges",
+        "Bruising fades: the classic bruise color cycle, purple to yellow to gone, over these two weeks"
+      ],
+      "psychologyNote": "Grief begins. Name it.",
+      "phaseIds": [
+        "phase1",
+        "phase2"
+      ],
+      "skillRef": "SKILL.md Phase 1 (Survival) and Phase 2 (Walking)",
+      "entries": []
+    },
+    {
+      "id": 7,
+      "part": "survival",
+      "title": "Emerging",
+      "anchor": "emerging",
+      "dateRange": "Weeks 4–6",
+      "startDate": "2026-10-23",
+      "endDate": "2026-11-13",
+      "written": false,
+      "summary": "The face becomes recognizable again. Week 6 imaging is the first real gate.",
+      "topics": [
+        "Post-op imaging at week 6: X-ray/CT confirms the bones are healing in the right position — the first real green light",
+        "Face becoming recognizable: swelling down enough that it looks like your own face again, just different",
+        "Soft foods expanding: scrambled eggs, pasta, ground meat — more texture as chewing becomes possible",
+        "Can work 4–6 hours: enough energy back for a partial workday at a screen",
+        "Walking 30–45 minutes: longer, still-easy walks as stamina returns",
+        "Maybe stationary bike: low-impact cardio if the surgeon clears it at the week-6 check",
+        "Swelling 50% down: roughly halfway back to normal by feel and by photos",
+        "Still zero running: no running yet regardless of how good the legs feel — bone healing sets the pace, not fitness"
+      ],
+      "psychologyNote": "Start a project. Set micro-goals.",
+      "phaseIds": [
+        "phase2"
+      ],
+      "skillRef": null,
+      "entries": []
+    },
+    {
+      "id": 8,
+      "part": "rebuild",
+      "title": "First Movement",
+      "anchor": "first-movement",
+      "dateRange": "Weeks 7–10",
+      "startDate": "2026-11-13",
+      "endDate": "2026-12-11",
+      "written": false,
+      "summary": "Surgeon clearance to move again — bike, elliptical, longer walks.",
+      "topics": [
+        "Surgeon clearance checkpoints: each activity upgrade needs an explicit go-ahead, not a guess",
+        "Light cross-training: easy bike or elliptical sessions, low-impact, low-intensity",
+        "Walking volume increasing: longer and more frequent walks as energy comes back",
+        "Face 70% normal: most of the swelling gone, close to a normal look",
+        "Energy returning: noticeably more stamina for work and daily life than the fog weeks",
+        "Work near-normal: close to a full workday, though still tiring out faster than before",
+        "Numbness: watching for the first tingling as nerves regenerate, or noting if it’s still fully numb"
+      ],
+      "psychologyNote": "Impatience peaks. Focus on what you CAN do.",
+      "phaseIds": [
+        "phase3"
+      ],
+      "skillRef": "SKILL.md Phase 3 (Foundation rebuild) weeks 7–10",
+      "entries": []
+    },
+    {
+      "id": 9,
+      "part": "rebuild",
+      "title": "The First Run",
+      "anchor": "first-run",
+      "dateRange": "Weeks 10–12",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-25",
+      "written": false,
+      "summary": "Walk/jog intervals, three months off, and the emotional weight of running again.",
+      "topics": [
+        "Target: mid-December 2026 — the earliest a first jog is realistically on the table",
+        "Walk/jog intervals → continuous running: short jog segments inside longer walks, building toward running the whole thing",
+        "What it feels like after 3 months off: legs and lungs both rusty — nothing about it will feel like it used to",
+        "Monitoring jaw: watching for clenching under effort or jarring from foot strike — either is a stop signal",
+        "Emotional weight of running again: the first jog after three months off is bigger than the pace or distance suggests",
+        "10–15 miles/week max: a hard ceiling regardless of how good it feels — the 10% rule starts here"
+      ],
+      "psychologyNote": "Emotional. Be gentle with yourself.",
+      "phaseIds": [
+        "phase3"
+      ],
+      "skillRef": "SKILL.md Phase 3 weeks 9–12 — exact walk/jog protocol",
+      "entries": []
+    },
+    {
+      "id": 10,
+      "part": "rebuild",
+      "title": "Building the Base",
+      "anchor": "building-the-base",
+      "dateRange": "Months 4–6",
+      "startDate": "2026-12-25",
+      "endDate": "2027-03-31",
+      "written": false,
+      "summary": "January – March 2027. Progressive mileage, the 10% rule, strength coming back.",
+      "topics": [
+        "January – March 2027: three months of steady, unglamorous base-building",
+        "Progressive mileage: climbing from roughly 20 to 40 miles per week over the quarter",
+        "10% rule: never more than a 10% increase in weekly mileage — no exceptions for feeling good",
+        "No intensity yet: all easy pace, no tempo or speed work — pure aerobic volume",
+        "Reintroducing strength training: back to the gym for real lifts, starting light and building load",
+        "Learning to run with a changed face: adjusting to permanent-feeling numbness and a slightly different jaw while running",
+        "Sleep study at 6 months: overnight test to confirm the surgery actually fixed the sleep apnea it was for"
+      ],
+      "psychologyNote": "Acceptance phase. Integration beginning.",
+      "phaseIds": [
+        "phase3",
+        "phase4"
+      ],
+      "skillRef": "SKILL.md Phase 4 (Volume build) — weekly structure, vert reintroduction, strength restart",
+      "entries": []
+    },
+    {
+      "id": 11,
+      "part": "rebuild",
+      "title": "Return to Self",
+      "anchor": "return-to-self",
+      "dateRange": "Months 6–9",
+      "startDate": "2027-04-01",
+      "endDate": "2027-06-30",
+      "written": false,
+      "summary": "April – June 2027. Quality workouts return. Vert returns. Feeling like myself again.",
+      "topics": [
+        "April – June 2027: the quarter where training starts feeling like training again",
+        "40–50 mpw: mileage back in the range it was before surgery",
+        "Adding back quality workouts: structured sessions return, not just easy miles",
+        "Tempo runs, hill work: sustained-effort runs and vert reintroduced carefully",
+        "Vert returning: climbing and descending back in the mix after months of flat routes",
+        "Strength training full capacity: back to pre-surgery loads on the big lifts",
+        "\"Feeling like myself again\""
+      ],
+      "psychologyNote": null,
+      "phaseIds": [
+        "phase4",
+        "phase5"
+      ],
+      "skillRef": "SKILL.md Phase 5 (Return to performance); transition to ultra-plan-generator if a race goal exists",
+      "entries": []
+    },
+    {
+      "id": 12,
+      "part": "rebuild",
+      "title": "Peak Again",
+      "anchor": "peak-again",
+      "dateRange": "Months 9–12",
+      "startDate": "2027-07-01",
+      "endDate": "2027-10-01",
+      "written": false,
+      "summary": "Full training capacity, first race back, and the one-year assessment.",
+      "topics": [
+        "July – October 2027: the final quarter of the first year, training at full tilt",
+        "Full training capacity: no more restrictions — training decisions are fitness decisions again, not recovery decisions",
+        "50+ mpw with quality: back to pre-surgery volume, now with real workouts mixed in",
+        "First race back: the first competitive or event effort since surgery",
+        "One year post-op assessment: final check-in with Dr. Denis on bone healing and bite alignment",
+        "Final facial settling: the face finishes its last, subtle changes roughly a year out",
+        "Numbness: the one-year mark for knowing whether any lingering numbness is permanent",
+        "Reflection: what changed? What did I learn?"
+      ],
+      "psychologyNote": null,
+      "phaseIds": [
+        "phase5"
+      ],
+      "skillRef": null,
+      "entries": []
+    },
+    {
+      "id": 13,
+      "part": "rebuild",
+      "title": "First Marathon Back",
+      "anchor": "first-marathon-back",
+      "dateRange": "Fall 2027 or Spring 2028",
+      "startDate": "2027-10-02",
+      "endDate": "2028-04-01",
+      "written": false,
+      "summary": "A full training cycle, race day, and the complete picture.",
+      "topics": [
+        "Full training cycle: a real periodized build toward a specific race, not just base mileage",
+        "Race day: the actual start line, however far out it ends up being",
+        "Crossing the finish line: the moment the whole year of rebuilding was pointed at",
+        "The complete picture: what a full year of recovery actually adds up to"
+      ],
+      "psychologyNote": null,
+      "phaseIds": [
+        "phase5"
+      ],
+      "skillRef": "ultra-plan-generator skill — build the race-specific plan",
+      "entries": []
+    },
+    {
+      "id": 14,
+      "part": "other",
+      "title": "What I Did Instead of Running",
+      "anchor": "the-other-journey",
+      "dateRange": "Weeks 0–12 (parallel)",
+      "startDate": "2026-10-02",
+      "endDate": "2026-12-25",
+      "written": false,
+      "summary": "Twelve weeks without running is twelve weeks of bandwidth for something else.",
+      "topics": [
+        "Main project: learning Frantz Casseus' \"Lullaby\" on classical guitar",
+        "Week-by-week progress documentation: short notes on what got better (or didn’t) each week",
+        "From first notes to full piece",
+        "Audio clips: short recordings at the start and end to actually hear the progress",
+        "Mobility/flexibility deep dive: time to finally work on the stuff running never left room for",
+        "Meditation/breathwork practice",
+        "Reading list (~20 books)",
+        "Writing about 20+ years of design leadership",
+        "Piano practice (Casiotone)",
+        "Advisory/fractional CDO research: exploring what a fractional creative-leadership role could look like next"
+      ],
+      "psychologyNote": "What have you been saying you don't have time for?",
+      "phaseIds": [],
+      "skillRef": "references/psychology.md — coping strategies section",
+      "entries": []
+    }
+  ]
+}

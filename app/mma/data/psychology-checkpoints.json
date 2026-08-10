@@ -1,0 +1,94 @@
+{
+  "checkpoints": [
+    {
+      "id": "week-1",
+      "label": "Week 1",
+      "startDate": "2026-10-02",
+      "endDate": "2026-10-09",
+      "physicalState": "Miserable",
+      "emotionalState": "Regret, shock",
+      "whatHelps": "Survive. Don't judge.",
+      "anchor": "hell-week"
+    },
+    {
+      "id": "week-2",
+      "label": "Week 2",
+      "startDate": "2026-10-09",
+      "endDate": "2026-10-16",
+      "physicalState": "Still bad",
+      "emotionalState": "Fog, irritability",
+      "whatHelps": "Short walks, sunlight",
+      "anchor": "the-fog"
+    },
+    {
+      "id": "week-3-4",
+      "label": "Weeks 3–4",
+      "startDate": "2026-10-16",
+      "endDate": "2026-10-30",
+      "physicalState": "Improving",
+      "emotionalState": "Grief, impatience",
+      "whatHelps": "Start a project",
+      "anchor": "the-fog"
+    },
+    {
+      "id": "week-5-6",
+      "label": "Weeks 5–6",
+      "startDate": "2026-10-30",
+      "endDate": "2026-11-13",
+      "physicalState": "Functional",
+      "emotionalState": "First light",
+      "whatHelps": "Milestone: post-op imaging",
+      "anchor": "emerging"
+    },
+    {
+      "id": "week-7-10",
+      "label": "Weeks 7–10",
+      "startDate": "2026-11-13",
+      "endDate": "2026-12-11",
+      "physicalState": "Cross-training",
+      "emotionalState": "Impatience peaks",
+      "whatHelps": "Focus on what you CAN do",
+      "anchor": "first-movement"
+    },
+    {
+      "id": "week-10-12",
+      "label": "Weeks 10–12",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-25",
+      "physicalState": "First runs",
+      "emotionalState": "Emotional, humbling",
+      "whatHelps": "Be gentle, no watch",
+      "anchor": "first-run"
+    },
+    {
+      "id": "month-3-4",
+      "label": "3–4 months",
+      "startDate": "2026-12-25",
+      "endDate": "2027-02-05",
+      "physicalState": "Rebuilding",
+      "emotionalState": "Acceptance or despair",
+      "whatHelps": "Professional help if stuck",
+      "anchor": "building-the-base"
+    },
+    {
+      "id": "month-6",
+      "label": "6 months",
+      "startDate": "2027-04-02",
+      "endDate": "2027-04-02",
+      "physicalState": "Near-normal",
+      "emotionalState": "Integration",
+      "whatHelps": "Sleep study validation",
+      "anchor": "building-the-base"
+    },
+    {
+      "id": "month-12",
+      "label": "12 months",
+      "startDate": "2027-10-01",
+      "endDate": "2027-10-01",
+      "physicalState": "Full return",
+      "emotionalState": "Reflection",
+      "whatHelps": "What did you learn?",
+      "anchor": "peak-again"
+    }
+  ]
+}
