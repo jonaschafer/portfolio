@@ -94,7 +94,7 @@ function ProfilePicker({ onPick }) {
         ))}
       </div>
       <p className="max-w-xs text-xs text-white/70">
-        Tap your name to start today's practice.
+        Click your name to start today's practice.
       </p>
     </div>
   )
@@ -218,8 +218,8 @@ function TypingSession({ profile, initialProgress, onProgressUpdate, onSwitchPro
   const closeToGoal = sessionSeconds >= SESSION_GOAL_SECONDS && sessionAccuracy < MIN_ACCURACY_PCT
 
   return (
-    <div className="flex min-h-screen flex-col px-4 py-6 sm:px-6">
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col">
+    <div className="flex min-h-screen flex-col px-4 py-8 sm:px-6 lg:py-12">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-white">
             <span className="text-2xl">{profile.emoji}</span>
@@ -283,7 +283,7 @@ function TypingSession({ profile, initialProgress, onProgressUpdate, onSwitchPro
           <button
             type="button"
             onClick={() => inputRef.current?.focus()}
-            className="block w-full rounded-[28px] bg-white/95 p-5 text-left text-xl leading-relaxed tracking-wide shadow-lg sm:text-2xl"
+            className="block w-full rounded-[28px] bg-white/95 p-6 text-left text-2xl leading-relaxed tracking-wide shadow-lg lg:text-3xl"
           >
             {targetChars.map((ch, i) => {
               let cls = 'text-neutral-300'
@@ -311,7 +311,7 @@ function TypingSession({ profile, initialProgress, onProgressUpdate, onSwitchPro
             rows={2}
             aria-label="Type the passage above"
             className="mt-3 w-full resize-none rounded-2xl border-2 border-white/60 bg-white/20 p-4 text-lg text-white caret-white placeholder-white/60 outline-none focus:border-white"
-            placeholder="Tap here and start typing…"
+            placeholder="Just start typing…"
           />
         </div>
       </div>
