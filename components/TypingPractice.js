@@ -62,6 +62,30 @@ function normalize(str) {
   return str.replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
 }
 
+// Fire-and-forget: tell the eero API route to unpause this kid's WiFi
+// profile. Must never block the celebratory completion screen, so failures
+// are only logged for the owner to see in the console.
+function notifyEeroUnlock(profileId) {
+  const secret = process.env.NEXT_PUBLIC_INTERNAL_API_SECRET
+  fetch('/api/eero/unpause', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(secret ? { 'x-internal-secret': secret } : {}),
+    },
+    body: JSON.stringify({ profileId }),
+  })
+    .then(async (res) => {
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        console.error('[eero] WiFi unlock failed:', res.status, data.error ?? '')
+      }
+    })
+    .catch((err) => {
+      console.error('[eero] WiFi unlock request failed:', err.message)
+    })
+}
+
 function pickPassage(tier, excludeId) {
   const pool = passagesForTier(tier)
   const choices = pool.filter((p) => p.id !== excludeId)
@@ -113,7 +137,7 @@ function CompleteScreen({ profile, progress, onSwitchProfile }) {
         Done for today!
       </h1>
       <p className="max-w-xs text-lg font-semibold text-white/95">
-        Nice work, {profile.name} — go ask for the WiFi password. 📶
+        Nice work, {profile.name} — your WiFi just unlocked! 📶
       </p>
       <div className="flex gap-4 rounded-3xl bg-white/95 px-6 py-4 shadow-lg">
         <div>
@@ -199,7 +223,10 @@ function TypingSession({ profile, initialProgress, onProgressUpdate, onSwitchPro
     setProgress(nextProgress)
     onProgressUpdate(nextProgress)
 
-    if (nextProgress.completed) return
+    if (nextProgress.completed) {
+      notifyEeroUnlock(profile.id)
+      return
+    }
     setTyped('')
     setStartedAt(null)
     setPassage(pickPassage(profile.tier, passage.id))
