@@ -6,7 +6,7 @@
  *
  * Uses eero's unofficial REST API (api-user.e2ro.com) — there is no official
  * public API. EERO_SESSION_TOKEN comes from a one-time local login done with
- * scripts/eero-login.mjs; see TYPING_EERO_SETUP.md.
+ * scripts/eero-login.mjs; see docs/typing-eero-setup.md.
  */
 
 const EERO_API_BASE = 'https://api-user.e2ro.com/2.2'
