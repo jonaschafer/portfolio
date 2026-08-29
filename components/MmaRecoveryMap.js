@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   HelpCircle,
   Moon,
-  Phone,
   Printer,
   Sun,
   SunMoon,
@@ -27,9 +26,9 @@ import {
 const VIEWS = ['home', 'timeline', 'rules', 'questions', 'redflags']
 
 const STATUS_META = {
-  confirmed: { mark: '✅', label: 'Surgeon confirmed' },
-  inference: { mark: '🔶', label: 'Inference / choice' },
-  question: { mark: '❓', label: 'Needs confirming' },
+  confirmed: { mark: '✅', label: 'Confirmed' },
+  inference: { mark: '🔶', label: 'Inferred' },
+  question: { mark: '❓', label: 'Unconfirmed' },
 }
 
 function daysBetween(fromDate, toDate) {
@@ -62,9 +61,8 @@ function formatDate(date) {
 function StatusBadge({ status }) {
   const meta = STATUS_META[status]
   return (
-    <span className="inline-flex items-center gap-[5px] shrink-0 rounded-full px-2 py-[3px] text-[11px] font-medium tracking-[0.02em] border border-[var(--line)] bg-[var(--chip-bg)] text-[var(--muted)]">
-      <span aria-hidden="true">{meta.mark}</span>
-      <span>{meta.label}</span>
+    <span className="block text-[10.5px] font-medium uppercase tracking-[0.07em] text-[var(--muted)] mb-1">
+      <span aria-hidden="true">{meta.mark}</span> {meta.label}
     </span>
   )
 }
@@ -258,7 +256,7 @@ function PhaseCard({ phase, isCurrent, isOpen, onToggle }) {
               <ul className="space-y-2">
                 {notes.map((note, i) => (
                   <li key={i} className="text-[14px] leading-[1.55] text-[var(--fg)]">
-                    <div className="mb-1"><StatusBadge status={note.status} /></div>
+                    <StatusBadge status={note.status} />
                     {note.text}
                   </li>
                 ))}
@@ -278,9 +276,9 @@ function TimelineView({ state }) {
   return (
     <div className="px-5 pb-28 pt-5">
       <p className="mb-4 text-[13px] leading-[1.5] text-[var(--muted)]">
-        <span className="mr-1">✅ surgeon confirmed</span>·
-        <span className="mx-1">🔶 inference / my choice</span>·
-        <span className="ml-1">❓ needs confirming</span>
+        <span className="mr-1">✅ Confirmed</span>·
+        <span className="mx-1">🔶 Inferred</span>·
+        <span className="ml-1">❓ Unconfirmed</span>
       </p>
       <div className="space-y-3">
         {PHASES.map((phase) => (
@@ -361,25 +359,17 @@ function QuestionsView() {
   )
 }
 
-const SEVERITY_STYLE = {
-  er: 'border-[#B3271F] bg-[#B3271F]/12',
-  call: 'border-[#B4790E] bg-[#B4790E]/10',
-  'call-nonurgent': 'border-[var(--line)] bg-[var(--card)]',
-}
 const SEVERITY_LABEL = {
-  er: 'GO TO THE ER',
-  call: 'CALL THE SURGEON',
-  'call-nonurgent': 'CALL — NOT URGENT',
+  er: 'Go to the ER',
+  call: 'Call the surgeon',
+  'call-nonurgent': 'Call — not urgent',
 }
 
 function RedFlagsView() {
   return (
     <div data-print-root className="px-5 pb-10 pt-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h1 className="font-['Haas_Grot_Disp',_sans-serif] text-[18px] text-[var(--fg)] flex items-center gap-2">
-          <AlertTriangle size={20} className="text-[#B3271F]" />
-          Red flags
-        </h1>
+        <h1 className="font-['Haas_Grot_Disp',_sans-serif] text-[18px] text-[var(--fg)]">Red flags</h1>
         <button
           type="button"
           data-print-hide
@@ -398,17 +388,16 @@ function RedFlagsView() {
             key={flag.id}
             data-severity={flag.severity}
             data-print-avoid-break
-            className={`rounded-[14px] border-2 px-4 py-4 ${SEVERITY_STYLE[flag.severity]}`}
+            className="rounded-[20px] bg-[var(--rf-bg)] px-6 py-6"
           >
-            <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--fg)]">
-              {flag.severity === 'er' && <Phone size={13} />}
-              {SEVERITY_LABEL[flag.severity]}
+            <div className="text-[19px] font-bold leading-[1.25] text-[var(--rf-fg)] mb-3">{flag.sign}</div>
+            <div className="text-[14.5px] leading-[1.5] text-[var(--rf-fg)]/70 mb-5">{flag.action}</div>
+            <div className="flex items-start justify-between gap-4">
+              <div className="text-[14px] font-bold text-[var(--rf-fg)]">{SEVERITY_LABEL[flag.severity]}</div>
+              {flag.detail && (
+                <div className="text-[12px] leading-[1.4] text-[var(--rf-fg)]/60 text-right max-w-[48%]">{flag.detail}</div>
+              )}
             </div>
-            <div className="font-['Haas_Grot_Disp',_sans-serif] text-[15px] leading-[1.4] text-[var(--fg)]">
-              {flag.sign}
-            </div>
-            <div className="mt-1 text-[13.5px] leading-[1.5] text-[var(--muted)]">{flag.action}</div>
-            {flag.detail && <div className="mt-1 text-[12.5px] leading-[1.5] text-[var(--muted)] italic">{flag.detail}</div>}
           </li>
         ))}
       </ul>
@@ -496,6 +485,8 @@ export default function MmaRecoveryMap() {
           --chip-bg: #efe9db;
           --accent: #3f5d4a;
           --accent-fg: #f6f2ea;
+          --rf-bg: #ecc9b8;
+          --rf-fg: #33150c;
           font-family: 'Inter', sans-serif;
         }
         .map-root[data-theme='dark'] {
@@ -507,6 +498,8 @@ export default function MmaRecoveryMap() {
           --chip-bg: #1f221d;
           --accent: #7fa789;
           --accent-fg: #0d150f;
+          --rf-bg: #3c2016;
+          --rf-fg: #f7e4d9;
         }
 
         @media print {
