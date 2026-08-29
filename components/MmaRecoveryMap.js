@@ -359,12 +359,6 @@ function QuestionsView() {
   )
 }
 
-const SEVERITY_LABEL = {
-  er: 'Go to the ER',
-  call: 'Call the surgeon',
-  'call-nonurgent': 'Call — not urgent',
-}
-
 function RedFlagsView() {
   return (
     <div data-print-root className="px-5 pb-10 pt-5">
@@ -391,13 +385,10 @@ function RedFlagsView() {
             className="rounded-[20px] bg-[var(--rf-bg)] px-6 py-6"
           >
             <div className="text-[19px] font-bold leading-[1.25] text-[var(--rf-fg)] mb-3">{flag.sign}</div>
-            <div className="text-[14.5px] leading-[1.5] text-[var(--rf-fg)]/70 mb-5">{flag.action}</div>
-            <div className="flex items-start justify-between gap-4">
-              <div className="text-[14px] font-bold text-[var(--rf-fg)]">{SEVERITY_LABEL[flag.severity]}</div>
-              {flag.detail && (
-                <div className="text-[12px] leading-[1.4] text-[var(--rf-fg)]/60 text-right max-w-[48%]">{flag.detail}</div>
-              )}
-            </div>
+            <div className="text-[14.5px] leading-[1.5] text-[var(--rf-fg)]/70">{flag.action}</div>
+            {flag.detail && (
+              <div className="mt-2 text-[13px] leading-[1.5] text-[var(--rf-fg)]/55">{flag.detail}</div>
+            )}
           </li>
         ))}
       </ul>
