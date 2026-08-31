@@ -3,13 +3,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   AlertTriangle,
+  BookOpen,
   ChevronDown,
   ChevronLeft,
+  ClipboardList,
   HelpCircle,
   Moon,
   Printer,
   Sun,
   SunMoon,
+  Utensils,
 } from 'lucide-react'
 import {
   SURGERY_DATE,
@@ -22,14 +25,14 @@ import {
   RED_FLAGS_FOOTER,
   OPEN_QUESTIONS,
 } from '../app/mma/map/data'
+import { StatusBadge, Collapsible } from './mma-map/ui'
+import { useChecklist, unresolvedCount } from './mma-map/storage'
+import { DECISIONS_REVIEW, DECISIONS_PREOP, DECISIONS_LOGISTICS } from '../app/mma/map/data/decisions'
+import DecisionsView from './mma-map/DecisionsView'
+import PrepView from './mma-map/PrepView'
+import JournalView from './mma-map/JournalView'
 
-const VIEWS = ['home', 'timeline', 'rules', 'questions', 'redflags']
-
-const STATUS_META = {
-  confirmed: { mark: '✅', label: 'Confirmed' },
-  inference: { mark: '🔶', label: 'Inferred' },
-  question: { mark: '❓', label: 'Unconfirmed' },
-}
+const VIEWS = ['home', 'timeline', 'rules', 'questions', 'redflags', 'decisions', 'prep', 'journal']
 
 function daysBetween(fromDate, toDate) {
   const MS_PER_DAY = 24 * 60 * 60 * 1000
@@ -56,23 +59,6 @@ function getRecoveryState(now) {
 
 function formatDate(date) {
   return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
-}
-
-function StatusBadge({ status }) {
-  const meta = STATUS_META[status]
-  return (
-    <span className="block text-[10.5px] font-medium uppercase tracking-[0.07em] text-[var(--muted)] mb-1">
-      <span aria-hidden="true">{meta.mark}</span> {meta.label}
-    </span>
-  )
-}
-
-function Collapsible({ open, children }) {
-  return (
-    <div className="mma-collapsible-panel" style={{ gridTemplateRows: open ? '1fr' : '0fr' }}>
-      <div>{children}</div>
-    </div>
-  )
 }
 
 function TopBar({ title, onBack, theme, cycleTheme }) {
@@ -133,6 +119,14 @@ function RedFlagBar({ onOpen }) {
 function HomeView({ state, goTo }) {
   const isPreOp = state.stage === 'pre-op'
 
+  const review = useChecklist('decisions:review')
+  const preop = useChecklist('decisions:preop')
+  const logistics = useChecklist('decisions:logistics')
+  const openDecisions =
+    unresolvedCount(review, DECISIONS_REVIEW.items) +
+    unresolvedCount(preop, DECISIONS_PREOP.items) +
+    unresolvedCount(logistics, DECISIONS_LOGISTICS.items)
+
   return (
     <div className="px-5 pb-10 pt-6">
       <div className="rounded-[20px] border border-[var(--line)] bg-[var(--card)] px-5 py-7 text-center">
@@ -154,6 +148,15 @@ function HomeView({ state, goTo }) {
           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--chip-bg)] px-3 py-[6px] text-[12px] text-[var(--muted)]">
             Next: {state.nextPhase.label} · day {state.nextPhase.startDay}
           </div>
+        )}
+        {!isPreOp && (
+          <button
+            type="button"
+            onClick={() => goTo('journal')}
+            className="mma-btn-press mt-3 block w-full text-[13px] font-medium text-[var(--accent)]"
+          >
+            Log today’s entry →
+          </button>
         )}
       </div>
 
@@ -192,6 +195,56 @@ function HomeView({ state, goTo }) {
             <div>
               <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Open questions</div>
               <div className="text-[13px] text-[var(--muted)]">{OPEN_QUESTIONS.length} unresolved with the care team</div>
+            </div>
+          </div>
+          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
+        </button>
+      </div>
+
+      <div className="mt-6 mb-2 font-['Haas_Grot_Disp',_sans-serif] text-[11px] uppercase tracking-[0.18em] text-[var(--muted)]">
+        Companion
+      </div>
+      <div className="grid grid-cols-1 gap-3">
+        <button
+          type="button"
+          onClick={() => goTo('decisions')}
+          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
+        >
+          <div className="flex items-center gap-2">
+            <ClipboardList size={16} className="text-[var(--muted)]" />
+            <div>
+              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Decisions & Questions</div>
+              <div className="text-[13px] text-[var(--muted)]">{openDecisions} unchecked</div>
+            </div>
+          </div>
+          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => goTo('prep')}
+          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
+        >
+          <div className="flex items-center gap-2">
+            <Utensils size={16} className="text-[var(--muted)]" />
+            <div>
+              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Prep · Meds · Diet</div>
+              <div className="text-[13px] text-[var(--muted)]">Shopping list, the diet rule, sinus precautions</div>
+            </div>
+          </div>
+          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
+        </button>
+
+        <button
+          type="button"
+          onClick={() => goTo('journal')}
+          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
+        >
+          <div className="flex items-center gap-2">
+            <BookOpen size={16} className="text-[var(--muted)]" />
+            <div>
+              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Journal</div>
+              <div className="text-[13px] text-[var(--muted)]">Daily + weekly log, numbness trends</div>
             </div>
           </div>
           <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
@@ -421,7 +474,7 @@ export default function MmaRecoveryMap() {
     const tick = setInterval(() => setNow(new Date()), 60 * 60 * 1000)
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/mma-map-sw.js', { scope: '/mma/map/' }).catch(() => {})
+      navigator.serviceWorker.register('/mma-map-sw.js', { scope: '/mma/map' }).catch(() => {})
     }
 
     return () => {
@@ -458,7 +511,16 @@ export default function MmaRecoveryMap() {
   const resolvedTheme = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme
   const state = useMemo(() => getRecoveryState(now), [now])
 
-  const titles = { home: null, timeline: 'Timeline', rules: 'Rules vs. choices', questions: 'Open questions', redflags: null }
+  const titles = {
+    home: null,
+    timeline: 'Timeline',
+    rules: 'Rules vs. choices',
+    questions: 'Open questions',
+    redflags: null,
+    decisions: 'Decisions & Questions',
+    prep: 'Prep · Meds · Diet',
+    journal: 'Journal',
+  }
 
   return (
     <div
@@ -530,6 +592,9 @@ export default function MmaRecoveryMap() {
         {view === 'rules' && <RulesView />}
         {view === 'questions' && <QuestionsView />}
         {view === 'redflags' && <RedFlagsView />}
+        {view === 'decisions' && <DecisionsView />}
+        {view === 'prep' && <PrepView />}
+        {view === 'journal' && <JournalView />}
       </main>
 
       {view !== 'redflags' && <RedFlagBar onOpen={() => goTo('redflags')} />}
