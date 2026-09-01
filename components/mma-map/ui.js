@@ -9,7 +9,10 @@ export const STATUS_META = {
   question: { mark: '❓', label: 'Unconfirmed' },
 }
 
+// "Confirmed" notes are the majority case and carry no extra signal — only
+// surface the badge when something is inferred or still needs confirming.
 export function StatusBadge({ status }) {
+  if (status === 'confirmed') return null
   const meta = STATUS_META[status]
   return (
     <span className="block text-[10.5px] font-medium uppercase tracking-[0.07em] text-[var(--muted)] mb-1">

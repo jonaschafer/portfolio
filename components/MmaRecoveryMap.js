@@ -329,7 +329,7 @@ function TimelineView({ state }) {
   return (
     <div className="px-5 pb-28 pt-5">
       <p className="mb-4 text-[13px] leading-[1.5] text-[var(--muted)]">
-        <span className="mr-1">✅ Confirmed</span>·
+        Unmarked notes are surgeon-confirmed.
         <span className="mx-1">🔶 Inferred</span>·
         <span className="ml-1">❓ Unconfirmed</span>
       </p>
