@@ -13,11 +13,11 @@ function ChecklistGroup({ group }) {
       <div className="mb-3 flex items-baseline justify-between gap-3">
         <div>
           <SectionHeader>{group.title}</SectionHeader>
-          {group.subtitle && <p className="-mt-2 mb-1 text-[12.5px] text-[var(--muted)]">{group.subtitle}</p>}
+          {group.subtitle && <p className="-mt-2 mb-1 text-xs text-base-content/50">{group.subtitle}</p>}
         </div>
-        <span className="shrink-0 text-[12px] text-[var(--muted)]">{remaining} open</span>
+        <span className="badge badge-ghost badge-sm shrink-0">{remaining} open</span>
       </div>
-      {group.intro && <p className="mb-3 text-[13.5px] leading-[1.55] text-[var(--muted)]">{group.intro}</p>}
+      {group.intro && <p className="mb-3 text-sm leading-relaxed text-base-content/60">{group.intro}</p>}
       <ul className="space-y-2.5">
         {group.items.map((item) => (
           <CheckItem
@@ -38,8 +38,8 @@ function ChecklistGroup({ group }) {
 
 export default function DecisionsView() {
   return (
-    <div className="px-5 pb-10 pt-5">
-      <p className="mb-5 text-[13px] leading-[1.5] text-[var(--muted)]">
+    <div className="px-4 pb-10 pt-5">
+      <p className="mb-5 text-sm leading-relaxed text-base-content/60">
         Checking an item means "asked and answered" — tap to attach a note with what you learned.
       </p>
 
@@ -47,10 +47,12 @@ export default function DecisionsView() {
         <SectionHeader>Decided</SectionHeader>
         <ul className="space-y-2.5">
           {DECIDED.map((row) => (
-            <li key={row.id} data-print-avoid-break className="rounded-[14px] border border-[var(--line)] bg-[var(--card)] px-4 py-3">
-              <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">{row.decision}</div>
-              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[15px] text-[var(--fg)] mb-1.5">{row.choice}</div>
-              <div className="text-[13px] leading-[1.5] text-[var(--muted)]">{row.notes}</div>
+            <li key={row.id} data-print-avoid-break className="card card-compact border border-base-300 bg-base-100">
+              <div className="card-body">
+                <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">{row.decision}</div>
+                <div className="mb-1.5 text-[15px] font-semibold text-base-content">{row.choice}</div>
+                <div className="text-sm leading-relaxed text-base-content/60">{row.notes}</div>
+              </div>
             </li>
           ))}
         </ul>

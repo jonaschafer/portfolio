@@ -12,10 +12,12 @@ module.exports = {
       },
     },
   },
-  // daisyUI added only for the framework-comparison preview at /mma/map/compare —
-  // remove before merging anything from this branch back to main.
+  // daisyUI powers the /mma/map recovery app. base:false keeps its global
+  // html/body/native-element resets from bleeding into the rest of the
+  // portfolio, which doesn't otherwise use daisyUI.
   plugins: [require('daisyui')],
   daisyui: {
     themes: ['light', 'dark'],
+    base: false,
   },
 }

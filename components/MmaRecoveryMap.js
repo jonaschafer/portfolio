@@ -25,7 +25,7 @@ import {
   RED_FLAGS_FOOTER,
   OPEN_QUESTIONS,
 } from '../app/mma/map/data'
-import { StatusBadge, Collapsible } from './mma-map/ui'
+import { StatusBadge } from './mma-map/ui'
 import { useChecklist, unresolvedCount } from './mma-map/storage'
 import { DECISIONS_REVIEW, DECISIONS_PREOP, DECISIONS_LOGISTICS } from '../app/mma/map/data/decisions'
 import DecisionsView from './mma-map/DecisionsView'
@@ -63,39 +63,25 @@ function formatDate(date) {
 
 function TopBar({ title, onBack, theme, cycleTheme }) {
   return (
-    <div
-      data-print-hide
-      className="sticky top-0 z-20 border-b border-[var(--line)] bg-[var(--bg)]/90 backdrop-blur px-4 py-3"
-    >
-      <div className="flex max-w-[640px] mx-auto items-center justify-between gap-3">
-        <div className="flex items-center gap-2 min-w-0">
+    <div data-print-hide className="navbar sticky top-0 z-20 border-b border-base-300 bg-base-100/90 px-4 backdrop-blur">
+      <div className="mx-auto flex w-full max-w-[640px] items-center justify-between">
+        <div className="flex min-w-0 items-center gap-2">
           {onBack ? (
-            <button
-              type="button"
-              onClick={onBack}
-              className="mma-btn-press -ml-1 flex h-9 w-9 items-center justify-center rounded-full text-[var(--fg)]"
-              aria-label="Back to dashboard"
-            >
-              <ChevronLeft size={22} strokeWidth={2.25} />
+            <button type="button" onClick={onBack} className="btn btn-ghost btn-circle btn-sm -ml-1" aria-label="Back to dashboard">
+              <ChevronLeft size={20} strokeWidth={2.25} />
             </button>
           ) : (
-            <span className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] uppercase tracking-[0.18em] text-[var(--muted)]">
-              Recovery Map
-            </span>
+            <span className="text-xs font-semibold uppercase tracking-widest text-base-content/60">Recovery Map</span>
           )}
-          {title && (
-            <h1 className="truncate font-['Haas_Grot_Disp',_sans-serif] text-[16px] tracking-[0.01em] text-[var(--fg)]">
-              {title}
-            </h1>
-          )}
+          {title && <h1 className="truncate text-base font-semibold text-base-content">{title}</h1>}
         </div>
         <button
           type="button"
           onClick={cycleTheme}
-          className="mma-btn-press flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[var(--fg)]"
+          className="btn btn-ghost btn-circle btn-sm"
           aria-label={`Theme: ${theme}. Tap to change.`}
         >
-          {theme === 'dark' ? <Moon size={19} /> : theme === 'light' ? <Sun size={19} /> : <SunMoon size={19} />}
+          {theme === 'dark' ? <Moon size={18} /> : theme === 'light' ? <Sun size={18} /> : <SunMoon size={18} />}
         </button>
       </div>
     </div>
@@ -108,10 +94,27 @@ function RedFlagBar({ onOpen }) {
       type="button"
       onClick={onOpen}
       data-print-hide
-      className="mma-btn-press fixed inset-x-0 bottom-0 z-30 flex items-center justify-center gap-2 border-t border-black/20 bg-[#B3271F] px-4 py-4 text-[15px] font-semibold tracking-[0.01em] text-white pb-[max(16px,env(safe-area-inset-bottom))]"
+      className="btn btn-error btn-block fixed inset-x-0 bottom-0 z-30 rounded-none pb-[max(0px,env(safe-area-inset-bottom))] text-base"
     >
       <AlertTriangle size={19} strokeWidth={2.25} />
       Red flags — call / ER
+    </button>
+  )
+}
+
+function NavCard({ title, subtitle, icon, onClick }) {
+  return (
+    <button type="button" onClick={onClick} className="card card-compact bg-base-100 border border-base-300 text-left">
+      <div className="card-body flex-row items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          {icon}
+          <div>
+            <div className="text-[15px] font-semibold text-base-content">{title}</div>
+            <div className="text-xs text-base-content/60">{subtitle}</div>
+          </div>
+        </div>
+        <ChevronDown size={18} className="-rotate-90 shrink-0 text-base-content/40" />
+      </div>
     </button>
   )
 }
@@ -128,127 +131,61 @@ function HomeView({ state, goTo }) {
     unresolvedCount(logistics, DECISIONS_LOGISTICS.items)
 
   return (
-    <div className="px-5 pb-10 pt-6">
-      <div className="rounded-[20px] border border-[var(--line)] bg-[var(--card)] px-5 py-7 text-center">
-        <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] uppercase tracking-[0.2em] text-[var(--muted)]">
-          {isPreOp ? 'Days until surgery' : `Week ${state.week} · Post-op day`}
-        </div>
-        <div className="font-['Mondwest',_sans-serif] text-[92px] leading-[1] text-[var(--accent)] my-2">
-          {isPreOp ? state.daysUntil : state.day}
-        </div>
-        <div className="font-['Haas_Grot_Disp',_sans-serif] text-[19px] text-[var(--fg)]">
-          {isPreOp ? formatDate(state.surgery) : state.phase.label}
-        </div>
-        <p className="mt-2 text-[14px] leading-[1.5] text-[var(--muted)] max-w-[38ch] mx-auto">
-          {isPreOp
-            ? `${SURGERY_INFO.procedure}. ${SURGERY_INFO.surgeon}.`
-            : state.phase.summary}
-        </p>
-        {!isPreOp && state.nextPhase && (
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--chip-bg)] px-3 py-[6px] text-[12px] text-[var(--muted)]">
-            Next: {state.nextPhase.label} · day {state.nextPhase.startDay}
+    <div className="px-4 pb-10 pt-6">
+      <div className="stats stats-vertical w-full border border-base-300 bg-base-100 shadow-sm">
+        <div className="stat items-center text-center">
+          <div className="stat-title">{isPreOp ? 'Days until surgery' : `Week ${state.week} · Post-op day`}</div>
+          <div className="stat-value">{isPreOp ? state.daysUntil : state.day}</div>
+          <div className="stat-desc mt-1 whitespace-normal text-sm font-semibold text-base-content">
+            {isPreOp ? formatDate(state.surgery) : state.phase.label}
           </div>
-        )}
-        {!isPreOp && (
-          <button
-            type="button"
-            onClick={() => goTo('journal')}
-            className="mma-btn-press mt-3 block w-full text-[13px] font-medium text-[var(--accent)]"
-          >
-            Log today’s entry →
-          </button>
-        )}
+          <p className="stat-desc mx-auto mt-2 max-w-[36ch] whitespace-normal normal-case">
+            {isPreOp ? `${SURGERY_INFO.procedure}. ${SURGERY_INFO.surgeon}.` : state.phase.summary}
+          </p>
+          {!isPreOp && state.nextPhase && (
+            <div className="badge badge-outline mt-3">
+              Next: {state.nextPhase.label} · day {state.nextPhase.startDay}
+            </div>
+          )}
+          {!isPreOp && (
+            <button type="button" onClick={() => goTo('journal')} className="btn btn-link btn-sm mt-2 no-underline">
+              Log today’s entry →
+            </button>
+          )}
+        </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-3">
-        <button
-          type="button"
-          onClick={() => goTo('timeline')}
-          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
-        >
-          <div>
-            <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Full timeline</div>
-            <div className="text-[13px] text-[var(--muted)]">Day 0 through 12 months</div>
-          </div>
-          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
-        </button>
-
-        <button
-          type="button"
-          onClick={() => goTo('rules')}
-          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
-        >
-          <div>
-            <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Hard rules vs. my choices</div>
-            <div className="text-[13px] text-[var(--muted)]">What the surgeons said vs. what I decided</div>
-          </div>
-          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
-        </button>
-
-        <button
-          type="button"
+      <div className="mt-6 flex flex-col gap-3">
+        <NavCard title="Full timeline" subtitle="Day 0 through 12 months" onClick={() => goTo('timeline')} />
+        <NavCard title="Hard rules vs. my choices" subtitle="What the surgeons said vs. what I decided" onClick={() => goTo('rules')} />
+        <NavCard
+          title="Open questions"
+          subtitle={`${OPEN_QUESTIONS.length} unresolved with the care team`}
+          icon={<HelpCircle size={16} className="text-base-content/40" />}
           onClick={() => goTo('questions')}
-          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
-        >
-          <div className="flex items-center gap-2">
-            <HelpCircle size={16} className="text-[var(--muted)]" />
-            <div>
-              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Open questions</div>
-              <div className="text-[13px] text-[var(--muted)]">{OPEN_QUESTIONS.length} unresolved with the care team</div>
-            </div>
-          </div>
-          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
-        </button>
+        />
       </div>
 
-      <div className="mt-6 mb-2 font-['Haas_Grot_Disp',_sans-serif] text-[11px] uppercase tracking-[0.18em] text-[var(--muted)]">
-        Companion
-      </div>
-      <div className="grid grid-cols-1 gap-3">
-        <button
-          type="button"
+      <div className="mb-3 mt-8 text-xs font-semibold uppercase tracking-widest text-base-content/50">Companion</div>
+      <div className="flex flex-col gap-3">
+        <NavCard
+          title="Decisions & Questions"
+          subtitle={`${openDecisions} unchecked`}
+          icon={<ClipboardList size={16} className="text-base-content/40" />}
           onClick={() => goTo('decisions')}
-          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
-        >
-          <div className="flex items-center gap-2">
-            <ClipboardList size={16} className="text-[var(--muted)]" />
-            <div>
-              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Decisions & Questions</div>
-              <div className="text-[13px] text-[var(--muted)]">{openDecisions} unchecked</div>
-            </div>
-          </div>
-          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
-        </button>
-
-        <button
-          type="button"
+        />
+        <NavCard
+          title="Prep · Meds · Diet"
+          subtitle="Shopping list, the diet rule, sinus precautions"
+          icon={<Utensils size={16} className="text-base-content/40" />}
           onClick={() => goTo('prep')}
-          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
-        >
-          <div className="flex items-center gap-2">
-            <Utensils size={16} className="text-[var(--muted)]" />
-            <div>
-              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Prep · Meds · Diet</div>
-              <div className="text-[13px] text-[var(--muted)]">Shopping list, the diet rule, sinus precautions</div>
-            </div>
-          </div>
-          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
-        </button>
-
-        <button
-          type="button"
+        />
+        <NavCard
+          title="Journal"
+          subtitle="Daily + weekly log, numbness trends"
+          icon={<BookOpen size={16} className="text-base-content/40" />}
           onClick={() => goTo('journal')}
-          className="mma-btn-press flex items-center justify-between rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-5 py-4 text-left"
-        >
-          <div className="flex items-center gap-2">
-            <BookOpen size={16} className="text-[var(--muted)]" />
-            <div>
-              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)]">Journal</div>
-              <div className="text-[13px] text-[var(--muted)]">Daily + weekly log, numbness trends</div>
-            </div>
-          </div>
-          <ChevronDown size={18} className="-rotate-90 text-[var(--muted)]" />
-        </button>
+        />
       </div>
     </div>
   )
@@ -274,50 +211,37 @@ function PhaseCard({ phase, isCurrent, isOpen, onToggle }) {
   return (
     <div
       data-print-avoid-break
-      className={`rounded-[16px] border bg-[var(--card)] overflow-hidden ${
-        isCurrent ? 'border-[var(--accent)] border-2' : 'border-[var(--line)]'
+      className={`collapse collapse-arrow border bg-base-100 ${isOpen ? 'collapse-open' : 'collapse-close'} ${
+        isCurrent ? 'border-primary border-2' : 'border-base-300'
       }`}
     >
-      <button
-        type="button"
-        onClick={onToggle}
-        className="mma-btn-press flex w-full items-center justify-between gap-3 px-4 py-4 text-left"
-        aria-expanded={isOpen}
-      >
-        <div className="min-w-0">
-          {isCurrent && (
-            <div className="mb-1 inline-flex items-center gap-1 rounded-full bg-[var(--accent)] px-2 py-[2px] text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--accent-fg)]">
-              You are here
-            </div>
-          )}
-          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[var(--fg)] truncate">{phase.label}</div>
-          <div className="text-[12px] text-[var(--muted)]">{dayRangeLabel}{phase.dateLabel ? ` · ${phase.dateLabel}` : ''}</div>
+      <button type="button" onClick={onToggle} className="collapse-title min-w-0 pr-10" aria-expanded={isOpen}>
+        {isCurrent && <div className="badge badge-primary badge-sm mb-1">You are here</div>}
+        <div className="truncate text-[15px] font-semibold text-base-content">{phase.label}</div>
+        <div className="text-xs text-base-content/50">
+          {dayRangeLabel}
+          {phase.dateLabel ? ` · ${phase.dateLabel}` : ''}
         </div>
-        <ChevronDown
-          data-print-hide
-          size={18}
-          className={`shrink-0 text-[var(--muted)] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-        />
       </button>
-      <Collapsible open={isOpen}>
-        <div className="px-4 pb-4 pt-0 space-y-4">
+      <div className="collapse-content">
+        <div className="space-y-4 pt-1">
           {grouped.map(([categoryId, notes]) => (
             <div key={categoryId}>
-              <div className="font-['Haas_Grot_Disp',_sans-serif] text-[10px] uppercase tracking-[0.16em] text-[var(--muted)] mb-1.5">
+              <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-base-content/50">
                 {CATEGORIES[categoryId]?.label ?? categoryId}
               </div>
               <ul className="space-y-2">
                 {notes.map((note, i) => (
-                  <li key={i} className="text-[14px] leading-[1.55] text-[var(--fg)]">
+                  <li key={i} className="text-sm leading-relaxed text-base-content">
                     <StatusBadge status={note.status} />
-                    {note.text}
+                    <div>{note.text}</div>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-      </Collapsible>
+      </div>
     </div>
   )
 }
@@ -327,11 +251,10 @@ function TimelineView({ state }) {
   const [openId, setOpenId] = useState(currentPhaseId ?? PHASES[0].id)
 
   return (
-    <div className="px-5 pb-28 pt-5">
-      <p className="mb-4 text-[13px] leading-[1.5] text-[var(--muted)]">
+    <div className="px-4 pb-28 pt-5">
+      <p className="mb-4 text-sm leading-relaxed text-base-content/60">
         Unmarked notes are surgeon-confirmed.
-        <span className="mx-1">🔶 Inferred</span>·
-        <span className="ml-1">❓ Unconfirmed</span>
+        <span className="mx-1">🔶 Inferred</span>·<span className="ml-1">❓ Unconfirmed</span>
       </p>
       <div className="space-y-3">
         {PHASES.map((phase) => (
@@ -344,9 +267,9 @@ function TimelineView({ state }) {
           />
         ))}
       </div>
-      <p className="mt-5 text-[12px] leading-[1.5] text-[var(--muted)]">
-        Phase boundaries beyond 6 weeks are approximate — converted from the surgeons’ month-based
-        estimates, since the consults didn’t give exact days that far out.
+      <p className="mt-5 text-xs leading-relaxed text-base-content/50">
+        Phase boundaries beyond 6 weeks are approximate — converted from the surgeons’ month-based estimates, since the consults
+        didn’t give exact days that far out.
       </p>
     </div>
   )
@@ -354,17 +277,15 @@ function TimelineView({ state }) {
 
 function RulesView() {
   return (
-    <div className="px-5 pb-10 pt-5 space-y-6">
+    <div className="space-y-6 px-4 pb-10 pt-5">
       <section>
-        <h2 className="font-['Haas_Grot_Disp',_sans-serif] text-[13px] uppercase tracking-[0.14em] text-[var(--fg)] mb-3">
-          Hard rules — from the surgeons
-        </h2>
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-base-content/60">Hard rules — from the surgeons</h2>
         <ul className="space-y-3">
           {HARD_RULES.map((rule) => (
             <li
               key={rule.id}
               data-print-avoid-break
-              className="rounded-[14px] border-l-[4px] border-[var(--accent)] bg-[var(--card)] px-4 py-3 text-[14px] leading-[1.55] text-[var(--fg)]"
+              className="border-l-4 border-primary bg-base-100 px-4 py-3 text-sm leading-relaxed text-base-content"
             >
               {rule.text}
             </li>
@@ -372,15 +293,13 @@ function RulesView() {
         </ul>
       </section>
       <section>
-        <h2 className="font-['Haas_Grot_Disp',_sans-serif] text-[13px] uppercase tracking-[0.14em] text-[var(--fg)] mb-3">
-          My choices — not surgeon restrictions
-        </h2>
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-widest text-base-content/60">My choices — not surgeon restrictions</h2>
         <ul className="space-y-3">
           {MY_CHOICES.map((choice) => (
             <li
               key={choice.id}
               data-print-avoid-break
-              className="rounded-[14px] border-l-[4px] border-dashed border-[var(--muted)] bg-[var(--card)] px-4 py-3 text-[14px] leading-[1.55] text-[var(--fg)]"
+              className="border-l-4 border-dashed border-base-content/30 bg-base-100 px-4 py-3 text-sm leading-relaxed text-base-content"
             >
               {choice.text}
             </li>
@@ -393,18 +312,20 @@ function RulesView() {
 
 function QuestionsView() {
   return (
-    <div className="px-5 pb-10 pt-5">
-      <p className="mb-4 text-[13px] leading-[1.5] text-[var(--muted)]">
+    <div className="px-4 pb-10 pt-5">
+      <p className="mb-4 text-sm leading-relaxed text-base-content/60">
         Unresolved — not restrictions, just things to get on record with the care team.
       </p>
       <ul className="space-y-3">
         {OPEN_QUESTIONS.map((q) => (
-          <li key={q.id} data-print-avoid-break className="rounded-[16px] border border-[var(--line)] bg-[var(--card)] px-4 py-4">
-            <div className="mb-1.5 flex items-center gap-2">
-              <span aria-hidden="true">❓</span>
-              <h3 className="font-['Haas_Grot_Disp',_sans-serif] text-[15px] text-[var(--fg)]">{q.title}</h3>
+          <li key={q.id} data-print-avoid-break className="card card-compact border border-base-300 bg-base-100">
+            <div className="card-body">
+              <div className="mb-1 flex items-center gap-2">
+                <span aria-hidden="true">❓</span>
+                <h3 className="text-[15px] font-semibold text-base-content">{q.title}</h3>
+              </div>
+              <p className="text-sm leading-relaxed text-base-content/60">{q.text}</p>
             </div>
-            <p className="text-[14px] leading-[1.55] text-[var(--muted)]">{q.text}</p>
           </li>
         ))}
       </ul>
@@ -414,38 +335,29 @@ function QuestionsView() {
 
 function RedFlagsView() {
   return (
-    <div data-print-root className="px-5 pb-10 pt-5">
+    <div data-print-root className="px-4 pb-10 pt-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h1 className="font-['Haas_Grot_Disp',_sans-serif] text-[18px] text-[var(--fg)]">Red flags</h1>
-        <button
-          type="button"
-          data-print-hide
-          onClick={() => window.print()}
-          className="mma-btn-press flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-[7px] text-[13px] text-[var(--fg)]"
-        >
+        <h1 className="text-lg font-semibold text-base-content">Red flags</h1>
+        <button type="button" data-print-hide onClick={() => window.print()} className="btn btn-outline btn-sm">
           <Printer size={15} /> Print
         </button>
       </div>
-      <p className="mb-4 text-[13px] leading-[1.5] text-[var(--muted)]">
-        Put this on the fridge. When in doubt, call.
-      </p>
+      <p className="mb-4 text-sm leading-relaxed text-base-content/60">Put this on the fridge. When in doubt, call.</p>
       <ul className="space-y-3">
         {RED_FLAGS.map((flag) => (
           <li
             key={flag.id}
             data-severity={flag.severity}
             data-print-avoid-break
-            className="rounded-[20px] bg-[var(--rf-bg)] px-6 py-6"
+            className="rounded-2xl border border-[var(--glance-border)] bg-[var(--glance-bg)] px-6 py-6"
           >
-            <div className="text-[19px] font-bold leading-[1.25] text-[var(--rf-fg)] mb-3">{flag.sign}</div>
-            <div className="text-[14.5px] leading-[1.5] text-[var(--rf-fg)]/70">{flag.action}</div>
-            {flag.detail && (
-              <div className="mt-2 text-[13px] leading-[1.5] text-[var(--rf-fg)]/55">{flag.detail}</div>
-            )}
+            <div className="mb-2 text-lg font-bold leading-snug text-base-content">{flag.sign}</div>
+            <div className="text-sm leading-relaxed text-base-content/70">{flag.action}</div>
+            {flag.detail && <div className="mt-2 text-xs leading-relaxed text-base-content/55">{flag.detail}</div>}
           </li>
         ))}
       </ul>
-      <p className="mt-5 text-[13px] leading-[1.5] text-[var(--muted)]">{RED_FLAGS_FOOTER}</p>
+      <p className="mt-5 text-sm leading-relaxed text-base-content/60">{RED_FLAGS_FOOTER}</p>
     </div>
   )
 }
@@ -524,51 +436,39 @@ export default function MmaRecoveryMap() {
 
   return (
     <div
-      className="map-root min-h-screen"
+      className="map-root min-h-screen bg-base-200 font-sans"
       data-theme={resolvedTheme}
-      style={{ visibility: mounted ? 'visible' : 'hidden', background: 'var(--bg)', color: 'var(--fg)' }}
+      style={{ visibility: mounted ? 'visible' : 'hidden' }}
     >
       <style jsx global>{`
-        .map-root {
-          --bg: #f6f2ea;
-          --fg: #1c1a16;
-          --muted: #6b6558;
-          --card: #ffffff;
-          --line: #e2dccc;
-          --chip-bg: #efe9db;
-          --accent: #3f5d4a;
-          --accent-fg: #f6f2ea;
-          --rf-bg: #ecc9b8;
-          --rf-fg: #33150c;
-          font-family: 'Inter', sans-serif;
+        /*
+         * Plain opaque hex for the "glanceable" red-tinted cards (red flags,
+         * diet rule, sinus precautions) instead of daisyUI's oklch bg-error/10 +
+         * border-error/20. Chromium has a print-rasterization bug where
+         * alpha-blended oklch colors shift hue (verified: identical computed
+         * border-color on screen vs. print, but renders teal instead of red) —
+         * these three spots must print correctly, so they get real hex.
+         */
+        .map-root[data-theme='light'] {
+          --glance-bg: #fce8e6;
+          --glance-border: #f3c6c2;
         }
         .map-root[data-theme='dark'] {
-          --bg: #101210;
-          --fg: #f2f0ea;
-          --muted: #9a988e;
-          --card: #191b18;
-          --line: #2b2e29;
-          --chip-bg: #1f221d;
-          --accent: #7fa789;
-          --accent-fg: #0d150f;
-          --rf-bg: #3c2016;
-          --rf-fg: #f7e4d9;
+          --glance-bg: #3a211d;
+          --glance-border: #5c322b;
         }
-
         @media print {
           .map-root {
             background: #fff !important;
-            color: #111 !important;
             visibility: visible !important;
           }
           .map-root [data-print-hide] {
             display: none !important;
           }
-          .map-root .mma-collapsible-panel {
+          .map-root .collapse-content {
             grid-template-rows: 1fr !important;
-          }
-          .map-root .mma-collapsible-panel > div {
-            overflow: visible !important;
+            visibility: visible !important;
+            padding-bottom: 1rem !important;
           }
           .map-root,
           .map-root * {
@@ -582,11 +482,17 @@ export default function MmaRecoveryMap() {
             margin: 14mm;
           }
         }
+        @media (prefers-reduced-motion: reduce) {
+          .map-root .collapse-content,
+          .map-root .collapse-title {
+            transition: none !important;
+          }
+        }
       `}</style>
 
       <TopBar title={titles[view]} onBack={view === 'home' ? null : () => goTo('home')} theme={theme} cycleTheme={cycleTheme} />
 
-      <main className="pb-24 max-w-[640px] mx-auto">
+      <main className="mx-auto max-w-[640px] pb-24">
         {view === 'home' && <HomeView state={state} goTo={goTo} />}
         {view === 'timeline' && <TimelineView state={state} />}
         {view === 'rules' && <RulesView />}

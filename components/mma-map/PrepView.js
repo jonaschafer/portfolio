@@ -18,10 +18,10 @@ function ShoppingGroup({ group }) {
   return (
     <div className="mb-5">
       <div className="mb-2 flex items-baseline justify-between gap-3">
-        <div className="font-['Haas_Grot_Disp',_sans-serif] text-[13px] text-[var(--fg)]">{group.title}</div>
-        <span className="text-[12px] text-[var(--muted)]">{remaining} left</span>
+        <div className="text-sm font-semibold text-base-content">{group.title}</div>
+        <span className="badge badge-ghost badge-sm">{remaining} left</span>
       </div>
-      {group.intro && <p className="mb-2.5 text-[12.5px] leading-[1.5] text-[var(--muted)]">{group.intro}</p>}
+      {group.intro && <p className="mb-2.5 text-xs leading-relaxed text-base-content/50">{group.intro}</p>}
       <ul className="space-y-2">
         {group.items.map((item) => (
           <CheckItem
@@ -41,8 +41,8 @@ function ShoppingGroup({ group }) {
           {group.items
             .filter((i) => i.status)
             .map((i) => (
-              <div key={i.id} className="text-[12px] leading-[1.5] text-[var(--muted)]">
-                <StatusBadge status={i.status} /> <span className="font-medium text-[var(--fg)]">{i.text}:</span> {i.detail}
+              <div key={i.id} className="text-xs leading-relaxed text-base-content/50">
+                <StatusBadge status={i.status} /> <span className="font-medium text-base-content">{i.text}:</span> {i.detail}
               </div>
             ))}
         </div>
@@ -55,7 +55,7 @@ function NoteList({ notes }) {
   return (
     <ul className="space-y-2">
       {notes.map((n, i) => (
-        <li key={i} className="text-[13.5px] leading-[1.55] text-[var(--fg)]">
+        <li key={i} className="text-sm leading-relaxed text-base-content">
           <StatusBadge status={n.status} />
           {n.text}
         </li>
@@ -66,7 +66,7 @@ function NoteList({ notes }) {
 
 export default function PrepView() {
   return (
-    <div className="px-5 pb-10 pt-5">
+    <div className="px-4 pb-10 pt-5">
       <section className="mb-7">
         <SectionHeader>Prep / shopping</SectionHeader>
         {PREP_SHOPPING.map((group) => (
@@ -75,46 +75,46 @@ export default function PrepView() {
       </section>
 
       {/* Glanceable — same visual weight as the red-flags card. */}
-      <section data-print-avoid-break className="mb-7 rounded-[20px] bg-[var(--rf-bg)] px-6 py-6">
-        <div className="text-[19px] font-bold leading-[1.3] text-[var(--rf-fg)] mb-2">{DIET_RULE.headline}</div>
-        <div className="text-[13px] leading-[1.5] text-[var(--rf-fg)]/70">{DIET_RULE.headlineNote}</div>
+      <section data-print-avoid-break className="mb-7 rounded-2xl border border-[var(--glance-border)] bg-[var(--glance-bg)] px-6 py-6">
+        <div className="mb-2 text-lg font-bold leading-snug text-base-content">{DIET_RULE.headline}</div>
+        <div className="text-sm leading-relaxed text-base-content/70">{DIET_RULE.headlineNote}</div>
       </section>
 
       <section className="mb-7">
         <SectionHeader>Diet</SectionHeader>
         <div className="space-y-3">
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">What’s allowed</div>
-            <p className="text-[14px] leading-[1.55] text-[var(--fg)]">
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What’s allowed</div>
+            <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.allowed.status} />
               {DIET_RULE.allowed.text}
             </p>
           </div>
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">Technique</div>
-            <p className="text-[14px] leading-[1.55] text-[var(--fg)]">
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Technique</div>
+            <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.technique.status} />
               {DIET_RULE.technique.text}
             </p>
           </div>
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">Timeline of intake priorities</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Timeline of intake priorities</div>
             <NoteList notes={DIET_RULE.timeline} />
           </div>
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">Before surgery</div>
-            <p className="text-[14px] leading-[1.55] text-[var(--fg)]">
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Before surgery</div>
+            <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.beforeSurgery.status} />
               {DIET_RULE.beforeSurgery.text}
             </p>
           </div>
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">Stock</div>
-            <p className="text-[13.5px] leading-[1.55] text-[var(--muted)]">{DIET_RULE.stock}</p>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Stock</div>
+            <p className="text-sm leading-relaxed text-base-content/60">{DIET_RULE.stock}</p>
           </div>
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">Nutrition target</div>
-            <p className="text-[14px] leading-[1.55] text-[var(--fg)]">
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Nutrition target</div>
+            <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.nutritionTarget.status} />
               {DIET_RULE.nutritionTarget.text}
             </p>
@@ -123,13 +123,11 @@ export default function PrepView() {
       </section>
 
       {/* Glanceable — same treatment as the diet rule / red-flags card. */}
-      <section data-print-avoid-break className="mb-7 rounded-[20px] bg-[var(--rf-bg)] px-6 py-6">
-        <div className="text-[15px] font-bold uppercase tracking-[0.04em] leading-[1.3] text-[var(--rf-fg)] mb-3">
-          Sinus precautions
-        </div>
+      <section data-print-avoid-break className="mb-7 rounded-2xl border border-[var(--glance-border)] bg-[var(--glance-bg)] px-6 py-6">
+        <div className="mb-3 text-sm font-bold uppercase tracking-wide text-base-content">Sinus precautions</div>
         <ul className="space-y-1.5">
           {SINUS_PRECAUTIONS.map((n, i) => (
-            <li key={i} className="text-[14px] leading-[1.5] text-[var(--rf-fg)]/85">
+            <li key={i} className="text-sm leading-relaxed text-base-content/85">
               {n.text}
             </li>
           ))}
@@ -141,7 +139,7 @@ export default function PrepView() {
         <div className="space-y-4">
           {MEDS_EXPECT.map((group) => (
             <div key={group.id}>
-              <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">{group.title}</div>
+              <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">{group.title}</div>
               <NoteList notes={group.notes} />
             </div>
           ))}
@@ -155,33 +153,33 @@ export default function PrepView() {
 
       <section className="mb-2">
         <SectionHeader>The running note</SectionHeader>
-        <p className="mb-3 text-[12.5px] leading-[1.5] text-[var(--muted)] italic">{RUNNING_NOTE.intro}</p>
+        <p className="mb-3 text-xs italic leading-relaxed text-base-content/50">{RUNNING_NOTE.intro}</p>
         <div className="space-y-3">
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">What the surgeons said</div>
-            <p className="text-[14px] leading-[1.55] text-[var(--fg)]">
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What the surgeons said</div>
+            <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={RUNNING_NOTE.whatSurgeonsSaid.status} />
               {RUNNING_NOTE.whatSurgeonsSaid.text}
             </p>
           </div>
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">What you’re choosing</div>
-            <p className="text-[14px] leading-[1.55] text-[var(--fg)]">
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What you’re choosing</div>
+            <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={RUNNING_NOTE.whatYoureChoosing.status} />
               {RUNNING_NOTE.whatYoureChoosing.text}
             </p>
           </div>
           <div>
-            <div className="text-[12px] uppercase tracking-[0.06em] text-[var(--muted)] mb-1">What to actually learn from it</div>
-            <p className="mb-2 text-[13.5px] leading-[1.55] text-[var(--muted)]">{RUNNING_NOTE.whatToLearn}</p>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What to actually learn from it</div>
+            <p className="mb-2 text-sm leading-relaxed text-base-content/60">{RUNNING_NOTE.whatToLearn}</p>
             <ul className="list-disc space-y-1 pl-5">
               {RUNNING_NOTE.weeklyPrompts.map((p, i) => (
-                <li key={i} className="text-[13.5px] leading-[1.5] text-[var(--fg)]">
+                <li key={i} className="text-sm leading-relaxed text-base-content">
                   {p}
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-[13px] italic leading-[1.5] text-[var(--muted)]">{RUNNING_NOTE.closing}</p>
+            <p className="mt-2 text-xs italic leading-relaxed text-base-content/50">{RUNNING_NOTE.closing}</p>
           </div>
         </div>
       </section>
