@@ -67,7 +67,12 @@ function TopBar({ title, onBack, theme, cycleTheme }) {
       <div className="mx-auto flex w-full max-w-[640px] items-center justify-between">
         <div className="flex min-w-0 items-center gap-2">
           {onBack ? (
-            <button type="button" onClick={onBack} className="btn btn-ghost btn-circle btn-sm -ml-1" aria-label="Back to dashboard">
+            <button
+              type="button"
+              onClick={onBack}
+              className="btn btn-ghost btn-circle h-11 min-h-11 w-11 -ml-1"
+              aria-label="Back to dashboard"
+            >
               <ChevronLeft size={20} strokeWidth={2.25} />
             </button>
           ) : (
@@ -78,7 +83,7 @@ function TopBar({ title, onBack, theme, cycleTheme }) {
         <button
           type="button"
           onClick={cycleTheme}
-          className="btn btn-ghost btn-circle btn-sm"
+          className="btn btn-ghost btn-circle h-11 min-h-11 w-11"
           aria-label={`Theme: ${theme}. Tap to change.`}
         >
           {theme === 'dark' ? <Moon size={18} /> : theme === 'light' ? <Sun size={18} /> : <SunMoon size={18} />}
@@ -94,7 +99,7 @@ function RedFlagBar({ onOpen }) {
       type="button"
       onClick={onOpen}
       data-print-hide
-      className="btn btn-error btn-block fixed inset-x-0 bottom-0 z-30 rounded-none pb-[max(0px,env(safe-area-inset-bottom))] text-base"
+      className="btn btn-error btn-block fixed inset-x-0 bottom-0 z-30 h-auto min-h-11 rounded-none py-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-base"
     >
       <AlertTriangle size={19} strokeWidth={2.25} />
       Red flags — call / ER
@@ -152,7 +157,7 @@ function HomeView({ state, goTo }) {
             </div>
           )}
           {!isPreOp && (
-            <button type="button" onClick={() => goTo('journal')} className="btn btn-link btn-sm mt-2 no-underline">
+            <button type="button" onClick={() => goTo('journal')} className="btn btn-link btn-sm min-h-11 mt-2 no-underline">
               Log today’s entry →
             </button>
           )}
@@ -170,7 +175,7 @@ function HomeView({ state, goTo }) {
         />
       </div>
 
-      <div className="mb-3 mt-8 text-xs font-semibold uppercase tracking-widest text-base-content/50">Companion</div>
+      <div className="mb-3 mt-8 text-xs font-semibold uppercase tracking-widest text-base-content/65">Companion</div>
       <div className="flex flex-col gap-3">
         <NavCard
           title="Decisions & Questions"
@@ -222,7 +227,7 @@ function PhaseCard({ phase, isCurrent, isOpen, onToggle }) {
       <button type="button" onClick={onToggle} className="collapse-title min-w-0 pr-10" aria-expanded={isOpen}>
         {isCurrent && <div className="badge badge-primary badge-sm mb-1">You are here</div>}
         <div className="truncate text-[15px] font-semibold text-base-content">{phase.label}</div>
-        <div className="text-xs text-base-content/50">
+        <div className="text-xs text-base-content/65">
           {dayRangeLabel}
           {phase.dateLabel ? ` · ${phase.dateLabel}` : ''}
         </div>
@@ -231,7 +236,7 @@ function PhaseCard({ phase, isCurrent, isOpen, onToggle }) {
         <div className="space-y-4 pt-1">
           {grouped.map(([categoryId, notes]) => (
             <div key={categoryId}>
-              <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-base-content/50">
+              <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-base-content/65">
                 {CATEGORIES[categoryId]?.label ?? categoryId}
               </div>
               <ul className="space-y-2">
@@ -271,7 +276,7 @@ function TimelineView({ state }) {
           />
         ))}
       </div>
-      <p className="mt-5 text-xs leading-relaxed text-base-content/50">
+      <p className="mt-5 text-xs leading-relaxed text-base-content/65">
         Phase boundaries beyond 6 weeks are approximate — converted from the surgeons’ month-based estimates, since the consults
         didn’t give exact days that far out.
       </p>
@@ -342,7 +347,7 @@ function RedFlagsView() {
     <div data-print-root className="px-4 pb-10 pt-5">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h1 className="text-lg font-semibold text-base-content">Red flags</h1>
-        <button type="button" data-print-hide onClick={() => window.print()} className="btn btn-outline btn-sm">
+        <button type="button" data-print-hide onClick={() => window.print()} className="btn btn-outline btn-sm min-h-11">
           <Printer size={15} /> Print
         </button>
       </div>

@@ -33,16 +33,19 @@ export function SectionHeader({ children }) {
 }
 
 // A daisyUI button "join" of 0-10 tap targets — deliberately not a slider, so
-// a tired thumb can hit a value in one tap.
+// a tired thumb can hit a value in one tap. h-11 (44px) meets Apple HIG's
+// minimum touch target; adjacent segments in a single row are the same
+// pattern iOS's own segmented control uses, so a near-miss still lands on a
+// valid neighboring value instead of missing entirely.
 export function ScaleInput({ label, sublabel, value, onChange }) {
   return (
     <div className="mb-4">
       <div className="mb-1.5 flex items-baseline justify-between gap-2">
         <span className="text-sm text-base-content">
           {label}
-          {sublabel && <span className="text-base-content/50"> · {sublabel}</span>}
+          {sublabel && <span className="text-base-content/65"> · {sublabel}</span>}
         </span>
-        <span className="text-xs tabular-nums text-base-content/50">{value === null || value === undefined ? '—' : value}</span>
+        <span className="text-xs tabular-nums text-base-content/65">{value === null || value === undefined ? '—' : value}</span>
       </div>
       <div className="join w-full">
         {Array.from({ length: 11 }, (_, i) => i).map((n) => (
@@ -51,7 +54,7 @@ export function ScaleInput({ label, sublabel, value, onChange }) {
             type="button"
             onClick={() => onChange(n)}
             aria-pressed={value === n}
-            className={`btn btn-xs join-item flex-1 px-0 tabular-nums ${value === n ? 'btn-primary' : 'btn-outline'}`}
+            className={`btn btn-sm join-item h-11 min-h-11 flex-1 px-0 tabular-nums ${value === n ? 'btn-primary' : 'btn-outline'}`}
           >
             {n}
           </button>
@@ -62,7 +65,8 @@ export function ScaleInput({ label, sublabel, value, onChange }) {
 }
 
 // A daisyUI button "join" segmented control for the enum-ish fields
-// (worse/same/better, on/off/off-to-eat, etc).
+// (worse/same/better, on/off/off-to-eat, etc). h-11 for the same HIG
+// touch-target minimum as ScaleInput.
 export function ChoiceRow({ label, options, value, onChange }) {
   return (
     <div className="mb-4">
@@ -74,7 +78,7 @@ export function ChoiceRow({ label, options, value, onChange }) {
             type="button"
             onClick={() => onChange(opt.value)}
             aria-pressed={value === opt.value}
-            className={`btn btn-sm join-item ${value === opt.value ? 'btn-primary' : 'btn-outline'}`}
+            className={`btn btn-sm join-item h-11 min-h-11 ${value === opt.value ? 'btn-primary' : 'btn-outline'}`}
           >
             {opt.label}
           </button>
@@ -84,6 +88,8 @@ export function ChoiceRow({ label, options, value, onChange }) {
   )
 }
 
+// text-base (16px), not text-sm — under 16px, iOS Safari auto-zooms the page
+// on focus, which is jarring on a form this long.
 export function TextField({ label, value, onChange, placeholder, rows }) {
   const isTextarea = Boolean(rows)
   return (
@@ -97,14 +103,14 @@ export function TextField({ label, value, onChange, placeholder, rows }) {
           value={value ?? ''}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="textarea textarea-bordered w-full text-sm"
+          className="textarea textarea-bordered w-full text-base"
         />
       ) : (
         <input
           value={value ?? ''}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="input input-bordered w-full text-sm"
+          className="input input-bordered w-full text-base"
         />
       )}
     </label>
@@ -116,7 +122,7 @@ export function CheckItem({ id, text, detail, checked, onToggle, note, onNoteCha
   return (
     <li data-print-avoid-break className="card card-compact bg-base-100 border border-base-300">
       <div className="card-body">
-        <label className="flex cursor-pointer items-start gap-3">
+        <label className="flex min-h-11 cursor-pointer items-start gap-3">
           <input
             type="checkbox"
             checked={checked}
@@ -124,13 +130,13 @@ export function CheckItem({ id, text, detail, checked, onToggle, note, onNoteCha
             className="checkbox checkbox-sm checkbox-primary mt-0.5"
           />
           <span className="flex-1">
-            <span className={`text-sm ${checked ? 'text-base-content/50 line-through' : 'text-base-content'}`}>{text}</span>
-            {detail && <span className="block mt-1 text-xs text-base-content/50">{detail}</span>}
+            <span className={`text-sm ${checked ? 'text-base-content/65 line-through' : 'text-base-content'}`}>{text}</span>
+            {detail && <span className="block mt-1 text-xs text-base-content/65">{detail}</span>}
           </span>
         </label>
         <div className="pl-8">
           {!noteOpen ? (
-            <button type="button" onClick={() => setNoteOpen(true)} className="link link-hover text-xs text-base-content/50">
+            <button type="button" onClick={() => setNoteOpen(true)} className="link link-hover min-h-11 text-xs text-base-content/65">
               {note ? 'Edit note' : '+ note'}
             </button>
           ) : (
@@ -139,7 +145,7 @@ export function CheckItem({ id, text, detail, checked, onToggle, note, onNoteCha
               onChange={(e) => onNoteChange(id, e.target.value)}
               placeholder="What was the answer?"
               rows={2}
-              className="textarea textarea-bordered textarea-sm w-full"
+              className="textarea textarea-bordered w-full text-base"
             />
           )}
         </div>

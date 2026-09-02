@@ -13,7 +13,7 @@ function ChecklistGroup({ group }) {
       <div className="mb-3 flex items-baseline justify-between gap-3">
         <div>
           <SectionHeader>{group.title}</SectionHeader>
-          {group.subtitle && <p className="-mt-2 mb-1 text-xs text-base-content/50">{group.subtitle}</p>}
+          {group.subtitle && <p className="-mt-2 mb-1 text-xs text-base-content/65">{group.subtitle}</p>}
         </div>
         <span className="badge badge-ghost badge-sm shrink-0">{remaining} open</span>
       </div>
@@ -49,7 +49,7 @@ export default function DecisionsView() {
           {DECIDED.map((row) => (
             <li key={row.id} data-print-avoid-break className="card card-compact border border-base-300 bg-base-100">
               <div className="card-body">
-                <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">{row.decision}</div>
+                <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">{row.decision}</div>
                 <div className="mb-1.5 text-[15px] font-semibold text-base-content">{row.choice}</div>
                 <div className="text-sm leading-relaxed text-base-content/60">{row.notes}</div>
               </div>

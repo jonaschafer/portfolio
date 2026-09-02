@@ -21,7 +21,7 @@ function ShoppingGroup({ group }) {
         <div className="text-sm font-semibold text-base-content">{group.title}</div>
         <span className="badge badge-ghost badge-sm">{remaining} left</span>
       </div>
-      {group.intro && <p className="mb-2.5 text-xs leading-relaxed text-base-content/50">{group.intro}</p>}
+      {group.intro && <p className="mb-2.5 text-xs leading-relaxed text-base-content/65">{group.intro}</p>}
       <ul className="space-y-2">
         {group.items.map((item) => (
           <CheckItem
@@ -41,7 +41,7 @@ function ShoppingGroup({ group }) {
           {group.items
             .filter((i) => i.status)
             .map((i) => (
-              <div key={i.id} className="text-xs leading-relaxed text-base-content/50">
+              <div key={i.id} className="text-xs leading-relaxed text-base-content/65">
                 <StatusBadge status={i.status} /> <span className="font-medium text-base-content">{i.text}:</span> {i.detail}
               </div>
             ))}
@@ -84,36 +84,36 @@ export default function PrepView() {
         <SectionHeader>Diet</SectionHeader>
         <div className="space-y-3">
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What’s allowed</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">What’s allowed</div>
             <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.allowed.status} />
               {DIET_RULE.allowed.text}
             </p>
           </div>
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Technique</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Technique</div>
             <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.technique.status} />
               {DIET_RULE.technique.text}
             </p>
           </div>
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Timeline of intake priorities</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Timeline of intake priorities</div>
             <NoteList notes={DIET_RULE.timeline} />
           </div>
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Before surgery</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Before surgery</div>
             <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.beforeSurgery.status} />
               {DIET_RULE.beforeSurgery.text}
             </p>
           </div>
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Stock</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Stock</div>
             <p className="text-sm leading-relaxed text-base-content/60">{DIET_RULE.stock}</p>
           </div>
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">Nutrition target</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Nutrition target</div>
             <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={DIET_RULE.nutritionTarget.status} />
               {DIET_RULE.nutritionTarget.text}
@@ -139,7 +139,7 @@ export default function PrepView() {
         <div className="space-y-4">
           {MEDS_EXPECT.map((group) => (
             <div key={group.id}>
-              <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">{group.title}</div>
+              <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">{group.title}</div>
               <NoteList notes={group.notes} />
             </div>
           ))}
@@ -153,24 +153,24 @@ export default function PrepView() {
 
       <section className="mb-2">
         <SectionHeader>The running note</SectionHeader>
-        <p className="mb-3 text-xs italic leading-relaxed text-base-content/50">{RUNNING_NOTE.intro}</p>
+        <p className="mb-3 text-xs italic leading-relaxed text-base-content/65">{RUNNING_NOTE.intro}</p>
         <div className="space-y-3">
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What the surgeons said</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">What the surgeons said</div>
             <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={RUNNING_NOTE.whatSurgeonsSaid.status} />
               {RUNNING_NOTE.whatSurgeonsSaid.text}
             </p>
           </div>
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What you’re choosing</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">What you’re choosing</div>
             <p className="text-sm leading-relaxed text-base-content">
               <StatusBadge status={RUNNING_NOTE.whatYoureChoosing.status} />
               {RUNNING_NOTE.whatYoureChoosing.text}
             </p>
           </div>
           <div>
-            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/50">What to actually learn from it</div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">What to actually learn from it</div>
             <p className="mb-2 text-sm leading-relaxed text-base-content/60">{RUNNING_NOTE.whatToLearn}</p>
             <ul className="list-disc space-y-1 pl-5">
               {RUNNING_NOTE.weeklyPrompts.map((p, i) => (
@@ -179,7 +179,7 @@ export default function PrepView() {
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-xs italic leading-relaxed text-base-content/50">{RUNNING_NOTE.closing}</p>
+            <p className="mt-2 text-xs italic leading-relaxed text-base-content/65">{RUNNING_NOTE.closing}</p>
           </div>
         </div>
       </section>

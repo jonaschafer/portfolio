@@ -65,27 +65,27 @@ function MedsTakenEditor({ meds, onChange }) {
               value={m.name}
               onChange={(e) => update(i, 'name', e.target.value)}
               placeholder="Name"
-              className="input input-bordered input-sm w-[34%]"
+              className="input input-bordered min-w-0 flex-[2] text-base"
             />
             <input
               value={m.dose}
               onChange={(e) => update(i, 'dose', e.target.value)}
               placeholder="Dose"
-              className="input input-bordered input-sm w-[28%]"
+              className="input input-bordered min-w-0 flex-1 text-base"
             />
             <input
               value={m.time}
               onChange={(e) => update(i, 'time', e.target.value)}
               placeholder="Time"
-              className="input input-bordered input-sm w-[26%]"
+              className="input input-bordered min-w-0 flex-1 text-base"
             />
-            <button type="button" onClick={() => remove(i)} className="btn btn-ghost btn-sm btn-square shrink-0" aria-label="Remove">
+            <button type="button" onClick={() => remove(i)} className="btn btn-ghost btn-square h-11 min-h-11 w-11 shrink-0" aria-label="Remove">
               <Trash2 size={15} />
             </button>
           </div>
         ))}
       </div>
-      <button type="button" onClick={add} className="btn btn-link btn-sm mt-1 gap-1 px-0 no-underline">
+      <button type="button" onClick={add} className="btn btn-link btn-sm min-h-11 mt-1 gap-1 px-0 no-underline">
         <Plus size={14} /> Add med
       </button>
     </div>
@@ -112,12 +112,12 @@ function RedFlagCheck({ values, onChange }) {
   const anyChecked = RED_FLAG_CHECK_ITEMS.some((i) => values[i.id])
   return (
     <div className={`rounded-2xl px-4 py-3 ${anyChecked ? 'border border-error/20 bg-error/10' : 'bg-base-200'}`}>
-      <div className={`mb-2 text-xs font-bold uppercase tracking-wide ${anyChecked ? 'text-base-content' : 'text-base-content/50'}`}>
+      <div className={`mb-2 text-xs font-bold uppercase tracking-wide ${anyChecked ? 'text-base-content' : 'text-base-content/65'}`}>
         Any = contact the team
       </div>
       <div className="space-y-2">
         {RED_FLAG_CHECK_ITEMS.map((item) => (
-          <label key={item.id} className="flex cursor-pointer items-center gap-2.5">
+          <label key={item.id} className="flex min-h-11 cursor-pointer items-center gap-2.5">
             <input
               type="checkbox"
               checked={Boolean(values[item.id])}
@@ -135,7 +135,7 @@ function RedFlagCheck({ values, onChange }) {
 function FieldGroup({ title, children }) {
   return (
     <div className="mb-5">
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">{title}</div>
+      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/65">{title}</div>
       {children}
     </div>
   )
@@ -150,7 +150,7 @@ function DailyEntryForm({ entry, onChange, oxycodoneRunningTotal }) {
     <div>
       <div className="mb-4 flex items-baseline justify-between">
         <div className="text-base font-semibold text-base-content">{entry.date}</div>
-        <div className="text-xs text-base-content/50">{day >= 0 ? `Day ${day} · Week ${week}` : `${-day} days to go`}</div>
+        <div className="text-xs text-base-content/65">{day >= 0 ? `Day ${day} · Week ${week}` : `${-day} days to go`}</div>
       </div>
 
       <FieldGroup title="Pain">
@@ -166,13 +166,13 @@ function DailyEntryForm({ entry, onChange, oxycodoneRunningTotal }) {
                   key={n}
                   type="button"
                   onClick={() => set(['pain', 'oxycodoneDosesToday'], n)}
-                  className={`btn btn-sm btn-circle ${entry.pain.oxycodoneDosesToday === n ? 'btn-primary' : 'btn-outline'}`}
+                  className={`btn btn-circle h-11 min-h-11 w-11 ${entry.pain.oxycodoneDosesToday === n ? 'btn-primary' : 'btn-outline'}`}
                 >
                   {n}
                 </button>
               ))}
             </div>
-            <span className="text-xs text-base-content/50">running total: {oxycodoneRunningTotal}</span>
+            <span className="text-xs text-base-content/65">running total: {oxycodoneRunningTotal}</span>
           </div>
         </div>
       </FieldGroup>
@@ -185,7 +185,7 @@ function DailyEntryForm({ entry, onChange, oxycodoneRunningTotal }) {
           value={entry.swelling.vsYesterday}
           onChange={(v) => set(['swelling', 'vsYesterday'], v)}
         />
-        <label className="flex cursor-pointer items-center gap-2.5">
+        <label className="flex min-h-11 cursor-pointer items-center gap-2.5">
           <input
             type="checkbox"
             checked={entry.swelling.photoTaken}
@@ -226,7 +226,7 @@ function DailyEntryForm({ entry, onChange, oxycodoneRunningTotal }) {
       </FieldGroup>
 
       <FieldGroup title="Numbness map">
-        <p className="mb-2 text-xs text-base-content/50">0 = totally numb, 10 = normal feeling</p>
+        <p className="mb-2 text-xs text-base-content/65">0 = totally numb, 10 = normal feeling</p>
         <NumbnessMapEditor numbness={entry.numbness} onChange={(v) => set(['numbness'], v)} />
         <TextField label="Tingling / pins-and-needles — where" value={entry.numbnessTingling} onChange={(v) => set(['numbnessTingling'], v)} />
         <TextField label="New numbness, or any waking up?" value={entry.numbnessNew} onChange={(v) => set(['numbnessNew'], v)} />
@@ -373,7 +373,7 @@ function WeeklyEntryForm({ entry, onChange }) {
 
 function Sparkline({ points, width = 280, height = 40 }) {
   if (points.length < 2) {
-    return <div className="flex h-10 items-center text-xs text-base-content/50">Not enough entries yet</div>
+    return <div className="flex h-10 items-center text-xs text-base-content/65">Not enough entries yet</div>
   }
   const max = 10
   const stepX = width / (points.length - 1)
@@ -477,7 +477,7 @@ export default function JournalView() {
               setEditingDate(null)
               setEditingWeek(null)
             }}
-            className={`tab flex-1 ${tab === t.id ? 'tab-active' : ''}`}
+            className={`tab min-h-11 flex-1 ${tab === t.id ? 'tab-active' : ''}`}
           >
             {t.label}
           </button>
@@ -502,7 +502,7 @@ export default function JournalView() {
               className="card w-full border border-base-300 bg-base-100 px-5 py-6 text-center"
             >
               <div className="mb-1 text-base font-semibold text-base-content">Start today’s entry</div>
-              <div className="text-sm text-base-content/50">
+              <div className="text-sm text-base-content/65">
                 {today}
                 {day >= 0 ? ` · Day ${day}` : ''}
               </div>
@@ -536,13 +536,13 @@ export default function JournalView() {
           <div>
             <div className="mb-5">
               <div className="mb-2 flex items-center justify-between">
-                <div className="text-xs font-semibold uppercase tracking-wide text-base-content/50">Weekly summaries</div>
-                <button type="button" onClick={() => startOrOpenWeek(week)} className="btn btn-link btn-xs px-0 no-underline">
+                <div className="text-xs font-semibold uppercase tracking-wide text-base-content/65">Weekly summaries</div>
+                <button type="button" onClick={() => startOrOpenWeek(week)} className="btn btn-link btn-xs min-h-11 px-0 no-underline">
                   + Week {week}
                 </button>
               </div>
               {sortedWeeks.length === 0 ? (
-                <p className="text-sm text-base-content/50">None yet.</p>
+                <p className="text-sm text-base-content/65">None yet.</p>
               ) : (
                 <ul className="space-y-2">
                   {sortedWeeks.map((w) => (
@@ -560,9 +560,9 @@ export default function JournalView() {
               )}
             </div>
             <div>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">Daily entries</div>
+              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/65">Daily entries</div>
               {sortedDates.length === 0 ? (
-                <p className="text-sm text-base-content/50">None yet — start today’s entry from the Today tab.</p>
+                <p className="text-sm text-base-content/65">None yet — start today’s entry from the Today tab.</p>
               ) : (
                 <ul className="space-y-2">
                   {sortedDates.map((d) => (
@@ -573,7 +573,7 @@ export default function JournalView() {
                         className="btn btn-outline btn-block justify-between font-normal normal-case"
                       >
                         <span>{d}</span>
-                        <span className="text-base-content/50">Day {daysSinceSurgery(d)}</span>
+                        <span className="text-base-content/65">Day {daysSinceSurgery(d)}</span>
                       </button>
                     </li>
                   ))}
@@ -585,7 +585,7 @@ export default function JournalView() {
 
       {tab === 'trends' && (
         <div>
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">Numbness over time</div>
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/65">Numbness over time</div>
           <p className="mb-4 text-sm leading-relaxed text-base-content/60">
             The surgeons said the numbness verdict isn’t known for 4–5 months — this trend matters more than any single day.
           </p>
@@ -598,7 +598,7 @@ export default function JournalView() {
                   <div className="card-body">
                     <div className="mb-2 flex items-baseline justify-between">
                       <span className="text-sm text-base-content">{region.label}</span>
-                      <span className="text-xs tabular-nums text-base-content/50">{latest ? latest.value.toFixed(1) : '—'}</span>
+                      <span className="text-xs tabular-nums text-base-content/65">{latest ? latest.value.toFixed(1) : '—'}</span>
                     </div>
                     <Sparkline points={series} />
                   </div>
@@ -607,8 +607,8 @@ export default function JournalView() {
             })}
           </div>
 
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">Reference checkpoints</div>
-          <p className="mb-3 text-xs text-base-content/50">Use these to sanity-check where you are, not as targets to hit.</p>
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/65">Reference checkpoints</div>
+          <p className="mb-3 text-xs text-base-content/65">Use these to sanity-check where you are, not as targets to hit.</p>
           <ul className="space-y-2">
             {REFERENCE_CHECKPOINTS.map((c, i) => (
               <li key={i} className="text-sm leading-relaxed text-base-content">
@@ -620,20 +620,20 @@ export default function JournalView() {
       )}
 
       <div className="divider" />
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/50">Backup</div>
+      <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-base-content/65">Backup</div>
       <p className="mb-3 text-sm leading-relaxed text-base-content/60">
         Everything on this page stays on this device. Export regularly, and use the file to move data to another device.
       </p>
       <div className="flex gap-2">
-        <button type="button" onClick={handleExport} className="btn btn-outline btn-sm">
+        <button type="button" onClick={handleExport} className="btn btn-outline btn-sm min-h-11">
           <Download size={14} /> Export JSON
         </button>
-        <label className="btn btn-outline btn-sm">
+        <label className="btn btn-outline btn-sm min-h-11">
           <Upload size={14} /> Import
           <input type="file" accept="application/json" onChange={handleImport} className="hidden" />
         </label>
       </div>
-      {importMsg && <p className="mt-2 text-xs text-base-content/50">{importMsg}</p>}
+      {importMsg && <p className="mt-2 text-xs text-base-content/65">{importMsg}</p>}
     </div>
   )
 }
