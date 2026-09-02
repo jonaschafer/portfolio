@@ -106,8 +106,12 @@ function NavCard({ title, subtitle, icon, onClick }) {
   return (
     <button type="button" onClick={onClick} className="card card-compact bg-base-100 border border-base-300 text-left">
       <div className="card-body flex-row items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          {icon}
+        <div className="flex items-center gap-3">
+          {icon && (
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base-200 text-base-content/60">
+              {icon}
+            </div>
+          )}
           <div>
             <div className="text-[15px] font-semibold text-base-content">{title}</div>
             <div className="text-xs text-base-content/60">{subtitle}</div>
@@ -161,7 +165,7 @@ function HomeView({ state, goTo }) {
         <NavCard
           title="Open questions"
           subtitle={`${OPEN_QUESTIONS.length} unresolved with the care team`}
-          icon={<HelpCircle size={16} className="text-base-content/40" />}
+          icon={<HelpCircle size={18} />}
           onClick={() => goTo('questions')}
         />
       </div>
@@ -171,19 +175,19 @@ function HomeView({ state, goTo }) {
         <NavCard
           title="Decisions & Questions"
           subtitle={`${openDecisions} unchecked`}
-          icon={<ClipboardList size={16} className="text-base-content/40" />}
+          icon={<ClipboardList size={18} />}
           onClick={() => goTo('decisions')}
         />
         <NavCard
           title="Prep · Meds · Diet"
           subtitle="Shopping list, the diet rule, sinus precautions"
-          icon={<Utensils size={16} className="text-base-content/40" />}
+          icon={<Utensils size={18} />}
           onClick={() => goTo('prep')}
         />
         <NavCard
           title="Journal"
           subtitle="Daily + weekly log, numbness trends"
-          icon={<BookOpen size={16} className="text-base-content/40" />}
+          icon={<BookOpen size={18} />}
           onClick={() => goTo('journal')}
         />
       </div>
