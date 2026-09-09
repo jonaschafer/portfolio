@@ -4,6 +4,16 @@ import Link from 'next/link'
 
 const projects = [
   {
+    id: 'two-day-ledger',
+    name: 'Two-Day Ledger',
+    description:
+      'A 24-week strength program built around two full-body sessions a week. Logs weight and reps per set, surfaces last session\'s numbers next to every input, and charts bodyweight and key lifts across the four phases.',
+    date: '2026.09.09',
+    type: 'HTML/CSS',
+    tags: ['HTML/CSS', 'JavaScript'],
+    path: '/play/prototypes/two-day-ledger',
+  },
+  {
     id: 'sounds',
     name: 'Sounds',
     description:
