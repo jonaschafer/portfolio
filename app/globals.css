@@ -82,3 +82,59 @@ body {
     animation: none !important;
   }
 }
+
+/*
+ * Motion for the git visualizer at /play/git. Each animation stands for one
+ * idea: a save point appearing, a bookmark sliding onto a new commit, a file
+ * moving between boxes, or a commit going grey because nothing points at it
+ * anymore. Elements animate on mount, so the React keys decide what moves.
+ */
+@keyframes gitPopIn {
+  from { opacity: 0; transform: scale(0.3); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes gitRowIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gitDraw {
+  from { stroke-dashoffset: 300; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes gitGoGrey {
+  from { opacity: 1; }
+  to { opacity: 0.35; }
+}
+@keyframes gitTagSlide {
+  from { opacity: 0.4; transform: translateY(var(--git-from-y, -10px)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gitFileIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes gitSwapIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.git-pop { animation: gitPopIn 420ms cubic-bezier(0.23, 1, 0.32, 1) both; transform-origin: center; }
+.git-row { animation: gitRowIn 420ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+.git-draw { stroke-dasharray: 300; animation: gitDraw 560ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+.git-grey { animation: gitGoGrey 520ms ease both; }
+.git-tag { animation: gitTagSlide 460ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+.git-file { animation: gitFileIn 340ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+.git-swap { animation: gitSwapIn 380ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .git-pop,
+  .git-row,
+  .git-draw,
+  .git-grey,
+  .git-tag,
+  .git-file,
+  .git-swap {
+    animation: none !important;
+    stroke-dasharray: none !important;
+  }
+}

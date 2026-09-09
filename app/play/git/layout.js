@@ -1,7 +1,7 @@
 export const metadata = {
   title: 'Git, drawn out',
   description:
-    'An interactive visualization of branch, merge, rebase, stash, worktree, cherry-pick, reset and revert.',
+    'Git commands animated and explained in plain English, including what actually separates a branch from a worktree.',
 }
 
 export default function GitLayout({ children }) {
