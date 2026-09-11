@@ -7,6 +7,10 @@ import {
   SINUS_PRECAUTIONS,
   ORAL_HYGIENE,
   RUNNING_NOTE,
+  PROTECT_NUMB_AREAS,
+  RUBBER_BAND_CARE,
+  JAW_EXERCISES,
+  SHOWER_GUIDANCE,
 } from '../../app/mma/map/data/prep'
 import { SectionHeader, StatusBadge, CheckItem } from './ui'
 import { useChecklist } from './storage'
@@ -119,6 +123,20 @@ export default function PrepView() {
               {DIET_RULE.nutritionTarget.text}
             </p>
           </div>
+          <div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Fluid target</div>
+            <p className="text-sm leading-relaxed text-base-content">
+              <StatusBadge status={DIET_RULE.fluidTarget.status} />
+              {DIET_RULE.fluidTarget.text}
+            </p>
+          </div>
+          <div>
+            <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Foods to avoid</div>
+            <p className="text-sm leading-relaxed text-base-content">
+              <StatusBadge status={DIET_RULE.foodsToAvoid.status} />
+              {DIET_RULE.foodsToAvoid.text}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -147,8 +165,60 @@ export default function PrepView() {
       </section>
 
       <section className="mb-7">
+        <SectionHeader>Protecting numb areas</SectionHeader>
+        <p className="mb-2.5 text-xs leading-relaxed text-base-content/65">{PROTECT_NUMB_AREAS.intro}</p>
+        <NoteList notes={PROTECT_NUMB_AREAS.items} />
+      </section>
+
+      <section className="mb-7">
+        <SectionHeader>Rubber bands</SectionHeader>
+        <p className="mb-3 text-xs leading-relaxed text-base-content/65">{RUBBER_BAND_CARE.intro}</p>
+        <div className="mb-3 space-y-2">
+          {RUBBER_BAND_CARE.wearSchedule.map((row, i) => (
+            <div key={i} className="text-sm leading-relaxed text-base-content">
+              <span className="font-semibold">{row.when}:</span> <span className="text-base-content/85">{row.how}</span>
+            </div>
+          ))}
+        </div>
+        <NoteList notes={RUBBER_BAND_CARE.rules} />
+      </section>
+
+      <section className="mb-7">
         <SectionHeader>Oral hygiene = wound care</SectionHeader>
         <NoteList notes={ORAL_HYGIENE} />
+      </section>
+
+      <section className="mb-7">
+        <SectionHeader>Jaw opening exercises</SectionHeader>
+        <p className="mb-3 text-xs leading-relaxed text-base-content/65">{JAW_EXERCISES.intro}</p>
+        <div className="mb-3 space-y-2.5">
+          {JAW_EXERCISES.timeline.map((row, i) => (
+            <div key={i} className="text-sm leading-relaxed text-base-content">
+              <span className="font-semibold">{row.when}</span>
+              <span className="text-base-content/65"> — goal {row.goal}.</span>{' '}
+              <span className="text-base-content/85">{row.how}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mb-3 text-xs italic leading-relaxed text-base-content/65">{JAW_EXERCISES.tip}</div>
+        <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Call your surgeon if</div>
+        <ul className="mb-3 list-disc space-y-1 pl-5">
+          {JAW_EXERCISES.callIf.map((c, i) => (
+            <li key={i} className="text-sm leading-relaxed text-base-content">
+              {c}
+            </li>
+          ))}
+        </ul>
+        <div className="mb-1 text-xs uppercase tracking-wide text-base-content/65">Jaw joint discomfort</div>
+        <p className="text-sm leading-relaxed text-base-content">{JAW_EXERCISES.jointDiscomfort}</p>
+      </section>
+
+      <section className="mb-7">
+        <SectionHeader>Showering</SectionHeader>
+        <p className="text-sm leading-relaxed text-base-content">
+          <StatusBadge status={SHOWER_GUIDANCE.status} />
+          {SHOWER_GUIDANCE.text}
+        </p>
       </section>
 
       <section className="mb-2">

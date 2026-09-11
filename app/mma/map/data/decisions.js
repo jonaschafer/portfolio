@@ -88,21 +88,26 @@ export const DECISIONS_PREOP = {
   items: [
     {
       id: 'followup-schedule',
-      text: 'Confirm the follow-up visit schedule.',
-      detail: 'Consult 1 implied ~1 week, ~3 weeks, ~6 weeks post-op, then done if healing is clean.',
+      text: 'Follow-up visit schedule — confirmed.',
+      detail:
+        'Per OHSU’s written instructions: visit 1 at 1 week (healing/bite/bands), visit 2 at 2–4 weeks (jaw opening, band adjustment, splint often comes out), visit 3 at 6 weeks (bone healing, clears fuller diet/activity), final visit at 6–18 months (photos/records). Still worth confirming your specific dates land on this pattern.',
     },
     {
       id: 'week6-imaging',
       text: 'Any imaging at week 6? Or is "looks good = free to go" purely clinical?',
-      detail: 'The "week-6 imaging gate" idea came from AI planning, not the surgeons.',
+      detail: 'OHSU’s written instructions describe the 6-week visit as checking bone healing clinically, without naming a specific imaging step — leans toward "clinical," but confirm at the visit.',
     },
     {
       id: 'antibiotic-duration',
       text: 'Antibiotic duration — pre-op dose + "at least a week after," as pills.',
-      detail: 'Confirm exact length and which antibiotic.',
+      detail: 'Confirm exact length and which antibiotic — OHSU’s written instructions just say to finish the full prescription, without a specific day count.',
     },
     { id: 'anti-nausea', text: 'Anti-nausea — will you go home with something?' },
-    { id: 'driving', text: 'Driving — when is it safe (off narcotics + can turn head + reaction time)?' },
+    {
+      id: 'driving',
+      text: 'Driving — when is it safe?',
+      detail: 'OHSU’s written instructions: off opioid pain medicine, able to turn your head, and normal reaction time. Confirm nothing about your case changes that.',
+    },
     { id: 'back-on-camera', text: 'Back on camera for work — realistic week?', detail: 'You’re remote and on video.' },
     { id: 'sleep-study', text: '6-month sleep study — confirm it’s ordered and when.' },
     {

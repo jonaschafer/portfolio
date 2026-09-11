@@ -62,6 +62,7 @@ export const PHASES = [
       c('confirmed', 'physical', 'Numbness everywhere: upper lip, around the nose, whole lower lip.'),
       c('confirmed', 'diet', 'It will feel like you can’t swallow — swollen, congested, muscles repositioned. You can. The team deliberately avoids calling in speech pathology ("rabbit hole"). A red rubber catheter tip on a syringe can bypass the sensation early; many people just drink from a cup.'),
       c('confirmed', 'physical', 'Most patients take only 1–2 oxycodone doses total. Sent home with some as needed.'),
+      c('confirmed', 'physical', 'Cold packs 20 min on / 20 min off while awake, wrapped in a thin towel — skin is numb and can be injured by cold without you feeling it. Stop icing after ~48 hours; after that, gentle warmth (also towel-wrapped) helps more.'),
       c('inference', 'physical', 'Drooling / keeping a rag handy — lips swollen and numb, hard to tell where they are.'),
     ],
   },
@@ -75,7 +76,7 @@ export const PHASES = [
       c('confirmed', 'emotional', 'Still rough. Emotional low — regret is universal for about a week ("I was living a normal life, didn’t need to do this"). Don’t judge the surgery yet.'),
       c('confirmed', 'physical', 'Sleep will be worse than before at first — that’s the cruel part, since the surgery is for sleep. Energy follows.'),
       c('confirmed', 'physical', 'Wound care = oral hygiene. Brush normally, avoid the incision area (high up, far back — easy to avoid). Chlorhexidine rinse while brushing is hard. Flossing is challenging this week, easier after.'),
-      c('question', 'appointment', 'Follow-up visit ~1 week post-op ("We’ll see you one week post-op").'),
+      c('confirmed', 'appointment', 'Follow-up visit 1 — 1 week post-op. Checks healing, bite, and bands. Per OHSU’s written follow-up schedule.'),
       c('inference', 'logistics', 'Off screens / work. You work on camera remotely — plan on being offline.'),
     ],
   },
@@ -90,7 +91,7 @@ export const PHASES = [
       c('confirmed', 'physical', '~80% of swelling gone by two weeks (Consult 1’s number; Consult 2 said 80% by six weeks instead) — expect somewhere in between, and trace swelling for months regardless.'),
       c('confirmed', 'physical', 'Drooling / bib phase typically ends around here (1–2 weeks).'),
       c('inference', 'activity', 'Surgeons’ clearance point for light exercise. (Your choice to wait longer — see Hard Rules vs. Choices.)'),
-      c('question', 'appointment', 'Next follow-up visit ~2–3 weeks after the week-1 visit.'),
+      c('confirmed', 'appointment', 'Follow-up visit 2 — 2 to 4 weeks post-op. Checks jaw opening, adjusts the rubber-band pattern; the splint often comes out around this visit. Per OHSU’s written follow-up schedule.'),
     ],
   },
   {
@@ -113,7 +114,7 @@ export const PHASES = [
     summary: 'Face is recognizably yours again.',
     notes: [
       c('confirmed', 'physical', 'Face is recognizably yours again, just different in the lower third.'),
-      c('question', 'appointment', 'Follow-up visit ~6 weeks post-op — Consult 1 framed this as roughly the last one: "as long as everything looks good, you’re free to go." No week-6 imaging "gate" was described — confirm whether an X-ray/CT happens.'),
+      c('confirmed', 'appointment', 'Follow-up visit 3 — 6 weeks post-op. Checks bone healing and clears you for a fuller diet, more activity, and a return to your orthodontist for finishing work. OHSU’s written instructions describe this as a clinical check ("check bone healing") rather than a defined imaging gate — worth a quick confirm at the visit, but this resolves the earlier open question either way.'),
     ],
   },
   {
@@ -158,6 +159,7 @@ export const PHASES = [
     notes: [
       c('confirmed', 'physical', '~1-year mark is when lingering numbness is considered permanent.'),
       c('inference', 'physical', 'Face finishes its last subtle settling around a year.'),
+      c('confirmed', 'appointment', 'Final follow-up visit — somewhere in the 6–18 month window. Photos and records for baseline comparison, so any longer-term changes can be tracked against it.'),
     ],
   },
   {
@@ -179,22 +181,34 @@ export const HARD_RULES = [
   },
   {
     id: 'no-bearing-down',
-    text: 'No bearing down / heavy lifting until the bone is healed (~6 weeks) — bleeding and pressure risk.',
+    text: 'No bearing down / heavy lifting until the bone is healed (~6 weeks) — bleeding and pressure risk. OHSU’s written instructions specifically call out the Valsalva maneuver (holding your breath and straining) — max lifts, deadlifts, heavy squats all count. Going with the more conservative 6-week window rather than their general 4-week figure.',
   },
   {
     id: 'sinus-precautions',
-    text: 'Sinus precautions for weeks: no nose-blowing; sneeze with your mouth open.',
+    text: 'No nose-blowing for 2 weeks; sneeze with your mouth open, never hold a sneeze in. No straws, flying, or scuba diving for 2 weeks either — all raise sinus pressure the same way.',
   },
   {
     id: 'jaw-pain-stop',
     text: 'Jaw pain during or after activity means stop and call — not a push-through signal.',
+  },
+  {
+    id: 'acetaminophen-cap',
+    text: 'Total acetaminophen (Tylenol) from all sources under 3,000mg in 24 hours. Your prescription pain medicine may already contain it — don’t add extra Tylenol, cold medicine, or a sleep aid without checking first. Too much can seriously damage your liver.',
+  },
+  {
+    id: 'no-nicotine',
+    text: 'No nicotine in any form — cigarettes, vaping, pouches, chew, patches — for at least 6 weeks. It tightens the blood vessels feeding your healing bone and sharply raises the risk of infection and bone that doesn’t heal.',
+  },
+  {
+    id: 'no-contact-sports',
+    text: 'No contact sports for at least 3 months, only after you’re cleared — anything with a ball, martial arts, climbing, skiing/snowboarding, mountain biking. A blow to the face during healing can shift the jaw and require a second surgery — the most common avoidable complication.',
   },
 ]
 
 export const MY_CHOICES = [
   {
     id: 'running-layoff',
-    text: 'Sitting out running for 3–6 months. Both consults actually cleared light exercise at ~2 weeks (Consult 1: after week 1 if you feel up to it; Consult 2: "I’m okay after two weeks… you can start exercising after two weeks"). Playing the return by ear.',
+    text: 'Running window: 2 weeks earliest, 6 weeks at the latest. Both consults cleared light exercise at ~2 weeks (Consult 1: after week 1 if you feel up to it; Consult 2: "I’m okay after two weeks… you can start exercising after two weeks"); OHSU’s written instructions show a more conservative gradual return to running at weeks 4–6. Landing on 2–6 weeks as the real window rather than treating either number as the whole answer — see the running log in Journal.',
   },
   {
     id: 'overnight-stay',
@@ -208,23 +222,74 @@ export const MY_CHOICES = [
 
 export const RED_FLAGS = [
   {
+    id: 'breathing',
+    severity: 'er',
+    sign: 'Trouble breathing, or breathing that is noisy or takes effort',
+    action: 'Cut your rubber bands with the small scissors you keep on you, then call 911 or go to the ER.',
+    detail: 'Cutting the bands will not harm your surgery — your jaws are held by plates and screws, not the bands. We can always replace them.',
+  },
+  {
     id: 'nosebleed',
     severity: 'er',
     sign: 'Profuse, bright-red nosebleed — gushing, not oozing',
     action: 'Go to the ER. This is the acute risk.',
-    detail: 'Small nosebleeds and blood-tinged drainage for weeks are normal and expected.',
+    detail: 'Small nosebleeds and blood-tinged drainage for weeks are normal and expected. If a nosebleed starts: sit up and lean forward (don’t tip your head back), pinch the soft part of your nose for 15 minutes without letting go to check. Call if it hasn’t stopped after two rounds of that.',
+  },
+  {
+    id: 'vision-eye',
+    severity: 'er',
+    sign: 'Sudden change in your vision, or severe pain behind an eye',
+    action: 'Go to the ER.',
+  },
+  {
+    id: 'chest-calf',
+    severity: 'er',
+    sign: 'Chest pain, or swelling and pain in one calf',
+    action: 'Go to the ER.',
+  },
+  {
+    id: 'bleeding-not-slowing',
+    severity: 'er',
+    sign: 'Bleeding that does not slow after 20 minutes of steady pressure',
+    action: 'Go to the ER.',
   },
   {
     id: 'bite-shift',
     severity: 'call',
-    sign: 'Bite suddenly shifts / feels completely different',
-    action: 'Call the surgeon first — they can triage.',
+    sign: 'Bite suddenly shifts, or your teeth stop fitting the splint grooves',
+    action: 'Call the surgeon the same day — they can triage.',
+    detail: 'A gradual settling of your bite over time is normal. A sudden change is not.',
   },
   {
     id: 'infection',
     severity: 'call',
-    sign: 'Signs of infection — spreading redness, fever, foul taste/discharge, worsening pain after it had improved',
+    sign: 'Fever of 101.5°F (38.6°C) or higher, spreading redness, thick yellow/green drainage or a bad taste/smell that won’t go away, or pain worsening after it had improved',
     action: 'Call the surgeon.',
+  },
+  {
+    id: 'vomiting-fluids',
+    severity: 'call',
+    sign: 'Vomiting that won’t stop, or you can’t keep liquids down',
+    action: 'Call the surgeon.',
+  },
+  {
+    id: 'dehydration',
+    severity: 'call',
+    sign: 'Urinating much less than normal, or dizzy when you stand',
+    action: 'Call the surgeon — signs you’re not drinking enough.',
+  },
+  {
+    id: 'pain-uncontrolled',
+    severity: 'call',
+    sign: 'Pain your medicine isn’t controlling',
+    action: 'Call the surgeon.',
+  },
+  {
+    id: 'band-hook-loose',
+    severity: 'call',
+    sign: 'A rubber band, hook, wire, or your splint comes loose and you can’t fix it',
+    action: 'Call the surgeon — don’t just go without. Your bite can shift within a day or two.',
+    detail: 'If one band breaks and you can’t replace it, remove the matching band on the other side too — a single band on one side is worse than none.',
   },
   {
     id: 'hardware',
@@ -235,23 +300,25 @@ export const RED_FLAGS = [
   {
     id: 'increasing-swelling',
     severity: 'call',
-    sign: 'Increasing swelling after it had started going down',
+    sign: 'Swelling or pain that gets worse after day 4 instead of slowly better',
     action: 'Call.',
+  },
+  {
+    id: 'low-mood',
+    severity: 'call',
+    sign: 'Low mood that lasts beyond a few weeks, or any thoughts of harming yourself',
+    action: 'Call — they can connect you with support.',
+    detail: 'Feeling discouraged, weepy, or regretful somewhere in the first two weeks is extremely common and expected. This is about it persisting well past that, or getting darker than that.',
   },
 ]
 
 export const RED_FLAGS_FOOTER =
-  'Non-urgent questions → MyChart or the clinic line. Dr. Dennis’s clinic is Fridays; residents are always in.'
+  'Clinic (weekdays, 8am–5pm): 503-494-8916. After hours and weekends: 503-494-9000 — ask for the oral and maxillofacial surgery resident on call. Non-urgent questions → MyChart. Dr. Dennis’s clinic is Fridays; residents are always in. Keep small scissors with you at all times — if you feel like you’re going to vomit or have any trouble breathing, cut your rubber bands first, then call.'
 
 export const OPEN_QUESTIONS = [
   {
-    id: 'running-timeline',
-    title: 'Running timeline',
-    text: 'Consult 1 said running is fine "after the first week if you feel up to it"; Consult 2 said "okay after two weeks." Both are far earlier than the 3-month figure that’s been floating around. The conservative choice is yours regardless — but get the actual number on record so it’s a choice, not a misremembered restriction.',
-  },
-  {
-    id: 'week6-imaging',
-    title: 'Week-6 imaging / follow-up schedule',
-    text: 'Confirm the visit schedule (Consult 1 implied ~1 wk, ~3 wk, ~6 wk) and whether any imaging happens at 6 weeks, or whether "looks good = free to go" is purely clinical.',
+    id: 'antibiotic-duration',
+    title: 'Exact antibiotic duration',
+    text: 'The consults mentioned "pre-op dose + at least a week after." OHSU’s written instructions only say to finish the entire prescription, without stating a specific number of days or which antibiotic — confirm the exact length and drug name at the pre-op appointment.',
   },
 ]

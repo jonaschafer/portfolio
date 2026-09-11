@@ -48,11 +48,17 @@ export const YES_NO_OPTIONS = [
 ]
 
 export const RED_FLAG_CHECK_ITEMS = [
+  { id: 'breathingTrouble', text: 'Trouble breathing, or breathing that is noisy or takes effort' },
   { id: 'heavyNosebleed', text: 'Heavy bright-red nosebleed' },
+  { id: 'visionOrEyePain', text: 'Sudden vision change, or severe pain behind an eye' },
+  { id: 'chestOrCalfPain', text: 'Chest pain, or swelling and pain in one calf' },
   { id: 'suddenBiteShift', text: 'Sudden bite shift / feels completely different' },
-  { id: 'spreadingRedness', text: 'Spreading redness / fever / foul taste or discharge' },
-  { id: 'painWorsening', text: 'Pain worsening after it had improved' },
+  { id: 'spreadingRedness', text: 'Spreading redness / fever 101.5°F+ / foul taste or discharge' },
+  { id: 'painWorsening', text: 'Pain worsening after it had improved, or not controlled by medicine' },
   { id: 'swellingIncreasing', text: 'Swelling increasing after it had gone down' },
+  { id: 'vomitingOrFluids', text: 'Vomiting that won’t stop, or can’t keep liquids down' },
+  { id: 'dehydrationSigns', text: 'Urinating much less than normal, or dizzy when standing' },
+  { id: 'bandHookLoose', text: 'A rubber band, hook, wire, or splint comes loose and I can’t fix it' },
   { id: 'hardwarePoking', text: 'Hardware poking / feels exposed' },
 ]
 
