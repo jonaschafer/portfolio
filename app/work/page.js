@@ -11,6 +11,9 @@ export const metadata = {
 
 const SHOW_DOJO_REBRAND = false
 
+// Placeholder rows (no images yet). Flip to true once real images are in.
+const SHOW_DRAFT_ROWS = false
+
 export default function WorkPage() {
   return (
     <main>
@@ -20,7 +23,7 @@ export default function WorkPage() {
       {SHOW_DOJO_REBRAND && (
         <ProjectCarousel
           title="Dojo rebrand"
-          description="ClassDojo serves 50 million families across 180 countries, but behind a beloved brand was a fragmented portfolio: some products robust, others with almost nothing. I drove the brand strategy, rebrand, and site overhaul: new logos, characters, color systems, and creative direction across four products, and an endorsed-brand model that gave all six a shared foundation for the first time."
+          description="ClassDojo reaches 50 million families in 180 countries, but its brand had grown up product by product: some robust, some with almost nothing. I pitched and led the brand strategy, rebrand, and site overhaul without a budget. That meant new logos, characters, and color systems for four products, an endorsed-brand model that put all six under one foundation, and 76 pages rebuilt from a system of reusable blocks. The site has shipped page by page since April 2026, and when engineering got stretched I moved into the code myself, using AI tools to QA, fix, and deploy pages."
           placeholderDescriptions={[
             'New homepage — hero and key blocks, desktop and/or mobile.',
             'Global nav and footer — desktop, showing all products as one family.',
@@ -30,6 +33,41 @@ export default function WorkPage() {
             'ClassDojo for districts — landing page or deck frame showing restrained, pro tone.',
             'Design system — type scale, color, and 2–3 components showing scale and reusability.',
             'Tone framework — audience/product/medium (playful vs. professional).',
+          ]}
+        />
+      )}
+
+      {SHOW_DRAFT_ROWS && (
+        <ProjectCarousel
+          title="Back to school 2026"
+          description="Back to school 2025 leaned on emotional storytelling and the lift came in flat. For 2026 I set the campaign identity and creative direction: one visual system and one story across email, web, video, push, in-app, LinkedIn, and sales enablement, reaching 193K school leaders. With Lorna's team running the sends, emails opened at 39-42% against a 30-34% norm, click-to-open doubled, and schoolwide decisions rose 48% year over year."
+          placeholderDescriptions={[
+            'Hero video, 60s, made with Peter Skov Nielsen. Autoplay loop of the strongest 6-8 seconds: gradient, simplified UI, feature moments.',
+            'The campaign system on one board: gradient treatment, simplified product UI, textured photography, and type.',
+            '/school-leaders landing page. Hero plus 2-3 key blocks on desktop, with a mobile frame alongside.',
+            'Email grid: 6-8 of the 47 sends side by side, one template flexing across four school leader segments.',
+            'One story everywhere school leaders touch us: in-app banner, launch modal, and push notification in a single composition.',
+            'LinkedIn organic posts from ClassDojo and ClassDojo Districts, three up.',
+            'Families landing page: hero plus the connect, learn, and play sections.',
+            "Teacher What's New page and Mentor BTS kit, showing the system stretching to teachers.",
+            'Results slide, typeset clean: 39-42% opens vs. a 30-34% norm, 2x click-to-open, +48% schoolwide decisions year over year.',
+          ]}
+        />
+      )}
+
+      {SHOW_DRAFT_ROWS && (
+        <ProjectCarousel
+          title="Tutor group classes"
+          description="Dojo Tutor only offered 1:1 sessions at $30-39 a class, which priced out a lot of families. Group classes at $10 were the answer, and the launch was the first major campaign to put Tutor's new identity to work. Elizabeth Slavitt led the launch and I led the creative, starting with two landing pages that tested affordability against enrichment messaging, a class card aligned with the product, and a thumbnail generator the team kept using after launch. Weekly group sessions grew from about 50 to 460 in two months."
+          placeholderDescriptions={[
+            'The two launch landing pages side by side: affordability (lp1) and enrichment (lp2).',
+            "New Tutor identity in use: Nova, logo, and color on the group classes hero.",
+            'Class card: the marketing card next to the in-product card, showing how they were aligned.',
+            'Thumbnail generator output: a grid of 9-12 class thumbnails.',
+            'Paid social: 3-4 Facebook and Instagram ads from the launch.',
+            'Launch email to one of the six segments (e.g. churned subscribers), desktop and mobile.',
+            'Sticker packs summer retention campaign.',
+            'Growth slide: weekly group sessions from about 50 to 460, early April to early June 2026.',
           ]}
         />
       )}

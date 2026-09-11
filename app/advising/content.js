@@ -80,7 +80,7 @@ export const caseStudyEndorsed = {
   },
   outcome: {
     label: 'Outcome',
-    text: 'The CEO shifted to using "endorsed" in conversations and confidently hired a naming agency one month later with clear direction. Prevented months of expensive misalignment between vision and execution.',
+    text: 'The CEO shifted to using "endorsed" in conversations, and the model became the shared language for how each product relates to the parent brand. A year later, when a naming-only engagement came up, Kim and I used the same framework to recommend holding it until a design partner could be funded alongside it, since a new name with no identity behind it sits on a shelf.',
     caption: 'From confusion to clarity in 4 weeks',
     image: null, // Add path e.g. /images/advising/endorsed-outcome.png
   },
