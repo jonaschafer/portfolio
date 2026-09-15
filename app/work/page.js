@@ -23,7 +23,7 @@ export default function WorkPage() {
       {SHOW_DOJO_REBRAND && (
         <ProjectCarousel
           title="Dojo rebrand"
-          description="ClassDojo reaches 50 million families in 180 countries, but its brand had grown up product by product: some robust, some with almost nothing. I pitched and led the brand strategy, rebrand, and site overhaul without a budget. That meant new logos, characters, and color systems for four products, an endorsed-brand model that put all six under one foundation, and 76 pages rebuilt from a system of reusable blocks. The site has shipped page by page since April 2026, and when engineering got stretched I moved into the code myself, using AI tools to QA, fix, and deploy pages."
+          description="ClassDojo reaches 50 million families in 180 countries, but its brand had grown up product by product: some robust, some with almost nothing. I pitched and led the brand strategy, rebrand, and site overhaul without a budget. That meant new logos, characters, and color systems for four products, an endorsed-brand model that put all six under one foundation, and 76 pages rebuilt from a system of reusable blocks. The site has shipped page by page since April 2026, and when engineering got stretched I moved into the code myself, using AI tools to QA, fix, and deploy pages. After relaunch, time on the Sparks and Plus pages rose 36% and 42%, against 6% across the site."
           placeholderDescriptions={[
             'New homepage — hero and key blocks, desktop and/or mobile.',
             'Global nav and footer — desktop, showing all products as one family.',
@@ -40,7 +40,7 @@ export default function WorkPage() {
       {SHOW_DRAFT_ROWS && (
         <ProjectCarousel
           title="Back to school 2026"
-          description="Back to school 2025 leaned on emotional storytelling and the lift came in flat. For 2026 I set the campaign identity and creative direction: one visual system and one story across email, web, video, push, in-app, LinkedIn, and sales enablement, reaching 193K school leaders. With Lorna's team running the sends, emails opened at 39-42% against a 30-34% norm, click-to-open doubled, and schoolwide decisions rose 48% year over year."
+          description="Back to school 2025 leaned on emotional storytelling and the lift came in flat. For 2026 I set the campaign identity and creative direction: one visual system and one story across email, web, video, push, in-app, LinkedIn, and sales enablement, reaching 193K school leaders. With Lorna's team running the sends, emails opened at 39-42% against a 30-34% norm, click-to-open doubled, and schoolwide decisions rose 48% year over year. On the refreshed school leaders page, bounce fell 10 points and the average visit went from 80 to 118 seconds, while the rest of the site held flat."
           placeholderDescriptions={[
             'Hero video, 60s, made with Peter Skov Nielsen. Autoplay loop of the strongest 6-8 seconds: gradient, simplified UI, feature moments.',
             'The campaign system on one board: gradient treatment, simplified product UI, textured photography, and type.',
