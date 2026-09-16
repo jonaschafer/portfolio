@@ -1,0 +1,188 @@
+/*
+ * Surface map. Hero matches the Figma "Aleph Audit - Preso" deck itself
+ * (https://www.figma.com/design/cTNynDlWC4aXLedwkfsuiH/Aleph-Audit--Internal-):
+ * Neue Montreal, indigo/white/ink/paper.
+ *
+ * Custom classes are prefixed (amwrap/amseg/amsurf/amchip/amfoot) because
+ * this page renders inside /aleph's `.aa` layout wrapper — aleph.css defines
+ * `.aa .wrap`, `.aa .seg`, `.aa .surf`, `.aa .chip` and `.aa .foot` for the
+ * old evidence-heavy audit page, and those rules apply to any element with
+ * those class names anywhere under `.aa`, including here. Don't reuse a bare
+ * class name from aleph.css without checking first.
+ */
+
+.amap {
+  --ink: #333333;
+  --paper: #EAEAE6;
+  --hair: rgba(51, 51, 51, 0.15);
+
+  --sans: var(--f-sans), ui-sans-serif, system-ui, sans-serif;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  min-height: 100vh;
+  padding: 48px 24px 96px;
+}
+@media (max-width: 640px) {
+  .amap { padding: 32px 16px 64px; }
+}
+
+.amap * { box-sizing: border-box; }
+.amap .amwrap { max-width: 1100px; margin: 0 auto; }
+
+.amap h1 {
+  font-weight: 700;
+  font-size: clamp(36px, 6vw, 56px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.amap .dek {
+  font-size: 20px;
+  line-height: 1.4;
+  max-width: 60ch;
+  margin: 0 0 40px;
+}
+.amap .dek a { color: inherit; text-decoration-underline: var(--ink); text-underline-offset: 3px; }
+
+/*
+ * The table itself: a direct match of aleph-field-guide.html's table.sheet
+ * (same variable names translated 1:1, same layout, same toggle mechanic),
+ * not the deck. Its own font stack and palette.
+ */
+.amap .amsurf {
+  --fg-bg: #FAFAFA;
+  --fg-surface: #FFFFFF;
+  --fg-ink: #201F1E;
+  --fg-muted: #6E6B67;
+  --fg-faint: #9A9692;
+  --fg-rule: #E3E1DE;
+  --fg-grid: #EEECE9;
+  --fg-accent: #3074D9;
+  --fg-accent-soft: #E9F0FB;
+  --fg-warm: #9A4A16;
+  --fg-warm-soft: #F8ECE2;
+  --fg-good: #2F7A4B;
+  --fg-good-soft: #E6F2EA;
+  --fg-display: 'Schibsted Grotesk', var(--f-sans), sans-serif;
+  --fg-body: 'Geist', var(--f-sans), sans-serif;
+  --fg-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  font-family: var(--fg-body);
+  color: var(--fg-ink);
+}
+
+.amap .amseg { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 12px; font-family: 'Geist', var(--f-sans), sans-serif; }
+.amap .amseg button { font: 500 12px/1 'Geist Mono', ui-monospace, monospace; padding: 8px 12px; border: 1px solid #E3E1DE; background: #FFFFFF; color: #6E6B67; border-radius: 3px; cursor: pointer; }
+.amap .amseg button b { font-weight: 600; color: #201F1E; margin-left: 4px; }
+.amap .amseg button[aria-pressed="true"] { background: #E9F0FB; border-color: #3074D9; color: #3074D9; }
+.amap .amseg button[aria-pressed="true"] b { color: #3074D9; }
+.amap .amseg .note { margin-left: 6px; color: #6E6B67; font-size: 13.5px; }
+
+.amap .sheet-scroll { overflow-x: auto; border: 1px solid var(--fg-rule); background: var(--fg-surface); }
+/* overflow-x: auto silently forces overflow-y to auto too, which turns .sheet-scroll
+   into its own scroll container and breaks position: sticky against the page. Only
+   needed at narrow widths where the table doesn't fit; above that, let it scroll
+   with the page (this is aleph-field-guide.html's own fix for the same problem). */
+@media (min-width: 1100px) {
+  .amap .sheet-scroll { overflow: visible; }
+}
+.amap table.sheet { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; font-family: var(--fg-body); }
+.amap table.sheet th,
+.amap table.sheet td { border-right: 1px solid var(--fg-grid); border-bottom: 1px solid var(--fg-grid); padding: 10px 12px; text-align: left; vertical-align: top; }
+.amap table.sheet th:last-child,
+.amap table.sheet td:last-child { border-right: 0; }
+.amap table.sheet thead th {
+  font: 500 11px/1.2 var(--fg-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  background: var(--fg-bg);
+  border-bottom: 1px solid var(--fg-rule);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+.amap table.sheet th.rn,
+.amap table.sheet td.rn { width: 36px; text-align: right; font: 400 11px var(--fg-mono); color: var(--fg-faint); background: var(--fg-bg); font-variant-numeric: tabular-nums; }
+.amap table.sheet td.term { font-weight: 600; width: 220px; }
+.amap table.sheet td.what { width: 320px; color: var(--fg-muted); font-size: 13px; line-height: 19px; }
+.amap table.sheet td.finding { width: 320px; font-size: 13px; line-height: 19px; }
+.amap table.sheet td.own { width: 170px; font-size: 13px; }
+.amap table.sheet td.own .note { color: var(--fg-faint); font-style: normal; font-size: 13px; }
+.amap table.sheet tr.grp-row td {
+  position: sticky;
+  top: var(--amap-theadh, 34px);
+  z-index: 2;
+  background: var(--fg-bg);
+  padding: 16px 12px 8px;
+  font: 700 15px/1.2 var(--fg-display);
+  border-bottom: 1px solid var(--fg-ink);
+  box-shadow: 0 1px 0 var(--fg-ink);
+  border-right: 0;
+}
+.amap table.sheet tr.grp-row td span { font: 400 12px var(--fg-mono); color: var(--fg-muted); }
+.amap table.sheet tbody.g[hidden] { display: none; }
+.amap table.sheet tr[hidden] { display: none; }
+.amap table.sheet tbody:last-child tr:not([hidden]):last-child td { border-bottom: 0; }
+
+.amap .amchip { display: inline-block; font: 500 11px/1.5 'Geist Mono', ui-monospace, monospace; padding: 1px 7px; border-radius: 3px; background: #EEECE9; color: #6E6B67; white-space: nowrap; vertical-align: 1px; }
+.amap .amchip.done { background: #E6F2EA; color: #2F7A4B; }
+.amap .amchip.blue { background: #E9F0FB; color: #3074D9; }
+.amap .amchip.private { background: #F8ECE2; color: #9A4A16; }
+
+/* Inline evidence marker in a finding: iconoir info-circle-solid that reveals a black tooltip on hover/focus. */
+.amap .itip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0 0 0 3px;
+  cursor: help;
+  vertical-align: -2px;
+}
+.amap .itip svg { display: block; }
+.amap .itip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 7px);
+  z-index: 20;
+  width: max-content;
+  max-width: 260px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: #000000;
+  color: #FFFFFF;
+  font-family: var(--fg-body);
+  font-size: 12.5px;
+  line-height: 1.4;
+  font-weight: 400;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+.amap .itip:hover::after,
+.amap .itip:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.amap .amfoot {
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hair);
+  font-size: 12px;
+  opacity: 0.6;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.amap .amfoot a { color: inherit; }

@@ -1,0 +1,3013 @@
+{
+ "meta": {
+  "title": "Aleph brand audit",
+  "author": "Jon Schafer",
+  "date": "Sep 2026",
+  "exported": "2026-09-13",
+  "figmaFile": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit",
+  "sheet": "https://docs.google.com/spreadsheets/d/1CC-KJ88cXnDylzzwFHrnJgbAAJ0PugPx/edit",
+  "loom": null,
+  "counts": {
+   "findings": 31,
+   "surfaces": 63
+  }
+ },
+ "overview": {
+  "intro": "Hey all 👋 This is the short version of the brand audit I've been running alongside the Red Antler work.",
+  "why": "Red Antler is building our strategy and identity from the brief Daniel sent in August. This audit covers what a brief can't: how the brand shows up today on every surface, including the many outside Red Antler's scope (forms, emails, the app, the MCP). Daniel and I are turning it into a v2 of the brief, so we have one agreed standard to judge Red Antler's work against, starting with their strategy presentation on Sep 21. After they wrap in November, it's our map for everything we update ourselves.",
+  "bias": "Quick flag: I'm about to own brand here, so I'm biased toward finding brand problems, and I'm still new enough to miss context. Every claim has an F-number that links to a screenshot or a source, plus how solid the evidence is, so poke holes wherever something looks off. Not grading anyone's work either. Most of this is what happens when a company grows fast and ships a ton.",
+  "tldr": "Customers love us for the speed and the people, and finance teams are asking for exactly what we do: ==AI they can trust because the data under it is right==. The brand doesn't say either of those yet, and between the site and a booked meeting the look and the message change at almost every step.",
+  "standouts": [
+   {
+    "n": 1,
+    "claim": "Customers love us, and we don't show it.",
+    "body": "G2 is 4.9 from 108 reviews, and recent reviewers name their CX person (shoutout Michael and Henry). Almost everything posted about us on LinkedIn and X comes from our own team or investors, though.",
+    "refs": [
+     "F-008",
+     "F-011"
+    ],
+    "key": "f-008",
+    "move": "Give the customer voice a home next to the trust message, with real customers and the CX team in it.",
+    "fuller": "G2 is 4.9 from 108 reviews. The most recent ones credit live data inside Excel, setup in weeks and their CX contact by name (Michael, Henry). On Reddit: \"speed of integration and cost makes it a no brainer over Vena\" and \"used it for over 3 years now and it's been awesome.\" Outside of reviews, almost every LinkedIn and X post about Aleph is from our own team or investors. (G2 blocked me after 10 reviews, so this is the latest 10. Directional.)",
+    "related": null,
+    "visual": {
+     "type": "quotes",
+     "stat": {
+      "value": "4.9",
+      "label": "on G2, from 108 reviews"
+     },
+     "quotes": [
+      {
+       "text": "speed of integration and cost makes it a no brainer over Vena",
+       "by": "Reddit, r/FPandA"
+      },
+      {
+       "text": "used it for over 3 years now and it's been awesome",
+       "by": "Reddit, r/FPandA"
+      }
+     ]
+    }
+   },
+   {
+    "n": 2,
+    "claim": "Trust is the AI conversation in finance, and other people are telling our story.",
+    "body": "A Vena partner is out here posting \"AI can guess. Finance still has to sign its name to the number.\" That's our line, and I'd build the rebrand's message around it.",
+    "refs": [
+     "F-014"
+    ],
+    "key": "f-014",
+    "move": "Build the rebrand's message around trust, and bring the proof: governed data and answers someone can check.",
+    "fuller": "On Reddit, finance people are excited about Claude, and they say it breaks when they can't audit the output or trust the data it reads. One reply to today's ChatGPT for Financial Services launch: \"It's only as good as your data pipelines.\" On LinkedIn, a Vena partner posted \"AI can guess. Finance still has to sign its name to the number,\" and The SaaS CFO demoed an MCP running on a \"deterministic\" metrics engine (92 reactions). One of our G2 reviewers describes Aleph this way: querying governed data from Claude and getting \"answers I actually trust.\" I think that's the line to build the rebrand's message around. Datarails already uses the word (\"Trusted AI for Finance Teams,\" \"trust every AI output\"), so we'd need to show the proof: governed data and answers someone can check.",
+    "related": {
+     "claim": "Our homepage headline is almost the same as Drivetrain's.",
+     "text": "Ours reads \"AI-native FP&A that connects your data, strategy, and spreadsheets.\" Drivetrain's reads \"The AI-native FP&A platform that does the work.\" Four of the seven finance competitors I captured put \"AI\" in their page title, and Campfire calls itself \"The AI-Native ERP.\" The brands the survey held up as models (Ramp, Linear, Stripe, Anthropic) and Harvey open with what the customer gets or a category they name, like \"Time is money. Save both.\" and \"Build a Frontier Legal Organization.\" I'd hand Red Antler this side by side as a starting point for the positioning line. (Live homepages, Sep 12. Captures are in Figma on the Audit v2 page, under Competition.)",
+     "refs": [
+      "F-029"
+     ],
+     "images": [
+      "home-aleph",
+      "home-drivetrain"
+     ]
+    },
+    "visual": {
+     "type": "quotes",
+     "quotes": [
+      {
+       "text": "AI can guess. Finance still has to sign its name to the number.",
+       "by": "A Vena partner, LinkedIn"
+      },
+      {
+       "text": "It's only as good as your data pipelines.",
+       "by": "r/FPandA, on the ChatGPT for Financial Services launch"
+      },
+      {
+       "text": "answers I actually trust",
+       "by": "An Aleph customer on G2, querying Aleph from Claude"
+      }
+     ]
+    }
+   },
+   {
+    "n": 3,
+    "claim": "The path to a meeting changes look and message at almost every step.",
+    "body": "Seven different looks before anyone hits submit, the demo goes by six names, and the trial promises self-serve but routes to a person. The new Agentic Budgeting demo page is the best version of this moment we have, so the fix is already in the building.",
+    "refs": [
+     "F-017",
+     "F-019",
+     "F-020",
+     "F-023"
+    ],
+    "key": "f-017",
+    "move": "One look and voice from the ad to the booked meeting, including forms, scheduler, emails and login. The Agentic Budgeting demo page is the model.",
+    "fuller": "Before anyone presses submit they pass through the site, HubSpot's banner and exit pop-up, a separate demo page, HubSpot's form styling, a Replit app for the fitness test and a stock Auth0 login. The demo has six names across the site (\"Book a demo,\" \"Get a Demo,\" \"Talk to our experts\" and others). It's 15 minutes in the pop-up and 30 on the demo pages, and the promised reply runs from \"shortly\" to \"1-2 business days.\" The trial page promises \"full access\" and \"up-and-running in minutes,\" while its form confirmation reads the same as the demo's (\"someone will be in touch shortly\"). The fitness test asks for name, work email and job title before its first question. The new Agentic Budgeting demo page is the strongest version of this moment we have, and a good model for the rest. (Mapped logged out, up to the submit button. What happens after submit is next, with Jack's help.)",
+    "related": null,
+    "visual": {
+     "type": "strip",
+     "images": [
+      "flow-01",
+      "flow-02",
+      "flow-03",
+      "flow-04",
+      "flow-05",
+      "flow-06",
+      "flow-07"
+     ]
+    }
+   },
+   {
+    "n": 4,
+    "claim": "\"Agentic\" reads as vendor-speak to the people doing the work.",
+    "body": "The top r/FPandA thread on agents is titled \"Does anyone else's boss have terminal AI brain?\" (120 upvotes 😅). I'd lead with the job it takes off someone's plate and how they check the result. (Reddit is the toughest room we'll face, so grain of salt.)",
+    "refs": [
+     "F-015"
+    ],
+    "key": "f-015",
+    "move": "Lead with the job it takes off someone's plate and how they check the result.",
+    "fuller": "The top r/FPandA threads about agents are skeptical: \"Does anyone else's boss have terminal AI brain?\" (120 upvotes) and \"Nope but our executives will still pretend we're an 'AI first' company.\" One commenter called a competitor's agents \"just a natural language query.\" For Agentic Budgeting, I'd test leading with the job it takes off someone's plate and how they check the result. (Reddit skews toward skeptical practitioners, so treat it as the hardest room we'll face.)",
+    "related": null,
+    "visual": {
+     "type": "quotes",
+     "quotes": [
+      {
+       "text": "Does anyone else's boss have terminal AI brain?",
+       "by": "Top r/FPandA thread on agents, 120 upvotes"
+      },
+      {
+       "text": "Nope but our executives will still pretend we're an 'AI first' company.",
+       "by": "Top reply to \"Success story for using AI/agent?\""
+      }
+     ]
+    }
+   },
+   {
+    "n": 5,
+    "claim": "\"Aleph\" is hard to own in search.",
+    "body": "We're third for our own name, behind Google's AI answer and the Wikipedia page for the Hebrew letter, and OneStream is buying ads on \"aleph fp&a.\"",
+    "refs": [
+     "F-002",
+     "F-004"
+    ],
+    "key": "f-002",
+    "move": "Hand Red Antler name ownability as an input to the positioning line and the aleph.ai switch, and buy our brand terms now.",
+    "fuller": "Search a plain \"aleph\" and we come in third, behind Google's AI answer and the Wikipedia entry for the Hebrew letter. OneStream bids on \"aleph fp&a\" while no Aleph ad shows up. We do well on pages we wrote: we're the top organic result for \"ai fp&a software\" and show up in Google's AI answer, thanks to the 83 /answers pages. Independent \"best AI FP&A tools\" roundups mostly leave us out. Worth factoring into the Red Antler work and the aleph.ai switch.",
+    "related": null,
+    "visual": {
+     "type": "image",
+     "image": "serp-brand"
+    }
+   },
+   {
+    "n": 6,
+    "claim": "The mobile site is slow.",
+    "body": "About 30 seconds to show the main content on a phone. (One local test, confirming before we quote it.)",
+    "refs": [
+     "F-001"
+    ],
+    "key": "f-001",
+    "move": "Set a performance budget before the rebrand adds more motion.",
+    "fuller": "On a phone, the homepage takes about 30 seconds to show its main content and loads 8.6 MB. Google's target is under 2.5 seconds. Most of the weight is motion, video and tracking scripts. (One local test, so I'll confirm with Google's PageSpeed tool before we quote it.)",
+    "related": null,
+    "visual": {
+     "type": "stat",
+     "stat": {
+      "value": "32.2 s",
+      "label": "to show the main content on a phone"
+     },
+     "support": [
+      {
+       "value": "2.5 s",
+       "label": "Google's target"
+      },
+      {
+       "value": "8.6 MB",
+       "label": "page weight"
+      },
+      {
+       "value": "26",
+       "label": "Lighthouse mobile score, of 100"
+      }
+     ]
+    }
+   }
+  ],
+  "working": {
+   "text": "We're #1 for \"ai fp&a software\" thanks to the /answers pages, and buyers shortlist us next to Cube, Datarails and Vena and pick us for speed and price. The funnel is measured end to end too, so we can put a real before-and-after number on the rebrand.",
+   "refs": [
+    "F-005",
+    "F-010",
+    "F-024"
+   ]
+  },
+  "rebrand": [
+   "The trust message is ours to claim, and customers are the proof.",
+   "The brand has to carry past the homepage into forms, the scheduler, emails and login. Most of that is outside Red Antler's scope, so it's on us.",
+   "Name ownability and a mobile performance budget should go to Red Antler now, before the work gets rolling."
+  ],
+  "stillToDo": "The identity and messaging pass, the product past sign-in, what happens after someone submits a form (Jack's helping), the sales deck, and talking to people. Also a question for CX: can they pull a list of customers who brought Aleph with them to a new company? The survey says it happens all the time, I couldn't find a single public example, and it'd be our best proof point.",
+  "question": "Can CX pull a list of ==customers who brought Aleph to a new company==? The survey says it happens all the time, and it would be our best proof point, but I couldn't find a single public example.",
+  "ask": "Tell me where I'm wrong, where I'm missing context, and where you disagree with the direction. Daniel and I will fold your notes into the brief before Red Antler presents on the 21st.",
+  "askClose": "Happy to walk anyone through it live. The Loom is the 10-minute version."
+ },
+ "rebrandFull": [
+  "A new identity touches more of the stack than it looks like from the outside: the Webflow templates, the GSAP and Lottie motion, the Wistia player, HubSpot emails and the G2 widgets. Setting a performance budget now keeps the rebrand from making the mobile problem worse, and most of that implementation sits outside Red Antler's scope, so it's ours to plan.",
+  "The same goes for the path to a meeting. The forms, the Default scheduler, the confirmation and nurture emails and the login are the last things a buyer sees before talking to us, and they sit outside Red Antler's scope too. The Agentic Budgeting demo page shows we can already build a better version of that moment. The funnel is well instrumented (HubSpot, Default, Dub, Intellimize, HockeyStack), so we can set a before number now and measure the rebrand against it.",
+  "The customer voice is the strongest material we have, and today it lives on G2 and Reddit. The rebrand can give it a home next to the trust message, with real customers and the CX team in it.",
+  "Most competitor ads and homepages say some version of \"AI-powered FP&A platform,\" and Drivetrain's headline is close to ours. That sameness leaves room for a brand with a clear point of view. Rillet shows what loud looks like in this category (a unicorn round, heavy ads, a community Slack), and r/Accounting is now pushing back on its ads that promise a two-week conversion. Runway left FP&A this week and relaunched as cfo.ai, an AI CFO for founders."
+ ],
+ "byArea": [
+  {
+   "bucket": "Communication",
+   "notWorking": "a buyer passes through seven visual systems between the site and a booked meeting, and the demo has six names, two lengths and three promised reply times. The site also gives AI its own purple and its own menu column next to \"Core platform,\" which reads like an add-on for a company that's all AI. The symbol shows up in an unofficial blue on the Microsoft Marketplace listings, and the brand page's only color rule is \"monochrome.\"",
+   "working": "the Agentic Budgeting demo page, with a headline specific to the offer and a clear next step.",
+   "oneThing": "one look and voice from the ad to the booked meeting, including the forms, scheduler, emails and login."
+  },
+  {
+   "bucket": "Product (web and app)",
+   "notWorking": "the mobile homepage is slow and heavy. Sign-in is a stock Auth0 page with no sign-up, and the app opens with no first-run. Onboarding is all CSM, and there's no lifecycle email yet (I'm told there's interest in one). The product runs on Inter and Google's Material Symbols, which the new identity won't reach unless we plan for it.",
+   "working": "organic and AI search, led by the /answers content.",
+   "oneThing": "set a performance budget before the rebrand adds more motion."
+  },
+  {
+   "bucket": "Marketing",
+   "notWorking": "everything runs on screens and in performance channels, and nobody is defending our brand terms. The site gets about 17K visits a month, mostly direct (Similarweb estimates). Social talk about us is almost all our own. The trial promises full access in minutes and its confirmation reads like a demo request, and the fitness test asks for contact details before its first question.",
+   "working": "demo is the main ask, and it's one screen and three fields. The measurement stack is in place for a brand push and a before-and-after baseline.",
+   "oneThing": "buy our brand terms now, then find one channel that reaches people off a screen."
+  },
+  {
+   "bucket": "Competition",
+   "notWorking": "we rank third for our own name. Our homepage headline is close to Drivetrain's (\"AI-native FP&A\"), and four of seven finance competitors put AI in their page title. On Reddit, the knocks on us are \"not proven at the enterprise level,\" a demo that errored out, and pricing quoted at $40-50K a year plus setup. Inside, we never name the competitors in our deals; buyers name Cube, Abacum, Datarails, Vena and Pigment.",
+   "working": "buyers shortlist us next to Cube, Abacum, Datarails and Vena, and pick us for speed and price. Concourse barely has a public voice, and its one user review says the output was hard to trust.",
+   "oneThing": "give Red Antler name ownability and the competitor headlines as inputs to the positioning line and the aleph.ai switch."
+  },
+  {
+   "bucket": "Culture",
+   "notWorking": "\"agentic\" lands as vendor-speak with practitioners, and the \"customers bring us to their next job\" story has no public proof yet.",
+   "working": "customers who talk about us love us, and the market's biggest AI worry is the problem we solve.",
+   "oneThing": "make \"AI you can trust because the data is right\" something we can prove (governed data, answers you can check), since Datarails already promises \"trust every AI output,\" and show the customers behind it."
+  }
+ ],
+ "surfaces": {
+  "ask": "the \"not in the official deliverable list for RA but critical for us to execute\" stuff like the MCP screenshots.",
+  "askBy": "Daniel, Aug 28",
+  "ledger": [
+   {
+    "date": "Jun 24",
+    "who": "#brand-revamp, Daniel",
+    "text": "Agency applications to ship right away: five tentpole webpages (homepage, a webinar page, two or three core product pages), a new sales deck plus a piece or two of sales collateral, viral merch, and explorations for webinars and in-person events."
+   },
+   {
+    "date": "Jul 30",
+    "who": "Ads kickoff, Daniel",
+    "text": "Ads and social profiles from scratch, ad templates, a giveaway ad, animation, and a design.md for AI generation."
+   },
+   {
+    "date": "Aug 3",
+    "who": "Red Antler brief",
+    "text": "Red Antler's deliverables: symbol and wordmark (2D, 3D, animated, and app icons for Slack, Sheets and Excel), palette, type, voice guide, motion language, a visual style for diagrams and data, and applications (paid ads, social, blog heroes, ebook covers, apparel, the Zoom loop, the homepage). WildFruit does the 12-slide sales deck."
+   },
+   {
+    "date": "Aug 7",
+    "who": "Daniel",
+    "text": "The Agentic Budgeting launch sprint: video, landing page, ebook, launch assets."
+   },
+   {
+    "date": "Aug 27",
+    "who": "#brand-design, Albert",
+    "text": "The ChatGPT plugin page is text only, and Hex's has product visuals. Next day Daniel asked for MCP page visuals and a new MCP and Agent icon."
+   },
+   {
+    "date": "Aug 28",
+    "who": "Daniel",
+    "text": "The core ask: map \"the 'not in the official deliverable list for RA but critical for us to execute' stuff like the MCP screenshots.\""
+   },
+   {
+    "date": "Sep 3",
+    "who": "Daniel",
+    "text": "Mac-style app icons for Claude, ChatGPT, Cursor and Aleph in the launch video, plus the logo animation as a standalone element for other videos."
+   },
+   {
+    "date": "Sep 10",
+    "who": "Daniel",
+    "text": "Further-out investments like great merch \"feel super related to the brand application exploration work.\""
+   },
+   {
+    "date": "Sep 11",
+    "who": "Daniel",
+    "text": "\"A good amount of white space to add and propose surfaces and experiences.\" Named: a friendly video guide channel (like Framer's), an onboarding drip campaign (\"We still need to educate users and guide them. That's non-negotiable.\"), and a public changelog and docs."
+   }
+  ],
+  "rollup": {
+   "total": 63,
+   "sow": {
+    "Yes": 19,
+    "Partial": 9,
+    "No": 35
+   },
+   "ours": 44,
+   "priority": {
+    "P1": 40,
+    "P2": 17,
+    "P3": 6
+   },
+   "oursP1": [
+    "DAM / asset library",
+    "design.md (Vercel-style)",
+    "Marketplace listing copy",
+    "Sign-in (Auth0)",
+    "MCP (incl. preview screenshots)",
+    "Slack agent",
+    "Excel add-in",
+    "ChatGPT / Claude / Cursor extensions",
+    "getaleph.com homepage",
+    "Platform / product pages",
+    "Blog",
+    "Footer / IA",
+    "aleph.ai domain switch",
+    "Email",
+    "Forms (demo, trial, contact)",
+    "Scheduler and routing (Default)",
+    "PowerPoint add-in",
+    "Search presence (branded, organic, paid, AI answers)",
+    "Answer pages (/answers)",
+    "Integrations directory",
+    "Mobile web",
+    "Site pop-ups (HubSpot top banner, exit modal)",
+    "Deck system (webinars, walkthroughs, internal)"
+   ]
+  },
+  "rows": [
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Symbol / logo usage",
+    "what": "The triquetra mark and how it's used: color, size, placement.",
+    "issue": "The triquetra carries the Borges story, which takes a paragraph to explain and says nothing about finance or trust. It also ships in an unofficial blue on Microsoft Marketplace (F-030).",
+    "opportunity": "Biggest identity opportunity: a symbol that means something without the backstory.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-879",
+    "findings": [
+     "F-030"
+    ]
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Wordmark",
+    "what": "The \"aleph\" logotype that sits next to the symbol.",
+    "issue": "Letterforms have little character, and the counter of the \"p\" looks off center.",
+    "opportunity": "A wordmark with some personality, paired with the new symbol.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-879",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Typography (Söhne + Inter + mono)",
+    "what": "Söhne and IBM Plex Mono in marketing, Inter in the product.",
+    "issue": "Söhne reads professional and simple with the barest character; a lot of small type (see the quotes). The product runs on Inter only (F-031).",
+    "opportunity": "Test Söhne against the display shortlist before replacing it; plan how the new faces reach the product.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-992",
+    "findings": [
+     "F-031"
+    ]
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Color (mono core + accent)",
+    "what": "The black-and-white palette plus the accent Red Antler picks.",
+    "issue": "Black and white reads corporate, and purple marks AI features, which makes AI look like an add-on (F-028). The symbol turns blue on Microsoft Marketplace (F-030).",
+    "opportunity": "Retire the AI purple and pick one accent that means something across the whole product. The survey already backs purple or green.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-1507",
+    "findings": [
+     "F-028",
+     "F-030"
+    ]
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Iconography",
+    "what": "UI and marketing icons.",
+    "issue": "Fine but generic, and not doing much to explain things. The product uses Google's Material Symbols, Outlined and Rounded (F-031).",
+    "opportunity": "A small custom set drawn from the new symbol, plus pictograms for complex ideas (like Anthropic's).",
+    "sow": "Partial",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler (core set)",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     },
+     {
+      "label": "#agentic-budgeting, Daniel, Aug 20",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-991",
+    "findings": [
+     "F-031"
+    ]
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Motion / animation",
+    "what": "How things move: the logo animation, ad and video motion, lower thirds.",
+    "issue": "Not much motion today: the spinning mark on product load, a simple wordmark animation in videos, the new launch logo animation, and light motion on the launch page (likely motion.dev). Lower thirds need some zhuzh.",
+    "opportunity": "Widen motion into the product: an animated blank state, a thinking or acting state for the agent.",
+    "sow": "Yes",
+    "priority": "P3",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-883",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Photography",
+    "what": "Headshots and team photos on the site.",
+    "issue": "Headshots and team photos. Nothing wrong with either, but not unique.",
+    "opportunity": "Photography could work harder for the brand depending on the direction, but it's a high lift with no skill in house.",
+    "sow": "No",
+    "priority": "P3",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Internal brand survey, Jul",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=101-4",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Merch",
+    "what": "Apparel and swag.",
+    "issue": "None that I'm aware of.",
+    "opportunity": "High desire to crush it. Clear custom mugs (Weld) would be high quality and suggest trust and transparency.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler (concepts)",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     },
+     {
+      "label": "Daniel, Sep 10",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2312",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "Diagram / data-viz system",
+    "what": "A drawing style for explaining how Aleph works and for charts in marketing.",
+    "issue": "Badly needs help: confusing and hard to parse, in webinar decks and across the site. The team knows it.",
+    "opportunity": "A real diagram and data-viz system. Datalands and Gavin Potenza have come up as partners.",
+    "sow": "Yes",
+    "priority": "P3",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-1546",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "DAM / asset library",
+    "what": "One place to grab approved logos, images and videos. Air today.",
+    "issue": "Air works fine, but it's underused.",
+    "opportunity": "Stock Air with product UI, badges, the launch video and fonts so AI tools can pull from it for comps and quick ad concepts.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Jon",
+    "sources": [
+     {
+      "label": "Jon, standard surface checklist",
+      "kind": "jon"
+     },
+     {
+      "label": "Daniel, Sep 1",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-878",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Visual",
+    "name": "design.md (Vercel-style)",
+    "what": "A text file of brand rules that AI tools read to make on-brand work.",
+    "issue": "Doesn't exist yet.",
+    "opportunity": "Write one, with llm.txt, prompts and good and bad references, so the team can self-serve on-brand work.",
+    "sow": "Partial",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Jon",
+    "sources": [
+     {
+      "label": "Ads kickoff with Daniel, Jul 30",
+      "kind": "meeting"
+     }
+    ],
+    "inFigma": "Card only",
+    "figmaUrl": null,
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Verbal",
+    "name": "Positioning line",
+    "what": "The one sentence for what Aleph is and why it wins.",
+    "issue": "Our homepage headline is nearly Drivetrain's, and \"AI-native\" appears on no other page (F-029).",
+    "opportunity": "A line built on trust we can prove: governed data and answers someone can check (F-014).",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2266",
+    "findings": [
+     "F-014",
+     "F-029"
+    ]
+   },
+   {
+    "group": "Communication",
+    "sub": "Verbal",
+    "name": "Messaging hierarchy",
+    "what": "The ranked messages under the positioning line: pillars, proof points, versions per audience.",
+    "issue": "There isn't one. The site leads with FP&A on 16 pages and trust on two, and the copy was pieced together over many rounds.",
+    "opportunity": "Rank the messages under the new positioning line so every page tells the same story.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=102-2",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Verbal",
+    "name": "Voice & tone guide",
+    "what": "How Aleph sounds, with examples, for people and for AI tools.",
+    "issue": "There isn't one. The site swings between technical manual, hype and sales push.",
+    "opportunity": "Start from the lines that already work, like \"Stop exporting CSVs into chat windows,\" and write the guide for people and AI tools.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=102-4",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Verbal",
+    "name": "Headlines",
+    "what": "Page, ad and email headlines, plus CTA labels like \"Book a demo.\"",
+    "issue": "The demo goes by six names, \"Discover Aleph today\" closes 11 pages, and two pages have no headline (F-020).",
+    "opportunity": "One name for the demo, and headlines that say what the customer gets.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Internal brand survey, Jul",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-95",
+    "findings": [
+     "F-020",
+     "F-029"
+    ]
+   },
+   {
+    "group": "Communication",
+    "sub": "Verbal",
+    "name": "Product / feature descriptions",
+    "what": "How features are named and described.",
+    "issue": "One agent has three names (Aleph Agent, Aleph MCP, Aleph Agent MCP), and feature copy reads like a technical manual.",
+    "opportunity": "Name features by the job they do, and settle the agent's name before launch.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Internal brand survey, Jul",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-113",
+    "findings": []
+   },
+   {
+    "group": "Communication",
+    "sub": "Verbal",
+    "name": "Marketplace listing copy",
+    "what": "Name, description and screenshots in app stores: Microsoft AppSource, Google Workspace, Slack, ChatGPT and Claude.",
+    "issue": "Boilerplate, and it disagrees with the site: 150+ vs 200+ integrations, setup in minutes vs days (F-030).",
+    "opportunity": "Rewrite listings as a first impression, with product screenshots like Hex's.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     },
+     {
+      "label": "Jon, identity usage pass, Sep 13",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-98",
+    "findings": [
+     "F-030"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "Sign-in (Auth0)",
+    "what": "The login page at app.getaleph.com.",
+    "issue": "A stock Auth0 page with a blue button the site doesn't use and no sign-up link (F-026).",
+    "opportunity": "Brand it with the new identity. Every customer passes through it every day.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, conversion flow pass, Sep 11",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-247",
+    "findings": [
+     "F-026"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "Product onboarding",
+    "what": "What a new user sees their first time in the app.",
+    "issue": "No first-run. You land in the app and a CSM does the teaching (F-027).",
+    "opportunity": "A light first-run, even just Reid's demo video, plus Claude-style inline notes in the MCP.",
+    "sow": "No",
+    "priority": "P3",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "CX (CSM-led today)",
+    "sources": [
+     {
+      "label": "Jon, conversion flow pass, Sep 11",
+      "kind": "jon"
+     },
+     {
+      "label": "Daniel, Sep 11",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-882",
+    "findings": [
+     "F-026",
+     "F-027"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "MCP (incl. preview screenshots)",
+    "what": "How Aleph looks inside Claude, ChatGPT and Cursor, and the screenshots that show it on the site, in directories and in ads.",
+    "issue": "The preview screenshots are the first thing a Claude or ChatGPT user sees of us, and they're generic and low-res.",
+    "opportunity": "Branded, legible previews that double as proof of the data-viz system, rendered to work in any AI app.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Daniel, Aug 28",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-886",
+    "findings": [
+     "F-014"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "The Agent",
+    "what": "The agent inside the web app: name, icon, color, working states and how it writes.",
+    "issue": "Chat sits low on the page and is easy to miss, and purple marks what the agent does (F-028).",
+    "opportunity": "A thinking and acting state, and a color that marks what the agent changed.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "RA kickoff, Aug 26",
+      "kind": "meeting"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-883",
+    "findings": [
+     "F-028"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "Slack agent",
+    "what": "The Aleph app in Slack: icon, name, bot avatar, and how answers and alerts look.",
+    "issue": "I haven't reviewed it in depth yet.",
+    "opportunity": "Budget owners meet Aleph here, so the icon, name and answer format carry the brand for most users.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "RA kickoff, Aug 26",
+      "kind": "meeting"
+     },
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-88",
+    "findings": []
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "Excel add-in",
+    "what": "The Aleph sidebar and ribbon inside Excel, plus its AppSource listing.",
+    "issue": "The icon ships in an unofficial blue on Microsoft Marketplace (F-030).",
+    "opportunity": "New app icon and listing with the rebrand.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-88",
+    "findings": [
+     "F-030"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "ChatGPT / Claude / Cursor extensions",
+    "what": "Aleph's entry in each AI tool's app directory: icon, name, description, gallery.",
+    "issue": "Our directory entries are text only. Hex's show the product.",
+    "opportunity": "Screenshots and one consistent icon on every listing.",
+    "sow": "Partial",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler (icons)",
+    "sources": [
+     {
+      "label": "#brand-design, Albert, Aug 27",
+      "kind": "slack"
+     },
+     {
+      "label": "Daniel, Sep 3",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-88",
+    "findings": []
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "In-product data viz",
+    "what": "Charts, tables and KPI cards in the app and dashboards.",
+    "issue": "Inter and a SaaS-kit feel. Past the logo, very little says Aleph (v2 is coming, so I hold this lightly).",
+    "opportunity": "Carry the new data-viz system into dashboards when v2 ships.",
+    "sow": "Partial",
+    "priority": "P3",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-883",
+    "findings": []
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "getaleph.com homepage",
+    "what": "The front door at getaleph.com.",
+    "issue": "The headline is close to Drivetrain's, and on a phone the page takes about 32 seconds to show content (F-029, F-001).",
+    "opportunity": "The first page Red Antler concepts. Set a performance budget alongside it.",
+    "sow": "Partial",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler (concept)",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     },
+     {
+      "label": "#brand-revamp, Daniel, Jun 24",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-114",
+    "findings": [
+     "F-001",
+     "F-007",
+     "F-022",
+     "F-029"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Platform / product pages",
+    "what": "The Platform pages: add-ins, dashboards, security and the AI pages.",
+    "issue": "AI gets its own menu column and its own purple, and seven AI pages describe one agent (F-028).",
+    "opportunity": "Organize around how the product works: connect, govern, then work anywhere.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "#brand-revamp, Daniel, Jun 24",
+      "kind": "slack"
+     },
+     {
+      "label": "Internal brand survey, Jul",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-113",
+    "findings": [
+     "F-028"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Solutions pages",
+    "what": "The job and buyer pages: budgeting, PE, VC, fractional CFOs and the rest.",
+    "issue": "Nearly the same template with the headline swapped. One respondent said the PE page could be a different company from the Agent page.",
+    "opportunity": "Rebuild as use cases that show what the agent does and how you check it, modeled on Agentic Budgeting.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Internal brand survey, Jul",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-113",
+    "findings": []
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Pricing",
+    "what": "A pricing page on the site.",
+    "issue": "No page. /pricing returns a 404.",
+    "opportunity": "Decide whether to show pricing at all. Buyers on Reddit already quote $40-50K a year (F-010).",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, standard surface checklist",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Card only",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=103-147",
+    "findings": [
+     "F-010"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Docs",
+    "what": "Help docs at docs.getaleph.com.",
+    "issue": "Behind the product login, with recorded walkthroughs that are hard to follow.",
+    "opportunity": "Make docs public and pair them with a video guide channel.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Daniel, Sep 11",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-885",
+    "findings": [
+     "F-005",
+     "F-013"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Blog",
+    "what": "Posts and their hero images.",
+    "issue": "Deep technical topics perform, and every post uses the same template.",
+    "opportunity": "Treat each piece like a magazine cover: fresh, with through-lines.",
+    "sow": "Partial",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler (hero images)",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-113",
+    "findings": [
+     "F-005",
+     "F-013"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Changelog",
+    "what": "The running list of product updates.",
+    "issue": "Behind login today.",
+    "opportunity": "Make it public and a little fun, like Figma's, with a Short for each release.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Adam",
+    "sources": [
+     {
+      "label": "Daniel, Sep 11",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-885",
+    "findings": []
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Careers",
+    "what": "The careers page and job posts.",
+    "issue": "I haven't reviewed it in depth yet.",
+    "opportunity": "Carry the new voice and photography here after launch.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, standard surface checklist",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-145",
+    "findings": []
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Footer / IA",
+    "what": "The site's nav, footer and page structure.",
+    "issue": "37 pages in seven groups, with AI split out from the core platform (F-028).",
+    "opportunity": "A simpler nav that follows the product, planned together with the aleph.ai redirects.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Internal brand survey, Jul",
+      "kind": "doc"
+     },
+     {
+      "label": "Jon, Figma audit page, Sep 13",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=104-97",
+    "findings": [
+     "F-028"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "aleph.ai domain switch",
+    "what": "Moving the site from getaleph.com to aleph.ai, which Aleph already owns.",
+    "issue": "\"Aleph\" is hard to own. We rank third for our own name (F-002).",
+    "opportunity": "Pair the switch with name ownability work and one redirect map.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "RA kickoff, Aug 26",
+      "kind": "meeting"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-1742",
+    "findings": [
+     "F-002"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Paid ads (current)",
+    "what": "LinkedIn and Meta ads running now.",
+    "issue": "Creative reads junior and feature-heavy, and competitors outspend us roughly 50x.",
+    "opportunity": "Raise the craft before raising spend, with templates and prompts so the team can iterate on its own.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Miles",
+    "sources": [
+     {
+      "label": "Ads kickoff with Daniel, Jul 30",
+      "kind": "meeting"
+     },
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2214",
+    "findings": [
+     "F-003",
+     "F-004"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Paid ads (historical explorations)",
+    "what": "Past ad concepts in Figma.",
+    "issue": null,
+    "opportunity": "Reference for new ad territories.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Ads kickoff with Daniel, Jul 30",
+      "kind": "meeting"
+     }
+    ],
+    "inFigma": "No",
+    "figmaUrl": null,
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Organic social",
+    "what": "Aleph's LinkedIn, X, Instagram and YouTube profiles and posts.",
+    "issue": "The channels post, and nothing ties the posts together. Almost all talk about us comes from us (F-011).",
+    "opportunity": "One throughline across posts, with customers and the CX team in the feed.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Ads kickoff with Daniel, Jul 30",
+      "kind": "meeting"
+     },
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2221",
+    "findings": [
+     "F-011"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Content / ebooks / lead magnets",
+    "what": "Ebooks and guides, gated behind an email form.",
+    "issue": "Deep topics resonate, and every cover looks like the same template.",
+    "opportunity": "Covers that feel like magazine covers, fresh each time with shared through-lines.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Theresa (covers)",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     },
+     {
+      "label": "RA kickoff, Aug 26",
+      "kind": "meeting"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2230",
+    "findings": [
+     "F-018"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Webinars",
+    "what": "Live and recorded sessions, often with a partner.",
+    "issue": "Recordings are scattered, and the site has no webinars page.",
+    "opportunity": "A webinars page, and a motion kit for lower thirds and bumpers.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "#brand-revamp, Daniel, Jun 24",
+      "kind": "slack"
+     },
+     {
+      "label": "RA kickoff, Aug 26",
+      "kind": "meeting"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=96-47",
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Email",
+    "what": "Marketing email in HubSpot: newsletters and launch emails.",
+    "issue": "I haven't seen what arrives after a form submit yet.",
+    "opportunity": "Rebrand the templates with the launch, and plan the drip alongside them (F-027).",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Jack (HubSpot)",
+    "sources": [
+     {
+      "label": "Daniel, Sep 1",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-881",
+    "findings": [
+     "F-007",
+     "F-027"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Zoom waiting-room loop",
+    "what": "The animation prospects see while waiting for a sales call.",
+    "issue": "Doesn't exist yet.",
+    "opportunity": "A short branded loop built from the motion kit.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Red Antler",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "Card only",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2312",
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Launch announcements",
+    "what": "Posts, videos and GIFs for each launch.",
+    "issue": "Good moments, like the Series B and Agentic Budgeting, with no throughline between them.",
+    "opportunity": "A launch template: post, video and GIF that share one system.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "#agentic-budgeting, Daniel, Aug 30",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-267",
+    "findings": [
+     "F-015"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Sales deck (12-slide)",
+    "what": "The 12-slide deck sales uses in demos.",
+    "issue": "I don't have access yet.",
+    "opportunity": "WildFruit's redesign, built on the new system.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "WildFruit",
+    "sources": [
+     {
+      "label": "RA brief, Aug 3",
+      "kind": "doc"
+     }
+    ],
+    "inFigma": "No",
+    "figmaUrl": null,
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Investor deck",
+    "what": "The fundraising and board deck.",
+    "issue": "I don't have access yet.",
+    "opportunity": "Follow the sales deck system after launch.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, standard surface checklist",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "No",
+    "figmaUrl": null,
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "One-pagers / case studies",
+    "what": "Leave-behinds and customer stories for sales.",
+    "issue": "Four case study pages on the site. I haven't reviewed them in depth yet.",
+    "opportunity": "Customers are our best proof. Put them next to the trust message (F-008).",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "#brand-revamp, Daniel, Jun 24",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-270",
+    "findings": [
+     "F-008"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Knowledge base",
+    "what": "Where customers learn and get help: docs, how-tos and videos.",
+    "issue": "Docs, how-tos and videos are scattered, and the videos are hard to follow.",
+    "opportunity": "One place to learn, with a friendly video guide channel.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Daniel, Sep 11",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-885",
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Onboarding drip campaign",
+    "what": "Automated emails that teach new users after they sign.",
+    "issue": "Doesn't exist. Onboarding is all CSM (F-027).",
+    "opportunity": "A lifecycle sequence we get to design from scratch.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Daniel, Sep 11",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-882",
+    "findings": [
+     "F-027"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Forms (demo, trial, contact)",
+    "what": "The HubSpot forms behind every CTA.",
+    "issue": "HubSpot styling, a trial that routes to a person, and a contact form that asks the most (F-017, F-025).",
+    "opportunity": "One form style and voice from the ad to the booked meeting.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Jack (HubSpot, Default)",
+    "sources": [
+     {
+      "label": "Jon, conversion flow pass, Sep 11",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-209",
+    "findings": [
+     "F-017",
+     "F-021",
+     "F-025"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Scheduler and routing (Default)",
+    "what": "Default.com, the step after the demo form: it qualifies the lead, shows a calendar and assigns a salesperson.",
+    "issue": "Not observed yet. Phase 2 of the flow map waits on a test path from Jack.",
+    "opportunity": "Brand the booking screen and the confirmation.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Jack",
+    "sources": [
+     {
+      "label": "Jon, conversion flow pass, Sep 11",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "No",
+    "figmaUrl": null,
+    "findings": [
+     "F-021"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "PowerPoint add-in",
+    "what": "\"Aleph for PowerPoint,\" which syncs live charts into slides.",
+    "issue": "Blue icon on Microsoft Marketplace, and it's missing from Red Antler's app icon list (F-030).",
+    "opportunity": "Add it to the icon set.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Weak",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, identity usage pass, Sep 13",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-88",
+    "findings": [
+     "F-030"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Search presence (branded, organic, paid, AI answers)",
+    "what": "How Aleph shows up in Google results, ads and AI answers for its name and category.",
+    "issue": "Nobody defends our brand term. OneStream bids on \"aleph fp&a\" (F-004).",
+    "opportunity": "Buy our brand terms now, and keep the /answers engine running (F-005).",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, tech and search pass, Sep 10",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-1031",
+    "findings": [
+     "F-004",
+     "F-005"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Answer pages (/answers)",
+    "what": "SEO pages that each answer one FP&A question.",
+    "issue": "They rank well, and they read as written for search engines. None carries a point of view a person would repeat (F-005, F-013).",
+    "opportunity": "Keep the engine and give it a voice.",
+    "sow": "Partial",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, tech and search pass, Sep 10",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2271",
+    "findings": [
+     "F-005",
+     "F-013"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Integrations directory",
+    "what": "The /integrations page listing every connector.",
+    "issue": "The count differs across surfaces (150+ vs 200+), and integration pages still link to /demo-old (F-021).",
+    "opportunity": "One number, and a directory that reads as the \"connect\" part of the product story.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, Figma audit page, Sep 13",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-138",
+    "findings": [
+     "F-021"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Interactive tools (FP&A fitness test, AI spend calculator)",
+    "what": "The fitness quiz (a Replit app) and the AI spend calculator.",
+    "issue": "The fitness test asks for contact details before its first question, and the calculator speaks to engineers (F-018).",
+    "opportunity": "Give value before the gate, and move the calculator out of the finance buyer's path.",
+    "sow": "Yes",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, conversion flow pass, Sep 11",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-113",
+    "findings": [
+     "F-018"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Mobile web",
+    "what": "The site on a phone.",
+    "issue": "About 32 seconds to show the main content and 8.6 MB (F-001, one local test).",
+    "opportunity": "A performance budget before the rebrand adds motion.",
+    "sow": "Partial",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, tech and search pass, Sep 10",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-248",
+    "findings": [
+     "F-001"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "Web",
+    "name": "Site pop-ups (HubSpot top banner, exit modal)",
+    "what": "HubSpot's top banner and the exit-intent modal.",
+    "issue": "The exit modal offers 15 minutes and opens a page asking for 30 (F-020).",
+    "opportunity": "Match the offer, and style the banner and modal as part of the brand.",
+    "sow": "No",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "Jack (HubSpot)",
+    "sources": [
+     {
+      "label": "Jon, conversion flow pass, Sep 11",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-210",
+    "findings": [
+     "F-020"
+    ]
+   },
+   {
+    "group": "Product",
+    "sub": "App",
+    "name": "Empty and loading states",
+    "what": "What the app shows before there's data, or while the agent works.",
+    "issue": "A logo spinner on load, and little else.",
+    "opportunity": "Animated blank and loading states, and a thinking state for the agent.",
+    "sow": "No",
+    "priority": "P3",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "#agentic-budgeting, Daniel, Aug 18",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-883",
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Podcast (10X Finance)",
+    "what": "The 10X Finance podcast.",
+    "issue": "Hard to find on the site.",
+    "opportunity": "Surface it, with episode art and clips.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, Figma audit page, Sep 13",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=96-78",
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "Video (YouTube, launch and demo videos)",
+    "what": "The YouTube channel, and launch and demo videos.",
+    "issue": "Voiceovers are hard to follow, and lower thirds and thumbnails need work.",
+    "opportunity": "A motion kit (bumpers, lower thirds), more Shorts, and a guide channel like Framer's.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Daniel, Sep 11",
+      "kind": "slack"
+     },
+     {
+      "label": "Daniel, Sep 3",
+      "kind": "slack"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-1600",
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Reviews and badges (G2)",
+    "what": "G2 reviews and badges, and how we show them on the site and in ads.",
+    "issue": "We lean hard on G2 badges, and I don't know yet whether buyers give them weight.",
+    "opportunity": "Test whether badges move anyone, and lead with customer words (F-008).",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, culture pass, Sep 11",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-884",
+    "findings": [
+     "F-008"
+    ]
+   },
+   {
+    "group": "Marketing",
+    "sub": "Sales",
+    "name": "Deck system (webinars, walkthroughs, internal)",
+    "what": "Every other deck we present: webinars, walkthroughs, internal meetings, CSM calls.",
+    "issue": "Plain and static, and it shows up everywhere: video walkthroughs, webinars, the sales and investor decks, internal meetings and likely CSM calls.",
+    "opportunity": "A deck system that carries the brand. WildFruit is helping on the sales deck; the rest is ours.",
+    "sow": "Partial",
+    "priority": "P1",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": "WildFruit (sales deck only)",
+    "sources": [
+     {
+      "label": "Jon, audit areas notes, Sep 13",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Yes",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-12",
+    "findings": []
+   },
+   {
+    "group": "Marketing",
+    "sub": "Growth",
+    "name": "YouTube thumbnails",
+    "what": "Thumbnails for the @get-aleph channel.",
+    "issue": "No thumbnail system today.",
+    "opportunity": "Lots of opportunity to create or at least test different layouts.",
+    "sow": "No",
+    "priority": "P2",
+    "state": "Mixed",
+    "pov": "N",
+    "craft": "Low",
+    "owner": null,
+    "sources": [
+     {
+      "label": "Jon, audit areas notes, Sep 13",
+      "kind": "jon"
+     }
+    ],
+    "inFigma": "Partial",
+    "figmaUrl": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2221",
+    "findings": []
+   }
+  ]
+ },
+ "findings": [
+  {
+   "id": "F-001",
+   "slug": "f-001",
+   "claim": "The mobile homepage is slow",
+   "bucket": "Product",
+   "surface": "getaleph.com homepage",
+   "evidence": "Lighthouse mobile performance score 26. Largest contentful paint 32.2 s (Google's \"good\" threshold is 2.5 s), 2.57 s of blocking time, 8.6 MB page weight. The weight comes from GSAP + ScrollTrigger, Lottie, the Wistia player, Intellimize and the GTM ad stack.",
+   "confidence": "directional (one local Lighthouse run; confirm with PageSpeed Insights + API key)",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "Tech and search notes, Sep 10",
+    "Figma, tech stack"
+   ],
+   "links": [
+    {
+     "label": "PageSpeed Insights (runs a fresh test)",
+     "url": "https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwww.getaleph.com"
+    }
+   ],
+   "figma": {
+    "label": "Other Alephs (Competition: Aleph(s))",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-1742"
+   },
+   "date": "2026-09-10",
+   "images": []
+  },
+  {
+   "id": "F-002",
+   "slug": "f-002",
+   "claim": "\"Aleph\" isn't ownable in search",
+   "bucket": "Competition",
+   "surface": "aleph.ai domain switch, positioning line",
+   "evidence": "getaleph.com ranks 3rd for a plain \"aleph\" search, behind Google's AI answer and Wikipedia's Hebrew letter entry; aleph.org and Aleph Pro (OCCRP) share page one. Similarweb lists \"aleph\" as a top keyword for aleph.vc, aleph.org, alephdigital.com, alephbookcompany.com and aleph-usa.com. Aleph Alpha (German LLM company, merging with Cohere) is the closest collision in AI. People who know the product search \"aleph fp&a\" or \"getaleph.\" Aleph already owns aleph.ai (registered 2022); it 301-redirects to www.getaleph.com today, so the switch is a redirect flip plus SEO migration. Same on X (added Sep 11): an \"aleph finance\" search surfaces Aleph V (Israeli VC fund) and Aleph Alpha ahead of or next to us; on Instagram, \"Aleph\" belongs to a K-pop studio, a Brazilian publisher, a beauty brand and an Indian book publisher.",
+   "confidence": "hard data (live Google results, logged out, Portland, Sep 10)",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Google results, Sep 10",
+    "Tech and search notes, Sep 10",
+    "Domain lookup"
+   ],
+   "links": [
+    {
+     "label": "Google: \"aleph\" (varies by location)",
+     "url": "https://www.google.com/search?q=aleph"
+    }
+   ],
+   "figma": {
+    "label": "Branded search SERPs",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-1366"
+   },
+   "date": "2026-09-10",
+   "images": [
+    "serp-brand"
+   ]
+  },
+  {
+   "id": "F-003",
+   "slug": "f-003",
+   "claim": "Marketing is all digital",
+   "bucket": "Marketing",
+   "surface": "Paid ads (current)",
+   "evidence": "GTM carries Google Ads, Google Floodlight, LinkedIn Insight, Microsoft Advertising, Reddit and X pixels, plus Vector (account ID), Default (lead routing) and HubSpot. No sign yet of events, OOH, podcasts, print or other off-screen channels. (Sep 11: a fractional CFO's LinkedIn post lists Aleph among vendors at FATE 2026, Javits NYC, Nov 18-19, but Aleph isn't among the logos on FATE's expo page. Unconfirmed; ask Tsering.)",
+   "confidence": "tag stack is hard data; \"nothing off-screen\" is directional until confirmed with Tsering",
+   "levels": [
+    "hard",
+    "directional"
+   ],
+   "sources": [
+    "Tag manager container",
+    "Site source and CSS",
+    "LinkedIn, X and web search"
+   ],
+   "links": [],
+   "figma": {
+    "label": "Tech stack",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-1032"
+   },
+   "date": "2026-09-10",
+   "images": []
+  },
+  {
+   "id": "F-004",
+   "slug": "f-004",
+   "claim": "No paid defense of the brand or the category",
+   "bucket": "Marketing",
+   "surface": "Paid ads (current)",
+   "evidence": "Paid is 0.38% of keyword traffic (Similarweb). No Aleph ad appeared on any of the queries tested. OneStream bids on \"aleph fp&a\" (our brand term) and Sage takes the bottom slot. On \"fp&a software\": Vena, Pigment, Fynapse, Prophix. On \"ai fp&a software\" across two runs: Vena, Prophix, Rillet, OneStream, Datarails, Karbon. Most of the ad copy is a variation on \"AI-powered FP&A platform.\"",
+   "confidence": "hard data (Sep 10 searches); ad rotation varies run to run",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Google results, Sep 10"
+   ],
+   "links": [
+    {
+     "label": "Google: \"aleph fp&a\"",
+     "url": "https://www.google.com/search?q=aleph+fp%26a"
+    }
+   ],
+   "figma": {
+    "label": "Paid search SERPs",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-1373"
+   },
+   "date": "2026-09-10",
+   "images": []
+  },
+  {
+   "id": "F-005",
+   "slug": "f-005",
+   "claim": "Organic and AI search is a strength",
+   "bucket": "Product",
+   "surface": "Blog, Docs (plus /answers)",
+   "evidence": "#1 organic result for \"ai fp&a software\" and cited in Google's AI Overview; #4 for \"fp&a software\" (behind CFI, Reddit, Gartner). Sitemap has 300 URLs including 83 /answers pages and 67 blog posts. The domain is verified with OpenAI and Anthropic.",
+   "confidence": "hard data",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Google results, Sep 10",
+    "Sitemap"
+   ],
+   "links": [
+    {
+     "label": "Google: \"ai fp&a software\"",
+     "url": "https://www.google.com/search?q=ai+fp%26a+software"
+    }
+   ],
+   "figma": {
+    "label": "Organic search SERPs",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-1370"
+   },
+   "date": "2026-09-10",
+   "images": [
+    "serp-ai"
+   ]
+  },
+  {
+   "id": "F-006",
+   "slug": "f-006",
+   "claim": "The site isn't doing discovery on its own",
+   "bucket": "Marketing",
+   "surface": "(site traffic overall)",
+   "evidence": "52.6K visits over Jun to Aug (about 17K a month), down 9.2% in August. Direct is the top source at 32.4% of desktop visits, then organic search, then organic social. Bounce 47.6%, 2.04 pages per visit, 47 s average visit. 121 keywords send traffic, 99.6% organic, and the top five are all branded.",
+   "confidence": "directional (Similarweb free estimates; the \"direct is mostly logins\" read is a hunch)",
+   "levels": [
+    "directional",
+    "hunch"
+   ],
+   "sources": [
+    "Similarweb"
+   ],
+   "links": [
+    {
+     "label": "Similarweb: getaleph.com",
+     "url": "https://www.similarweb.com/website/getaleph.com/"
+    }
+   ],
+   "figma": {
+    "label": "Similarweb channels",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-1362"
+   },
+   "date": "2026-09-10",
+   "images": [
+    "sw-channels"
+   ]
+  },
+  {
+   "id": "F-007",
+   "slug": "f-007",
+   "claim": "The rebrand touches a wide marketing tech surface",
+   "bucket": "Product",
+   "surface": "getaleph.com, Email, Motion",
+   "evidence": "Marketing site is Webflow with GSAP 3.15, Lottie, Wistia, Intellimize (Webflow Optimize), G2 review widgets and HubSpot email. The product app is a separate stack (Netlify, Auth0, Segment, LogRocket, Datadog, Liveblocks, Merge). A new identity needs a pass on templates, motion assets, the video player and email templates, most of which sits outside Red Antler's SOW.",
+   "confidence": "hard data",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Figma, tech stack"
+   ],
+   "links": [],
+   "figma": {
+    "label": "Tech stack",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=59-1032"
+   },
+   "date": "2026-09-10",
+   "images": []
+  },
+  {
+   "id": "F-008",
+   "slug": "f-008",
+   "claim": "Customers praise speed, Excel and the CX team, not the brand or the AI",
+   "bucket": "Culture",
+   "surface": "(customer voice: G2, Reddit)",
+   "evidence": "G2: 4.9/5 from 108 reviews. In the 10 most recent (Apr to Jul 2026) every reviewer credits live data inside Excel or Sheets, most mention implementation in weeks, and several name their CX contact (Michael, Henry, monthly check-ins). Only 1 of 10 leads with AI (querying Aleph through Claude via the MCP, \"a meaningful part of why I renewed\"). None mention the brand or \"agentic.\" Reddit says the same: \"speed of integration and cost makes it a no brainer over Vena,\" \"practically immediate time to value,\" \"used it for over 3 years now and it's been awesome.\"",
+   "confidence": "directional (10 of 108 G2 reviews before G2 blocked the browser; ~30 Reddit comments)",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "G2 reviews",
+    "Reddit, Aleph mentions"
+   ],
+   "links": [
+    {
+     "label": "G2 reviews",
+     "url": "https://www.g2.com/products/getaleph/reviews"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-009",
+   "slug": "f-009",
+   "claim": "\"Customers bring us to their next job\" has no public proof yet",
+   "bucket": "Culture",
+   "surface": "(brand survey claim)",
+   "evidence": "The claim comes from the internal brand survey (\"they also routinely bring Aleph with them whenever they switch jobs\"). I searched G2, Reddit, LinkedIn and X for it. The closest is a Reddit user who \"just implemented Aleph at my new job,\" but they had Abacum at the old one. No review or post shows a customer carrying Aleph from one company to the next.",
+   "confidence": "hunch until confirmed. CX or HubSpot data (customer contacts whose email domain changed and who signed a new account) would prove it and is worth a lot as a story.",
+   "levels": [
+    "hunch"
+   ],
+   "sources": [
+    "Internal brand survey",
+    "G2, Reddit, LinkedIn and X search"
+   ],
+   "links": [
+    {
+     "label": "Reddit: the closest example",
+     "url": "https://www.reddit.com/r/FPandA/comments/1vuvdl5/abacum_aleph/p5g7ta9/"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-010",
+   "slug": "f-010",
+   "claim": "Buyers shortlist us, and the knocks are maturity and category",
+   "bucket": "Competition",
+   "surface": "(buyer perception)",
+   "evidence": "Aleph appears in about 19 r/FPandA buying threads next to Cube, Abacum, Datarails, Vena and Pigment. The negatives are consistent: \"not really proven out at the Enterprise level,\" a demo that \"showed the same example three times\" and errored on a new drill-down, \"some tech debt to work through,\" \"this is not an FP&A platform, but like the flexibility,\" and quoted pricing of $40-50K a year plus setup. One r/CFO reply: \"Not Aleph. Not anaplan.\"",
+   "confidence": "directional (public comments, 2024 to 2026, some predate recent product work)",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "Reddit, Aleph mentions"
+   ],
+   "links": [
+    {
+     "label": "Reddit: \"not proven at the enterprise level\"",
+     "url": "https://www.reddit.com/r/FPandA/comments/1k1wrmk/anyone_using_aleph_for_planning/mnr5ltq/"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-011",
+   "slug": "f-011",
+   "claim": "Almost all social talk about Aleph is from Aleph",
+   "bucket": "Marketing",
+   "surface": "Organic social",
+   "evidence": "A LinkedIn search for \"getaleph\" returns three Series B congrats posts from 11 months ago. Recent \"Aleph FP&A\" posts are new-hire welcomes, Albert's Agentic Budgeting launch (17 reactions at capture) and employee reshares. X is investor and YC posts (the most-viewed is YC's Series B post, ~14K views); @getaleph has ~631 followers. No unprompted customer posts turned up on either. The site footer links X, LinkedIn and YouTube, and no Instagram account turned up in search. Third parties do list us: two FP&A landscape posts put Aleph first under FP&A software.",
+   "confidence": "directional (logged-in searches, one pass)",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "LinkedIn, X and web search"
+   ],
+   "links": [
+    {
+     "label": "X: YC Series B post",
+     "url": "https://x.com/ycombinator/status/1968359300537221338"
+    }
+   ],
+   "figma": {
+    "label": "LinkedIn profile capture",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-203"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "linkedin"
+   ]
+  },
+  {
+   "id": "F-012",
+   "slug": "f-012",
+   "claim": "Rillet owns the loud story in AI finance; Concourse is quiet; Runway just became cfo.ai",
+   "bucket": "Competition",
+   "surface": "(Competition tab: Rillet, Concourse, Runway)",
+   "evidence": "Rillet: $1B valuation \"in 48 hours\" (top X post ~270K views), polarizing on r/Accounting (\"worst software I have ever used\" vs. \"cut our close time literally in half\"), and its ads are drawing backlash (\"displaced BILL as the biggest nuisance in my feed\"). It runs a \"close club\" Slack community. Concourse: $12M Series A (a16z, YC); one Reddit user found it \"extremely frustrating\" and hard to trust with NetSuite data; buyers \"can't find much about them.\" Runway rebranded to cfo.ai on Sep 10, 2026 as an always-on AI CFO for founders (\"A chatbot waits for you to ask it something\"). One G2 reviewer flags gaps in Aleph's Rillet integration.",
+   "confidence": "directional",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "Reddit, Aleph mentions",
+    "LinkedIn, X and web search"
+   ],
+   "links": [
+    {
+     "label": "Reddit: Rillet ad backlash",
+     "url": "https://www.reddit.com/r/Accounting/comments/1w7zsn9/rillet_and_campfire_ads/"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-013",
+   "slug": "f-013",
+   "claim": "Aleph's own pages rank for \"AI FP&A\"; independent lists mostly leave us out",
+   "bucket": "Product",
+   "surface": "Blog, Docs (plus /answers)",
+   "evidence": "Web searches for \"best AI FP&A tools 2026\" return Aleph's /answers pages first, which list Aleph first. Third-party roundups (OneStream, Planful, Abacum, DataSnipper, Limelight) mostly don't include Aleph. A broad \"AI for finance\" search returns SAP, Anaplan, BlackLine and banking AI, with no Aleph and no FP&A startups. Builds on F-005: we own the phrase where we wrote the page, and not yet where others write about the category.",
+   "confidence": "directional (web search index, one pass)",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "LinkedIn, X and web search"
+   ],
+   "links": [
+    {
+     "label": "Our /answers page that ranks",
+     "url": "https://www.getaleph.com/answers/best-ai-fpa-tools"
+    },
+    {
+     "label": "planful.com",
+     "url": "https://planful.com/your-ultimate-guide-to-the-best-ai-tools-for-fpa-in-2026/"
+    },
+    {
+     "label": "x.com",
+     "url": "https://x.com/BojanRadojici10/status/2017145765098115562"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-014",
+   "slug": "f-014",
+   "claim": "Finance people trust Claude more each month; they don't trust the data under it",
+   "bucket": "Culture",
+   "surface": "MCP (incl. preview screenshots)",
+   "evidence": "In 2026 Claude is the AI tool r/FPandA talks about most (\"First time I've seen real value in an AI tool,\" 80 upvotes; \"Claude is the first that's widely and easily useful\"). Where it breaks is always the same: auditing output (\"like inheriting a file from someone else\"), wrong inputs producing polished wrong models, invented facts, security approval, and \"it's only as good as your data pipelines\" (reply to today's ChatGPT for Financial Services launch). LinkedIn says the same: AFP's Bryan Lapidus (\"An AI-generated forecast that everyone trusts is dangerous\"), a Vena partner (\"AI can guess. Finance still has to sign its name to the number\"), and Ben Murray showing an MCP on a \"deterministic\" metrics engine (92 reactions). Survey data: 14% of CFOs fully trust AI accounting data on its own, 86% have hit hallucinated data (Wakefield, Jan 2026).",
+   "confidence": "directional (top threads and posts, one pass) plus hard survey numbers",
+   "levels": [
+    "directional",
+    "hard"
+   ],
+   "sources": [
+    "Reddit, AI threads",
+    "LinkedIn, X and web search"
+   ],
+   "links": [
+    {
+     "label": "Reddit: ChatGPT for Financial Services thread",
+     "url": "https://www.reddit.com/r/FPandA/comments/1wdjf63/openai_launches_chatgpt_for_financial_services/"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-015",
+   "slug": "f-015",
+   "claim": "\"Agentic\" reads as vendor-speak to practitioners",
+   "bucket": "Culture",
+   "surface": "Launch announcements, Budgeting campaign",
+   "evidence": "Top r/FPandA threads on agents are skeptical: \"Does anyone else's boss have terminal AI brain?\" (120 upvotes; \"so obviously a bubble\"), \"Success story for using AI/agent?\" (top reply: \"Nope but our executives will still pretend we're an 'AI first' company\"), Planful's agents called \"just a natural language query.\" Real use is narrow: reading contracts, querying NetSuite, pre-close reviews. One commenter says AI won't replace analysts \"until there is a platform for specific verticals (accounting, FP&A).\" Market data: 68% of finance teams use AI and 39% of CFOs are comfortable letting it act alone; Gartner calls most \"agentic\" vendors agent washing. Albert's launch post had 17 reactions at capture.",
+   "confidence": "directional",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "Reddit, AI threads",
+    "LinkedIn, X and web search"
+   ],
+   "links": [
+    {
+     "label": "Reddit: \"terminal AI brain\"",
+     "url": "https://www.reddit.com/r/FPandA/comments/1srbql7/does_anyone_elses_boss_have_terminal_ai_brain/"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-016",
+   "slug": "f-016",
+   "claim": "The competitors we name aren't the ones buyers name",
+   "bucket": "Competition",
+   "surface": "(Competition tab)",
+   "evidence": "At the Red Antler kickoff Reid said Aleph has \"very high win rates against all of our competitors\" and that none has shipped AI customers use, but he never named them. Slack and meeting notes name the incumbents (Anaplan, Adaptive), the emerging worry (Concourse), a messaging reference that \"doesn't show up in deals\" (Runway), close-management overlap (Nominal, Numeric), an adjacent marketer (Sapien) and the brief's legacy pair. Buyers on r/FPandA shortlist Aleph against Cube, Abacum, Datarails, Vena and Pigment, and OneStream bids on \"aleph fp&a.\" The brief itself is inconsistent: the Craft version says \"Datarails and Qube,\" the Slack version says \"Qube and Planable.\" \"Qube\" may mean Cube and \"Planable\" may mean Planful.",
+   "confidence": "directional. Sales or CRM loss data would settle it; my RA kickoff notes already had the question \"when a customer picks a competitor, what do they say the reason was?\"",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "Red Antler kickoff notes, Aug 26",
+    "Ads kickoff notes, Jul 30",
+    "#brand-revamp",
+    "Reddit, Aleph mentions"
+   ],
+   "links": [],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-017",
+   "slug": "f-017",
+   "claim": "The trial promises self-serve, and everything around it routes to a person",
+   "bucket": "Marketing",
+   "surface": "Forms (demo, trial, contact)",
+   "evidence": "The trial page promises \"Start your free, full access trial today,\" \"Get up-and-running in minutes, not months like other solutions\" and \"Gain full access to all features.\" The trial form's configured thank-you message is word for word the demo form's: \"Your request has been received and someone will be in touch shortly.\" The form routes through Default (form 917575) like the demo does, its optional comments field is named `demo_request_comments`, and the Auth0 login has no sign-up option. Reid has said there's no self-serve motion. Five pages carry no trial CTA at all (Agentic Budgeting, about, careers, contact, Slack app).",
+   "confidence": "directional (page copy and live form config; one test submission would confirm what a buyer gets)",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "Conversion flow map",
+    "Form and page recon",
+    "Conversion captures"
+   ],
+   "links": [
+    {
+     "label": "getaleph.com/trial",
+     "url": "https://www.getaleph.com/trial"
+    }
+   ],
+   "figma": {
+    "label": "09-trial-landing",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-227"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "trial"
+   ]
+  },
+  {
+   "id": "F-018",
+   "slug": "f-018",
+   "claim": "The fitness test asks for contact details before it gives anything back",
+   "bucket": "Marketing",
+   "surface": "Content / ebooks / lead magnets (FP&A fitness test)",
+   "evidence": "The landing page promises a personalized archetype, peer benchmark and training plan \"all in 5 minutes\" and shows a sample result (94, Elite). After a six-question company profile, a gate asks for first name, last name, work email and job title (\"Get instant results with additional insights delivered to your inbox\") before the first of 25 questions. Results end with \"Talk to an FP&A expert about your results,\" linking to `/demo`. The test is linked only from the footer and its own page. The app logs sessions, gate completion and email domain, and passes the HubSpot cookie token. The AI spend calculator is the one ungated tool, and it speaks to engineering teams about model routing costs.",
+   "confidence": "hard data (walked to the gate; gate and results logic read from the app code)",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Fitness test app",
+    "Conversion captures",
+    "CTA inventory"
+   ],
+   "links": [
+    {
+     "label": "FP&A fitness test",
+     "url": "https://www.getaleph.com/apps/fpa-fitness-score"
+    }
+   ],
+   "figma": {
+    "label": "18-fitness-gate",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-245"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "flow-06"
+   ]
+  },
+  {
+   "id": "F-019",
+   "slug": "f-019",
+   "claim": "A buyer passes through seven visual systems before pressing submit",
+   "bucket": "Communication",
+   "surface": "(conversion flow, all paths)",
+   "evidence": "Before any submit: the Webflow site, HubSpot web interactives (top banner, exit modal), the `/demo` shell (no nav, its own footer), HubSpot embedded forms (used on demo, trial and contact), the Agentic Budgeting demo shell and custom form, the Replit fitness test app, and the stock Auth0 login (Aleph logo, a blue button the site doesn't use). Expected after submit and not yet seen: the Default scheduler, HubSpot email, the product and the sales deck. That's about five systems on the demo path and six or more on the trial path.",
+   "confidence": "hard data up to submit; the post-submit count is directional",
+   "levels": [
+    "hard",
+    "directional"
+   ],
+   "sources": [
+    "Conversion flow map",
+    "Figma, conversion captures"
+   ],
+   "links": [],
+   "figma": {
+    "label": "Conversion section, all captures",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-209"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "flow-01",
+    "flow-02",
+    "flow-03",
+    "flow-04",
+    "flow-05",
+    "flow-06",
+    "flow-07"
+   ]
+  },
+  {
+   "id": "F-020",
+   "slug": "f-020",
+   "claim": "The demo is described differently at each step",
+   "bucket": "Communication",
+   "surface": "Headlines (CTAs and conversion copy)",
+   "evidence": "Across 36 pages the demo CTA has six labels: \"Book a demo\" (109), \"Get a Demo\" (85), \"Get a demo\" (13), \"Schedule a personalized demo\" (4), \"Talk to an expert\" (2) and the modal's \"Talk to our experts,\" with \"Schedule Demo\" and \"Schedule demo\" on the buttons. The meeting is 15 minutes in the exit modal and 30 minutes on both demo pages (Jack moved intro calls to 30 minutes on Sep 8). The modal's \"Talk to our experts\" opens `/demo` (confirmed by Jon), so a buyer offered 15 minutes lands on a page asking for 30. The promised reply is \"shortly\" (demo and trial), \"within one business day\" (contact page, Agentic Budgeting demo) and \"1-2 business days\" (contact confirmation). The lead message changes at every step: \"AI-native FP&A\" (homepage), \"Run budgeting with agents\" (banner), \"the full upside of AI in FP&A\" (`/demo`), \"strategic FP&A platform\" (trial page title), a fitness metaphor (the test).",
+   "confidence": "hard data",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "CTA inventory",
+    "Form and page recon",
+    "Conversion captures",
+    "Jack, Slack, Sep 8"
+   ],
+   "links": [],
+   "figma": {
+    "label": "02-entry-exit-modal",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-213"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "flow-02"
+   ]
+  },
+  {
+   "id": "F-021",
+   "slug": "f-021",
+   "claim": "Demo is the site's main ask, and the path to it is short",
+   "bucket": "Marketing",
+   "surface": "Forms (demo, trial, contact); Scheduler and routing (Default)",
+   "evidence": "474 CTAs across the homepage and 35 nav and footer pages. In page bodies, 145 of 204 conversion CTAs are demo (71%), 45 trial and 11 contact. The nav carries only Sign In and Book a demo. `/demo` is one screen with three required fields, blocks free email domains, and Default opens a scheduler for qualified leads. Jack's Sep 8 tests on the Agentic Budgeting form: qualified submits booked, internal-team and client submits went through without a booking, an under-25 submission was handled separately, and a submission with no enrichment was sent to an extra form. Twenty integration-page links still point to `/demo-old`, which redirects to `/demo`.",
+   "confidence": "hard data for the CTAs and form; directional for routing (Jack's tests, not ours)",
+   "levels": [
+    "hard",
+    "directional"
+   ],
+   "sources": [
+    "CTA inventory",
+    "Conversion flow map",
+    "Jack, Slack, Sep 8"
+   ],
+   "links": [
+    {
+     "label": "getaleph.com/demo",
+     "url": "https://www.getaleph.com/demo"
+    }
+   ],
+   "figma": {
+    "label": "03-demo-landing",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-215"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "flow-03"
+   ]
+  },
+  {
+   "id": "F-022",
+   "slug": "f-022",
+   "claim": "Intellimize is live and changing nothing on the highest-intent pages",
+   "bucket": "Marketing",
+   "surface": "getaleph.com homepage (plus `/demo`, `/trial`)",
+   "evidence": "24 fresh loads of `/`, `/demo` and `/trial`: 12 where Intellimize classed the visitor as a robot and 12 as a normal Chrome browser, 4 of them with paid-social UTM tags. Intellimize assigned a policy every time (four rotating IDs) and returned an empty experience list every time. Headline, subhead, hero CTAs and layout were identical on every load.",
+   "confidence": "hard data for logged-out US visitors on Sep 11; other pages and segments untested. Miles would know whether tests are paused or scheduled.",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Form and page recon",
+    "Variant test log"
+   ],
+   "links": [],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-023",
+   "slug": "f-023",
+   "claim": "The newest demo page is the best version of the handoff",
+   "bucket": "Marketing",
+   "surface": "Budgeting campaign",
+   "evidence": "`/agentic-budgeting` and `/agentic-budgeting/demo` were designed by Daniel in Paper for the Sep 9 launch (Jon, Sep 11) and are served on Webflow Cloud. The demo page uses a custom form that posts to the same HubSpot form as `/demo`, with Default form 202925 wired up with Jack. It has a split layout, a headline specific to the offer (\"See agentic budgeting in action,\" \"while your team stays in control of the process\") and clear success copy (\"Pick a time in the scheduler, or watch your inbox\"). The HubSpot top banner on every other page (\"NEW. Run budgeting with agents. See it in action\") links to `/agentic-budgeting?hsCtaAttrib=221497955198` (confirmed by Jon).",
+   "confidence": "hard data",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Conversion captures",
+    "Slack, Sep 7 to 9"
+   ],
+   "links": [
+    {
+     "label": "Agentic Budgeting demo page",
+     "url": "https://www.getaleph.com/agentic-budgeting/demo"
+    }
+   ],
+   "figma": {
+    "label": "07-abdemo-landing",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-223"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "flow-05"
+   ]
+  },
+  {
+   "id": "F-024",
+   "slug": "f-024",
+   "claim": "The funnel is instrumented well enough for a before-and-after baseline",
+   "bucket": "Marketing",
+   "surface": "(conversion flow, measurement)",
+   "evidence": "HubSpot forms notify the owner on demo, trial and contact submits. Default routes each demo and trial page through its own form ID (607881, 202925, 917575). Demo and trial carry a hidden `dub_id` field (Dub link attribution), and demo carries `geo_country`. Intellimize buckets every visitor, alongside HockeyStack, Vector and the ad pixels. The fitness app's admin view tracks date, name, email, status, stage, score, archetype, source and time spent. None of the rates (demo conversion, show rate, trial activation, gate completion) have been shared with me yet.",
+   "confidence": "hard data for the instrumentation; the numbers need Jack or Miles",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Form and page recon",
+    "Fitness test app"
+   ],
+   "links": [],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-025",
+   "slug": "f-025",
+   "claim": "Contact asks the most and routes on its own",
+   "bucket": "Marketing",
+   "surface": "Forms (demo, trial, contact)",
+   "evidence": "Six required fields including a LinkedIn URL and a contact reason (partnerships, sales question, media inquiry, job searching, other), plus reCAPTCHA. It accepts gmail addresses, unlike demo and trial. It isn't wired to Default, so a \"sales question\" here takes a different route from a demo request. The page says \"usually within one business day,\" the confirmation says \"1-2 business days,\" and the page also says \"If you're spamming our contact form, we're not interested.\"",
+   "confidence": "hard data",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Form and page recon",
+    "Conversion captures"
+   ],
+   "links": [
+    {
+     "label": "getaleph.com/contact-us",
+     "url": "https://www.getaleph.com/contact-us"
+    }
+   ],
+   "figma": {
+    "label": "13-contact-landing",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-235"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "contact"
+   ]
+  },
+  {
+   "id": "F-026",
+   "slug": "f-026",
+   "claim": "Sign-in is stock Auth0, and the app opens with no first-run",
+   "bucket": "Product",
+   "surface": "Sign-in (Auth0); Product onboarding",
+   "evidence": "Sign In goes to `getaleph.us.auth0.com`: Auth0 Universal Login with the Aleph logo, Google, Microsoft or SSO, a blue Continue button the site doesn't use, and no sign-up link. Jon (Sep 11, demo account): after sign-in there are no first-run screens; you land in the app. He was told there's no product onboarding because onboarding is all CSM-led (see F-027).",
+   "confidence": "hard data for the login; the onboarding read is secondhand (what Jon was told)",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Conversion captures",
+    "Jon, Sep 11"
+   ],
+   "links": [
+    {
+     "label": "app.getaleph.com",
+     "url": "https://app.getaleph.com"
+    }
+   ],
+   "figma": {
+    "label": "19-signin-login",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=94-247"
+   },
+   "date": "2026-09-11",
+   "images": [
+    "flow-07"
+   ]
+  },
+  {
+   "id": "F-027",
+   "slug": "f-027",
+   "claim": "Onboarding is all CSM, and there's no lifecycle email yet",
+   "bucket": "Marketing",
+   "surface": "Onboarding drip campaign (also Product / Product onboarding)",
+   "evidence": "Jon was told on Sep 11 that there's no product onboarding (CSMs run it) and no drip email campaign, though there's interest in building one. His demo account confirms there are no first-run screens. With F-017 (the trial routes to a person) and F-008 (customers name their CX contact in reviews), a new customer's first guided experience of Aleph is a person. A lifecycle sequence is a surface the rebrand could design from scratch rather than retrofit.",
+   "confidence": "directional (secondhand); CS or Jack could confirm what emails, if any, go out after a deal closes",
+   "levels": [
+    "directional"
+   ],
+   "sources": [
+    "Jon, Sep 11"
+   ],
+   "links": [],
+   "figma": null,
+   "date": "2026-09-11",
+   "images": []
+  },
+  {
+   "id": "F-028",
+   "slug": "f-028",
+   "claim": "The site gives AI its own color and its own menu, as if it were an add-on",
+   "bucket": "Communication",
+   "surface": "Color (mono core + accent) (also Product / Footer / IA)",
+   "evidence": "The Platform nav dropdown splits into \"Core platform\" (Overview, Data Consolidation, Spreadsheet Add-Ins, Dashboards, Security & Compliance) and \"AI Capabilities\" (Aleph Intelligence, Aleph Agent, Aleph Agent MCP, AI Variance Analysis, AI Mappings). Only the AI column is highlighted, in `--purple-400` (#a83aec), and the Webflow CSS comment reads \"Update this color to change the purple for highlighted.\" The footer repeats the split as separate Platform and AI Capabilities columns, with Agentic Budgeting under AI. The Aleph Agent page tints its \"Crafting response\" state purple. Elsewhere purple carries no meaning: homepage feature cards rotate green, yellow and a \"purple\" that's a dark indigo (#060689). Daniel describes the positioning as \"AI for finance teams,\" with customers using Aleph from Claude or ChatGPT through the MCP and no need to learn the web app. If the whole product is AI, a color reserved for AI features has nothing left to single out, and the menu tells buyers AI is one part of a planning platform. A color that marks what the agent did (drafted, changed a cell) against the source data could carry the trust message in F-014. The accent itself is Red Antler's call; the brand survey already has purple and green as the only accent candidates with endorsements and no vetoes.",
+   "confidence": "hard data for the nav, footer and CSS; what it signals to buyers is Jon's read (hunch)",
+   "levels": [
+    "hard",
+    "hunch"
+   ],
+   "sources": [
+    "Site source and CSS",
+    "Conversion captures",
+    "Daniel, Slack",
+    "Internal brand survey"
+   ],
+   "links": [
+    {
+     "label": "getaleph.com (Platform menu and footer)",
+     "url": "https://www.getaleph.com"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-12",
+   "images": []
+  },
+  {
+   "id": "F-029",
+   "slug": "f-029",
+   "claim": "Our homepage headline is nearly Drivetrain's, and \"AI\" is the category's default label",
+   "bucket": "Competition",
+   "surface": "Positioning line, Headlines (also Competition tab)",
+   "evidence": "Aleph's homepage H1 is \"AI-native FP&A that connects your data, strategy, and spreadsheets,\" and its title tag is \"Aleph | AI-native FP&A software & data management for finance.\" Drivetrain's H1 is \"The AI-native FP&A platform that does the work,\" and its title is \"Drivetrain | The AI-native FP&A Platform.\" Of the seven finance companies captured, four put AI in the page title: Drivetrain, Campfire (\"The AI-Native ERP\"), Datarails (\"Trusted AI for Finance Teams\") and Concourse (\"AI transformation for finance\"). Anaplan leads with agentic (\"The decision infrastructure for the Agentic Enterprise\"), Runway's cfo.ai with a persona (\"Go founder mode on your finances … even if you're not a founder\"), and Workday Adaptive's H1 is \"EPM SOFTWARE.\" Campfire and Concourse keep the AI label in the title and open the page with the job (\"Month end shouldn't take all month,\" \"Get ahead. Stay ahead.\"). Datarails' meta description already claims trust: \"keep your existing models, and trust every AI output.\" The five reference brands open with the customer's outcome or a category they name, and none says \"AI-native\": Harvey \"Build a Frontier Legal Organization,\" Ramp \"Time is money. Save both.,\" Linear \"The product development system for teams and agents,\" Stripe \"Financial infrastructure to grow your revenue,\" Anthropic \"AI research and products that put safety at the frontier.\" Extends F-004 (ad copy) from search ads to homepages, and bears on F-014 (the trust message).",
+   "confidence": "hard data (live homepages, logged out, US, Sep 12). Headlines change often; Runway rebranded to cfo.ai on Sep 10.",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Competitor homepages, Sep 12"
+   ],
+   "links": [
+    {
+     "label": "drivetrain.ai",
+     "url": "https://www.drivetrain.ai/"
+    },
+    {
+     "label": "datarails.com",
+     "url": "https://www.datarails.com/"
+    }
+   ],
+   "figma": {
+    "label": "Drivetrain capture, Audit > COMPETITION: product",
+    "url": "https://www.figma.com/design/RRa1sgLX5WWJdOErGQobv6/Aleph-Audit?node-id=84-2104"
+   },
+   "date": "2026-09-12",
+   "images": [
+    "home-aleph",
+    "home-drivetrain"
+   ]
+  },
+  {
+   "id": "F-030",
+   "slug": "f-030",
+   "claim": "The symbol ships in an unofficial blue, and the brand page's only color rule is \"monochrome\"",
+   "bucket": "Communication",
+   "surface": "Symbol / logo usage (also Product / Excel add-in, PowerPoint add-in; Communication / Marketplace listing copy)",
+   "evidence": "The Microsoft Marketplace icons for the Excel add-in and \"Aleph for Powerpoint\" use the symbol in a mid blue on white, the same blue as the Auth0 Continue button (F-026). The Webflow CSS carries a primary blue (#3074D9, seen as `--colors--primary-10`). The Google Workspace listing (9K+ users, updated Sep 11, 2026) uses the black symbol with soft, compressed edges. `getaleph.com/brand` offers the wordmark and icon in SVG and PNG, light and dark, sets minimum widths (70 px and 15 px) and pronunciation, and says \"Never alter the aspect ratio or deviate from our monochrome colors.\" It has no colors, type or clear space. The nav logo has a right-click menu with \"Copy wordmark as SVG\" and a link to `/brand`. The PowerPoint add-in isn't in the SOW's app-icon list (ChatGPT, Claude, Cursor, Slack, Google Sheets, Excel) or on the Audit tab. Listing taglines don't match the site: \"One source of truth for financial data\" (Google, Microsoft), \"FP&A software that connects your data, strategy, and spreadsheets\" (Sage Intacct), \"AI-native FP&A\" (homepage).",
+   "confidence": "hard data",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "Identity usage captures, Sep 13",
+    "Marketplace listings",
+    "Site source and CSS"
+   ],
+   "links": [
+    {
+     "label": "Brand page",
+     "url": "https://www.getaleph.com/brand"
+    },
+    {
+     "label": "Microsoft Marketplace: Aleph for Excel",
+     "url": "https://marketplace.microsoft.com/en-us/product/office/wa200002932?tab=overview"
+    },
+    {
+     "label": "Microsoft Marketplace: Aleph for Powerpoint",
+     "url": "https://marketplace.microsoft.com/en-us/product/office/wa200007648?tab=overview"
+    },
+    {
+     "label": "Google Workspace Marketplace",
+     "url": "https://workspace.google.com/marketplace/app/aleph/169845147236"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-13",
+   "images": [
+    "icon-excel",
+    "icon-google"
+   ]
+  },
+  {
+   "id": "F-031",
+   "slug": "f-031",
+   "claim": "The product runs on Inter and Google's Material Symbols, so a new identity won't reach it by default",
+   "bucket": "Product",
+   "surface": "Web app (core) (also Communication / Iconography, Typography)",
+   "evidence": "`app.getaleph.com` and its docs (`docs.getaleph.com` redirects to `app.getaleph.com/docs`) load Inter plus two icon styles from Google, Material Symbols Outlined and Rounded. The Excel add-in site loads Inter. HubSpot forms use Inter. The marketing site and the Agentic Budgeting pages use Söhne, Inter and IBM Plex Mono. Auth0 uses its default font. The SOW asks for new display and mono faces that \"live alongside Inter in product,\" and an iconic style for diagrams and data, so the product's UI icons and type stay as they are unless someone plans the change.",
+   "confidence": "hard data for what loads; which icon style shows where in the app needs a logged-in look (Jon's demo account)",
+   "levels": [
+    "hard"
+   ],
+   "sources": [
+    "App shell, Sep 13",
+    "Site source and CSS",
+    "Excel add-in site",
+    "Conversion flow map"
+   ],
+   "links": [
+    {
+     "label": "app.getaleph.com",
+     "url": "https://app.getaleph.com"
+    }
+   ],
+   "figma": null,
+   "date": "2026-09-13",
+   "images": []
+  }
+ ],
+ "compare": {
+  "finance": [
+   {
+    "site": "Aleph",
+    "h1": "AI-native FP&A that connects your data, strategy, and spreadsheets",
+    "title": "Aleph | AI-native FP&A software & data management for finance",
+    "aiInTitle": true
+   },
+   {
+    "site": "Drivetrain",
+    "h1": "The AI-native FP&A platform that does the work",
+    "title": "Drivetrain | The AI-native FP&A Platform",
+    "aiInTitle": true
+   },
+   {
+    "site": "Campfire",
+    "h1": "Month end shouldn't take all month",
+    "title": "Campfire | The AI-Native ERP",
+    "aiInTitle": true
+   },
+   {
+    "site": "Datarails",
+    "h1": "Transform the Office of the CFO",
+    "title": "Datarails FinanceOS: Trusted AI for Finance Teams - Datarails",
+    "aiInTitle": true
+   },
+   {
+    "site": "Concourse",
+    "h1": "Get ahead. Stay ahead.",
+    "title": "Concourse | AI transformation for finance.",
+    "aiInTitle": true
+   },
+   {
+    "site": "Anaplan",
+    "h1": "The decision infrastructure for the Agentic Enterprise",
+    "title": "Decision Infrastructure for Agentic Enterprises | Anaplan",
+    "aiInTitle": false
+   },
+   {
+    "site": "Runway (cfo.ai)",
+    "h1": "Go founder mode on your finances … even if you're not a founder.",
+    "title": "cfo.ai · Go founder mode on your finances",
+    "aiInTitle": false
+   }
+  ],
+  "reference": [
+   {
+    "site": "Harvey",
+    "h1": "Build a Frontier Legal Organization",
+    "title": "Harvey | AI software for legal and professional services",
+    "aiInTitle": true
+   },
+   {
+    "site": "Ramp",
+    "h1": "Time is money. Save both.",
+    "title": "Spend Management, Corporate Cards & Accounts Payable Solutions | Ramp",
+    "aiInTitle": false
+   },
+   {
+    "site": "Linear",
+    "h1": "The product development system for teams and agents",
+    "title": "Linear, The system for product development",
+    "aiInTitle": false
+   },
+   {
+    "site": "Stripe",
+    "h1": "Financial infrastructure to grow your revenue.",
+    "title": "Stripe | Financial Infrastructure to Grow Your Revenue",
+    "aiInTitle": false
+   },
+   {
+    "site": "Anthropic",
+    "h1": "AI research and products that put safety at the frontier",
+    "title": "Home \\ Anthropic",
+    "aiInTitle": false
+   }
+  ]
+ },
+ "images": {
+  "flow-01": {
+   "src": "/aleph/audit/img/flow-01.webp",
+   "full": "/aleph/audit/img/flow-01-lg.webp",
+   "w": 724,
+   "h": 450,
+   "alt": "getaleph.com with the HubSpot top banner",
+   "caption": "The site, with HubSpot's top banner"
+  },
+  "flow-02": {
+   "src": "/aleph/audit/img/flow-02.webp",
+   "full": "/aleph/audit/img/flow-02-lg.webp",
+   "w": 724,
+   "h": 450,
+   "alt": "HubSpot exit pop-up offering a 15-minute call",
+   "caption": "HubSpot exit pop-up: 15 minutes"
+  },
+  "flow-03": {
+   "src": "/aleph/audit/img/flow-03.webp",
+   "full": "/aleph/audit/img/flow-03-lg.webp",
+   "w": 724,
+   "h": 450,
+   "alt": "The /demo page, its own shell with no nav",
+   "caption": "/demo: its own shell, 30 minutes"
+  },
+  "flow-04": {
+   "src": "/aleph/audit/img/flow-04.webp",
+   "full": "/aleph/audit/img/flow-04-lg.webp",
+   "w": 724,
+   "h": 450,
+   "alt": "HubSpot embedded form on the trial page",
+   "caption": "HubSpot form styling"
+  },
+  "flow-05": {
+   "src": "/aleph/audit/img/flow-05.webp",
+   "full": "/aleph/audit/img/flow-05-lg.webp",
+   "w": 724,
+   "h": 450,
+   "alt": "Agentic Budgeting demo page",
+   "caption": "Agentic Budgeting demo: the model"
+  },
+  "flow-06": {
+   "src": "/aleph/audit/img/flow-06.webp",
+   "full": "/aleph/audit/img/flow-06-lg.webp",
+   "w": 724,
+   "h": 450,
+   "alt": "FP&A fitness test contact gate on Replit",
+   "caption": "Fitness test on Replit, gated"
+  },
+  "flow-07": {
+   "src": "/aleph/audit/img/flow-07.webp",
+   "full": "/aleph/audit/img/flow-07-lg.webp",
+   "w": 724,
+   "h": 450,
+   "alt": "Stock Auth0 sign-in page with a blue button",
+   "caption": "Auth0 sign-in, stock"
+  },
+  "serp-brand": {
+   "src": "/aleph/audit/img/serp-brand.webp",
+   "full": "/aleph/audit/img/serp-brand-lg.webp",
+   "w": 1100,
+   "h": 894,
+   "alt": "Google results for \"aleph\": AI answer, Wikipedia, then getaleph.com",
+   "caption": "Google, \"aleph,\" logged out, Sep 10. We're the third result."
+  },
+  "serp-ai": {
+   "src": "/aleph/audit/img/serp-ai.webp",
+   "full": "/aleph/audit/img/serp-ai-lg.webp",
+   "w": 1100,
+   "h": 894,
+   "alt": "Google results for \"ai fp&a software\" with Aleph first",
+   "caption": "Google, \"ai fp&a software,\" Sep 10. We're the top organic result."
+  },
+  "sw-channels": {
+   "src": "/aleph/audit/img/sw-channels.webp",
+   "full": "/aleph/audit/img/sw-channels-lg.webp",
+   "w": 1100,
+   "h": 554,
+   "alt": "Similarweb channel mix for getaleph.com",
+   "caption": "Similarweb channel mix, Jun to Aug (free estimates)"
+  },
+  "linkedin": {
+   "src": "/aleph/audit/img/linkedin.webp",
+   "full": "/aleph/audit/img/linkedin-lg.webp",
+   "w": 724,
+   "h": 900,
+   "alt": "Aleph LinkedIn company page, logged out",
+   "caption": "Our LinkedIn page, logged out, Sep 11"
+  },
+  "trial": {
+   "src": "/aleph/audit/img/trial.webp",
+   "full": "/aleph/audit/img/trial-lg.webp",
+   "w": 724,
+   "h": 560,
+   "alt": "Trial page promising a free, full access trial",
+   "caption": "/trial promises full access in minutes"
+  },
+  "contact": {
+   "src": "/aleph/audit/img/contact.webp",
+   "full": "/aleph/audit/img/contact-lg.webp",
+   "w": 724,
+   "h": 560,
+   "alt": "Contact page form",
+   "caption": "/contact-us: six required fields"
+  },
+  "home-aleph": {
+   "src": "/aleph/audit/img/home-aleph.webp",
+   "full": "/aleph/audit/img/home-aleph-lg.webp",
+   "w": 900,
+   "h": 622,
+   "alt": "Aleph homepage first screen",
+   "caption": "Aleph: \"AI-native FP&A that connects your data, strategy, and spreadsheets\""
+  },
+  "home-drivetrain": {
+   "src": "/aleph/audit/img/home-drivetrain.webp",
+   "full": "/aleph/audit/img/home-drivetrain-lg.webp",
+   "w": 724,
+   "h": 500,
+   "alt": "Drivetrain homepage first screen",
+   "caption": "Drivetrain: \"The AI-native FP&A platform that does the work\""
+  },
+  "icon-excel": {
+   "src": "/aleph/audit/img/icon-excel.webp",
+   "full": "/aleph/audit/img/icon-excel-lg.webp",
+   "w": 200,
+   "h": 200,
+   "alt": "Aleph symbol in blue on the Microsoft Marketplace",
+   "caption": "Microsoft Marketplace"
+  },
+  "icon-google": {
+   "src": "/aleph/audit/img/icon-google.webp",
+   "full": "/aleph/audit/img/icon-google-lg.webp",
+   "w": 200,
+   "h": 200,
+   "alt": "Aleph symbol in black on Google Workspace Marketplace",
+   "caption": "Google Workspace"
+  }
+ }
+}
