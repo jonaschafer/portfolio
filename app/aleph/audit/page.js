@@ -18,6 +18,11 @@
 import localFont from 'next/font/local'
 import './preso.css'
 import { SURFACES, surfaceCounts } from './surfaces'
+// The IA tab (Surfaces/IA tab bar + ia.js content) is unlinked for now, per
+// Jon (2026-09-16) — this page is Surfaces only again. The tab bar CSS
+// (.amtabs/.amtabpanel/.amia in preso.css) and ia.js both stay in place; add
+// the import back and re-wrap the JSX below in the two .amtabpanel divs to
+// bring it back.
 
 // Neue Montreal, the deck's actual typeface (Figma "Aleph Audit - Preso"), for the hero only.
 const sans = localFont({
@@ -117,9 +122,9 @@ export default function AuditPage() {
         </p>
 
         <div className="amseg" role="group" aria-label="Filter surfaces">
-          <button type="button" data-f="all" aria-pressed="true">All <b>{counts.total}</b></button>
-          <button type="button" data-f="ours" aria-pressed="false">Ours <b>{ours}</b></button>
-          <button type="button" data-f="ra" aria-pressed="false">RA <b>{counts['Red Antler']}</b></button>
+          <button type="button" data-f="all" aria-pressed="true" suppressHydrationWarning>All <b>{counts.total}</b></button>
+          <button type="button" data-f="ours" aria-pressed="false" suppressHydrationWarning>Ours <b>{ours}</b></button>
+          <button type="button" data-f="ra" aria-pressed="false" suppressHydrationWarning>RA <b>{counts['Red Antler']}</b></button>
           <span className="note">Ours = not in RA's SOW, or only partly.</span>
         </div>
 
@@ -139,16 +144,16 @@ export default function AuditPage() {
               const rows = byGroup.get(group) || []
               const bySub = groupBy(rows, 'sub')
               return [...bySub.entries()].map(([sub, subRows]) => (
-                <tbody className="g" key={group + sub}>
+                <tbody className="g" key={group + sub} suppressHydrationWarning>
                   <tr className="grp-row">
-                    <td colSpan={6}>{group} <span>· {sub} · <span className="n">{subRows.length}</span></span></td>
+                    <td colSpan={6}>{group} <span>· {sub} · <span className="n" suppressHydrationWarning>{subRows.length}</span></span></td>
                   </tr>
                   {subRows.map((r) => {
                     rn += 1
                     const sow = SOW[r.owner]
                     const assigned = r.assigned || (r.owner === 'Red Antler' ? 'Red Antler' : null)
                     return (
-                      <tr key={r.surface} data-sow={sow.value}>
+                      <tr key={r.surface} data-sow={sow.value} suppressHydrationWarning>
                         <td className="rn">{rn}</td>
                         <td className="term">{r.surface}</td>
                         <td className="what">{r.what}</td>

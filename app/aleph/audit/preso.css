@@ -18,6 +18,26 @@
 
   --sans: var(--f-sans), ui-sans-serif, system-ui, sans-serif;
 
+  /* Table system (aleph-field-guide.html's palette/type, not the deck's), shared
+     by both the Surfaces and IA tables — must live at .amap scope, not a narrower
+     class, so every table on the page can see it. */
+  --fg-bg: #FAFAFA;
+  --fg-surface: #FFFFFF;
+  --fg-ink: #201F1E;
+  --fg-muted: #6E6B67;
+  --fg-faint: #9A9692;
+  --fg-rule: #E3E1DE;
+  --fg-grid: #EEECE9;
+  --fg-accent: #3074D9;
+  --fg-accent-soft: #E9F0FB;
+  --fg-warm: #9A4A16;
+  --fg-warm-soft: #F8ECE2;
+  --fg-good: #2F7A4B;
+  --fg-good-soft: #E6F2EA;
+  --fg-display: 'Schibsted Grotesk', var(--f-sans), sans-serif;
+  --fg-body: 'Geist', var(--f-sans), sans-serif;
+  --fg-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
@@ -47,31 +67,28 @@
 }
 .amap .dek a { color: inherit; text-decoration-underline: var(--ink); text-underline-offset: 3px; }
 
+/* Surfaces / IA tab switcher */
+.amap .amtabs { display: flex; gap: 24px; border-bottom: 1px solid var(--hair); margin-bottom: 24px; }
+.amap .amtabs button {
+  border: 0;
+  background: none;
+  padding: 0 0 12px;
+  margin-bottom: -1px;
+  font: 700 15px 'Schibsted Grotesk', var(--f-sans), sans-serif;
+  color: var(--ink);
+  opacity: 0.45;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.amap .amtabs button[aria-selected="true"] { opacity: 1; border-bottom-color: #6061ED; }
+.amap .amtabpanel[hidden] { display: none; }
+
 /*
  * The table itself: a direct match of aleph-field-guide.html's table.sheet
  * (same variable names translated 1:1, same layout, same toggle mechanic),
- * not the deck. Its own font stack and palette.
+ * not the deck. Its own font stack and palette (defined at .amap scope above).
  */
-.amap .amsurf {
-  --fg-bg: #FAFAFA;
-  --fg-surface: #FFFFFF;
-  --fg-ink: #201F1E;
-  --fg-muted: #6E6B67;
-  --fg-faint: #9A9692;
-  --fg-rule: #E3E1DE;
-  --fg-grid: #EEECE9;
-  --fg-accent: #3074D9;
-  --fg-accent-soft: #E9F0FB;
-  --fg-warm: #9A4A16;
-  --fg-warm-soft: #F8ECE2;
-  --fg-good: #2F7A4B;
-  --fg-good-soft: #E6F2EA;
-  --fg-display: 'Schibsted Grotesk', var(--f-sans), sans-serif;
-  --fg-body: 'Geist', var(--f-sans), sans-serif;
-  --fg-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  font-family: var(--fg-body);
-  color: var(--fg-ink);
-}
+.amap .amsurf { font-family: var(--fg-body); color: var(--fg-ink); }
 
 .amap .amseg { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 12px; font-family: 'Geist', var(--f-sans), sans-serif; }
 .amap .amseg button { font: 500 12px/1 'Geist Mono', ui-monospace, monospace; padding: 8px 12px; border: 1px solid #E3E1DE; background: #FFFFFF; color: #6E6B67; border-radius: 3px; cursor: pointer; }
@@ -174,6 +191,18 @@
   opacity: 1;
   transform: translate(-50%, 0);
 }
+
+.amap .amia { font-family: 'Geist', var(--f-sans), sans-serif; color: var(--ink); }
+.amap .amia h2 { font: 700 22px 'Schibsted Grotesk', var(--f-sans), sans-serif; margin: 40px 0 4px; }
+.amap .amia h2:first-child { margin-top: 0; }
+.amap .amia h3 { font: 700 16px 'Schibsted Grotesk', var(--f-sans), sans-serif; margin: 28px 0 12px; }
+.amap .amia h3 .note { font-family: 'Geist', var(--f-sans), sans-serif; font-weight: 400; font-size: 14px; opacity: 0.55; margin-left: 4px; }
+.amap .amia .ia-lede { font-size: 15px; opacity: 0.65; margin: 0 0 16px; }
+.amap .amia .ia-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.amap .amia .ia-list li { font-size: 14.5px; line-height: 1.55; max-width: 76ch; padding-bottom: 14px; border-bottom: 1px solid var(--hair); }
+.amap .amia .ia-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+.amap .amia .ia-p { font-size: 14.5px; line-height: 1.55; max-width: 76ch; margin: 16px 0 0; opacity: 0.8; }
+.amap .amia table.sheet { min-width: 0; }
 
 .amap .amfoot {
   margin-top: 56px;
