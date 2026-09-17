@@ -1,5 +1,7 @@
 // Server component. Shows the surface ownership map (Group / Sub-area /
-// Surface / What it is / Finding / In RA SOW? / Assigned to). The hero above
+// Surface / What it is / Finding / In RA SOW? / Invest? / Assigned to). The
+// Invest column and its filter row carry Daniel's Sep 17 read on where the
+// team invests over the next 6 months (see PRIORITY in surfaces.js). The hero above
 // the table matches the Figma "Aleph Audit - Preso" deck (Neue Montreal,
 // indigo). The table itself is a straight match of aleph-field-guide.html's
 // own surfaces table: same layout, typeface (Geist / Geist Mono / Schibsted
@@ -17,7 +19,7 @@
 // break the layout (this happened twice: once with `.pm`, once with `.surf`).
 import localFont from 'next/font/local'
 import './preso.css'
-import { SURFACES, surfaceCounts } from './surfaces'
+import { SURFACES, surfaceCounts, priorityCounts, PRIORITY } from './surfaces'
 // The IA tab (Surfaces/IA tab bar + ia.js content) is unlinked for now, per
 // Jon (2026-09-16) — this page is Surfaces only again. The tab bar CSS
 // (.amtabs/.amtabpanel/.amia in preso.css) and ia.js both stay in place; add
@@ -88,26 +90,34 @@ const TABLE_SCRIPT = `(function(){
   var t = document.querySelector('.amap .amsurf table'), th = t && t.querySelector('thead'), root = document.documentElement;
   function sizes(){ if (th) root.style.setProperty('--amap-theadh', th.offsetHeight + 'px'); }
   sizes(); addEventListener('resize', sizes);
-  var btns = document.querySelectorAll('.amap .amseg button');
-  function apply(f){
-    btns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.f === f); });
+  var own = document.querySelectorAll('.amap .amseg[data-seg="own"] button');
+  var pri = document.querySelectorAll('.amap .amseg[data-seg="pri"] button');
+  var state = { own: 'all', pri: 'all' };
+  function apply(){
+    own.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.f === state.own); });
+    pri.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.p === state.pri); });
     t.querySelectorAll('tbody.g').forEach(function(tb){
       var vis = 0;
       tb.querySelectorAll('tr[data-sow]').forEach(function(r){
-        var sow = r.dataset.sow, show = f === 'all' || (f === 'ra' ? sow === 'Yes' : sow !== 'Yes');
+        var sow = r.dataset.sow, f = state.own;
+        var okOwn = f === 'all' || (f === 'ra' ? sow === 'Yes' : sow !== 'Yes');
+        var okPri = state.pri === 'all' || r.dataset.pri === state.pri;
+        var show = okOwn && okPri;
         r.hidden = !show; if (show) vis++;
       });
       tb.hidden = vis === 0; var n = tb.querySelector('.n'); if (n) n.textContent = vis;
     });
-    try { localStorage.setItem('amap-surface-filter', f); } catch (e) {}
+    try { localStorage.setItem('amap-surface-filter', state.own); localStorage.setItem('amap-priority-filter', state.pri); } catch (e) {}
   }
-  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.f); }); });
-  var saved = 'all'; try { saved = localStorage.getItem('amap-surface-filter') || 'all'; } catch (e) {}
-  apply(saved);
+  own.forEach(function(b){ b.addEventListener('click', function(){ state.own = b.dataset.f; apply(); }); });
+  pri.forEach(function(b){ b.addEventListener('click', function(){ state.pri = state.pri === b.dataset.p ? 'all' : b.dataset.p; apply(); }); });
+  try { state.own = localStorage.getItem('amap-surface-filter') || 'all'; state.pri = localStorage.getItem('amap-priority-filter') || 'all'; } catch (e) {}
+  apply();
 })();`
 
 export default function AuditPage() {
   const counts = surfaceCounts(SURFACES)
+  const pcounts = priorityCounts(SURFACES)
   const ours = counts.Shared + counts.Aleph
   const byGroup = groupBy(SURFACES, 'group')
   let rn = 0
@@ -121,11 +131,19 @@ export default function AuditPage() {
           {counts.total} customer-facing surfaces. What Red Antler owns outright, what's shared, and what's ours regardless of how the rebrand turns out.
         </p>
 
-        <div className="amseg" role="group" aria-label="Filter surfaces">
+        <div className="amseg" data-seg="own" role="group" aria-label="Filter surfaces by owner">
           <button type="button" data-f="all" aria-pressed="true" suppressHydrationWarning>All <b>{counts.total}</b></button>
           <button type="button" data-f="ours" aria-pressed="false" suppressHydrationWarning>Ours <b>{ours}</b></button>
           <button type="button" data-f="ra" aria-pressed="false" suppressHydrationWarning>RA <b>{counts['Red Antler']}</b></button>
-          <span className="note">Ours = not in RA's SOW, or only partly.</span>
+        </div>
+
+        <div className="amseg" data-seg="pri" role="group" aria-label="Filter surfaces by where we invest">
+          <button type="button" data-p="urgent" aria-pressed="false" suppressHydrationWarning>Priority 1 <b>{pcounts.urgent}</b></button>
+          <button type="button" data-p="invest" aria-pressed="false" suppressHydrationWarning>Priority 2 <b>{pcounts.invest}</b></button>
+          <button type="button" data-p="discuss" aria-pressed="false" suppressHydrationWarning>Discuss <b>{pcounts.discuss}</b></button>
+          <button type="button" data-p="hold" aria-pressed="false" suppressHydrationWarning>Hold <b>{pcounts.hold}</b></button>
+          <button type="button" data-p="oob" aria-pressed="false" suppressHydrationWarning>Not brand <b>{pcounts.oob}</b></button>
+          <span className="note">Daniel's read on the next 6 months (Sep 17).</span>
         </div>
 
         <div className="sheet-scroll amsurf">
@@ -137,6 +155,7 @@ export default function AuditPage() {
                 <th>What it is</th>
                 <th>Finding</th>
                 <th>In RA SOW?</th>
+                <th>Invest?</th>
                 <th>Assigned to</th>
               </tr>
             </thead>
@@ -146,19 +165,21 @@ export default function AuditPage() {
               return [...bySub.entries()].map(([sub, subRows]) => (
                 <tbody className="g" key={group + sub} suppressHydrationWarning>
                   <tr className="grp-row">
-                    <td colSpan={6}>{group} <span>· {sub} · <span className="n" suppressHydrationWarning>{subRows.length}</span></span></td>
+                    <td colSpan={7}>{group} <span>· {sub} · <span className="n" suppressHydrationWarning>{subRows.length}</span></span></td>
                   </tr>
                   {subRows.map((r) => {
                     rn += 1
                     const sow = SOW[r.owner]
                     const assigned = r.assigned || (r.owner === 'Red Antler' ? 'Red Antler' : null)
+                    const pri = r.priority ? PRIORITY[r.priority] : null
                     return (
-                      <tr key={r.surface} data-sow={sow.value} suppressHydrationWarning>
+                      <tr key={r.surface} data-sow={sow.value} data-pri={r.priority || 'none'} suppressHydrationWarning>
                         <td className="rn">{rn}</td>
                         <td className="term">{r.surface}</td>
                         <td className="what">{r.what}</td>
                         <td className="finding"><Finding text={r.finding} /></td>
                         <td><span className={sow.chip}>{sow.label}</span></td>
+                        <td>{pri ? <span className={pri.chip} title={pri.note}>{pri.label}</span> : <span className="note">—</span>}</td>
                         <td className="own">{assigned || <span className="note">none yet</span>}</td>
                       </tr>
                     )

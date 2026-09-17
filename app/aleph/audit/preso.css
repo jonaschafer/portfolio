@@ -148,6 +148,10 @@
 .amap .amchip.done { background: #E6F2EA; color: #2F7A4B; }
 .amap .amchip.blue { background: #E9F0FB; color: #3074D9; }
 .amap .amchip.private { background: #F8ECE2; color: #9A4A16; }
+.amap .amchip.warm { background: #FBE9E7; color: #C0431B; }
+.amap .amseg[data-seg="pri"] { margin-top: -4px; }
+.amap .amseg[data-seg="pri"] button[aria-pressed="true"] { background: #FBE9E7; border-color: #C0431B; color: #C0431B; }
+.amap .amseg[data-seg="pri"] button[aria-pressed="true"] b { color: #C0431B; }
 
 /* Inline evidence marker in a finding: iconoir info-circle-solid that reveals a black tooltip on hover/focus. */
 .amap .itip {
