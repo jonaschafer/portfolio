@@ -206,7 +206,17 @@
 .amap .amia .ia-list li { font-size: 14.5px; line-height: 1.55; max-width: 76ch; padding-bottom: 14px; border-bottom: 1px solid var(--hair); }
 .amap .amia .ia-list li:last-child { border-bottom: 0; padding-bottom: 0; }
 .amap .amia .ia-p { font-size: 14.5px; line-height: 1.55; max-width: 76ch; margin: 16px 0 0; opacity: 0.8; }
-.amap .amia table.sheet { min-width: 0; }
+.amap .amia table.sheet { min-width: 640px; }
+.amap .amia .ia-p.lead { font-size: 17px; line-height: 1.5; opacity: 1; max-width: 70ch; }
+.amap .amia h3 + .sheet-scroll { margin-top: 0; }
+.amap .amia table.sheet td { font-size: 14px; line-height: 20px; }
+.amap .amia table.sheet td.term { width: 220px; font-weight: 600; }
+.amap .amia table.sheet td.muted { color: var(--fg-muted); font-size: 13px; line-height: 19px; }
+.amap .amia table.sheet.nums td:not(.term) { font-variant-numeric: tabular-nums; width: 120px; }
+
+/* Footnote under the surfaces table */
+.amap .amfn { margin: 16px 0 0; max-width: 76ch; font: 400 14px/1.55 'Geist', var(--f-sans), sans-serif; color: var(--fg-muted); }
+.amap .amfn b { color: var(--fg-ink); font-weight: 600; }
 
 .amap .amfoot {
   margin-top: 56px;
@@ -219,3 +229,8 @@
   flex-wrap: wrap;
 }
 .amap .amfoot a { color: inherit; }
+
+/* Tabs sit directly under the title now that the dek is gone: 36px total gap (was 12px). */
+.amap h1 + .amtabs { margin-top: 24px; }
+/* Space between the Surfaces intro and the filter rows. */
+.amap .amintro { margin-bottom: 32px; }
