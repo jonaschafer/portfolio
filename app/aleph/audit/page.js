@@ -22,7 +22,7 @@ import './preso.css'
 import { SURFACES, surfaceCounts, priorityCounts, PRIORITY } from './surfaces'
 import { IA_RATIONALE, IA_PROBLEMS, IA_SOLUTIONS, IA_CLOSING } from './ia'
 import {
-  FLOW_INTRO, FLOW_REALITY, FLOW_FLAGS, FLOW_BASELINE, FLOW_BASELINE_NOTE,
+  FLOW_INTRO, FLOW_REALITY, FLOW_BASELINE, FLOW_BASELINE_NOTE,
   FLOW_PROPOSAL_LEDE, FLOW_PROPOSAL, FLOW_CLOSING,
 } from './flow'
 // Three tabs (Surfaces / IA / Conversion flow), brought back Sep 18 per Jon.
@@ -132,11 +132,6 @@ const TABS_SCRIPT = `(function(){
   show(location.hash.slice(1));
 })();`
 
-const VERDICT = {
-  yes: { label: 'Confirmed', chip: 'amchip warm' },
-  part: { label: 'Partly', chip: 'amchip blue' },
-  no: { label: "Didn't hold up", chip: 'amchip' },
-}
 
 export default function AuditPage() {
   const counts = surfaceCounts(SURFACES)
@@ -272,18 +267,6 @@ export default function AuditPage() {
               <tbody>
                 {FLOW_REALITY.map((r) => (
                   <tr key={r.step}><td className="term">{r.step}</td><td><Finding text={r.sees} /></td><td className="muted"><Finding text={r.promise} /></td></tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <h3>What I expected, and what held up</h3>
-          <div className="sheet-scroll">
-            <table className="sheet">
-              <thead><tr><th>What I expected</th><th>Verdict</th><th>Evidence</th></tr></thead>
-              <tbody>
-                {FLOW_FLAGS.map((r) => (
-                  <tr key={r.expected}><td className="term">{r.expected}</td><td><span className={VERDICT[r.verdict].chip}>{VERDICT[r.verdict].label}</span></td><td><Finding text={r.evidence} /></td></tr>
                 ))}
               </tbody>
             </table>
