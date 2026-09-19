@@ -39,7 +39,7 @@ const sans = localFont({
 })
 
 export const metadata = {
-  title: 'Aleph surfaces',
+  title: 'Aleph brand audit',
   description: 'Aleph brand audit: which surfaces Red Antler owns, which are shared, and which are ours regardless.',
 }
 
@@ -144,7 +144,7 @@ export default function AuditPage() {
     <div className={`amap ${sans.variable}`}>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Schibsted+Grotesk:wght@700;800&display=swap" />
       <div className="amwrap">
-        <h1>Aleph surfaces</h1>
+        <h1>Aleph brand audit</h1>
         <div className="amtabs" role="tablist" aria-label="Views">
           <button type="button" role="tab" data-tab="surfaces" aria-selected="true" suppressHydrationWarning>Surfaces</button>
           <button type="button" role="tab" data-tab="ia" aria-selected="false" suppressHydrationWarning>IA</button>
