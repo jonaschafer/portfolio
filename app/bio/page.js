@@ -66,33 +66,30 @@ export default function BioPage() {
             <div className="flex flex-col md:flex-row gap-[40px] md:gap-[60px]">
               <div className="flex flex-col gap-[28px] max-w-[335px] md:max-w-[648px] lg:max-w-[747px]">
                 <p className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] text-[#FAFAFA] leading-[1.2] tracking-[0.31px]">
-                  I lead brand at ClassDojo, a platform used by 50M+ families across 180 countries.
+                  Jon entered the world of design through the accident of obsession.
                 </p>
                 <div className="flex flex-col gap-[20px] font-['Haas_Grot_Disp',_sans-serif] text-[16px] md:text-[19.4px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]">
                   <p>
-                    That has meant a ground-up identity rebuild, the design system under it, and the
-                    campaign infrastructure the rest of the company builds from. It also meant making
-                    the case for the rebrand before anyone had called it one.
+                    Despite having no formal arts education, he found himself helplessly drawn to
+                    Joseph Mueller-Brockman&apos;s &ldquo;Grid Systems,&rdquo; clean Nordic design, and
+                    the tireless intricacies of Lance Wyman. His restless exuberance and appetite for
+                    knowledge spurred Jon on a self-taught path towards his future craft.
                   </p>
                   <p>
-                    The method has not changed much in twenty years. Talk to everyone first, write the
-                    strategy down before anyone opens Figma, then solve the thing with a small number
-                    of principles instead of a big pile of rules. At Zapier I built the brand function
-                    before it had a name. At Clockwise I established brand design and led a rebrand
-                    that landed alongside a $45M Series C. The part I care about is what happens after,
-                    whether the next ten decisions can get made without me in the room.
+                    Jon moved to Portland, Oregon in 2004 searching for further growth and creative
+                    opportunity. In the decade-plus since, he has worked on design projects of nearly
+                    every conceivable scale, method, and medium. His day jobs have included time at
+                    small studios like Nemo, Opolis, and Sandstrom, and larger outfits like Nike,
+                    Columbia Sportswear, and Razorfish.
                   </p>
                   <p>
-                    I came to this sideways. No art school, a marketing degree from Montana, a year of
-                    graphic design in Tasmania, and an unreasonable attachment to Müller-Brockmann&apos;s
-                    grid systems and everything Lance Wyman ever drew. I moved to Portland in 2004 and
-                    have been at it since, in small studios and large ones, on Nike and Microsoft and
-                    plenty of things nobody has heard of.
+                    Why, Hello There began as an extra-curricular side-hustle to bring in additional
+                    creative work, but over the years it has become something more; a platform for
+                    celebrating great design, and a launch pad for projects driven more by love than
+                    labor. He is always happy to discuss new opportunities and creative partnerships.
                   </p>
-                  <p>
-                    Still in Portland, with two kids and a running habit that has gotten out of hand.
-                    Ask me about 70s graphic designers, genre-bending music, or what it is like to work
-                    in an abandoned grain silo.
+                  <p className="text-[#FAFAFA]/80 text-[13.4px] md:text-[16px]">
+                    Bio by Lael Tyler.
                   </p>
                 </div>
               </div>
