@@ -16,7 +16,7 @@ export default function IntroSection() {
             >
               ClassDojo
             </a>
-            <span>, where I build visual identities, design systems, and the creative teams that bring them to life. </span>
+            <span>, where I build visual identities, design systems, and the creative teams that bring them to life. Portland based, twenty-two years in, still delighted by a good grid. </span>
             <Link
               href="/bio"
               className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity"

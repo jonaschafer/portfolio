@@ -75,16 +75,24 @@ export default function BioPage() {
                     the case for the rebrand before anyone had called it one.
                   </p>
                   <p>
-                    Twenty-two years in, the pattern is that I show up before the problem is defined.
-                    At Zapier I built the brand function before it had a name. At Clockwise I
-                    established brand design and led a rebrand that landed alongside a $45M Series C.
-                    The part I care about is what happens after, whether the next ten decisions can
-                    get made without me in the room.
+                    The method has not changed much in twenty years. Talk to everyone first, write the
+                    strategy down before anyone opens Figma, then solve the thing with a small number
+                    of principles instead of a big pile of rules. At Zapier I built the brand function
+                    before it had a name. At Clockwise I established brand design and led a rebrand
+                    that landed alongside a $45M Series C. The part I care about is what happens after,
+                    whether the next ten decisions can get made without me in the room.
                   </p>
                   <p>
-                    Based in Portland. A marketing degree in Montana, a year of graphic design in
-                    Tasmania, and a long run through agencies working on Nike and Microsoft.
-                    Generalist by temperament. I would rather learn the adjacent craft than hand it off.
+                    I came to this sideways. No art school, a marketing degree from Montana, a year of
+                    graphic design in Tasmania, and an unreasonable attachment to Müller-Brockmann&apos;s
+                    grid systems and everything Lance Wyman ever drew. I moved to Portland in 2004 and
+                    have been at it since, in small studios and large ones, on Nike and Microsoft and
+                    plenty of things nobody has heard of.
+                  </p>
+                  <p>
+                    Still in Portland, with two kids and a running habit that has gotten out of hand.
+                    Ask me about 70s graphic designers, genre-bending music, or what it is like to work
+                    in an abandoned grain silo.
                   </p>
                 </div>
               </div>

@@ -40,3 +40,6 @@ docs/training-plan-update-*.md
 # Local agent/worktree files
 .claude/
 z-archive/
+
+# Site changelog — private record of what changed on the site and why
+docs/changelog.md
