@@ -76,11 +76,11 @@ export default function WorkPage() {
         title="Novo"
         description={
           <>
-            Novo is a financial platform for small businesses, offering banking features and AI-powered bookkeeping. Despite a brand refresh, their site lacked engagement and clarity. Partnering with{' '}
+            A seven-week site redesign for a fintech brand that had been refreshed but still wasn&apos;t landing. I led design across ten pages and a mini design system, with Shachar Aylon at{' '}
             <a href="https://dawn.la/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Dawn</a>
-            {' '}and{' '}
+            , and Dinesh and Sofya at{' '}
             <a href="https://workisplay.studio/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Work Is Play</a>
-            , we redesigned 10 pages, created 50+ illustrations, and built a mini design system in 7 weeks.
+            {' '}running the studio. Russell Shaw set the illustration style and I drew the other 20+. Favorite part: a homepage hero that spins customers into place like a View-Master reel.
           </>
         }
         folder="02 Novo"
@@ -91,9 +91,9 @@ export default function WorkPage() {
         title="Lineage"
         description={
           <>
-            Lineage is a boutique consultancy turning brands into cultural icons with over 20 years of experience. They came to Work is Play to craft a site that signals a major shift from agency to methodology. Partnering with{' '}
-            <a href="https://dawn.la/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">Dawn</a>
-            , we built a complete design system, 4 interactive Next.js + WebGL pages, and 40+ CMS templates.
+            A small, interaction-heavy site for a 20-year consultancy trading agency work for a methodology of its own.{' '}
+            <a href="https://dawn.la/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Shachar Aylon</a>
+            {' '}shaped the story, Dinesh creative directed, and we built four Next.js and WebGL pages, including a hero with a James Turrell mode. Plus a design system and 40+ CMS templates, made across three holidays, opposite time zones, and a very tight budget.
           </>
         }
         folder="03 Lineage"
@@ -104,9 +104,9 @@ export default function WorkPage() {
         title="Prism"
         description={
           <>
-            Clockwise reinvented scheduling with Prism, an AI-powered calendar you talk with. Need to clear your day or meet the CEO? Just ask. Over 2 months we launched an ambitious campaign including a 3D animated video with our friends at{' '}
+            The launch that turned Clockwise into an AI calendar you talk to. I made the case to grow the budget from $10K to $43K for a 3D launch film with Ben and the crew at{' '}
             <a href="https://yatta.studio/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Yatta</a>
-            , and a slew of marketing surfaces: social, paid media, email, 4 pages, blog posts and in-product flows.
+            , then carried the look into the product, nine web pages with Breno on Webflow, and every paid, social, and email surface. Britt, Olivia, and I named it. First two weeks: signups up 17%, new companies up 50%, #2 on Product Hunt.
           </>
         }
         folder="04 Prism"
@@ -115,7 +115,7 @@ export default function WorkPage() {
 
       <ProjectCarousel
         title="Clockwise Rebrand"
-        description="Clockwise grew from a Chrome extension into a must-have productivity tool—but the brand was stuck in the past. I led a full identity refresh: a scalable identity, 40+ redesigned pages, 20+ product surfaces—all in 3 months. The result? A brand as seamless and intuitive as the product itself."
+        description="A full identity overhaul for a Chrome extension that had outgrown itself: too many colors, an outdated logo, and an illustration style only one person could draw. With Charles Martucci and the studio Character, I took it from strategy memo to 40+ pages and 20+ product surfaces. When Character got acquired mid-project, we brought the logo in-house, and Stina Wahlen animated it. It launched alongside a $45M Series C."
         folder="05 Clockwise Rebrand"
         images={["cw-rebrand-14.gif", "cw-rebrand-5.gif", "cw-rebrand-1.png", "cw-rebrand-2.png", "cw-rebrand-3.png", "cw-rebrand-4.png", "cw-rebrand-6.png", "cw-rebrand-7.png", "cw-rebrand-8.png", "cw-rebrand-9.png", "cw-rebrand-10.png", "cw-rebrand-11.png", "cw-rebrand-12.png", "cw-rebrand-13.png"]}
       />
@@ -124,11 +124,11 @@ export default function WorkPage() {
         title="Growlers"
         description={
           <>
-            Friend projects are the best projects. That's why I was thrilled to help my friend Mickey — Coach Mickey — build up a identity for Chill N Fill's softball team. With{' '}
+            Softball team identity for Chill N Fill, and the most fun I&apos;ve had with a mascot. Coach Mickey asked,{' '}
             <a href="https://castironcoding.com/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Lael Tyler</a>
             {' '}and{' '}
             <a href="https://www.trieuberry.com/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Linh Triu</a>
-            , and inspired by the bar's growler-fill roots, we created Juggy the mascot, an anthropomorphic jug ready for catch.
+            {' '}said yes, and the bar&apos;s growler-fill roots handed us Juggy: a sprinting, shade-wearing, beer-sloshing jug with a bat on his shoulder. Juggy has never caught a ball.
           </>
         }
         folder="06 Growlers"
@@ -137,7 +137,7 @@ export default function WorkPage() {
 
       <ProjectCarousel
         title="Zapier"
-        description="At Zapier, I built the brand design team from 0 to 1, creating scalable design systems across email, social, and web while driving brand advocacy and education. Highlights include collaborating with Instrument on a rebrand, partnering with Hobbes on a motion toolkit, and leading an in-house rebrand that later aligned with the official launch."
+        description="Founding brand designer, four and a half years, and a brand function that didn't exist when I got there. I wrote Zapier's first brand guidelines, built the request process and the design systems that kept email, social, and web from waiting on design, and helped hire the second brand designer. Along the way, a rebrand with Instrument and a motion toolkit with Hobbes that powered two video courses and 52+ videos."
         folder="07 Zapier"
         images={["zapier-1.png", "zapier-2.png", "zapier-3.png", "zapier-4.png", "zapier-5.png", "zapier-6.png", "zapier-7.png", "zapier-8.png", "zapier-9.png", "zapier-10.png"]}
       />
@@ -146,9 +146,9 @@ export default function WorkPage() {
         title="Scheduling Links"
         description={
           <>
-            Group scheduling is a nightmare—group emails, Doodle polls, and so much back and forth. But Clockwise Links makes it effortless. We teamed up with{' '}
+            An increasingly absurd back-and-forth between Sarah and her contractor Ryan, who cannot find a time to meet, cut into 15, 30, and 60-second spots for Clockwise Links.{' '}
             <a href="https://www.thirdcoastfilms.com/" target="_blank" rel="noopener noreferrer" className="underline hover:opacity-80">→Third Coast Films</a>
-            {' '}to produce 15, 30, and 60-second paid media spots, handling everything from scriptwriting to remote art direction. Fast, scrappy, and no wasted motion—just like the product itself.
+            {' '}shot it in Austin, I art directed from Portland, and Lulu drew the storyboards. The project came within a few hours of being killed before I cracked the script. Paid clicks came in at $32 against a usual $85.
           </>
         }
         folder="08 Scheduling Links"

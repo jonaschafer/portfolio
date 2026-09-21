@@ -79,7 +79,7 @@ export default function BioPage() {
                   knowledge spurred Jon on a self-taught path towards his future craft.
                 </p>
                 <p>
-                  <span className="-ml-[0.42em]">&ldquo;</span>Jon moved to Portland, Oregon in 2004 searching for further growth and creative
+                  Jon moved to Portland, Oregon in 2004 searching for further growth and creative
                   opportunity. In the decade-plus since, he has worked on design projects of nearly
                   every conceivable scale, method, and medium.&rdquo;
                 </p>
