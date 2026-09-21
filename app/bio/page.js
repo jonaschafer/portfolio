@@ -1,4 +1,4 @@
-import ScrollGrowImage from '../../components/ScrollGrowImage'
+import Image from 'next/image'
 import Navigation from '../../components/Navigation'
 import Footer from '../../components/Footer'
 
@@ -56,22 +56,32 @@ export default function BioPage() {
       {/* Portrait, then bio beside the rail */}
       <div className="bg-[#435938] w-full">
         <section className="min-w-[375px] max-w-[1440px] mx-auto pt-[60px] pb-[40px]">
-          <div className="w-full px-5 md:px-[60px] lg:px-[60px] flex flex-col gap-[60px]">
-            <ScrollGrowImage src="/images/jon.jpg" alt="Jon Schafer" width={1600} height={1200} />
+          <div className="w-full px-5 md:px-[60px] lg:px-[60px]">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] lg:grid-cols-[1fr_300px] gap-x-[60px] lg:gap-x-[100px] gap-y-[40px]">
+              <div className="max-w-[747px]">
+                <Image
+                  src="/images/jon.jpg"
+                  alt="Jon Schafer"
+                  width={1600}
+                  height={1200}
+                  className="w-full h-auto rounded-[10px]"
+                  priority
+                />
+              </div>
+              <div className="hidden md:block" aria-hidden="true" />
 
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] lg:grid-cols-[1fr_300px] gap-[40px] md:gap-[60px] lg:gap-[100px]">
               <div className="flex flex-col gap-[20px] max-w-[747px] font-['Haas_Grot_Disp',_sans-serif] text-[16px] md:text-[19.4px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]">
                 <p>
-                  Jon entered the world of design through the accident of obsession. Despite having
+                  <span className="-ml-[0.42em]">&ldquo;</span>Jon entered the world of design through the accident of obsession. Despite having
                   no formal arts education, he found himself helplessly drawn to Joseph
-                  Mueller-Brockman&apos;s &ldquo;Grid Systems,&rdquo; clean Nordic design, and the
+                  Mueller-Brockman&apos;s &lsquo;Grid Systems,&rsquo; clean Nordic design, and the
                   tireless intricacies of Lance Wyman. His restless exuberance and appetite for
                   knowledge spurred Jon on a self-taught path towards his future craft.
                 </p>
                 <p>
-                  Jon moved to Portland, Oregon in 2004 searching for further growth and creative
+                  <span className="-ml-[0.42em]">&ldquo;</span>Jon moved to Portland, Oregon in 2004 searching for further growth and creative
                   opportunity. In the decade-plus since, he has worked on design projects of nearly
-                  every conceivable scale, method, and medium.
+                  every conceivable scale, method, and medium.&rdquo;
                 </p>
                 <p className="text-[#FAFAFA]/80 text-[13.4px] md:text-[16px]">
                   Bio by{' '}
