@@ -42,5 +42,3 @@ This is the approach I bring to creative direction: identifying where organizati
 **Company:** ClassDojo (EdTech, Series D, 50M users)
 
 ---
-
-*This case study is part of my creative direction work helping founders translate brand instincts into decisions their teams can execute. [Learn more about working together →](/advising)*

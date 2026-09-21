@@ -6,7 +6,7 @@ import Footer from '../../components/Footer'
 
 export const metadata = {
   title: 'Jon Schafer — Work',
-  description: 'Creative Director. Brand identity, design systems, and strategic design.',
+  description: 'Brand strategy, identity systems, and creative direction.',
 }
 
 const SHOW_DOJO_REBRAND = false

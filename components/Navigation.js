@@ -47,10 +47,10 @@ export default function Navigation({
   )
 
   const isTransparent = backgroundColor === 'transparent'
-  const hasActivePage = pathname === '/work' || pathname?.startsWith('/play') || pathname?.startsWith('/advising')
+  const hasActivePage = pathname === '/work' || pathname?.startsWith('/play') || pathname?.startsWith('/bio')
   const workActive = pathname === '/work'
   const playActive = pathname?.startsWith('/play')
-  const advisingActive = pathname?.startsWith('/advising')
+  const bioActive = pathname?.startsWith('/bio')
   const isHomepage = pathname === '/'
   const navLinkOpacity = (isActive) => (isActive || !hasActivePage || isHomepage) ? 'opacity-100' : 'opacity-50'
 
@@ -90,11 +90,11 @@ export default function Navigation({
               Play
             </Link>
             <Link 
-              href="/advising" 
-              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${navLinkOpacity(advisingActive)}`}
+              href="/bio" 
+              className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[16px] tracking-[0.16px] whitespace-nowrap hover:opacity-100 transition-opacity ${navLinkOpacity(bioActive)}`}
               style={{ color: textColor }}
             >
-              Advising
+              Bio
             </Link>
             <a 
               href="mailto:jonaschafer+website@gmail.com?subject=Hello%20from%20portfolio"
@@ -165,12 +165,12 @@ export default function Navigation({
                 Play
               </Link>
               <Link 
-                href="/advising" 
-                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${navLinkOpacity(advisingActive)}`}
+                href="/bio" 
+                className={`font-['Haas_Grot_Disp',_sans-serif] leading-[1.4] text-[32px] tracking-[0.16px] hover:opacity-100 transition-opacity ${navLinkOpacity(bioActive)}`}
                 style={{ color: textColor }}
                 onClick={toggleMenu}
               >
-                Advising
+                Bio
               </Link>
               <a 
                 href="mailto:jonaschafer+website@gmail.com?subject=Hello%20from%20portfolio"

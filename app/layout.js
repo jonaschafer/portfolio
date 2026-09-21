@@ -1,8 +1,8 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'Jon Schafer - Creative Director',
-  description: 'Portfolio of Jon Schafer, Creative Director at ClassDojo',
+  title: 'Jon Schafer',
+  description: 'Jon leads brand at ClassDojo. Brand strategy, identity systems, and creative direction.',
 }
 
 export default function RootLayout({ children }) {
