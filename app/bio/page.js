@@ -1,10 +1,10 @@
-import Image from 'next/image'
+import ScrollGrowImage from '../../components/ScrollGrowImage'
 import Navigation from '../../components/Navigation'
 import Footer from '../../components/Footer'
 
 export const metadata = {
   title: 'Jon Schafer — Bio',
-  description: 'Jon leads brand at ClassDojo. Twenty-two years of identities, systems, and the teams that run them.',
+  description: 'Jon leads brand at ClassDojo. Visual identities, design systems, and the creative team behind them.',
 }
 
 const ROLES = [
@@ -28,18 +28,17 @@ const SURFACES = [
   'Product', 'System design', 'Ops', 'Storyboarding', 'Education',
 ]
 
-
-function ListColumn({ label, items }) {
+function RailList({ label, items }) {
   return (
-    <div className="flex flex-col gap-[20px]">
-      <h2 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] text-[#FAFAFA] leading-[1.2] tracking-[0.31px]">
+    <div className="flex flex-col gap-[12px]">
+      <p className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] leading-[1.4] tracking-[0.16px] text-[#FAFAFA]/60">
         {label}
-      </h2>
-      <ul className="flex flex-col gap-[8px]">
+      </p>
+      <ul className="flex flex-col gap-[4px]">
         {items.map((item) => (
           <li
             key={item}
-            className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] md:text-[19.4px] leading-[1.4] tracking-[0.167px] text-[#FAFAFA]"
+            className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] leading-[1.4] tracking-[0.16px] text-[#FAFAFA]"
           >
             {item}
           </li>
@@ -54,44 +53,44 @@ export default function BioPage() {
     <main className="bg-[#435938]">
       <Navigation />
 
-      {/* Portrait + bio */}
+      {/* Portrait, then bio beside the rail */}
       <div className="bg-[#435938] w-full">
         <section className="min-w-[375px] max-w-[1440px] mx-auto pt-[60px] pb-[40px]">
-          <div className="w-full px-5 md:px-[60px] lg:px-[60px] flex flex-col gap-[40px]">
-            <Image
-              src="/images/jon.jpg"
-              alt="Jon Schafer"
-              width={1600}
-              height={1200}
-              className="w-full h-auto rounded-[10px]"
-              priority
-            />
+          <div className="w-full px-5 md:px-[60px] lg:px-[60px] flex flex-col gap-[60px]">
+            <ScrollGrowImage src="/images/jon.jpg" alt="Jon Schafer" width={1600} height={1200} />
 
-            <div className="flex flex-col gap-[20px] max-w-[335px] md:max-w-[648px] lg:max-w-[747px] font-['Haas_Grot_Disp',_sans-serif] text-[16px] md:text-[19.4px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]">
-              <p>
-                Jon entered the world of design through the accident of obsession. Despite having
-                no formal arts education, he found himself helplessly drawn to Joseph
-                Mueller-Brockman&apos;s &ldquo;Grid Systems,&rdquo; clean Nordic design, and the
-                tireless intricacies of Lance Wyman. His restless exuberance and appetite for
-                knowledge spurred Jon on a self-taught path towards his future craft.
-              </p>
-              <p>
-                Jon moved to Portland, Oregon in 2004 searching for further growth and creative
-                opportunity. In the decade-plus since, he has worked on design projects of nearly
-                every conceivable scale, method, and medium.
-              </p>
-              <p className="text-[#FAFAFA]/80 text-[13.4px] md:text-[16px]">
-                Bio by{' '}
-                <a
-                  href="https://www.linkedin.com/in/laeltyler/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity"
-                >
-                  Lael Tyler
-                </a>
-                .
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] lg:grid-cols-[1fr_300px] gap-[40px] md:gap-[60px] lg:gap-[100px]">
+              <div className="flex flex-col gap-[20px] max-w-[747px] font-['Haas_Grot_Disp',_sans-serif] text-[16px] md:text-[19.4px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]">
+                <p>
+                  Jon entered the world of design through the accident of obsession. Despite having
+                  no formal arts education, he found himself helplessly drawn to Joseph
+                  Mueller-Brockman&apos;s &ldquo;Grid Systems,&rdquo; clean Nordic design, and the
+                  tireless intricacies of Lance Wyman. His restless exuberance and appetite for
+                  knowledge spurred Jon on a self-taught path towards his future craft.
+                </p>
+                <p>
+                  Jon moved to Portland, Oregon in 2004 searching for further growth and creative
+                  opportunity. In the decade-plus since, he has worked on design projects of nearly
+                  every conceivable scale, method, and medium.
+                </p>
+                <p className="text-[#FAFAFA]/80 text-[13.4px] md:text-[16px]">
+                  Bio by{' '}
+                  <a
+                    href="https://www.linkedin.com/in/laeltyler/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity"
+                  >
+                    Lael Tyler
+                  </a>
+                  .
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-[40px]">
+                <RailList label="hats worn" items={HATS} />
+                <RailList label="surfaces" items={SURFACES} />
+              </div>
             </div>
           </div>
         </section>
@@ -123,18 +122,6 @@ export default function BioPage() {
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
-      </div>
-
-      {/* Hats and surfaces */}
-      <div className="bg-[#435938] w-full">
-        <section className="min-w-[375px] max-w-[1440px] mx-auto pt-[50px] pb-[60px]">
-          <div className="w-full px-5 md:px-[60px] lg:px-[60px]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[60px]">
-              <ListColumn label="Hats worn" items={HATS} />
-              <ListColumn label="Surfaces" items={SURFACES} />
-            </div>
           </div>
         </section>
       </div>

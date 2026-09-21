@@ -222,6 +222,15 @@ Restrained and almost entirely opacity.
 - Carousel slide: `transform 0.5s ease-out`, with the transition disabled for the
   wrap-around jump so the loop is seamless
 - Advising cards: `transition-all duration-200`
+- **Scroll-grow image** (`components/ScrollGrowImage.js`, `/bio` portrait): the one
+  motion in the register that isn't opacity. The image starts centered at 40% of its
+  container (70% under `md`) and grows to full width over the first half-viewport of
+  scroll, smoothstep eased, after dawn-llc.webflow.io/about. It animates `width` rather
+  than `transform` so the whole photo stays visible instead of cropping. Scroll anchoring
+  is switched off while it's mounted, because anchoring nudges `scrollY` to hold the text
+  below in place as the image grows, which feeds back into more growth. Honors
+  `prefers-reduced-motion` by rendering full width. Added September 2026, when recruiter
+  feedback made interaction and motion a requirement rather than a nice-to-have.
 
 Anything beyond this in the repo (`mma-btn-press`, the `git-*` keyframes in
 `app/globals.css`) belongs to `/mma` and `/play/git`, not to the site register.

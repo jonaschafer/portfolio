@@ -14,7 +14,7 @@ export default function IntroSection() {
             >
               ClassDojo
             </a>
-            <span>, where I build visual identities, craft design systems, and lead the creative team that bring them to life. Based in rainy Portland. 🌧️</span>
+            <span>, where I build visual identities, craft design systems, and lead the creative team that brings them to life. Based in rainy Portland. 🌧️</span>
           </p>
         </div>
       </section>
