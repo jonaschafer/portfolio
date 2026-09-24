@@ -19,7 +19,8 @@
 // break the layout (this happened twice: once with `.pm`, once with `.surf`).
 import localFont from 'next/font/local'
 import './preso.css'
-import { SURFACES, surfaceCounts, priorityCounts, PRIORITY } from './surfaces'
+import { SURFACES, surfaceCounts, priorityCounts, PRIORITY, PHOTOS } from './surfaces'
+import AUDIT from './data.json'
 import { IA_RATIONALE, IA_PROBLEMS, IA_SOLUTIONS, IA_CLOSING } from './ia'
 import {
   FLOW_INTRO, FLOW_REALITY, FLOW_BASELINE, FLOW_BASELINE_NOTE,
@@ -78,6 +79,25 @@ function Finding({ text }) {
   )
 }
 
+// Photo keys on a row resolve against the audit export's images plus the
+// hand-added ones in surfaces.js. Thumbs sit under the surface name; clicking
+// one opens the <dialog> lightbox (PHOTO_SCRIPT), which steps through that
+// row's photos with the arrow keys.
+const IMAGES = { ...AUDIT.images, ...PHOTOS }
+function Photos({ keys, label }) {
+  const imgs = (keys || []).map((k) => IMAGES[k]).filter(Boolean)
+  if (!imgs.length) return null
+  return (
+    <div className="amthumbs">
+      {imgs.map((img, i) => (
+        <button key={img.src} type="button" className="amthumb" data-full={img.full} data-cap={img.caption || ''} aria-label={`${label}: ${img.alt}`}>
+          <img src={img.src} alt="" loading="lazy" width={img.w} height={img.h} />
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function groupBy(rows, key) {
   const map = new Map()
   for (const r of rows) {
@@ -116,6 +136,32 @@ const TABLE_SCRIPT = `(function(){
   pri.forEach(function(b){ b.addEventListener('click', function(){ state.pri = state.pri === b.dataset.p ? 'all' : b.dataset.p; apply(); }); });
   try { state.own = localStorage.getItem('amap-surface-filter') || 'all'; state.pri = localStorage.getItem('amap-priority-filter') || 'all'; } catch (e) {}
   apply();
+})();`
+
+const PHOTO_SCRIPT = `(function(){
+  var dlg = document.querySelector('.amap .amlight'); if (!dlg) return;
+  var img = dlg.querySelector('img'), cap = dlg.querySelector('figcaption'), count = dlg.querySelector('.amcount');
+  var set = [], at = 0;
+  function show(i){
+    at = (i + set.length) % set.length; var b = set[at];
+    img.src = b.dataset.full; img.alt = b.getAttribute('aria-label');
+    cap.textContent = b.dataset.cap; count.textContent = set.length > 1 ? (at + 1) + ' / ' + set.length : '';
+    dlg.querySelectorAll('.amnav').forEach(function(n){ n.hidden = set.length < 2; });
+  }
+  document.querySelectorAll('.amap .amthumb').forEach(function(b){
+    b.addEventListener('click', function(){
+      set = Array.prototype.slice.call(b.parentNode.querySelectorAll('.amthumb'));
+      show(set.indexOf(b)); dlg.showModal();
+    });
+  });
+  dlg.querySelector('.amprev').addEventListener('click', function(){ show(at - 1); });
+  dlg.querySelector('.amnext').addEventListener('click', function(){ show(at + 1); });
+  dlg.querySelector('.amclose').addEventListener('click', function(){ dlg.close(); });
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowLeft') show(at - 1);
+    if (e.key === 'ArrowRight') show(at + 1);
+  });
 })();`
 
 const TABS_SCRIPT = `(function(){
@@ -206,7 +252,7 @@ export default function AuditPage() {
                     return (
                       <tr key={r.surface} data-sow={sow.value} data-pri={r.priority || 'none'} suppressHydrationWarning>
                         <td className="rn">{rn}</td>
-                        <td className="term">{r.surface}</td>
+                        <td className="term">{r.surface}<Photos keys={r.photos} label={r.surface} /></td>
                         <td className="what">{r.what}</td>
                         <td className="finding"><Finding text={r.finding} /></td>
                         <td><span className={sow.chip}>{sow.label}</span></td>
@@ -304,7 +350,20 @@ export default function AuditPage() {
           <span>Sources: the audit spreadsheet, Slack, Zoom and meeting notes, competitor and search research, and public reviews (G2, Reddit).</span>
         </div>
       </div>
+      <dialog className="amlight" aria-label="Photo">
+        <figure>
+          <img src="" alt="" />
+          <figcaption></figcaption>
+        </figure>
+        <div className="ambar">
+          <span className="amcount"></span>
+          <button type="button" className="amnav amprev" aria-label="Previous photo">←</button>
+          <button type="button" className="amnav amnext" aria-label="Next photo">→</button>
+          <button type="button" className="amclose" aria-label="Close">Close</button>
+        </div>
+      </dialog>
       <script dangerouslySetInnerHTML={{ __html: TABLE_SCRIPT }} />
+      <script dangerouslySetInnerHTML={{ __html: PHOTO_SCRIPT }} />
       <script dangerouslySetInnerHTML={{ __html: TABS_SCRIPT }} />
     </div>
   )
