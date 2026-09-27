@@ -14,6 +14,10 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // The MMA story + recovery map are retired in favor of /mma/food. Code kept in app/mma and components/.
+      { source: '/mma', destination: '/mma/food', permanent: false },
+      { source: '/mma/map', destination: '/mma/food', permanent: false },
+      { source: '/mma/map/:path*', destination: '/mma/food', permanent: false },
       { source: '/v2', destination: '/', permanent: true },
       { source: '/v2/', destination: '/', permanent: true },
       { source: '/dana-plan', destination: '/dana-plan-v2', permanent: true },
@@ -44,6 +48,8 @@ const nextConfig = {
         source: '/play/prototypes/:folder/:subfolder',
         destination: '/play/prototypes/:folder/:subfolder/index.html',
       },
+      // Jaw recovery food + care plan: static page in public/mma/food (gated in middleware)
+      { source: '/mma/food', destination: '/mma/food/index.html' },
       // (Redirects send /dana-plan and /dana-plan/ to /dana-plan-v2; static files under /dana-plan/* still served from public.)
     ]
   },

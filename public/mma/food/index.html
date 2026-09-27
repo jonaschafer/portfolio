@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Jaw Kitchen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F3F2EE; --ink:#141413; --stone:#8F8B80; --muted:#5C5952;
+  --card:#E6E4DE; --line:#D6D3CB; --pink:#F5A8EE; --pink-ink:#3B0E37;
+  --green:#2E9E57; --red:#C4382B; --block:#141413; --block-ink:#F3F2EE; --block-muted:#9E9A90;
+  --sans:"Instrument Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#121211; --ink:#F1EFEA; --stone:#7C786F; --muted:#A8A49A;
+    --card:#1F1E1C; --line:#2E2D2A; --pink:#E896DF; --pink-ink:#2A0A27;
+    --green:#4CC27A; --red:#F07A6E; --block:#E9E6DF; --block-ink:#141413; --block-muted:#5C5952;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#121211; --ink:#F1EFEA; --stone:#7C786F; --muted:#A8A49A;
+  --card:#1F1E1C; --line:#2E2D2A; --pink:#E896DF; --pink-ink:#2A0A27;
+  --green:#4CC27A; --red:#F07A6E; --block:#E9E6DF; --block-ink:#141413; --block-muted:#5C5952;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:19px;line-height:1.4;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding-inline:20px;padding-block:0 96px}
+.mono{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+h1,h2,h3{margin:0;font-weight:500;text-wrap:balance}
+p{margin:0}
+button,input{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+a{color:inherit}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:14px 10px;border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button,.nav a{border:0;background:none;padding:9px 13px;border-radius:999px;font-size:16px;font-weight:500;white-space:nowrap;cursor:pointer;color:var(--muted);text-decoration:none}
+.nav button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.nav .clinic{color:var(--red)}
+.nav .clinic[aria-selected="true"]{background:var(--red);color:var(--paper)}
+
+/* day strip */
+.strip{display:flex;gap:6px;overflow-x:auto;padding-block:16px 4px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:0;background:var(--card);border-radius:14px;min-width:54px;padding:8px 8px 7px;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer}
+.chip b{font-weight:500;font-size:20px;font-variant-numeric:tabular-nums}
+.chip span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.chip[aria-current="true"]{background:var(--ink);color:var(--paper)}
+.chip[aria-current="true"] span{color:var(--paper);opacity:.7}
+.chip.today{box-shadow:inset 0 0 0 2px var(--green)}
+.wk{flex:0 0 auto;align-self:center;font-size:11px;color:var(--muted);padding-inline:4px 2px;writing-mode:vertical-rl;transform:rotate(180deg)}
+
+/* hero */
+.hero{padding-block:28px 8px}
+.hero .eyebrow{color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between;gap:12px}
+.big{font-size:clamp(46px,13vw,92px);line-height:.95;letter-spacing:-.035em;font-weight:500}
+.big.stone{color:var(--stone)}
+.say{font-size:clamp(30px,8.2vw,56px);line-height:1.02;letter-spacing:-.03em;color:var(--stone);margin-top:10px;font-weight:500}
+.stepper{display:flex;gap:10px;margin-top:22px}
+.stepper button{border:1px solid var(--line);background:none;border-radius:999px;padding:10px 18px;font-size:16px;cursor:pointer}
+
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-block:26px 8px}
+.num{background:var(--card);border-radius:18px;padding:14px 14px 12px}
+.num b{display:block;font-size:clamp(24px,6.4vw,34px);font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.05}
+.num span{display:block;margin-top:6px;font-size:14px;color:var(--muted);line-height:1.25}
+
+.sec{margin-top:40px}
+.sec > h2{font-size:15px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500;padding-bottom:10px;border-bottom:1px solid var(--ink);display:flex;justify-content:space-between;gap:10px}
+.sec > h2 .count{color:var(--ink)}
+
+/* meals + checkable rows */
+.meal{display:grid;grid-template-columns:70px 1fr auto;gap:4px 14px;padding-block:18px;border-bottom:1px solid var(--line);cursor:pointer;align-items:start}
+.meal .t{font-family:var(--mono);font-size:14px;padding-top:6px;color:var(--muted);font-variant-numeric:tabular-nums}
+.meal h3{font-size:25px;letter-spacing:-.015em;line-height:1.12}
+.meal .how{grid-column:2 / 4;color:var(--muted);font-size:18px;line-height:1.38}
+.meal .p{font-family:var(--mono);font-size:14px;background:var(--card);border-radius:999px;padding:5px 10px;white-space:nowrap;margin-top:2px}
+.meds{grid-column:2 / 4;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pill{background:var(--pink);color:var(--pink-ink);border-radius:999px;padding:6px 12px;font-family:var(--mono);font-size:13px;letter-spacing:.03em}
+.done h3,.done > p{text-decoration:line-through;text-decoration-thickness:2px;color:var(--stone)}
+.done .t::before,.done .tag::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);margin-right:6px;vertical-align:1px}
+.note{font-size:16px;color:var(--muted);margin-top:12px;line-height:1.4}
+
+.do{list-style:none;margin:0;padding:0}
+.do li{display:grid;grid-template-columns:100px 1fr;gap:14px;padding-block:14px;border-bottom:1px solid var(--line)}
+.do li[role="button"]{cursor:pointer}
+.do .tag{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:5px}
+.do p{font-size:20px;line-height:1.35}
+.do small{display:block;font-size:16px;color:var(--muted);margin-top:4px;text-decoration:none}
+.do li.key > p{font-weight:500}
+.medrow .tag{font-size:14px;letter-spacing:.02em;text-transform:none;font-variant-numeric:tabular-nums}
+.inline-log{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-weight:400}
+
+.rules{background:var(--block);color:var(--block-ink);border-radius:26px;padding:24px 22px 10px;margin-top:40px}
+.rules h2{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--block-muted);font-weight:500;margin-bottom:6px}
+.rule{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding-block:14px;border-bottom:1px solid color-mix(in srgb,var(--block-ink) 18%,transparent)}
+.rule:last-child{border-bottom:0}
+.rule b{font-weight:500;font-size:22px;letter-spacing:-.01em}
+.rule .until{grid-column:1;color:var(--block-muted);font-size:16px}
+.rule .left{grid-row:1 / 3;grid-column:2;text-align:right;font-variant-numeric:tabular-nums;font-size:30px;font-weight:500;letter-spacing:-.02em;line-height:1}
+.rule .left small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--block-muted);margin-top:4px}
+.rule.ok b{color:var(--block-muted);text-decoration:line-through}
+
+.lead{font-size:clamp(30px,8vw,52px);line-height:1.03;letter-spacing:-.03em;font-weight:500;padding-block:30px 6px}
+.lead .stone{color:var(--stone)}
+.card{background:var(--card);border-radius:22px;padding:20px 20px 16px;margin-top:12px;break-inside:avoid}
+.card h3{font-size:24px;letter-spacing:-.015em}
+.card .sub{color:var(--muted);font-size:16px;margin-top:4px}
+.card p{margin-top:10px}
+.card ul,.card ol{margin:10px 0 0;padding-left:22px}
+.card li{margin-top:6px}
+table.w{width:100%;border-collapse:collapse;margin-top:12px;font-size:18px}
+table.w td{padding:8px 0;border-top:1px solid var(--line);vertical-align:top}
+table.w td:last-child{text-align:right;font-family:var(--mono);font-size:15px;white-space:nowrap;padding-left:12px;font-variant-numeric:tabular-nums}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cols > .card{margin-top:0}
+.cols{margin-top:12px}
+@media (max-width:560px){.cols{grid-template-columns:1fr}}
+
+/* plan */
+.calrow{display:grid;grid-template-columns:96px 44px 1fr;gap:12px;align-items:baseline;padding-block:12px;border-bottom:1px solid var(--line);width:100%;text-align:left;background:none;border-inline:0;border-top:0;cursor:pointer;font-size:18px}
+.calrow .d{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.calrow .l{font-size:26px;font-weight:500;letter-spacing:-.02em}
+.calrow .x small{display:block;color:var(--muted);font-size:15px}
+.ms{display:grid;grid-template-columns:96px 1fr;gap:14px;padding-block:16px;border-bottom:1px solid var(--line)}
+.ms .d{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:5px;line-height:1.35}
+.ms h3{font-size:23px;letter-spacing:-.015em;line-height:1.15}
+.ms p{color:var(--muted);font-size:17px;margin-top:4px}
+.ms .kinds{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.kind{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:4px 9px;background:var(--card)}
+.kind.visit{background:var(--pink);color:var(--pink-ink)}
+.ms.past h3{color:var(--stone)}
+.ms.later{opacity:.75}
+.menu-card .row{display:grid;grid-template-columns:62px 1fr auto;gap:10px;padding-block:9px;border-top:1px solid var(--line);font-size:18px}
+.menu-card .row .t{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:3px}
+.menu-card .row .g{font-family:var(--mono);font-size:14px}
+.menu-card .letter{font-size:64px;line-height:.9;letter-spacing:-.04em;font-weight:500;float:right;color:var(--stone)}
+
+/* shopping */
+.shop{list-style:none;margin:10px 0 0;padding:0}
+.shop li{border-top:1px solid var(--line)}
+.shop label{display:grid;grid-template-columns:28px 1fr auto;gap:12px;padding-block:12px;cursor:pointer;align-items:start}
+.shop input{width:22px;height:22px;margin:3px 0 0;accent-color:var(--green)}
+.shop .q{font-family:var(--mono);font-size:14px;color:var(--muted);white-space:nowrap;padding-top:3px}
+.shop small{display:block;color:var(--muted);font-size:15px;margin-top:2px}
+.shop input:checked ~ span{color:var(--stone);text-decoration:line-through}
+
+/* clinic */
+.phone{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding-block:18px;border-bottom:1px solid var(--line)}
+.phone .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);grid-column:1 / 3}
+.phone a{font-size:clamp(34px,9.5vw,52px);font-weight:500;letter-spacing:-.03em;text-decoration:none;font-variant-numeric:tabular-nums;line-height:1.05}
+.phone .when{color:var(--muted);font-size:17px;grid-column:1 / 3}
+.btn{border:1px solid var(--line);background:none;border-radius:999px;padding:9px 16px;font-size:15px;cursor:pointer;white-space:nowrap}
+.btn.solid{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.alarm{background:var(--red);color:#fff;border-radius:22px;padding:20px;margin-top:12px}
+.alarm h3{font-size:24px}
+.alarm ul{margin:10px 0 0;padding-left:22px}.alarm li{margin-top:6px}
+
+/* settings */
+.med{background:var(--card);border-radius:22px;padding:18px;margin-top:12px}
+.med.off{opacity:.55}
+.med .top{display:flex;gap:12px;align-items:center}
+.med input[type="text"]{width:100%;border:0;border-bottom:1px solid var(--line);background:none;padding:6px 0;border-radius:0}
+.med .name{font-size:24px;font-weight:500;letter-spacing:-.015em}
+.med .notein{font-size:17px;color:var(--muted);margin-top:4px}
+.field{margin-top:14px}
+.field > span{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.days button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;font-size:15px;font-weight:500}
+.days button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.times{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.time{display:flex;align-items:center;gap:2px;background:var(--paper);border-radius:12px;padding:4px 4px 4px 10px}
+.time input{border:0;background:none;font-size:18px;font-variant-numeric:tabular-nums;padding:4px 0}
+.time button{border:0;background:none;cursor:pointer;font-size:20px;padding:0 8px;color:var(--muted)}
+.switch{position:relative;flex:0 0 auto;width:52px;height:30px;border-radius:99px;border:0;background:var(--line);cursor:pointer}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--paper);transition:transform .15s}
+.switch[aria-checked="true"]{background:var(--green)}
+.switch[aria-checked="true"]::after{transform:translateX(22px)}
+.medfoot{display:flex;justify-content:space-between;margin-top:16px;gap:10px}
+.danger{color:var(--red)}
+.numin{font:inherit;font-size:20px;width:120px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.wlog{margin-top:10px}
+.wrow{display:grid;grid-template-columns:110px 1fr auto auto;gap:12px;align-items:baseline;padding-block:12px;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.wrow .dt{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.wrow b{font-weight:500;font-size:22px}
+.wrow .dl{font-family:var(--mono);font-size:14px;color:var(--muted)}
+.wrow .dl.warn{color:var(--red)}
+.wrow button{border:0;background:none;color:var(--muted);cursor:pointer;font-size:18px}
+.sync{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted);margin-top:14px}
+.cta{display:inline-block;margin-top:18px;border:0;background:var(--ink);color:var(--paper);padding:14px 20px;border-radius:999px;font-size:17px;cursor:pointer}
+
+.print-only{display:none}
+@media print{
+  :root{--paper:#fff;--card:#F1F0EC}
+  body{font-size:14px}
+  .nav,.no-print,#view-today,#view-settings{display:none!important}
+  section.view{display:block!important}
+  section.view + section.view{break-before:page}
+  .print-only{display:block}
+  .lead{font-size:34px;padding-block:10px 4px}
+  .calrow{padding-block:5px;font-size:14px}.calrow .l{font-size:18px}
+  .menu-card .row{font-size:14px;padding-block:5px}
+  table.w{font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){.switch::after{transition:none}}
+</style>
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <nav class="nav" role="tablist" aria-label="Sections">
+    <button role="tab" data-view="today" aria-selected="true">Day</button>
+    <button role="tab" data-view="plan" aria-selected="false">Plan</button>
+    <button role="tab" data-view="recipes" aria-selected="false">Recipes</button>
+    <button role="tab" data-view="shop" aria-selected="false">Shopping</button>
+    <button role="tab" data-view="clinic" aria-selected="false" class="clinic">Clinic</button>
+    <button role="tab" data-view="settings" aria-selected="false">Settings</button>
+    <a href="/mma/map">Map ↗</a>
+    <a href="https://claude.ai/artifact/2PtWUvoejUGGtCNcY7wBgQ" target="_blank" rel="noopener">Friends ↗</a>
+  </nav>
+
+  <!-- DAY -->
+  <section class="view" id="view-today">
+    <div class="strip" id="strip" aria-label="Pick a day"></div>
+    <div id="day"></div>
+  </section>
+
+  <!-- PLAN -->
+  <section class="view" id="view-plan" hidden>
+    <p class="print-only mono" style="padding-top:8px">Jaw kitchen · first 6 weeks · surgery Fri Oct 2</p>
+    <h2 class="lead">Six weeks, nine menus. <span class="stone">Rotate them and stop thinking about food.</span></h2>
+    <div class="cols">
+      <div class="card"><h3>Days 1–3</h3><p class="sub">Sat 10/3 to Mon 10/5</p><p>Survival menu. Ready-made, thin, one minute or less. Bands are on and swelling peaks.</p></div>
+      <div class="card"><h3>Days 4–9</h3><p class="sub">Tue 10/6 to Sun 10/11</p><p>Liquid rotation A, B, C. Pourable through day 7 while bands stay on. Thicker is fine once bands come out to eat.</p></div>
+      <div class="card"><h3>Days 10–21</h3><p class="sub">Mon 10/12 to Fri 10/23</p><p>Soft rotation D, E, F. Nothing you need to chew. Mash it with a fork first.</p></div>
+      <div class="card"><h3>Days 22–42</h3><p class="sub">Sat 10/24 to Fri 11/13</p><p>Rotation G, H, I. Real cooked meals: mac and cheese, dal, polenta with braised beef, salmon. Still no chewing until the 6-week visit.</p></div>
+    </div>
+    <div class="sec"><h2>Milestones</h2><div id="milestones"></div></div>
+    <div class="sec"><h2>Calendar</h2><div id="cal"></div></div>
+    <div class="sec"><h2>The menus</h2><div id="menus"></div></div>
+  </section>
+
+  <!-- RECIPES -->
+  <section class="view" id="view-recipes" hidden>
+    <h2 class="lead">Everything by weight. <span class="stone">Tare the cup, pour to the number.</span></h2>
+    <p class="note">Protein numbers are estimates. Check the labels on your Fairlife and strawberry drinks. "Milk" means regular 2% (about 8 g protein per 250 g). Whey is Isopure unflavored, about 25 g protein a scoop. Everything warm is warm, never hot: your lips are numb and can burn without you feeling it. Test on your inner wrist.</p>
+
+    <div class="sec"><h2>The pour test</h2>
+      <div class="card"><h3>How thin is thin enough?</h3>
+        <p>Days 1–7 your bands hold your teeth together, so food has to flow through the gaps. It should run off a spoon in a steady stream, like heavy cream or kefir. If it mounds on the spoon, add 50 g milk and stir.</p>
+        <p>From about day 8, bands come out to eat, so spoonable thickness (yogurt, pudding) is fine.</p>
+      </div>
+    </div>
+
+    <div class="sec"><h2>Drinkable Greek yogurt</h2>
+      <div class="card"><h3>Ratio 1 : 1 by weight</h3><p class="sub">Whisk or shake in a jar. About 20 g protein.</p>
+        <table class="w">
+          <tr><td>Greek yogurt, plain</td><td>150 g</td></tr>
+          <tr><td>Milk</td><td>150 g</td></tr>
+          <tr><td>Honey or maple (optional)</td><td>10 g</td></tr>
+        </table>
+        <p><b>Days 1–7:</b> go 1 : 1.5 (150 g yogurt, 225 g milk). <b>Day 8+:</b> 1 : 1, or thicker if you like it. Stir in ¼ scoop whey for +6 g; it disappears in cold yogurt.</p>
+      </div>
+    </div>
+
+    <div class="sec"><h2>Protein oatmeal</h2>
+      <div class="cols">
+        <div class="card"><h3>Sippable (days 1–9)</h3><p class="sub">About 21 g protein with a 10–12 g packet.</p>
+          <table class="w">
+            <tr><td>Protein oatmeal packet</td><td>1</td></tr>
+            <tr><td>Milk, warmed</td><td>300 g</td></tr>
+          </table>
+          <ol><li>Stir packet into 200 g warm milk. Rest 3 min so the oats soften.</li><li>Add the other 100 g milk. Blend 20 sec (Beast is perfect here).</li><li>Pour test. Add milk until it runs.</li></ol>
+        </div>
+        <div class="card"><h3>Soft (day 10+)</h3><p class="sub">About 17 g protein.</p>
+          <table class="w">
+            <tr><td>Protein oatmeal packet</td><td>1</td></tr>
+            <tr><td>Milk</td><td>180 g</td></tr>
+          </table>
+          <ol><li>Microwave in a big bowl 60 sec, stir, 30–60 sec more. Milk boils over fast.</li><li>Rest 2 min. Cook it past done so there's nothing to chew.</li><li>Loosen with a splash of milk.</li></ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec"><h2>Bone broth</h2>
+      <div class="card"><h3>One mug = 300 g</h3><p class="sub">About 10 oz. Homemade broth is roughly 6–9 g protein a mug; call it 7.</p>
+        <ol>
+          <li>Put the mug on the scale, tare, pour 300 g.</li>
+          <li>Microwave until steaming, then let it sit 2 min. Warm, not hot.</li>
+          <li>Pinch of salt. For a protein boost whisk in 1 scoop collagen (about 9 g more). Isopure says it dissolves in hot liquid too; if it clumps, add it once the broth is warm, not steaming.</li>
+        </ol>
+        <p>Aim for 1–2 mugs a day. It's savory, it counts toward fluid, and it's the break from sweet stuff. Move a freezer container to the fridge the night before; thawed broth keeps about 4 days.</p>
+      </div>
+      <div class="card"><h3>Broth potato soup</h3><p class="sub">The savory one you'll actually want. About 18 g protein with collagen.</p>
+        <table class="w">
+          <tr><td>Hot bone broth</td><td>300 g</td></tr>
+          <tr><td>Instant potato flakes</td><td>25 g</td></tr>
+          <tr><td>Butter</td><td>10 g</td></tr>
+          <tr><td>Collagen</td><td>1 scoop</td></tr>
+        </table>
+        <p>Whisk flakes into the hot broth, rest 1 min, whisk again. Days 1–7 use 15–20 g flakes so it pours. Later, go up to 40 g for a thick soup.</p>
+      </div>
+    </div>
+
+    <div class="sec"><h2>Smoothies</h2>
+      <div class="card"><h3>Beast rule</h3>
+        <p>Load in this order: liquid, then yogurt and powder, then frozen fruit on top. Use at least 2 g liquid for every 1 g of frozen fruit. The recipes below are already about 3 : 1. If the blade seizes, add 50 g milk and pulse. Letting frozen fruit sit 10 min on the counter helps a lot.</p>
+        <p>The Vitamix grinds berry seeds finer than the Beast. For days 1–7 use the Vitamix for berry, or stick to mango, which blends silky. Seeds love braces; rinse after.</p>
+      </div>
+      <div class="cols">
+        <div class="card"><h3>Berry</h3><p class="sub">One serving, about 430 g. About 31 g protein.</p>
+          <table class="w">
+            <tr><td>Milk</td><td>250 g</td></tr>
+            <tr><td>Greek yogurt</td><td>100 g</td></tr>
+            <tr><td>Whey isolate</td><td>½ scoop</td></tr>
+            <tr><td>Honey</td><td>10 g</td></tr>
+            <tr><td>Spinach cube</td><td>1</td></tr>
+            <tr><td>Frozen strawberries</td><td>80 g</td></tr>
+            <tr><td>Frozen blueberries</td><td>40 g</td></tr>
+          </table>
+        </div>
+        <div class="card"><h3>Mango</h3><p class="sub">One serving, about 430 g. About 31 g protein.</p>
+          <table class="w">
+            <tr><td>Milk</td><td>250 g</td></tr>
+            <tr><td>Greek yogurt</td><td>100 g</td></tr>
+            <tr><td>Whey isolate</td><td>½ scoop</td></tr>
+            <tr><td>Honey</td><td>5 g</td></tr>
+            <tr><td>Spinach cube</td><td>1</td></tr>
+            <tr><td>Frozen mango</td><td>120 g</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="card"><h3>Batch it in the Vitamix</h3><p class="sub">Four servings, about 1.7 kg. Fits the 64 oz jar.</p>
+        <table class="w">
+          <tr><td>Milk</td><td>1,000 g</td></tr>
+          <tr><td>Greek yogurt</td><td>400 g</td></tr>
+          <tr><td>Whey isolate</td><td>2 scoops</td></tr>
+          <tr><td>Honey</td><td>30 g</td></tr>
+          <tr><td>Spinach cubes</td><td>4</td></tr>
+          <tr><td>Frozen fruit</td><td>480 g</td></tr>
+        </table>
+        <ol>
+          <li>Pour into four 16 oz jars, about 430 g each.</li>
+          <li>Two go in the fridge. Drink within 48 hours.</li>
+          <li>Two go in the freezer (leave 2 cm at the top). Move one to the fridge the night before you need it.</li>
+          <li>It separates. Shake hard, that's all.</li>
+        </ol>
+        <p>One batch every 3–4 days covers the plan. Alternate berry and mango batches.</p>
+      </div>
+      <div class="cols">
+        <div class="card"><h3>Strawberry shake</h3><p class="sub">About 22 g protein (depends on your drink).</p>
+          <table class="w">
+            <tr><td>Strawberry protein drink</td><td>1 bottle</td></tr>
+            <tr><td>Vanilla ice cream</td><td>60 g</td></tr>
+            <tr><td>Frozen strawberries</td><td>60 g</td></tr>
+          </table>
+        </div>
+        <div class="card"><h3>Chocolate PB shake</h3><p class="sub">About 37 g protein, about 500 calories. The weight-keeper.</p>
+          <table class="w">
+            <tr><td>Fairlife chocolate shake</td><td>1 bottle</td></tr>
+            <tr><td>Vanilla ice cream</td><td>80 g</td></tr>
+            <tr><td>Smooth peanut butter</td><td>16 g</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec"><h2>Soft food (day 10+)</h2>
+      <div class="cols">
+        <div class="card"><h3>Soft-scrambled eggs</h3><p class="sub">About 17 g protein.</p>
+          <table class="w"><tr><td>Eggs</td><td>2</td></tr><tr><td>Milk</td><td>20 g</td></tr><tr><td>Shredded cheese</td><td>15 g</td></tr></table>
+          <p>Low heat, butter, stir the whole time. Pull them while they still look wet and glossy. Mash with a fork and swallow, no chewing.</p>
+        </div>
+        <div class="card"><h3>Mashed potatoes</h3><p class="sub">Instant is fine.</p>
+          <table class="w"><tr><td>Potato flakes</td><td>30 g</td></tr><tr><td>Milk, hot</td><td>120 g</td></tr><tr><td>Butter</td><td>10 g</td></tr></table>
+          <p>Use milk instead of the water on the box. Loosen with warm broth or gravy. Make it wetter than you think.</p>
+        </div>
+        <div class="card"><h3>Pastina with egg + parm</h3><p class="sub">About 18 g protein. Italian sick-day food.</p>
+          <table class="w"><tr><td>Pastina (tiny stars)</td><td>40 g</td></tr><tr><td>Bone broth</td><td>300 g</td></tr><tr><td>Egg, beaten</td><td>1</td></tr><tr><td>Parmesan, finely grated</td><td>15 g</td></tr></table>
+          <p>Simmer pastina in broth until very soft, about 2 min past the box time. Off heat, stir in the egg and parm fast so it goes creamy.</p>
+        </div>
+        <div class="card"><h3>Refried beans bowl</h3><p class="sub">About 16 g protein.</p>
+          <table class="w"><tr><td>Refried beans</td><td>150 g</td></tr><tr><td>Shredded cheese</td><td>20 g</td></tr><tr><td>Ripe avocado</td><td>½</td></tr></table>
+          <p>Warm beans with a splash of broth, stir in the cheese, mash the avocado in.</p>
+        </div>
+      </div>
+      <div class="card"><h3>Store soup upgrade</h3>
+        <p>Broccoli cheddar or butternut squash, 300 g warmed, blended smooth (broccoli cheddar has bits). Then stir in 1 scoop collagen (+9 g), or blend in 50 g Greek yogurt off the heat (+5 g, creamier).</p>
+      </div>
+    </div>
+    <div class="sec"><h2>Weeks 3–6 (day 22+)</h2>
+      <p class="note">Still the no-chew rule: everything soft enough to mash flat with a fork. Cut or mash first, then swallow.</p>
+      <div class="cols">
+        <div class="card"><h3>Soft mac and cheese</h3><p class="sub">Two servings. About 18 g protein each.</p>
+          <table class="w"><tr><td>Small shells or elbows, dry</td><td>100 g</td></tr><tr><td>Milk</td><td>250 g</td></tr><tr><td>Butter</td><td>15 g</td></tr><tr><td>Flour</td><td>10 g</td></tr><tr><td>Sharp cheddar, grated</td><td>100 g</td></tr></table>
+          <p>Cook pasta 3 min past the box time. Butter and flour in a pot for a minute, whisk in milk until it thickens, melt in the cheese off the heat. Fold in the pasta. Make it saucier than you'd normally want; it tightens as it sits.</p>
+        </div>
+        <div class="card"><h3>Red lentil dal</h3><p class="sub">Four servings of 250 g. About 13 g protein each, plus rice.</p>
+          <table class="w"><tr><td>Red lentils</td><td>200 g</td></tr><tr><td>Bone broth or water</td><td>900 g</td></tr><tr><td>Onion, grated</td><td>½</td></tr><tr><td>Butter or ghee</td><td>20 g</td></tr><tr><td>Cumin, turmeric, salt</td><td>1 tsp each</td></tr></table>
+          <p>Soften onion in butter with the spices, add lentils and broth, simmer 25 min until the lentils fall apart. Whisk smooth. Rice: cook with an extra ½ cup water so it's very soft. Freezes well.</p>
+        </div>
+        <div class="card"><h3>Polenta + braised beef</h3><p class="sub">Braise once, eat four times. About 26 g protein a serving.</p>
+          <table class="w"><tr><td>Chuck roast or short rib</td><td>700 g</td></tr><tr><td>Bone broth</td><td>500 g</td></tr><tr><td>Polenta, dry (per serving)</td><td>35 g</td></tr><tr><td>Milk + water (per serving)</td><td>200 g</td></tr><tr><td>Parmesan (per serving)</td><td>15 g</td></tr></table>
+          <p>Brown the beef, cover with broth, lid on, oven at 300°F for 3–4 hours until it shreds with a fork. Shred very fine and mash into the reduced juices. Polenta: whisk into simmering milk and water, cook 20 min, stir in parm. Loose enough to spoon.</p>
+        </div>
+        <div class="card"><h3>Silken tofu + egg over soft rice</h3><p class="sub">About 17 g protein.</p>
+          <table class="w"><tr><td>Silken tofu</td><td>150 g</td></tr><tr><td>Bone broth</td><td>150 g</td></tr><tr><td>Egg</td><td>1</td></tr><tr><td>Very soft rice</td><td>60 g</td></tr><tr><td>Soy sauce, sesame oil</td><td>1 tsp each</td></tr></table>
+          <p>Warm tofu in the broth, crack the egg in and cover 3 min until just set. Spoon over rice, season. Breaks apart with a spoon.</p>
+        </div>
+        <div class="card"><h3>Salmon + sweet potato</h3><p class="sub">About 22 g protein.</p>
+          <table class="w"><tr><td>Salmon</td><td>80 g</td></tr><tr><td>Sweet potato, cooked</td><td>150 g</td></tr><tr><td>Butter</td><td>10 g</td></tr></table>
+          <p>Bake salmon at 275°F for 15–20 min so it stays soft and flakes. Microwave the sweet potato until very soft, mash with butter and salt. Flake the salmon fine and fold it in.</p>
+        </div>
+        <div class="card"><h3>Ricotta, eggs + avocado, banana yogurt</h3><p class="sub">The no-cook fillers.</p>
+          <p><b>Ricotta:</b> 150 g warmed 30 sec, honey, cinnamon. About 16 g.</p>
+          <p><b>Eggs + avocado:</b> 2 soft-scrambled eggs, ½ avocado mashed in. About 15 g.</p>
+          <p><b>Banana yogurt:</b> 170 g Greek yogurt, ½ very ripe banana mashed in, honey. About 18 g.</p>
+        </div>
+      </div>
+      <div class="card"><h3>If someone's cooking</h3>
+        <p><b>Blended, freezes well:</b> red lentil (the most protein), potato leek, split pea, butternut squash with ginger, white bean and roasted garlic, blended chicken soup. Use bone broth as the liquid. Freeze in 300 g portions.</p>
+        <p><b>Soft, day 10+:</b> chicken congee cooked until it falls apart, baked salmon to flake into potatoes, egg custard or flan, rice pudding, mashed sweet potatoes, cheesy polenta.</p>
+        <p>Blend completely smooth, serve warm not hot, keep it mild the first two weeks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOPPING -->
+  <section class="view" id="view-shop" hidden>
+    <h2 class="lead">Two weeks of food. <span class="stone">Order powder today, shop by Wed.</span></h2>
+    <p class="note no-print">Tap to check off.</p>
+    <div id="shopLists"></div>
+    <div class="sec"><h2>Protein powder, decoded</h2>
+      <div class="card"><h3>Whey isolate for cold, collagen for hot</h3>
+        <ul>
+          <li><b>Whey</b> comes from milk. Complete protein, mild taste, mixes thin. <b>Isolate</b> is the more filtered version: less lactose and fat, cleaner taste, dissolves better than concentrate.</li>
+          <li><b>Casein</b> is the other milk protein. It thickens into pudding. Skip it for days 1–7.</li>
+          <li><b>Plant</b> (pea, rice) is fine if dairy bugs you, but tastes earthy and can be gritty.</li>
+          <li><b>Collagen peptides</b> dissolve invisibly in hot broth with no taste. Not a complete protein, so it's a booster, not the base.</li>
+        </ul>
+        <p><b>Your pick, Isopure Zero Carb Unflavored:</b> good choice. Whey isolate, no sugar, no sweetener, no flavoring, and it's known for mixing into warm liquids. The only extra is a vitamin and mineral blend, which is harmless. The 1 lb tub covers the first month at half a scoop per smoothie.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLINIC -->
+  <section class="view" id="view-clinic" hidden>
+    <h2 class="lead">OHSU Oral and Maxillofacial Surgery. <span class="stone">No question is too small.</span></h2>
+    <div class="sec" style="margin-top:20px"><h2>Call</h2>
+      <div class="phone"><span class="lbl">Clinic</span><a href="tel:+15034948916">503-494-8916</a><button class="btn" data-copy="503-494-8916">Copy</button><span class="when">Weekdays, 8 a.m. to 5 p.m.</span></div>
+      <div class="phone"><span class="lbl">After hours</span><a href="tel:+15034949000">503-494-9000</a><button class="btn" data-copy="503-494-9000">Copy</button><span class="when">Evenings, weekends, and holidays. Ask for the oral and maxillofacial surgery resident on call.</span></div>
+      <p class="note">MyChart is for non-urgent questions only. Never use it for anything urgent. Calling early usually prevents a problem; waiting rarely does.</p>
+    </div>
+    <div class="sec"><h2>Where</h2>
+      <div class="card"><h3>3181 SW Sam Jackson Park Road</h3><p class="sub">Portland, OR 97239 · Main Hospital, floor 7D</p>
+        <p><button class="btn" data-copy="3181 SW Sam Jackson Park Rd, Portland, OR 97239">Copy address</button> <a class="btn" style="text-decoration:none;display:inline-block" href="https://maps.google.com/?q=3181+SW+Sam+Jackson+Park+Rd+Portland+OR+97239" target="_blank" rel="noopener">Open in Maps</a></p>
+      </div>
+    </div>
+    <div class="sec"><h2>Scissors</h2>
+      <div class="card"><h3>Keep small scissors on you</h3><p>If you feel like you're going to vomit, or have any trouble breathing, cut the rubber bands first, then call. Your jaws are held by plates and screws, not the bands. They can always replace them.</p></div>
+    </div>
+    <div class="sec"><h2>Warning signs</h2>
+      <div class="alarm"><h3>Call 911 or go to the ER</h3><ul>
+        <li>Trouble breathing, or breathing that's noisy or takes effort</li>
+        <li>Bleeding that doesn't slow after 20 minutes of steady pressure</li>
+        <li>Sudden vision change, or severe pain behind an eye</li>
+        <li>Chest pain, or swelling and pain in one calf</li></ul></div>
+      <div class="card"><h3>Call the clinic right away</h3><ul>
+        <li>Fever of 101.5°F (38.6°C) or higher</li>
+        <li>Your bite suddenly changes, or teeth don't fit the splint grooves</li>
+        <li>Swelling or pain getting worse after day 4</li>
+        <li>Thick yellow or green drainage, or a bad taste or smell that won't go away</li>
+        <li>Vomiting that won't stop, or you can't keep liquids down</li>
+        <li>Urinating much less than normal, or dizzy when you stand</li>
+        <li>Pain your medicine isn't controlling</li>
+        <li>A band, hook, wire, or the splint comes loose and you can't fix it</li>
+        <li>Weight down more than 10 lb, or more than 5%</li></ul></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="view" id="view-settings" hidden>
+    <h2 class="lead">Settings. <span class="stone">Meds, weight, and your baseline.</span></h2>
+    <div class="sec"><h2>Medications</h2>
+      <p class="note">Names, days, and times show up on each day's plan. Turn one off when you're done with it.</p>
+      <div id="medList"></div>
+      <button class="cta" id="addMed">+ Add a medication</button>
+    </div>
+    <div class="sec"><h2>Weight</h2>
+      <div class="card"><h3>Baseline</h3><p class="sub">Weigh yourself Thu 10/1 or Fri 10/2 morning.</p>
+        <p class="inline-log"><input class="numin" id="baseline" inputmode="decimal" placeholder="lb" aria-label="Baseline weight in pounds"><span id="thresh" class="sub"></span></p>
+      </div>
+      <div class="card"><h3>Log a weigh-in</h3>
+        <p class="inline-log"><input class="numin" id="wDate" type="date" aria-label="Date" style="width:auto"><input class="numin" id="wLb" inputmode="decimal" placeholder="lb" aria-label="Weight in pounds"><button class="btn solid" id="wAdd">Save</button></p>
+        <div class="wlog" id="wlog"></div>
+      </div>
+    </div>
+    <p class="sync" id="sync"></p>
+  </section>
+</div>
+
+<script>
+(function(){
+  const DAY = 86400000;
+  const SURGERY = new Date(2026,9,2);
+  const dateFor = d => new Date(2026,9,2+d);
+  const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const fmt = dt => `${WD[dt.getDay()]} ${MO[dt.getMonth()]} ${dt.getDate()}`;
+  const short = dt => `${WD[dt.getDay()]} ${dt.getMonth()+1}/${dt.getDate()}`;
+  const iso = dt => `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+  const MEAL_MIN = [480,660,840,1020,1200,1320];
+  const hm = m => { const h = Math.floor(m/60), mm = m%60; return `${((h+11)%12)+1}:${String(mm).padStart(2,'0')}${h<12?'a':'p'}`; };
+  const toMin = t => { const [h,m] = String(t).split(':').map(Number); return h*60+(m||0); };
+  const esc = s => String(s??'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const thresh = b => Math.max(b-10, b*0.95);
+
+  // ---------- state + storage ----------
+  let S = {meds:null, profile:{}, days:{}, weights:{}, shop:{}};
+  try { const c = JSON.parse(localStorage.getItem('jaw-state')||'null'); if (c) S = Object.assign(S,c); } catch(e){}
+  const cache = () => { try{ localStorage.setItem('jaw-state', JSON.stringify(S)) }catch(e){} };
+  let db = null;
+  const queues = {};
+  function put(path, body){
+    cache();
+    if (!db) return;
+    queues[path] = (queues[path]||Promise.resolve()).then(() => db.doc(path).set(body)).catch(e => setSync('Could not save: '+(e&&e.code||'error')));
+  }
+  function del(path){ cache(); if (db) db.doc(path).delete().catch(()=>{}); }
+  const setSync = t => { const el = document.getElementById('sync'); if (el) el.textContent = t; };
+  const dayState = d => (S.days['d'+d] ||= {meals:{}, todos:{}, meds:{}});
+  function toggleDay(d, group, key){
+    const st = dayState(d); st[group] ||= {};
+    st[group][key] = !st[group][key];
+    put('days/d'+d, st);
+    return st[group][key];
+  }
+
+  // ---------- food data ----------
+  const I = {
+    fairlife:['Fairlife chocolate shake','1 bottle, cold. Sip from a cup over 20 min.',30,340],
+    strawDrink:['Strawberry protein drink','1 bottle, cold.',20,330],
+    iceCream:['Softened vanilla ice cream','80 g. Let it melt a bit so it pours. Comfort counts.',3,80],
+    broth:['Bone broth mug','300 g warm broth, pinch of salt.',7,300],
+    brothC:['Bone broth + collagen','300 g warm broth, 1 scoop collagen whisked in.',16,300],
+    brothPotato:['Broth potato soup','300 g hot broth, 25 g potato flakes, 10 g butter, 1 scoop collagen. Whisk.',18,300],
+    yogThin:['Drinkable yogurt','150 g Greek yogurt + 150 g milk + 10 g honey. Whisk.',20,310],
+    oatThin:['Sippable protein oatmeal','1 packet + 300 g warm milk. Rest 3 min, blend.',21,330],
+    berry:['Berry smoothie','One 430 g jar from the batch, or blend a single.',31,430],
+    mango:['Mango smoothie','One 430 g jar from the batch, or blend a single.',31,430],
+    soupBroc:['Broccoli cheddar soup','300 g store-bought, warmed and blended smooth. 1 scoop collagen.',17,300],
+    soupSquash:['Butternut squash soup','300 g store-bought, warmed. 1 scoop collagen.',12,300],
+    soupFreezer:['Blended soup','300 g from the freezer or a store carton, thinned with broth until it pours.',12,300],
+    strawShake:['Strawberry shake','1 strawberry drink + 60 g vanilla ice cream + 60 g frozen strawberries. Blend.',22,450],
+    chocPB:['Chocolate PB shake','1 Fairlife chocolate shake + 80 g ice cream + 16 g smooth peanut butter. Blend.',37,420],
+    eggs:['Soft-scrambled eggs','2 eggs + 20 g milk + 15 g cheese. Low heat, pull while glossy. Fork-mash.',17,0],
+    oatSoft:['Protein oatmeal, cooked soft','1 packet + 180 g milk. Cook past done, loosen with a splash.',17,150],
+    cottage:['Cottage cheese + peaches','150 g cottage cheese + 80 g canned peaches, mashed together.',17,40],
+    salmonMash:['Salmon + mashed potatoes','80 g baked salmon flaked fine, folded into mashed potatoes. Loosen with broth.',24,60],
+    beans:['Refried beans bowl','150 g refried beans, 20 g melted cheese, ½ avocado mashed in.',16,0],
+    pastina:['Pastina with egg + parm','40 g pastina in 300 g broth, cooked soft. Stir in 1 egg + 15 g parm.',18,200],
+    yogBowl:['Greek yogurt + honey','170 g Greek yogurt, 10 g honey, 30 g milk to loosen.',18,30],
+    bananaYog:['Greek yogurt + banana','170 g Greek yogurt, ½ ripe banana mashed in, 10 g honey.',18,0],
+    ricotta:['Warm ricotta + honey','150 g whole-milk ricotta, warmed, 10 g honey, pinch of cinnamon.',16,0],
+    mac:['Soft mac and cheese','200 g small shells cooked 3 min past done, extra saucy, 30 g more cheddar stirred in.',18,0],
+    eggsAvo:['Eggs + avocado','2 soft-scrambled eggs, ½ ripe avocado mashed in, pinch of salt.',15,0],
+    dal:['Red lentil dal + soft rice','250 g dal over 60 g very soft rice, loosened with broth.',15,100],
+    polentaBeef:['Polenta + braised beef','150 g cheesy polenta, 80 g braised beef shredded fine and mashed into the gravy.',26,50],
+    tofuBowl:['Silken tofu + egg over soft rice','150 g silken tofu warmed in broth, 1 soft egg, soy and sesame oil, over 60 g very soft rice.',17,120],
+    salmonSweet:['Salmon + mashed sweet potato','80 g baked salmon flaked fine, 150 g mashed sweet potato with butter.',22,0],
+    congee:['Chicken congee','300 g, takeout or homemade, cooked very soft, with a soft egg stirred in.',16,250],
+  };
+  const MENUS = {
+    S:{name:'Survival menu', short:'Survival', slots:['fairlife','broth','yogThin','strawDrink','brothC','iceCream']},
+    A:{name:'Menu A', short:'Berry day', slots:['berry','broth','oatThin','fairlife','soupBroc','strawShake']},
+    B:{name:'Menu B', short:'Mango day', slots:['yogThin','mango','brothC','fairlife','soupFreezer','chocPB']},
+    C:{name:'Menu C', short:'Savory day', slots:['oatThin','fairlife','brothPotato','berry','soupSquash','strawDrink']},
+    D:{name:'Menu D', short:'Eggs + salmon', slots:['eggs','berry','cottage','fairlife','salmonMash','yogBowl']},
+    E:{name:'Menu E', short:'Beans + pastina', slots:['oatSoft','fairlife','beans','mango','pastina','chocPB']},
+    F:{name:'Menu F', short:'Congee day', slots:['eggs','yogBowl','brothPotato','fairlife','congee','strawShake']},
+    G:{name:'Menu G', short:'Mac day', slots:['bananaYog','berry','ricotta','fairlife','mac','chocPB']},
+    H:{name:'Menu H', short:'Dal + polenta', slots:['eggsAvo','fairlife','dal','mango','polentaBeef','strawShake']},
+    I:{name:'Menu I', short:'Tofu + salmon', slots:['oatSoft','cottage','tofuBowl','fairlife','salmonSweet','chocPB']},
+  };
+  const LAST = 42;
+  const menuFor = d => d<=3 ? 'S' : d<=9 ? 'ABC'[(d-4)%3] : d<=21 ? 'DEF'[(d-10)%3] : 'GHI'[(d-22)%3];
+  const total = (k,i) => MENUS[k].slots.reduce((s,id)=>s+I[id][i],0);
+  const phaseLine = d =>
+    d<=2 ? 'Ice on, head up. Sip something every hour.' :
+    d===3 ? 'Swelling peaks right about now. It gets better from here.' :
+    d<=7 ? 'Bands stay on, so keep everything pourable.' :
+    d<=9 ? 'Bands come out to eat. Thicker is OK now.' :
+    d<=14 ? 'Soft food starts. If it needs chewing, mash it first.' :
+    d<=21 ? 'Two weeks down. Nose blowing and straws are back.' :
+    d<=27 ? 'Real meals again. Still nothing you have to chew.' :
+    d<=35 ? 'Week 5. Light lifting and running can come back.' :
+    'Home stretch. Chewing starts after the 6-week visit.';
+
+  const RULES = [
+    {what:'No nose blowing', end:new Date(2026,9,16), note:'Dab, don\'t blow. Sneeze with your mouth open.'},
+    {what:'No straws', end:new Date(2026,9,16), note:'Cup, sippy cup, or syringe.'},
+    {what:'No alcohol, nothing hot', end:new Date(2026,9,16), note:'Warm is fine. Test on your wrist.'},
+    {what:'No heavy lifting or straining', end:new Date(2026,9,30), note:'No holding your breath and bearing down.'},
+    {what:'No chewing', end:new Date(2026,10,13), note:'Until your 6-week visit clears you.'},
+  ];
+
+  const MILESTONES = [
+    {d:0, h:'Surgery at OHSU', p:'Two to four hours. About half of people stay one night; the only test to go home is keeping fluids down.', k:['visit']},
+    {d:1, h:'Home. Ice, head up, liquids.', p:'Survival menu. Pain meds on a schedule days 1–4 so pain never builds. Stool softener from day 1.', k:['food','body']},
+    {d:3, h:'Swelling peaks, switch to warmth', p:'Ice stops helping after 48 hours. Warm damp washcloth from here.', k:['body']},
+    {d:4, h:'Liquid rotation starts', p:'Menus A, B, C. Pain meds can move to as-needed, per your labels.', k:['food']},
+    {d:7, h:'1-week visit', p:'Checks healing, bite, and bands. Confirm the time. Ask when bands come out for meals.', k:['visit']},
+    {d:8, h:'Bands out to eat. More movement.', p:'Longer walks, stationary bike, light cardio. Stop if your face throbs. Waterpik on the lowest setting.', k:['move','food']},
+    {d:10, h:'Soft food and jaw exercises', p:'Menus D, E, F. Mirror exercises: open, side to side, forward. Goal about 20–25 mm, one finger.', k:['food','body']},
+    {d:14, h:'Two weeks', p:'About 80% of swelling gone. Talking gets easier. Most people could go back to desk work around now.', k:['body']},
+    {d:15, h:'Nose, straws, and a first easy run?', p:'Nose blowing, straws, and flying OK. Your call on running: surgeons said 2 weeks is fine, OHSU\'s written plan says weeks 4–6. You picked 2 weeks at the earliest.', k:['move','body']},
+    {d:16, span:'10/16–10/30', h:'2nd visit window (2–4 weeks)', p:'Checks jaw opening, adjusts the band pattern. The splint often comes out around this visit. Date TBD.', k:['visit']},
+    {d:22, h:'Menus G, H, I', p:'More variety, real cooked meals: mac and cheese, dal, polenta with braised beef, salmon. Still no chewing.', k:['food']},
+    {d:28, h:'Week 4', p:'Heavy lifting ban ends. Light lifting: low weight, high reps. Gradual return to running. Finger stretching for jaw opening starts, goal 30–35 mm.', k:['move','body']},
+    {d:42, h:'6-week visit', p:'Checks bone healing. Chewing starts slowly. Full-effort training as cleared, built back over 2–3 weeks.', k:['visit','food','move']},
+    {d:55, later:'Thu 11/26', h:'Thanksgiving, week 8', p:'Early chewing. Soft sides, turkey in gravy cut small.', k:['food']},
+    {d:84, later:'Fri 12/25', h:'Week 12: normal diet', p:'All foods, once your surgeon clears you. Crusts, nuts, chips, and ice wait until here.', k:['food']},
+  ];
+
+  // ---------- meds ----------
+  const DEFAULT_MEDS = [
+    {id:'pain', name:'Pain med (placeholder)', note:'Rename once you have the label. Scheduled days 1–4, then as needed.', days:[0,1,2,3,4,5,6], times:['08:00','14:00','20:00'], on:true},
+    {id:'abx', name:'Antibiotic (placeholder)', note:'Finish the whole bottle.', days:[0,1,2,3,4,5,6], times:['08:00','20:00'], on:true},
+    {id:'stool', name:'Stool softener (placeholder)', note:'Daily while on opioids or a liquid diet.', days:[0,1,2,3,4,5,6], times:['08:00'], on:true},
+  ];
+  if (!S.meds) S.meds = DEFAULT_MEDS.map(m => ({...m, days:[...m.days], times:[...m.times]}));
+  const medsList = () => S.meds || DEFAULT_MEDS;
+  function medsForDay(dt){
+    const wd = dt.getDay(), out = [];
+    medsList().forEach(m => { if (m.on && (m.days||[]).includes(wd)) (m.times||[]).forEach(t => out.push({m, t, min:toMin(t)})); });
+    return out.sort((a,b) => a.min-b.min);
+  }
+  const nearestMeal = min => { let best=-1, bd=61; MEAL_MIN.forEach((mm,i)=>{ const x=Math.abs(mm-min); if (x<bd){bd=x;best=i;} }); return best; };
+
+  // ---------- to-dos ----------
+  function doList(d, dt){
+    const L = [];
+    const add = (id,tag,text,sub,key) => L.push({id,tag,text,sub,key});
+    const wd = dt.getDay();
+    if (d<=2) add('ice','Swelling','Ice 20 min on, 20 min off while awake.','Wrap the pack in a thin towel. Numb skin can freeze without you noticing.',true);
+    else if (d<=14) add('heat','Swelling','Warm damp washcloth on sore spots and in front of your ears.','Test on your forearm first. Warm, never hot. No heating pad on numb skin.',d===3);
+    if (d<=7) add('sleep','Sleep','Head up on 2–3 pillows or the recliner.');
+    add('fluid','Fluid','2 to 2.5 liters today.','Shakes, broth, and smoothies all count. Water between meals. Dark urine or dizzy standing means drink more.');
+    if (d<=7) add('bands','Bands','Bands stay on. Scissors within reach.','If you feel like vomiting or can\'t breathe: cut the bands first, then call.',true);
+    else if (d<=14) add('bands','Bands','Bands out to eat and clean, fresh set back in right after.','New bands every day. Same pattern as your day 1 photo.');
+    else add('bands','Bands','Follow the band plan from your last visit.');
+    add('brush','Mouth', d<=7 ? 'Brush with the kid toothbrush after every meal. Salt-water rinse between meals, no swishing.' : 'Brush after every meal. Salt-water rinse between meals.', '½ tsp salt in 240 g warm water. Let it sit, tip side to side, let it fall out.' + (d>=8 ? ' Waterpik OK on the lowest setting.' : ' No Waterpik yet.'));
+    if (d<=14) add('chx','Mouth','Chlorhexidine rinse morning and night.','Or as your label says. It can stain teeth a little; that cleans off later.');
+    if (d<=14) add('nose','Nose','Saline spray several times today. Humidifier on tonight.','No blowing. Afrin no more than 3 days in a row.');
+    else if (d<=17) add('nose','Nose','OK to blow your nose gently now.','Confirm at your 2-week check if you have any doubt.');
+    add('lips','Lips','Lip balm, often.');
+    if (d<=7) add('walk','Move','Short walks around the house, several times today.','Movement helps swelling drain.');
+    else if (d<28) add('walk','Move','Walk outside. Longer is fine.','Stationary bike and light cardio OK. Stop if your face throbs.');
+    else add('walk','Move','Moderate cardio. Easy running if it feels right. Light lifting, low weight, high reps.','No contact, no max lifts, no holding your breath to strain.');
+    if (d>=10 && d<28) add('jaw','Jaw','Jaw exercises in the mirror.','Open and close, side to side, forward and back. Muscles only, no fingers yet. Warm cloth first. Goal about 20–25 mm, one finger.',d===10);
+    if (d>=28) add('jaw','Jaw','Finger stretches, 3–4 times today.','Fingers between front teeth, hold a comfortable stretch 30 sec, 5 times. A pull, never sharp pain. Goal about 30–35 mm, two fingers.',d===28);
+    if (d>=14 && wd===5) add('measure','Jaw','Measure your opening with a ruler at the front teeth. Write it down.', d>=28 && d<35 ? 'Call if you can\'t open more than about 20 mm, or it\'s getting worse.' : 'Watch the number climb week to week.');
+    if (wd===1 || wd===4) add('weigh','Weigh in','Weigh yourself first thing, before eating.', null, true);
+    if (d===7) add('visit','Visit','1-week follow-up is about now.','Checks healing, bite, and bands. Ask when bands come out for meals.',true);
+    if (d===42) add('visit','Visit','6-week visit.','Checks bone healing. Ask what you can start chewing and what training you\'re cleared for.',true);
+    if (d>=4 && d<=10) add('mood','Head','Feeling low or regretful this week is normal.','Your face this week is not your result. Don\'t judge the surgery yet.');
+    return L;
+  }
+
+  // ---------- DAY VIEW ----------
+  const strip = document.getElementById('strip');
+  const dayEl = document.getElementById('day');
+  const now = new Date(); now.setHours(0,0,0,0);
+  const todayD = Math.round((now - SURGERY)/DAY);
+  let cur = todayD>=1 && todayD<=LAST ? todayD : (todayD>LAST ? LAST : 0);
+  const hashD = parseInt((location.hash.match(/^#day(\d+)$/)||[])[1]);
+  if (hashD>=0 && hashD<=LAST) cur = hashD;
+  let view = 'today';
+
+  function buildStrip(){
+    let h = `<button class="chip${todayD<1?' today':''}" data-d="0"><b>Prep</b><span>now</span></button>`;
+    for (let d=1; d<=LAST; d++){
+      const dt = dateFor(d);
+      if (d>1 && (d-1)%7===0) h += `<span class="wk mono">Wk ${(d-1)/7+1}</span>`;
+      h += `<button class="chip${d===todayD?' today':''}" data-d="${d}" aria-label="Day ${d}, ${fmt(dt)}"><b>${d}</b><span>${menuFor(d)} ${dt.getMonth()+1}/${dt.getDate()}</span></button>`;
+    }
+    strip.innerHTML = h;
+    strip.addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) show(+b.dataset.d); });
+  }
+
+  function renderPrep(){
+    const b = parseFloat(S.profile.baseline);
+    const st = dayState(0);
+    const items = [
+      ['powder','Today','Order Isopure unflavored and collagen on Amazon.'],
+      ['shop','By Wed','Do the "before surgery" shopping run.'],
+      ['broth','Thu 10/1','Move 3 broth containers from the freezer to the fridge for Sat to Mon.'],
+      ['batch','Thu 10/1','Make one Vitamix batch of mango smoothies. Freeze all four jars for days 4–6.'],
+      ['kitchen','Kitchen','Scale, cups, sippy cup, and syringe next to the blender. Tape the yogurt ratio to the fridge: 150 g yogurt + 225 g milk.'],
+      ['meds','Fri 10/2','When you get your prescriptions, add them in Settings.'],
+      ['base','Weigh in','Weigh yourself Thu or Fri morning and save it in Settings as your baseline.' + (b ? ` Saved: ${b} lb.` : '')],
+    ];
+    dayEl.innerHTML = `
+      <div class="hero">
+        <div class="eyebrow mono"><span>Before surgery</span><span>Fri Oct 2</span></div>
+        <h1 class="big">Prep week.</h1>
+        <p class="say">Stock the kitchen now so nobody has to think on day 3.</p>
+      </div>
+      <div class="sec"><h2>Do before Friday</h2><ul class="do">
+        ${items.map(([id,tag,t]) => `<li role="button" tabindex="0" data-g="todos" data-k="${id}" class="${st.todos?.[id]?'done':''}"><span class="tag">${tag}</span><p>${t}</p></li>`).join('')}
+      </ul></div>
+      <button class="cta" data-go="1">See day 1 →</button>`;
+    wireToggles(0);
+    dayEl.querySelector('[data-go]').addEventListener('click', () => show(1));
+  }
+
+  function renderDay(d){
+    const dt = dateFor(d), k = menuFor(d), M = MENUS[k], st = dayState(d);
+    const p = total(k,2);
+    let fl = total(k,3); if (d<=7) fl += M.slots.filter(s=>s==='yogThin').length*75;
+    const cups = Math.max(2, Math.ceil((2250-fl)/240));
+    const doses = medsForDay(dt);
+    const byMeal = {}; doses.forEach(x => { const i = nearestMeal(x.min); if (i>=0) (byMeal[i] ||= []).push(x.m.name); });
+
+    const meals = M.slots.map((id,i) => {
+      const [name,how,prot] = I[id];
+      let h = how;
+      if (id==='yogThin' && d<=7) h = '150 g Greek yogurt + 225 g milk + 10 g honey. Whisk. Thin for bands-on days.';
+      if (id==='berry' && d<=7) h += ' Vitamix only this week, for the seeds.';
+      const md = byMeal[i]||[];
+      return `<div class="meal${st.meals?.[i]?' done':''}" role="button" tabindex="0" data-g="meals" data-k="${i}">
+        <span class="t">${hm(MEAL_MIN[i])}</span><h3>${name}</h3><span class="p">${prot} g</span>
+        <p class="how">${h}</p>
+        ${md.length?`<div class="meds">${md.map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div>`:''}
+      </div>`;
+    }).join('');
+
+    const medRows = doses.map(x => {
+      const key = `${x.m.id}@${x.t}`;
+      return `<li role="button" tabindex="0" class="medrow${st.meds?.[key]?' done':''}" data-g="meds" data-k="${esc(key)}"><span class="tag">${hm(x.min)}</span><p>${esc(x.m.name)}${x.m.note?`<small>${esc(x.m.note)}</small>`:''}</p></li>`;
+    }).join('');
+    const medsTaken = doses.filter(x => st.meds?.[`${x.m.id}@${x.t}`]).length;
+
+    const rules = RULES.map(r => {
+      const left = Math.round((r.end - dt)/DAY);
+      if (left < 0) return (left > -4) ? `<div class="rule ok"><b>${r.what}</b><span class="until">Done as of ${short(new Date(r.end.getTime()+DAY))}</span><span class="left">OK</span></div>` : '';
+      return `<div class="rule"><b>${r.what}</b><span class="until">Through ${short(r.end)}. ${r.note}</span><span class="left">${left}<small>${left===1?'day':'days'} left</small></span></div>`;
+    }).join('');
+
+    const todos = doList(d,dt);
+    const todoDone = todos.filter(t => st.todos?.[t.id]).length;
+    const tasks = todos.map(t => {
+      let sub = t.sub ? `<small>${t.sub}</small>` : '';
+      if (t.id==='weigh'){
+        const b = parseFloat(S.profile.baseline), w = S.weights[iso(dt)];
+        sub = `<small>${b ? `Call the clinic if you're under ${thresh(b).toFixed(1)} lb.` : 'Call the clinic if you\'re down more than 10 lb or 5%. Set a baseline in Settings.'}</small>
+          <span class="inline-log" data-stop><input class="numin" id="wday-${d}" inputmode="decimal" placeholder="lb" value="${w?w.lb:''}" aria-label="Today's weight"><button class="btn" data-wsave="${iso(dt)}">${w?'Update':'Log'}</button></span>`;
+      }
+      return `<li role="button" tabindex="0" data-g="todos" data-k="${t.id}" class="${t.key?'key ':''}${st.todos?.[t.id]?'done':''}"><span class="tag">${t.tag}</span><p>${t.text}${sub}</p></li>`;
+    }).join('');
+
+    dayEl.innerHTML = `
+      <div class="hero">
+        <div class="eyebrow mono"><span>${M.name} · ${M.short}</span><span>${d===todayD?'Today':'Post-op'}</span></div>
+        <h1 class="big">Day ${d}</h1>
+        <p class="big stone">${fmt(dt)}</p>
+        <p class="say">${phaseLine(d)}</p>
+        <div class="stepper no-print">
+          <button data-step="-1" aria-label="Previous day">← ${d===1?'Prep':'Day '+(d-1)}</button>
+          ${d<LAST?`<button data-step="1" aria-label="Next day">Day ${d+1} →</button>`:''}
+        </div>
+      </div>
+      <div class="nums">
+        <div class="num"><b>${(fl/1000+cups*0.24).toFixed(1)} L</b><span>fluid, incl. ${cups} cups water</span></div>
+        <div class="num"><b>60–80 g</b><span>protein goal</span></div>
+        <div class="num"><b>≈${p} g</b><span>on this menu</span></div>
+      </div>
+      <p class="note">The menu aims high on purpose. Get through two-thirds of it and you're at goal. Tap anything when it's done.</p>
+      <div class="sec"><h2><span>Eat</span><span class="count">${Object.values(st.meals||{}).filter(Boolean).length}/6</span></h2>${meals}</div>
+      <div class="sec"><h2><span>Meds</span>${doses.length?`<span class="count">${medsTaken}/${doses.length}</span>`:''}</h2>
+        ${doses.length ? `<ul class="do">${medRows}</ul>` : `<p class="note">${medsList().length ? 'Nothing scheduled today.' : 'No meds set up yet.'} Add or change them in Settings.</p>`}
+        ${d<=14 ? '<p class="note">Keep total Tylenol under 3,000 mg a day from all sources. Opioids only for breakthrough pain. Finish every antibiotic.</p>':''}
+      </div>
+      <div class="sec"><h2><span>Do</span><span class="count">${todoDone}/${todos.length}</span></h2><ul class="do">${tasks}</ul></div>
+      <div class="rules"><h2>Rules in effect</h2>${rules}</div>`;
+
+    wireToggles(d);
+    dayEl.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => show(d + +b.dataset.step)));
+    dayEl.querySelectorAll('[data-wsave]').forEach(b => b.addEventListener('click', e => {
+      e.stopPropagation();
+      const v = parseFloat(document.getElementById('wday-'+d).value);
+      if (v) saveWeight(b.dataset.wsave, v);
+    }));
+    dayEl.querySelectorAll('[data-stop]').forEach(el => el.addEventListener('click', e => e.stopPropagation()));
+  }
+
+  function wireToggles(d){
+    dayEl.querySelectorAll('[data-g]').forEach(el => {
+      const tog = () => { const on = toggleDay(d, el.dataset.g, el.dataset.k); el.classList.toggle('done', on); renderCounts(d); };
+      el.addEventListener('click', tog);
+      el.addEventListener('keydown', e => { if (e.target!==el) return; if (e.key==='Enter'||e.key===' '){ e.preventDefault(); tog(); } });
+    });
+  }
+  function renderCounts(){ /* counts refresh on next render */ const y = scrollY; renderCurrent(); scrollTo(0,y); }
+
+  function renderCurrent(){ cur===0 ? renderPrep() : renderDay(cur); }
+  function show(d){
+    cur = Math.max(0, Math.min(LAST, d));
+    strip.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-current', +c.dataset.d===cur));
+    const c = strip.querySelector(`[data-d="${cur}"]`);
+    if (c) requestAnimationFrame(() => strip.scrollTo({left: c.getBoundingClientRect().left - strip.getBoundingClientRect().left + strip.scrollLeft - strip.clientWidth/2 + c.clientWidth/2}));
+    renderCurrent();
+    setView('today');
+    window.scrollTo({top:0});
+  }
+
+  // ---------- PLAN ----------
+  function buildPlan(){
+    document.getElementById('milestones').innerHTML = MILESTONES.map(m => {
+      const dt = dateFor(m.d);
+      const when = m.span ? m.span : m.d===0 ? 'Fri 10/2<br>Day 0' : `${short(dt)}<br>Day ${m.d}`;
+      const past = todayD > m.d && !m.span;
+      return `<div class="ms${past?' past':''}${m.later?' later':''}"><span class="d">${m.later?m.later+'<br>Later':when}</span><div><h3>${m.h}</h3><p>${m.p}</p><div class="kinds">${m.k.map(x=>`<span class="kind ${x}">${x}</span>`).join('')}</div></div></div>`;
+    }).join('');
+    let h = '';
+    for (let d=1; d<=LAST; d++){
+      const dt = dateFor(d), k = menuFor(d);
+      if ((d-1)%7===0) h += `<p class="mono" style="color:var(--muted);padding-top:22px;padding-bottom:4px">Week ${(d-1)/7+1}</p>`;
+      const flags = [];
+      if (d<=2) flags.push('Ice');
+      if (d===3) flags.push('Switch to warmth');
+      if (d===7) flags.push('1-week visit');
+      if (d===8) flags.push('Bands out to eat');
+      if (d===10) flags.push('Soft food + jaw exercises start');
+      if (d===15) flags.push('Nose blowing + straws OK');
+      if (d===22) flags.push('Menus G, H, I start');
+      if (d===28) flags.push('Light lifting + finger stretches');
+      if (d===42) flags.push('6-week visit');
+      if ([1,4].includes(dt.getDay())) flags.push('Weigh in');
+      h += `<button class="calrow" data-d="${d}"><span class="d">${short(dt)}</span><span class="l">${k}</span><span class="x">Day ${d} · ${MENUS[k].short}${flags.length?`<small>${flags.join(' · ')}</small>`:''}</span></button>`;
+    }
+    const cal = document.getElementById('cal');
+    cal.innerHTML = h;
+    cal.addEventListener('click', e => { const b = e.target.closest('.calrow'); if (b) show(+b.dataset.d); });
+    document.getElementById('menus').innerHTML = Object.entries(MENUS).map(([k,M]) => `
+      <div class="card menu-card"><span class="letter">${k}</span><h3>${M.short}</h3>
+        <p class="sub">${k==='S'?'Days 1–3':'ABC'.includes(k)?'Days 4–9, rotating':'DEF'.includes(k)?'Days 10–21, rotating':'Days 22–42, rotating'} · ≈${total(k,2)} g protein</p>
+        <div style="clear:both;margin-top:10px">${M.slots.map((id,i)=>`<div class="row"><span class="t">${hm(MEAL_MIN[i])}</span><span><b style="font-weight:500">${I[id][0]}</b><br><span style="color:var(--muted)">${I[id][1]}</span></span><span class="g">${I[id][2]} g</span></div>`).join('')}</div>
+      </div>`).join('');
+  }
+
+  // ---------- SHOPPING ----------
+  const SHOP = [
+    {h:'Order now (Amazon)', items:[
+      ['Isopure Zero Carb whey isolate, unflavored','1 lb','Cold drinks and smoothies'],
+      ['Unflavored collagen peptides','1 tub','Broth and soup'],
+    ]},
+    {h:'Before surgery (by Wed 9/30)', items:[
+      ['Fairlife chocolate shakes','to ~20 total','Daily, plus the chocolate PB shake'],
+      ['Strawberry protein drinks','to ~8 total','Drunk plain or blended into shakes'],
+      ['Milk, 2%, half gallon','2','Base for smoothies, yogurt, oatmeal'],
+      ['Plain Greek yogurt, 32 oz','3','Whole or 2%. About 2.3 kg over two weeks'],
+      ['Vanilla ice cream, 1.5 qt','1','Shakes, plus comfort'],
+      ['Instant potato flakes','1 box','Plain, 100% potato'],
+      ['Broccoli cheddar soup (e.g. Panera at Home)','2','Blend smooth before eating'],
+      ['Butternut squash soup, 32 oz carton','2',''],
+      ['Potato leek soup, 32 oz carton','1','For the freezer-soup slot if nothing homemade'],
+      ['Frozen mango','1 bag','Your mango is the best blender'],
+      ['Frozen strawberries','1 bag','Shakes eat through these'],
+      ['Smooth peanut butter','1 jar','If you\'re out'],
+      ['Honey','1','If you\'re out'],
+      ['Applesauce cups, unsweetened','6','Easy snack, and a way to get pills down'],
+      ['Pudding cups','6','Same'],
+    ]},
+    {h:'Check you have enough', items:[
+      ['Protein oatmeal packets','6+','Menus A, C, E'],
+      ['Bone broth in the freezer','about 4.5 kg','15 mugs over two weeks. If short, buy 2 cartons'],
+      ['Spinach cubes','10','One per smoothie'],
+      ['Frozen berries','about 1 kg','Strawberry and blueberry'],
+    ]},
+    {h:'Soft food run (around Sat 10/10)', items:[
+      ['Eggs','1 dozen',''],
+      ['Milk, 2%, half gallon','2','Restock'],
+      ['Cottage cheese, 4%, 16 oz','1',''],
+      ['Canned peaches in juice','2 cans','Mash into cottage cheese'],
+      ['Refried beans, smooth','2 cans',''],
+      ['Shredded cheese + parmesan','1 each','Finely grated parm'],
+      ['Ripe avocados','2',''],
+      ['Pastina (tiny stars)','1 box','Or orzo'],
+      ['Salmon fillet','1 lb','Bake gently, flake fine; menu D'],
+      ['Chicken congee','2 servings','Takeout (Chinese or Cantonese spot) or homemade; menu F'],
+      ['Butter','1',''],
+    ]},
+    {h:'Weeks 3–6 run (around Fri 10/23)', items:[
+      ['Small pasta shells or elbows','1 box','Mac and cheese'],
+      ['Sharp cheddar','400 g',''],
+      ['Red lentils','1 bag','Dal'],
+      ['Rice','1 bag','Cooked extra soft'],
+      ['Polenta','1 bag',''],
+      ['Chuck roast or short rib','about 700 g','Braise once, four servings'],
+      ['Salmon fillet','1 lb','Menu I'],
+      ['Silken tofu','2 packs',''],
+      ['Sweet potatoes','3',''],
+      ['Whole-milk ricotta','1 tub',''],
+      ['Ripe bananas','1 bunch',''],
+      ['Ripe avocados','3',''],
+      ['Eggs','1 dozen','Restock'],
+      ['Milk, 2%, half gallon','2','Restock'],
+      ['Greek yogurt, 32 oz','2','Restock'],
+      ['Fairlife chocolate shakes','~15','Restock'],
+    ]},
+    {h:'Pharmacy (if not already in your kit)', items:[
+      ['Stool softener','1','Start day 1'],
+      ['Saline nose spray','2','Use as often as you like'],
+      ['Lip balm','2',''],
+      ['16 oz jars or deli cups','8','Smoothie batches and soup portions'],
+    ]},
+  ];
+  function buildShop(){
+    const el = document.getElementById('shopLists');
+    el.innerHTML = SHOP.map((g,gi) => `
+      <div class="sec"><h2>${g.h}</h2><ul class="shop">${g.items.map((it,ii) => {
+        const id = `shop-${gi}-${ii}`;
+        return `<li><label for="${id}"><input type="checkbox" id="${id}" ${S.shop[id]?'checked':''}><span>${it[0]}${it[2]?`<small>${it[2]}</small>`:''}</span><span class="q">${it[1]}</span></label></li>`;
+      }).join('')}</ul></div>`).join('');
+  }
+  document.getElementById('shopLists').addEventListener('change', e => {
+    if (!e.target.id) return;
+    S.shop[e.target.id] = e.target.checked;
+    put('settings/shop', {checked:S.shop});
+  });
+
+  // ---------- SETTINGS ----------
+  const medList = document.getElementById('medList');
+  let medTimer = null;
+  function saveMeds(){ clearTimeout(medTimer); medTimer = setTimeout(() => put('settings/meds', {items:S.meds}), 500); cache(); }
+  function renderMeds(){
+    const L = S.meds || [];
+    medList.innerHTML = L.length ? L.map(m => `
+      <div class="med${m.on?'':' off'}" data-id="${m.id}">
+        <div class="top">
+          <input type="text" class="name" id="med-${m.id}-name" value="${esc(m.name)}" placeholder="Name, e.g. Tylenol 500 mg" aria-label="Medication name">
+          <button class="switch" role="switch" aria-checked="${!!m.on}" aria-label="Taking this" data-act="on"></button>
+        </div>
+        <input type="text" class="notein" id="med-${m.id}-note" value="${esc(m.note)}" placeholder="Note, e.g. 2 pills, with food" aria-label="Note">
+        <div class="field"><span>Days</span><div class="days">${WD.map((w,i)=>`<button aria-pressed="${(m.days||[]).includes(i)}" data-act="day" data-i="${i}" aria-label="${w}">${w[0]}</button>`).join('')}
+          <button class="btn" data-act="alldays" style="width:auto;border-radius:99px">Every day</button></div></div>
+        <div class="field"><span>Times</span><div class="times">${(m.times||[]).map((t,i)=>`<span class="time"><input type="time" id="med-${m.id}-t${i}" value="${t}" data-act="time" data-i="${i}" aria-label="Time"><button data-act="rmtime" data-i="${i}" aria-label="Remove time">×</button></span>`).join('')}
+          <button class="btn" data-act="addtime">+ Time</button></div></div>
+        <div class="medfoot"><span class="sub" style="color:var(--muted);font-size:15px">${m.on?'On the daily plan':'Off. Hidden from the daily plan.'}</span><button class="btn danger" data-act="del">Delete</button></div>
+      </div>`).join('') : '<p class="note">No medications yet. Add your pain med, antibiotic, and stool softener once you have the labels.</p>';
+  }
+  medList.addEventListener('click', e => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const card = b.closest('.med'), m = (S.meds||[]).find(x => x.id===card.dataset.id); if (!m) return;
+    const act = b.dataset.act;
+    if (act==='on') m.on = !m.on;
+    else if (act==='day'){ const i = +b.dataset.i; m.days = (m.days||[]).includes(i) ? m.days.filter(x=>x!==i) : [...(m.days||[]), i].sort(); }
+    else if (act==='alldays') m.days = [0,1,2,3,4,5,6];
+    else if (act==='addtime') m.times = [...(m.times||[]), '12:00'];
+    else if (act==='rmtime') m.times = m.times.filter((_,i)=>i!==+b.dataset.i);
+    else if (act==='del'){
+      if (b.dataset.confirm){ S.meds = S.meds.filter(x=>x!==m); }
+      else { b.dataset.confirm = '1'; b.textContent = 'Tap again to delete'; return; }
+    } else return;
+    saveMeds(); renderMeds();
+  });
+  medList.addEventListener('input', e => {
+    const card = e.target.closest('.med'); if (!card) return;
+    const m = (S.meds||[]).find(x => x.id===card.dataset.id); if (!m) return;
+    if (e.target.classList.contains('name')) m.name = e.target.value;
+    else if (e.target.classList.contains('notein')) m.note = e.target.value;
+    else if (e.target.dataset.act==='time' && e.target.value) m.times[+e.target.dataset.i] = e.target.value;
+    saveMeds();
+  });
+  document.getElementById('addMed').addEventListener('click', () => {
+    S.meds = [...(S.meds||[]), {id:'m'+Date.now().toString(36), name:'', note:'', days:[0,1,2,3,4,5,6], times:['08:00'], on:true}];
+    saveMeds(); renderMeds();
+    const inp = medList.querySelector('.med:last-child .name'); if (inp) inp.focus();
+  });
+
+  const bIn = document.getElementById('baseline'), tEl = document.getElementById('thresh');
+  function renderWeights(){
+    if (document.activeElement!==bIn) bIn.value = S.profile.baseline || '';
+    const b = parseFloat(S.profile.baseline);
+    tEl.textContent = b ? `Call the clinic if you drop under ${thresh(b).toFixed(1)} lb.` : '';
+    const rows = Object.values(S.weights).sort((a,b)=>b.date.localeCompare(a.date));
+    document.getElementById('wlog').innerHTML = rows.length ? rows.map(w => {
+      const diff = b ? w.lb - b : null, warn = b && w.lb < thresh(b);
+      const [y,mo,da] = w.date.split('-').map(Number);
+      return `<div class="wrow"><span class="dt">${short(new Date(y,mo-1,da))}</span><b>${w.lb} lb</b><span class="dl${warn?' warn':''}">${diff===null?'':(diff>0?'+':'')+diff.toFixed(1)}${warn?' call':''}</span><button data-wdel="${w.date}" aria-label="Delete">×</button></div>`;
+    }).join('') : '<p class="note">No weigh-ins yet.</p>';
+  }
+  let bTimer = null;
+  bIn.addEventListener('input', () => {
+    S.profile.baseline = bIn.value; renderWeights();
+    clearTimeout(bTimer); bTimer = setTimeout(() => put('settings/profile', S.profile), 500);
+  });
+  document.getElementById('wDate').value = iso(now);
+  document.getElementById('wAdd').addEventListener('click', () => {
+    const dt = document.getElementById('wDate').value, lb = parseFloat(document.getElementById('wLb').value);
+    if (dt && lb){ saveWeight(dt, lb); document.getElementById('wLb').value=''; }
+  });
+  document.getElementById('wlog').addEventListener('click', e => {
+    const b = e.target.closest('[data-wdel]'); if (!b) return;
+    delete S.weights[b.dataset.wdel]; del('weights/'+b.dataset.wdel); renderWeights();
+  });
+  function saveWeight(date, lb){
+    S.weights[date] = {date, lb};
+    put('weights/'+date, {date, lb});
+    renderWeights(); if (view==='today') renderCounts();
+  }
+
+  // copy buttons
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-copy]'); if (!b) return;
+    const t = b.dataset.copy, old = b.textContent;
+    const ok = () => { b.textContent = 'Copied'; setTimeout(()=>b.textContent=old, 1400); };
+    try { navigator.clipboard.writeText(t).then(ok, ()=>{ b.textContent = t; }); } catch(err){ b.textContent = t; }
+  });
+
+  // ---------- NAV ----------
+  const tabs = document.querySelectorAll('.nav button');
+  function setView(v){
+    view = v;
+    document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-'+v);
+    tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.view===v));
+  }
+  tabs.forEach(t => t.addEventListener('click', () => { setView(t.dataset.view); window.scrollTo({top:0}); }));
+
+  function renderAll(){
+    const settingsBusy = document.getElementById('view-settings').contains(document.activeElement);
+    if (!settingsBusy) renderMeds();
+    renderWeights();
+    if (!dayEl.contains(document.activeElement) || document.activeElement.tagName!=='INPUT') { const y = scrollY; renderCurrent(); if (view==='today') scrollTo(0,y); }
+    buildShop();
+  }
+
+  buildStrip(); buildPlan(); buildShop(); renderMeds(); renderWeights(); show(cur);
+  const hv = (location.hash||'').slice(1);
+  if (['plan','recipes','shop','clinic','settings'].includes(hv)) setView(hv);
+  setSync('Saved on this device only.');
+
+  // ---------- db sync ----------
+  (async () => {
+    try {
+      const d = await window.claude?.use?.('db');
+      if (!d) return;
+      db = d;
+      setSync('Synced across your devices.');
+      const err = e => setSync('Sync paused ('+(e&&e.code||'error')+'). Saved on this device.');
+      db.collection('settings').onSnapshot(snap => {
+        snap.docs.forEach(doc => {
+          const v = doc.data(); if (!v) return;
+          if (doc.id==='meds') S.meds = JSON.parse(JSON.stringify(v.items||[]));
+          if (doc.id==='profile') S.profile = {...v};
+          if (doc.id==='shop') S.shop = {...(v.checked||{})};
+        });
+        cache(); renderAll();
+      }, err);
+      db.collection('days').onSnapshot(snap => {
+        snap.docs.forEach(doc => { const v = doc.data(); if (v) S.days[doc.id] = JSON.parse(JSON.stringify(v)); });
+        cache(); renderAll();
+      }, err);
+      db.collection('weights').onSnapshot(snap => {
+        const w = {}; snap.docs.forEach(doc => { const v = doc.data(); if (v) w[doc.id] = {...v}; });
+        S.weights = w; cache(); renderAll();
+      }, err);
+    } catch(e){}
+  })();
+})();
+</script>
+
+</body>
+</html>
