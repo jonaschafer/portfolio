@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Jon's Jaw Surgery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F3F2EE; --ink:#141413; --stone:#8F8B80; --muted:#5C5952;
+  --card:#E6E4DE; --line:#D6D3CB; --pink:#F5A8EE; --pink-ink:#3B0E37; --green:#2E9E57;
+  --sans:"Instrument Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;--paper:#121211;--ink:#F1EFEA;--stone:#7C786F;--muted:#A8A49A;--card:#1F1E1C;--line:#2E2D2A;--pink:#E896DF;--pink-ink:#2A0A27;--green:#4CC27A}
+}
+:root[data-theme="dark"]{color-scheme:dark;--paper:#121211;--ink:#F1EFEA;--stone:#7C786F;--muted:#A8A49A;--card:#1F1E1C;--line:#2E2D2A;--pink:#E896DF;--pink-ink:#2A0A27;--green:#4CC27A}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:19px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding-inline:20px;padding-block:28px 96px}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-weight:500;text-wrap:balance}
+.mono{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.big{font-size:clamp(46px,13vw,92px);line-height:.95;letter-spacing:-.035em;margin-top:14px}
+.say{font-size:clamp(30px,8.2vw,56px);line-height:1.02;letter-spacing:-.03em;color:var(--stone);font-weight:500;margin-top:10px}
+.now{background:var(--ink);color:var(--paper);border-radius:26px;padding:22px;margin-top:32px}
+.now .mono{color:var(--paper);opacity:.6}
+.now h2{font-size:clamp(30px,8vw,44px);letter-spacing:-.025em;line-height:1.05;margin-top:8px}
+.now p{margin-top:10px;font-size:19px;opacity:.85}
+.bar{height:8px;border-radius:99px;background:color-mix(in srgb,var(--paper) 20%,transparent);margin-top:18px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--pink);border-radius:99px}
+.sec{margin-top:44px}
+.sec > h2{font-family:var(--mono);font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--ink)}
+.sec > p{margin-top:14px;max-width:62ch}
+.step{display:grid;grid-template-columns:100px 1fr;gap:14px;padding-block:16px;border-bottom:1px solid var(--line)}
+.step .w{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--muted);padding-top:5px}
+.step h3{font-size:23px;letter-spacing:-.015em;line-height:1.15}
+.step p{color:var(--muted);font-size:17px;margin-top:4px}
+.step.cur h3::after{content:"You are here";margin-left:10px;vertical-align:4px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--pink);color:var(--pink-ink);padding:4px 8px;border-radius:99px}
+.step.past h3{color:var(--stone)}
+.help{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+@media (max-width:560px){.help{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:22px;padding:18px 18px 16px}
+.card h3{font-size:22px;letter-spacing:-.015em}
+.card p{margin-top:6px;font-size:17px;color:var(--muted)}
+</style>
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <p class="mono">For friends and family</p>
+  <h1 class="big">Jon's jaw surgery.</h1>
+  <p class="say">What's happening, where I'm at, and how to help.</p>
+
+  <div class="now" id="now"></div>
+
+  <div class="sec"><h2>What's going on</h2>
+    <p>On Friday, October 2 I'm having MMA surgery (maxillomandibular advancement) at OHSU. The surgeons cut both my upper and lower jaw, move them forward, and hold them in place with small titanium plates and screws. Moving the jaws forward opens up the airway behind the tongue. The goal is to fix my sleep apnea.</p>
+    <p>I won't be wired shut. I'll have rubber bands on my braces for a few weeks, a very swollen face, a numb lip and chin, and a no-chewing rule for six weeks. Full recovery takes about three months, and the final result shows up around a year.</p>
+  </div>
+
+  <div class="sec"><h2>The journey</h2><div id="steps"></div></div>
+
+  <div class="sec"><h2>How to help</h2>
+    <div class="help">
+      <div class="card"><h3>Text, don't call</h3><p>Talking is hard and tiring for the first couple of weeks. Texts are great. Don't expect a fast reply.</p></div>
+      <div class="card"><h3>Check in around week 1</h3><p>The surgeons say almost everyone feels low or regretful in the first two weeks. A note that week goes a long way.</p></div>
+      <div class="card"><h3>Visit from week 2</h3><p>Short visits are welcome once I'm past the first week. I'll be puffy and mumbly. Please don't make me laugh too hard.</p></div>
+      <div class="card"><h3>Come walk with me</h3><p>Walking is the main exercise for the first month. Company makes it better.</p></div>
+      <div class="card"><h3>Send recommendations</h3><p>Shows, movies, podcasts, audiobooks. There will be a lot of couch time.</p></div>
+      <div class="card"><h3>Mind the face</h3><p>No hugs that press on my face, and nothing that could bump my jaw for three months. A knock can shift the bones.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const SURGERY = new Date(2026,9,2);
+  const DAY = 86400000;
+  const now = new Date(); now.setHours(0,0,0,0);
+  const d = Math.round((now - SURGERY)/DAY);
+  const STEPS = [
+    {from:-999,to:-1,w:'Before',h:'Getting ready',p:'Stocking the kitchen, finishing work, final appointments.'},
+    {from:0,to:0,w:'Fri Oct 2',h:'Surgery day',p:'Two to four hours in the OR at OHSU. Most people stay one night.'},
+    {from:1,to:7,w:'Week 1',h:'The hard week',p:'Peak swelling around days 2–3. Liquids only, ice, lots of sleep sitting up. Bands stay on.'},
+    {from:8,to:14,w:'Week 2',h:'Over the hump',p:'Swelling drops a lot. Lips start working again. Soft food begins around day 10.'},
+    {from:15,to:42,w:'Weeks 3–6',h:'Getting back to things',p:'Walks, light exercise, back to work. Still no chewing. Face starts looking like mine again.'},
+    {from:43,to:90,w:'Weeks 6–12',h:'Chewing again',p:'Bone is healed enough to start chewing soft food. Running and lifting come back gradually.'},
+    {from:91,to:364,w:'Months 3–12',h:'Settling in',p:'Normal food, normal training. Numbness fades slowly. Sleep study at 6 months to confirm it worked.'},
+    {from:365,to:99999,w:'Year 1',h:'Final result',p:'Full assessment at one year.'},
+  ];
+  const cur = STEPS.findIndex(s => d>=s.from && d<=s.to);
+  document.getElementById('steps').innerHTML = STEPS.map((s,i) =>
+    `<div class="step${i===cur?' cur':''}${i<cur?' past':''}"><span class="w">${s.w}</span><div><h3>${s.h}</h3><p>${s.p}</p></div></div>`).join('');
+  const s = STEPS[cur];
+  const pct = Math.max(2, Math.min(100, d/90*100));
+  const head = d<0 ? `${-d} ${-d===1?'day':'days'} until surgery` : d===0 ? 'Surgery is today' : `Day ${d} of recovery`;
+  document.getElementById('now').innerHTML = `
+    <p class="mono">Where I'm at</p>
+    <h2>${head}</h2>
+    <p>${s.h}. ${s.p}</p>
+    ${d>0?`<div class="bar" aria-label="${Math.round(pct)}% of the way to 3 months"><i style="width:${pct}%"></i></div><p class="mono" style="margin-top:8px">${Math.round(pct)}% of the way to 3 months</p>`:''}`;
+})();
+</script>
+
+</body>
+</html>
