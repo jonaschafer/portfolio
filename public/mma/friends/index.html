@@ -21,7 +21,13 @@
 :root[data-theme="dark"]{color-scheme:dark;--paper:#121211;--ink:#F1EFEA;--stone:#7C786F;--muted:#A8A49A;--card:#1F1E1C;--line:#2E2D2A;--pink:#E896DF;--pink-ink:#2A0A27;--green:#4CC27A}
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:19px;line-height:1.45;-webkit-font-smoothing:antialiased}
-.wrap{max-width:720px;margin:0 auto;padding-inline:20px;padding-block:28px 96px}
+.wrap{max-width:720px;margin:0 auto;padding-inline:20px;padding-block:0 96px}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:14px 10px;border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-bottom:28px}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:9px 13px;border-radius:999px;font-size:16px;font-weight:500;white-space:nowrap;color:var(--muted);text-decoration:none}
+.nav a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.nav .clinic{color:#C4382B}
+a:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
 h1,h2,h3,p{margin:0}
 h1,h2,h3{font-weight:500;text-wrap:balance}
 .mono{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -58,6 +64,15 @@ body{margin:0}
 
 
 <div class="wrap">
+  <nav class="nav" aria-label="Sections">
+    <a href="/mma/food">Day</a>
+    <a href="/mma/food#plan">Plan</a>
+    <a href="/mma/food#recipes">Recipes</a>
+    <a href="/mma/food#shop">Shopping</a>
+    <a href="/mma/food#clinic" class="clinic">Clinic</a>
+    <a href="/mma/food#settings">Settings</a>
+    <a href="/mma/friends" aria-current="page">Friends</a>
+  </nav>
   <p class="mono">For friends and family</p>
   <h1 class="big">Jon's jaw surgery.</h1>
   <p class="say">What's happening, where I'm at, and how to help.</p>
