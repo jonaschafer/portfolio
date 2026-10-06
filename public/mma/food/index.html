@@ -126,32 +126,22 @@ table.w td:last-child{text-align:right;font-family:var(--mono);font-size:15px;wh
 @media (max-width:560px){.cols{grid-template-columns:1fr}}
 
 /* plan */
-.calrow{display:grid;grid-template-columns:96px 44px 1fr;gap:12px;align-items:baseline;padding-block:12px;border-bottom:1px solid var(--line);width:100%;text-align:left;background:none;border-inline:0;border-top:0;cursor:pointer;font-size:18px}
-.calrow .d{font-family:var(--mono);font-size:14px;color:var(--muted)}
-.calrow .l{font-size:26px;font-weight:500;letter-spacing:-.02em}
-.calrow .x small{display:block;color:var(--muted);font-size:15px}
-.ms{display:grid;grid-template-columns:96px 1fr;gap:14px;padding-block:16px;border-bottom:1px solid var(--line)}
-.ms .d{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:5px;line-height:1.35}
-.ms h3{font-size:23px;letter-spacing:-.015em;line-height:1.15}
-.ms p{color:var(--muted);font-size:17px;margin-top:4px}
-.ms .kinds{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.kind{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:4px 9px;background:var(--card)}
-.kind.visit{background:var(--pink);color:var(--pink-ink)}
-.ms.past h3{color:var(--stone)}
-.ms.later{opacity:.75}
 .menu-card .row{display:grid;grid-template-columns:62px 1fr auto;gap:10px;padding-block:9px;border-top:1px solid var(--line);font-size:18px}
 .menu-card .row .t{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:3px}
 .menu-card .row .g{font-family:var(--mono);font-size:14px}
 .menu-card .letter{font-size:64px;line-height:.9;letter-spacing:-.04em;font-weight:500;float:right;color:var(--stone)}
 
-/* shopping */
-.shop{list-style:none;margin:10px 0 0;padding:0}
-.shop li{border-top:1px solid var(--line)}
-.shop label{display:grid;grid-template-columns:28px 1fr auto;gap:12px;padding-block:12px;cursor:pointer;align-items:start}
-.shop input{width:22px;height:22px;margin:3px 0 0;accent-color:var(--green)}
-.shop .q{font-family:var(--mono);font-size:14px;color:var(--muted);white-space:nowrap;padding-top:3px}
-.shop small{display:block;color:var(--muted);font-size:15px;margin-top:2px}
-.shop input:checked ~ span{color:var(--stone);text-decoration:line-through}
+/* journal */
+.compose{background:var(--card);border-radius:22px;padding:16px;margin-top:20px}
+.compose textarea{width:100%;border:0;background:none;font:inherit;font-size:20px;line-height:1.4;color:var(--ink);resize:vertical;min-height:110px;padding:2px 0}
+.compose textarea:focus-visible{outline:none}
+.compose-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:10px}
+.jday{margin-top:34px}
+.jday > h2{font-size:15px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500;padding-bottom:10px;border-bottom:1px solid var(--ink);display:flex;justify-content:space-between;gap:10px}
+.jentry{display:grid;grid-template-columns:70px 1fr auto;gap:14px;padding-block:14px;border-bottom:1px solid var(--line);align-items:start}
+.jentry .t{font-family:var(--mono);font-size:14px;color:var(--muted);padding-top:4px;font-variant-numeric:tabular-nums}
+.jentry p{font-size:20px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.jentry button{border:0;background:none;color:var(--muted);cursor:pointer;font-size:15px;padding:4px 0;white-space:nowrap}
 
 /* clinic */
 .phone{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding-block:18px;border-bottom:1px solid var(--line)}
@@ -201,12 +191,11 @@ table.w td:last-child{text-align:right;font-family:var(--mono);font-size:15px;wh
 @media print{
   :root{--paper:#fff;--card:#F1F0EC}
   body{font-size:14px}
-  .nav,.no-print,#view-today,#view-settings{display:none!important}
+  .nav,.no-print,#view-today,#view-settings,#view-journal{display:none!important}
   section.view{display:block!important}
   section.view + section.view{break-before:page}
   .print-only{display:block}
   .lead{font-size:34px;padding-block:10px 4px}
-  .calrow{padding-block:5px;font-size:14px}.calrow .l{font-size:18px}
   .menu-card .row{font-size:14px;padding-block:5px}
   table.w{font-size:14px}
 }
@@ -227,7 +216,7 @@ img{max-width:100%}
     <button role="tab" data-view="today" aria-selected="true">Day</button>
     <button role="tab" data-view="plan" aria-selected="false">Plan</button>
     <button role="tab" data-view="recipes" aria-selected="false">Recipes</button>
-    <button role="tab" data-view="shop" aria-selected="false">Shopping</button>
+    <button role="tab" data-view="journal" aria-selected="false">Journal</button>
     <button role="tab" data-view="clinic" aria-selected="false" class="clinic">Clinic</button>
     <button role="tab" data-view="settings" aria-selected="false">Settings</button>
     <a href="/mma/friends">Friends</a>
@@ -249,8 +238,6 @@ img{max-width:100%}
       <div class="card"><h3>Days 10–21</h3><p class="sub">Mon 10/12 to Fri 10/23</p><p>Soft rotation D, E, F. Nothing you need to chew. Mash it with a fork first.</p></div>
       <div class="card"><h3>Days 22–42</h3><p class="sub">Sat 10/24 to Fri 11/13</p><p>Rotation G, H, I. Real cooked meals: mac and cheese, dal, polenta with braised beef, salmon. Still no chewing until the 6-week visit.</p></div>
     </div>
-    <div class="sec"><h2>Milestones</h2><div id="milestones"></div></div>
-    <div class="sec"><h2>Calendar</h2><div id="cal"></div></div>
     <div class="sec"><h2>The menus</h2><div id="menus"></div></div>
   </section>
 
@@ -439,22 +426,17 @@ img{max-width:100%}
     </div>
   </section>
 
-  <!-- SHOPPING -->
-  <section class="view" id="view-shop" hidden>
-    <h2 class="lead">Two weeks of food. <span class="stone">Order powder today, shop by Wed.</span></h2>
-    <p class="note no-print">Tap to check off.</p>
-    <div id="shopLists"></div>
-    <div class="sec"><h2>Protein powder, decoded</h2>
-      <div class="card"><h3>Whey isolate for cold, collagen for hot</h3>
-        <ul>
-          <li><b>Whey</b> comes from milk. Complete protein, mild taste, mixes thin. <b>Isolate</b> is the more filtered version: less lactose and fat, cleaner taste, dissolves better than concentrate.</li>
-          <li><b>Casein</b> is the other milk protein. It thickens into pudding. Skip it for days 1–7.</li>
-          <li><b>Plant</b> (pea, rice) is fine if dairy bugs you, but tastes earthy and can be gritty.</li>
-          <li><b>Collagen peptides</b> dissolve invisibly in hot broth with no taste. Not a complete protein, so it's a booster, not the base.</li>
-        </ul>
-        <p><b>Your pick, Isopure Zero Carb Unflavored:</b> good choice. Whey isolate, no sugar, no sweetener, no flavoring, and it's known for mixing into warm liquids. The only extra is a vitamin and mineral blend, which is harmless. The 1 lb tub covers the first month at half a scoop per smoothie.</p>
+  <!-- JOURNAL -->
+  <section class="view" id="view-journal" hidden>
+    <h2 class="lead">Journal. <span class="stone">What I ate, how I walked, what changed.</span></h2>
+    <div class="compose">
+      <textarea id="jText" rows="4" placeholder="Anything. First real walk, a meal that worked, swelling down…" aria-label="Journal entry"></textarea>
+      <div class="compose-foot">
+        <input class="numin" id="jDate" type="date" aria-label="Date" style="width:auto">
+        <button class="btn solid" id="jAdd">Save</button>
       </div>
     </div>
+    <div id="jList"></div>
   </section>
 
   <!-- CLINIC -->
@@ -530,7 +512,7 @@ img{max-width:100%}
   const thresh = b => Math.max(b-10, b*0.95);
 
   // ---------- state + storage ----------
-  let S = {meds:null, profile:{}, days:{}, weights:{}, shop:{}};
+  let S = {meds:null, profile:{}, days:{}, weights:{}, journal:{}};
   try { const c = JSON.parse(localStorage.getItem('jaw-state')||'null'); if (c) S = Object.assign(S,c); } catch(e){}
   const cache = () => { try{ localStorage.setItem('jaw-state', JSON.stringify(S)) }catch(e){} };
   let db = null;
@@ -616,25 +598,6 @@ img{max-width:100%}
     {what:'No alcohol, nothing hot', end:new Date(2026,9,16), note:'Warm is fine. Test on your wrist.'},
     {what:'No heavy lifting or straining', end:new Date(2026,9,30), note:'No holding your breath and bearing down.'},
     {what:'No chewing', end:new Date(2026,10,13), note:'Until your 6-week visit clears you.'},
-  ];
-
-  const MILESTONES = [
-    {d:0, h:'Surgery at OHSU', p:'Two to four hours. About half of people stay one night; the only test to go home is keeping fluids down.', k:['visit']},
-    {d:1, h:'Home. Ice, head up, liquids.', p:'Survival menu. Pain meds on a schedule days 1–4 so pain never builds. Stool softener from day 1.', k:['food','body']},
-    {d:3, h:'Swelling peaks, switch to warmth', p:'Ice stops helping after 48 hours. Warm damp washcloth from here.', k:['body']},
-    {d:4, h:'Liquid rotation starts', p:'Menus A, B, C. Pain meds can move to as-needed, per your labels.', k:['food']},
-    {d:7, h:'1-week visit', p:'Checks healing, bite, and bands. Confirm the time. Ask when bands come out for meals.', k:['visit']},
-    {d:8, h:'Bands out to eat. More movement.', p:'Longer walks, stationary bike, light cardio. Stop if your face throbs. Waterpik on the lowest setting.', k:['move','food']},
-    {d:10, h:'Soft food and jaw exercises', p:'Menus D, E, F. Mirror exercises: open, side to side, forward. Goal about 20–25 mm, one finger.', k:['food','body']},
-    {d:14, h:'Two weeks', p:'About 80% of swelling gone. Talking gets easier. Most people could go back to desk work around now.', k:['body']},
-    {d:15, h:'Nose, straws, and a first easy run?', p:'Nose blowing, straws, and flying OK. Your call on running: surgeons said 2 weeks is fine, OHSU\'s written plan says weeks 4–6. You picked 2 weeks at the earliest.', k:['move','body']},
-    {d:16, span:'10/16–10/30', h:'2nd visit window (2–4 weeks)', p:'Checks jaw opening, adjusts the band pattern. The splint often comes out around this visit. Date TBD.', k:['visit']},
-    {d:22, h:'Menus G, H, I', p:'More variety, real cooked meals: mac and cheese, dal, polenta with braised beef, salmon. Still no chewing.', k:['food']},
-    {d:28, h:'Week 4', p:'Heavy lifting ban ends. Light lifting: low weight, high reps. Gradual return to running. Finger stretching for jaw opening starts, goal 30–35 mm.', k:['move','body']},
-    {d:42, h:'6-week visit', p:'Checks bone healing. Chewing starts slowly. Full-effort training as cleared, built back over 2–3 weeks.', k:['visit','food','move']},
-    {d:55, later:'Thu 11/26', h:'Thanksgiving, week 8', p:'Early chewing. Soft sides, turkey in gravy cut small.', k:['food']},
-    {d:84, later:'Fri 12/25', h:'Week 12: normal diet', p:'All foods, once your surgeon clears you. Crusts, nuts, chips, and ice wait until here.', k:['food']},
-    {d:85, later:'Sat 12/26', h:'Pizza night', p:'First real slice, crust and all. Start with a soft Neapolitan, not a crispy New York crust. Before this, a soft slice with no crust, cut small, works from the 6-week visit on.', k:['food']},
   ];
 
   // ---------- meds ----------
@@ -831,32 +794,6 @@ img{max-width:100%}
 
   // ---------- PLAN ----------
   function buildPlan(){
-    document.getElementById('milestones').innerHTML = MILESTONES.map(m => {
-      const dt = dateFor(m.d);
-      const when = m.span ? m.span : m.d===0 ? 'Fri 10/2<br>Day 0' : `${short(dt)}<br>Day ${m.d}`;
-      const past = todayD > m.d && !m.span;
-      return `<div class="ms${past?' past':''}${m.later?' later':''}"><span class="d">${m.later?m.later+'<br>Later':when}</span><div><h3>${m.h}</h3><p>${m.p}</p><div class="kinds">${m.k.map(x=>`<span class="kind ${x}">${x}</span>`).join('')}</div></div></div>`;
-    }).join('');
-    let h = '';
-    for (let d=1; d<=LAST; d++){
-      const dt = dateFor(d), k = menuFor(d);
-      if ((d-1)%7===0) h += `<p class="mono" style="color:var(--muted);padding-top:22px;padding-bottom:4px">Week ${(d-1)/7+1}</p>`;
-      const flags = [];
-      if (d<=2) flags.push('Ice');
-      if (d===3) flags.push('Switch to warmth');
-      if (d===7) flags.push('1-week visit');
-      if (d===8) flags.push('Bands out to eat');
-      if (d===10) flags.push('Soft food + jaw exercises start');
-      if (d===15) flags.push('Nose blowing + straws OK');
-      if (d===22) flags.push('Menus G, H, I start');
-      if (d===28) flags.push('Light lifting + finger stretches');
-      if (d===42) flags.push('6-week visit');
-      if ([1,4].includes(dt.getDay())) flags.push('Weigh in');
-      h += `<button class="calrow" data-d="${d}"><span class="d">${short(dt)}</span><span class="l">${k}</span><span class="x">Day ${d} · ${MENUS[k].short}${flags.length?`<small>${flags.join(' · ')}</small>`:''}</span></button>`;
-    }
-    const cal = document.getElementById('cal');
-    cal.innerHTML = h;
-    cal.addEventListener('click', e => { const b = e.target.closest('.calrow'); if (b) show(+b.dataset.d); });
     document.getElementById('menus').innerHTML = Object.entries(MENUS).map(([k,M]) => `
       <div class="card menu-card"><span class="letter">${k}</span><h3>${M.short}</h3>
         <p class="sub">${k==='S'?'Days 1–3':'ABC'.includes(k)?'Days 4–9, rotating':'DEF'.includes(k)?'Days 10–21, rotating':'Days 22–42, rotating'} · ≈${total(k,2)} g protein</p>
@@ -864,85 +801,32 @@ img{max-width:100%}
       </div>`).join('');
   }
 
-  // ---------- SHOPPING ----------
-  const SHOP = [
-    {h:'Order now (Amazon)', items:[
-      ['Isopure Zero Carb whey isolate, unflavored','1 lb','Cold drinks and smoothies'],
-      ['Unflavored collagen peptides','1 tub','Broth and soup'],
-    ]},
-    {h:'Before surgery (by Wed 9/30)', items:[
-      ['Fairlife chocolate shakes','to ~20 total','Daily, plus the chocolate PB shake'],
-      ['Strawberry protein drinks','to ~8 total','Drunk plain or blended into shakes'],
-      ['Milk, 2%, half gallon','2','Base for smoothies, yogurt, oatmeal'],
-      ['Plain Greek yogurt, 32 oz','3','Whole or 2%. About 2.3 kg over two weeks'],
-      ['Vanilla ice cream, 1.5 qt','1','Shakes, plus comfort'],
-      ['Instant potato flakes','1 box','Plain, 100% potato'],
-      ['Broccoli cheddar soup (e.g. Panera at Home)','2','Blend smooth before eating'],
-      ['Butternut squash soup, 32 oz carton','2',''],
-      ['Potato leek soup, 32 oz carton','1','For the freezer-soup slot if nothing homemade'],
-      ['Frozen mango','1 bag','Your mango is the best blender'],
-      ['Frozen strawberries','1 bag','Shakes eat through these'],
-      ['Smooth peanut butter','1 jar','If you\'re out'],
-      ['Honey','1','If you\'re out'],
-      ['Applesauce cups, unsweetened','6','Easy snack, and a way to get pills down'],
-      ['Pudding cups','6','Same'],
-    ]},
-    {h:'Check you have enough', items:[
-      ['Protein oatmeal packets','6+','Menus A, C, E'],
-      ['Bone broth in the freezer','about 4.5 kg','15 mugs over two weeks. If short, buy 2 cartons'],
-      ['Spinach cubes','10','One per smoothie'],
-      ['Frozen berries','about 1 kg','Strawberry and blueberry'],
-    ]},
-    {h:'Soft food run (around Sat 10/10)', items:[
-      ['Eggs','1 dozen',''],
-      ['Milk, 2%, half gallon','2','Restock'],
-      ['Cottage cheese, 4%, 16 oz','1',''],
-      ['Canned peaches in juice','2 cans','Mash into cottage cheese'],
-      ['Refried beans, smooth','2 cans',''],
-      ['Shredded cheese + parmesan','1 each','Finely grated parm'],
-      ['Ripe avocados','2',''],
-      ['Pastina (tiny stars)','1 box','Or orzo'],
-      ['Salmon fillet','1 lb','Bake gently, flake fine; menu D'],
-      ['Chicken congee','2 servings','Takeout (Chinese or Cantonese spot) or homemade; menu F'],
-      ['Butter','1',''],
-    ]},
-    {h:'Weeks 3–6 run (around Fri 10/23)', items:[
-      ['Small pasta shells or elbows','1 box','Mac and cheese'],
-      ['Sharp cheddar','400 g',''],
-      ['Red lentils','1 bag','Dal'],
-      ['Rice','1 bag','Cooked extra soft'],
-      ['Polenta','1 bag',''],
-      ['Chuck roast or short rib','about 700 g','Braise once, four servings'],
-      ['Salmon fillet','1 lb','Menu I'],
-      ['Silken tofu','2 packs',''],
-      ['Sweet potatoes','3',''],
-      ['Whole-milk ricotta','1 tub',''],
-      ['Ripe bananas','1 bunch',''],
-      ['Ripe avocados','3',''],
-      ['Eggs','1 dozen','Restock'],
-      ['Milk, 2%, half gallon','2','Restock'],
-      ['Greek yogurt, 32 oz','2','Restock'],
-      ['Fairlife chocolate shakes','~15','Restock'],
-    ]},
-    {h:'Pharmacy (if not already in your kit)', items:[
-      ['Stool softener','1','Start day 1'],
-      ['Saline nose spray','2','Use as often as you like'],
-      ['Lip balm','2',''],
-      ['16 oz jars or deli cups','8','Smoothie batches and soup portions'],
-    ]},
-  ];
-  function buildShop(){
-    const el = document.getElementById('shopLists');
-    el.innerHTML = SHOP.map((g,gi) => `
-      <div class="sec"><h2>${g.h}</h2><ul class="shop">${g.items.map((it,ii) => {
-        const id = `shop-${gi}-${ii}`;
-        return `<li><label for="${id}"><input type="checkbox" id="${id}" ${S.shop[id]?'checked':''}><span>${it[0]}${it[2]?`<small>${it[2]}</small>`:''}</span><span class="q">${it[1]}</span></label></li>`;
-      }).join('')}</ul></div>`).join('');
+  // ---------- JOURNAL ----------
+  const jText = document.getElementById('jText'), jDate = document.getElementById('jDate'), jList = document.getElementById('jList');
+  jDate.value = iso(now);
+  function renderJournal(){
+    const rows = Object.values(S.journal).sort((a,b) => (b.date+b.at+b.id).localeCompare(a.date+a.at+a.id));
+    if (!rows.length){ jList.innerHTML = '<p class="note">No entries yet.</p>'; return; }
+    const groups = {};
+    rows.forEach(e => (groups[e.date] ||= []).push(e));
+    jList.innerHTML = Object.entries(groups).map(([date, L]) => {
+      const [y,mo,da] = date.split('-').map(Number), dt = new Date(y,mo-1,da);
+      const pd = Math.round((dt - SURGERY)/DAY);
+      return `<div class="jday"><h2><span>${fmt(dt)}</span><span>${pd<0?'Pre-op':pd===0?'Surgery':'Day '+pd}</span></h2>${L.map(e =>
+        `<div class="jentry"><span class="t">${e.at?hm(toMin(e.at)):''}</span><p>${esc(e.text)}</p><button data-jdel="${e.id}">Delete</button></div>`).join('')}</div>`;
+    }).join('');
   }
-  document.getElementById('shopLists').addEventListener('change', e => {
-    if (!e.target.id) return;
-    S.shop[e.target.id] = e.target.checked;
-    put('settings/shop', {checked:S.shop});
+  document.getElementById('jAdd').addEventListener('click', () => {
+    const text = jText.value.trim(); if (!text) { jText.focus(); return; }
+    const t = new Date(), id = 'j'+t.getTime().toString(36);
+    const e = {id, date: jDate.value || iso(now), at: `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`, text};
+    S.journal[id] = e; put('journal/'+id, e);
+    jText.value = ''; renderJournal();
+  });
+  jList.addEventListener('click', e => {
+    const b = e.target.closest('[data-jdel]'); if (!b) return;
+    if (!b.dataset.confirm){ b.dataset.confirm = '1'; b.textContent = 'Tap again'; return; }
+    delete S.journal[b.dataset.jdel]; del('journal/'+b.dataset.jdel); renderJournal();
   });
 
   // ---------- SETTINGS ----------
@@ -1048,12 +932,12 @@ img{max-width:100%}
     if (!settingsBusy) renderMeds();
     renderWeights();
     if (!dayEl.contains(document.activeElement) || document.activeElement.tagName!=='INPUT') { const y = scrollY; renderCurrent(); if (view==='today') scrollTo(0,y); }
-    buildShop();
+    renderJournal();
   }
 
-  buildStrip(); buildPlan(); buildShop(); renderMeds(); renderWeights(); show(cur);
+  buildStrip(); buildPlan(); renderJournal(); renderMeds(); renderWeights(); show(cur);
   const hv = (location.hash||'').slice(1);
-  if (['plan','recipes','shop','clinic','settings'].includes(hv)) setView(hv);
+  if (['plan','recipes','journal','clinic','settings'].includes(hv)) setView(hv);
   setSync('Saved on this device only.');
 
   // ---------- db sync ----------
@@ -1069,7 +953,6 @@ img{max-width:100%}
           const v = doc.data(); if (!v) return;
           if (doc.id==='meds') S.meds = JSON.parse(JSON.stringify(v.items||[]));
           if (doc.id==='profile') S.profile = {...v};
-          if (doc.id==='shop') S.shop = {...(v.checked||{})};
         });
         cache(); renderAll();
       }, err);
@@ -1080,6 +963,10 @@ img{max-width:100%}
       db.collection('weights').onSnapshot(snap => {
         const w = {}; snap.docs.forEach(doc => { const v = doc.data(); if (v) w[doc.id] = {...v}; });
         S.weights = w; cache(); renderAll();
+      }, err);
+      db.collection('journal').onSnapshot(snap => {
+        const j = {}; snap.docs.forEach(doc => { const v = doc.data(); if (v) j[doc.id] = {...v}; });
+        S.journal = j; cache(); renderJournal();
       }, err);
     } catch(e){}
   })();

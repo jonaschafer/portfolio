@@ -43,11 +43,12 @@ h1,h2,h3{font-weight:500;text-wrap:balance}
 .sec > h2{font-family:var(--mono);font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--ink)}
 .sec > p{margin-top:14px;max-width:62ch}
 .step{display:grid;grid-template-columns:100px 1fr;gap:14px;padding-block:16px;border-bottom:1px solid var(--line)}
-.step .w{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--muted);padding-top:5px}
+.step .w{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--muted);padding-top:5px;line-height:1.35}
 .step h3{font-size:23px;letter-spacing:-.015em;line-height:1.15}
 .step p{color:var(--muted);font-size:17px;margin-top:4px}
 .step.cur h3::after{content:"You are here";margin-left:10px;vertical-align:4px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:var(--pink);color:var(--pink-ink);padding:4px 8px;border-radius:99px}
 .step.past h3{color:var(--stone)}
+.step .visit{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:4px 9px;background:var(--card)}
 .help{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 @media (max-width:560px){.help{grid-template-columns:1fr}}
 .card{background:var(--card);border-radius:22px;padding:18px 18px 16px}
@@ -68,7 +69,7 @@ body{margin:0}
     <a href="/mma/food">Day</a>
     <a href="/mma/food#plan">Plan</a>
     <a href="/mma/food#recipes">Recipes</a>
-    <a href="/mma/food#shop">Shopping</a>
+    <a href="/mma/food#journal">Journal</a>
     <a href="/mma/food#clinic" class="clinic">Clinic</a>
     <a href="/mma/food#settings">Settings</a>
     <a href="/mma/friends" aria-current="page">Friends</a>
@@ -80,8 +81,8 @@ body{margin:0}
   <div class="now" id="now"></div>
 
   <div class="sec"><h2>What's going on</h2>
-    <p>On Friday, October 2 I'm having MMA surgery (maxillomandibular advancement) at OHSU. The surgeons cut both my upper and lower jaw, move them forward, and hold them in place with small titanium plates and screws. Moving the jaws forward opens up the airway behind the tongue. The goal is to fix my sleep apnea.</p>
-    <p>I won't be wired shut. I'll have rubber bands on my braces for a few weeks, a very swollen face, a numb lip and chin, and a no-chewing rule for six weeks. Full recovery takes about three months, and the final result shows up around a year.</p>
+    <p>On Friday, October 2 I had MMA surgery (maxillomandibular advancement) at OHSU. The surgeons cut both my upper and lower jaw, moved them forward, and held them in place with small titanium plates and screws. Moving the jaws forward opens up the airway behind the tongue. The goal is to fix my sleep apnea.</p>
+    <p>I'm not wired shut. I have rubber bands on my braces for a few weeks, a very swollen face, a numb lip and chin, and a no-chewing rule for six weeks. Full recovery takes about three months, and the final result shows up around a year.</p>
   </div>
 
   <div class="sec"><h2>The journey</h2><div id="steps"></div></div>
@@ -115,8 +116,31 @@ body{margin:0}
     {from:365,to:99999,w:'Year 1',h:'Final result',p:'Full assessment at one year.'},
   ];
   const cur = STEPS.findIndex(s => d>=s.from && d<=s.to);
-  document.getElementById('steps').innerHTML = STEPS.map((s,i) =>
-    `<div class="step${i===cur?' cur':''}${i<cur?' past':''}"><span class="w">${s.w}</span><div><h3>${s.h}</h3><p>${s.p}</p></div></div>`).join('');
+  // Milestones: dated, detailed. "on" is the post-op day it's current from.
+  const MS = [
+    {on:-999,w:'Before',h:'Getting ready',p:'Stocking the kitchen, finishing work, final appointments.'},
+    {on:0,w:'Fri 10/2<br>Day 0',h:'Surgery at OHSU',p:'Two to four hours in the OR. About half of people stay one night. The only test to go home is keeping fluids down.',v:1},
+    {on:1,w:'Sat 10/3<br>Day 1',h:'Home. Ice, head up, liquids.',p:'Pain meds on a schedule so the pain never builds. Ready-made shakes and broth, sipped from a cup.'},
+    {on:3,w:'Mon 10/5<br>Day 3',h:'Swelling peaks',p:'Ice stops helping after 48 hours, so I switch to warmth. It gets better from here.'},
+    {on:4,w:'Tue 10/6<br>Day 4',h:'Liquid rotation starts',p:'Smoothies, shakes, oatmeal, and blended soups on a three-day rotation. Bands stay on, so everything has to pour.'},
+    {on:7,w:'Fri 10/9<br>Day 7',h:'1-week visit',p:'The surgeons check healing, my bite, and the rubber bands.',v:1},
+    {on:8,w:'Sat 10/10<br>Day 8',h:'Bands out to eat. More movement.',p:'Longer walks, stationary bike, light cardio. Good week to come walk with me.'},
+    {on:10,w:'Mon 10/12<br>Day 10',h:'Soft food and jaw exercises',p:'Eggs, salmon mashed into potatoes, pastina. Still nothing I have to chew. Mirror exercises to get my mouth opening again, goal about one finger wide.'},
+    {on:14,w:'Fri 10/16<br>Day 14',h:'Two weeks',p:'About 80% of the swelling gone. Talking gets easier. Most people could go back to desk work around now.'},
+    {on:15,w:'Sat 10/17<br>Day 15',h:'Nose, straws, and maybe a first easy run',p:'Nose blowing, straws, and flying are OK again. The surgeons said running is fine at two weeks; OHSU\'s written plan says weeks 4 to 6. I\'m going by feel.'},
+    {on:16,w:'10/16–10/30',h:'Second visit',p:'Checks jaw opening and adjusts the band pattern. The splint often comes out around now.',v:1},
+    {on:22,w:'Sat 10/24<br>Day 22',h:'Real cooked meals',p:'Mac and cheese, dal, polenta with braised beef, salmon. Still no chewing.'},
+    {on:28,w:'Fri 10/30<br>Day 28',h:'Week 4',p:'Heavy lifting ban ends. Light lifting and a gradual return to running. Finger stretches to open my jaw wider, goal two fingers.'},
+    {on:42,w:'Fri 11/13<br>Day 42',h:'6-week visit',p:'Checks bone healing. If it\'s good, chewing starts slowly and training builds back over two to three weeks.',v:1},
+    {on:55,w:'Thu 11/26<br>Week 8',h:'Thanksgiving',p:'Early chewing. Soft sides and turkey in gravy, cut small.'},
+    {on:84,w:'Fri 12/25<br>Week 12',h:'Normal food',p:'Everything, once the surgeon clears me. Crusts, nuts, chips, and ice wait until here.'},
+    {on:85,w:'Sat 12/26',h:'Pizza night',p:'First real slice, crust and all.'},
+    {on:91,w:'Months 3–12',h:'Settling in',p:'Normal food, normal training. Numbness fades slowly. Sleep study around 6 months to confirm it worked.'},
+    {on:365,w:'Year 1',h:'Final result',p:'Full assessment at one year.'},
+  ];
+  let mi = 0; MS.forEach((m,i) => { if (d >= m.on) mi = i; });
+  document.getElementById('steps').innerHTML = MS.map((m,i) =>
+    `<div class="step${i===mi?' cur':''}${i<mi?' past':''}"><span class="w">${m.w}</span><div><h3>${m.h}</h3><p>${m.p}</p>${m.v?'<span class="visit">Visit</span>':''}</div></div>`).join('');
   const s = STEPS[cur];
   const pct = Math.max(2, Math.min(100, d/90*100));
   const head = d<0 ? `${-d} ${-d===1?'day':'days'} until surgery` : d===0 ? 'Surgery is today' : `Day ${d} of recovery`;
