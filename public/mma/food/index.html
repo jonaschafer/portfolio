@@ -141,6 +141,11 @@ table.w td:last-child{text-align:right;font-family:var(--mono);font-size:15px;wh
 .jentry{display:grid;grid-template-columns:70px 1fr auto;gap:14px;padding-block:14px;border-bottom:1px solid var(--line);align-items:start}
 .jentry .t{font-family:var(--mono);font-size:14px;color:var(--muted);padding-top:4px;font-variant-numeric:tabular-nums}
 .jentry p{font-size:20px;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+.jentry .priv{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.check{display:flex;gap:8px;align-items:center;font-size:16px;color:var(--muted);cursor:pointer}
+.check input{width:20px;height:20px;margin:0;accent-color:var(--ink)}
+.acct input{display:block;width:100%;margin-top:10px}
+.acct .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .jentry button{border:0;background:none;color:var(--muted);cursor:pointer;font-size:15px;padding:4px 0;white-space:nowrap}
 
 /* clinic */
@@ -433,9 +438,11 @@ img{max-width:100%}
       <textarea id="jText" rows="4" placeholder="Anything. First real walk, a meal that worked, swelling down…" aria-label="Journal entry"></textarea>
       <div class="compose-foot">
         <input class="numin" id="jDate" type="date" aria-label="Date" style="width:auto">
+        <label class="check"><input type="checkbox" id="jPriv"> Just for me</label>
         <button class="btn solid" id="jAdd">Save</button>
       </div>
     </div>
+    <p class="note" id="jHint"></p>
     <div id="jList"></div>
   </section>
 
@@ -491,10 +498,14 @@ img{max-width:100%}
         <div class="wlog" id="wlog"></div>
       </div>
     </div>
+    <div class="sec"><h2>Sync</h2>
+      <div class="card acct" id="acct"></div>
+    </div>
     <p class="sync" id="sync"></p>
   </section>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
 <script>
 (function(){
   const DAY = 86400000;
@@ -520,9 +531,14 @@ img{max-width:100%}
   function put(path, body){
     cache();
     if (!db) return;
-    queues[path] = (queues[path]||Promise.resolve()).then(() => db.doc(path).set(body)).catch(e => setSync('Could not save: '+(e&&e.code||'error')));
+    queues[path] = (queues[path]||Promise.resolve())
+      .then(async () => { const {error} = await db.from('mma_docs').upsert({path, data:body, updated_at:new Date().toISOString()}); if (error) throw error; })
+      .catch(e => setSync('Could not save: '+(e&&e.message||'error')));
   }
-  function del(path){ cache(); if (db) db.doc(path).delete().catch(()=>{}); }
+  function del(path){
+    cache();
+    if (db) db.from('mma_docs').delete().eq('path', path).then(({error}) => { if (error) setSync('Could not delete: '+error.message); });
+  }
   const setSync = t => { const el = document.getElementById('sync'); if (el) el.textContent = t; };
   const dayState = d => (S.days['d'+d] ||= {meals:{}, todos:{}, meds:{}});
   function toggleDay(d, group, key){
@@ -813,15 +829,15 @@ img{max-width:100%}
       const [y,mo,da] = date.split('-').map(Number), dt = new Date(y,mo-1,da);
       const pd = Math.round((dt - SURGERY)/DAY);
       return `<div class="jday"><h2><span>${fmt(dt)}</span><span>${pd<0?'Pre-op':pd===0?'Surgery':'Day '+pd}</span></h2>${L.map(e =>
-        `<div class="jentry"><span class="t">${e.at?hm(toMin(e.at)):''}</span><p>${esc(e.text)}</p><button data-jdel="${e.id}">Delete</button></div>`).join('')}</div>`;
+        `<div class="jentry"><span class="t">${e.at?hm(toMin(e.at)):''}</span><p>${esc(e.text)}${e.private?'<span class="priv">Just for me</span>':''}</p><button data-jdel="${e.id}">Delete</button></div>`).join('')}</div>`;
     }).join('');
   }
   document.getElementById('jAdd').addEventListener('click', () => {
     const text = jText.value.trim(); if (!text) { jText.focus(); return; }
     const t = new Date(), id = 'j'+t.getTime().toString(36);
-    const e = {id, date: jDate.value || iso(now), at: `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`, text};
+    const e = {id, date: jDate.value || iso(now), at: `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`, text, private: document.getElementById('jPriv').checked};
     S.journal[id] = e; put('journal/'+id, e);
-    jText.value = ''; renderJournal();
+    jText.value = ''; document.getElementById('jPriv').checked = false; renderJournal();
   });
   jList.addEventListener('click', e => {
     const b = e.target.closest('[data-jdel]'); if (!b) return;
@@ -940,36 +956,97 @@ img{max-width:100%}
   if (['plan','recipes','journal','clinic','settings'].includes(hv)) setView(hv);
   setSync('Saved on this device only.');
 
-  // ---------- db sync ----------
-  (async () => {
-    try {
-      const d = await window.claude?.use?.('db');
-      if (!d) return;
-      db = d;
-      setSync('Synced across your devices.');
-      const err = e => setSync('Sync paused ('+(e&&e.code||'error')+'). Saved on this device.');
-      db.collection('settings').onSnapshot(snap => {
-        snap.docs.forEach(doc => {
-          const v = doc.data(); if (!v) return;
-          if (doc.id==='meds') S.meds = JSON.parse(JSON.stringify(v.items||[]));
-          if (doc.id==='profile') S.profile = {...v};
-        });
+  // ---------- sync (Supabase) ----------
+  // One row per doc in public.mma_docs, keyed by path ("days/d3", "journal/j…").
+  // Only Jon's account can write (RLS). Shared journal rows are public-readable
+  // for the friends page.
+  const SB_URL = 'https://hvuxoknvfrlthamjkzcb.supabase.co', SB_KEY = 'sb_publishable_GqrMhNwpVS-wOeDYb64M_g_Vdi2iROe';
+  const sb = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null;
+  const acct = document.getElementById('acct'), jHint = document.getElementById('jHint');
+  let channel = null, signedIn = null;
+
+  function applyDoc(path, data){
+    const i = path.indexOf('/'), col = path.slice(0,i), id = path.slice(i+1);
+    if (col==='settings'){ if (!data) return; if (id==='meds') S.meds = data.items||[]; if (id==='profile') S.profile = {...data}; return; }
+    const bucket = {days:S.days, weights:S.weights, journal:S.journal}[col];
+    if (!bucket) return;
+    if (data) bucket[id] = data; else delete bucket[id];
+  }
+  function localDocs(){
+    const out = [];
+    if (S.meds) out.push(['settings/meds', {items:S.meds}]);
+    if (Object.keys(S.profile||{}).length) out.push(['settings/profile', S.profile]);
+    Object.entries(S.days).forEach(([k,v]) => out.push(['days/'+k, v]));
+    Object.entries(S.weights).forEach(([k,v]) => out.push(['weights/'+k, v]));
+    Object.entries(S.journal).forEach(([k,v]) => out.push(['journal/'+k, v]));
+    return out;
+  }
+
+  async function startSync(){
+    setSync('Syncing…');
+    const {data: rows, error} = await sb.from('mma_docs').select('path,data');
+    if (error){ setSync('Sync paused ('+error.message+'). Saved on this device.'); return; }
+    db = sb;
+    // First sign-in on a device: push anything only this device has.
+    const remote = new Set(rows.map(r => r.path));
+    const up = localDocs().filter(([p]) => !remote.has(p)).map(([path,data]) => ({path, data}));
+    if (up.length){ const r = await sb.from('mma_docs').upsert(up); if (r.error) setSync('Could not upload: '+r.error.message); }
+    rows.forEach(r => applyDoc(r.path, r.data));
+    cache(); renderAll();
+    channel = sb.channel('mma-docs')
+      .on('postgres_changes', {event:'*', schema:'public', table:'mma_docs'}, p => {
+        if (p.eventType==='DELETE') applyDoc(p.old.path, null); else applyDoc(p.new.path, p.new.data);
         cache(); renderAll();
-      }, err);
-      db.collection('days').onSnapshot(snap => {
-        snap.docs.forEach(doc => { const v = doc.data(); if (v) S.days[doc.id] = JSON.parse(JSON.stringify(v)); });
-        cache(); renderAll();
-      }, err);
-      db.collection('weights').onSnapshot(snap => {
-        const w = {}; snap.docs.forEach(doc => { const v = doc.data(); if (v) w[doc.id] = {...v}; });
-        S.weights = w; cache(); renderAll();
-      }, err);
-      db.collection('journal').onSnapshot(snap => {
-        const j = {}; snap.docs.forEach(doc => { const v = doc.data(); if (v) j[doc.id] = {...v}; });
-        S.journal = j; cache(); renderJournal();
-      }, err);
-    } catch(e){}
-  })();
+      })
+      .subscribe();
+    setSync('Synced across your devices.');
+  }
+  function stopSync(){
+    db = null;
+    if (channel){ sb.removeChannel(channel); channel = null; }
+    setSync('Saved on this device only.');
+  }
+
+  function renderAcct(){
+    jHint.textContent = signedIn
+      ? 'Entries show on the friends page unless you check "Just for me."'
+      : 'Saved on this device only. Sign in under Settings to sync and share with friends.';
+    if (!sb){ acct.innerHTML = '<p class="sub">Sync is unavailable right now. Everything saves on this device.</p>'; return; }
+    acct.innerHTML = signedIn
+      ? `<h3>Signed in</h3><p class="sub">${esc(signedIn)}. Changes sync to your other devices, and shared journal entries show on the friends page.</p><div class="row"><button class="btn" id="sbOut">Sign out</button></div>`
+      : `<h3>Sign in to sync</h3><p class="sub">Same account on your phone and computer keeps everything in step.</p>
+         <input class="numin" id="sbEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email">
+         <input class="numin" id="sbPass" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password">
+         <div class="row"><button class="btn solid" id="sbIn">Sign in</button><button class="btn" id="sbUp">Create account</button></div>
+         <p class="sub" id="sbMsg"></p>`;
+  }
+  acct.addEventListener('click', async e => {
+    const b = e.target.closest('button'); if (!b || !sb) return;
+    if (b.id==='sbOut'){ await sb.auth.signOut(); return; }
+    const email = document.getElementById('sbEmail').value.trim(), password = document.getElementById('sbPass').value;
+    const msg = document.getElementById('sbMsg');
+    if (!email || !password){ msg.textContent = 'Email and password, please.'; return; }
+    msg.textContent = '…';
+    if (b.id==='sbIn'){
+      const {error} = await sb.auth.signInWithPassword({email, password});
+      if (error) msg.textContent = error.message;
+    } else if (b.id==='sbUp'){
+      const {data, error} = await sb.auth.signUp({email, password, options:{emailRedirectTo: location.origin+'/mma/food#settings'}});
+      if (error) msg.textContent = error.message;
+      else if (!data.session) msg.textContent = 'Check your email to confirm, then come back and sign in.';
+    }
+  });
+
+  renderAcct();
+  if (sb) sb.auth.onAuthStateChange((event, session) => {
+    const email = session?.user?.email || null;
+    // Defer: Supabase calls inside this callback can deadlock the auth lock.
+    setTimeout(() => {
+      if (email && !db) startSync();
+      if (!email && db) stopSync();
+      signedIn = email; renderAcct();
+    }, 0);
+  });
 })();
 </script>
 
