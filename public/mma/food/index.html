@@ -221,7 +221,7 @@ img{max-width:100%}
     <h2 class="lead">Six weeks, nine menus. <span class="stone">Rotate them and stop thinking about food.</span></h2>
     <div class="cols">
       <div class="card"><h3>Days 1–3</h3><p class="sub">Sat 10/3 to Mon 10/5</p><p>Survival menu. Ready-made, thin, one minute or less. Bands are on and swelling peaks.</p></div>
-      <div class="card"><h3>Days 4–9</h3><p class="sub">Tue 10/6 to Sun 10/11</p><p>Liquid rotation A, B, C. Pourable through day 7 while bands stay on. Thicker is fine once bands come out to eat.</p></div>
+      <div class="card"><h3>Days 4–9</h3><p class="sub">Tue 10/6 to Sun 10/11</p><p>Liquid rotation A, B, C. Pourable while bands stay on. When bands can come out to eat is TBD at the 10/12 visit.</p></div>
       <div class="card"><h3>Days 10–21</h3><p class="sub">Mon 10/12 to Fri 10/23</p><p>Soft rotation D, E, F. Nothing you need to chew. Mash it with a fork first.</p></div>
       <div class="card"><h3>Days 22–42</h3><p class="sub">Sat 10/24 to Fri 11/13</p><p>Rotation G, H, I. Real cooked meals: mac and cheese, dal, polenta with braised beef, salmon. Still no chewing until the 6-week visit.</p></div>
     </div>
@@ -236,7 +236,7 @@ img{max-width:100%}
     <div class="sec"><h2>The pour test</h2>
       <div class="card"><h3>How thin is thin enough?</h3>
         <p>Days 1–7 your bands hold your teeth together, so food has to flow through the gaps. It should run off a spoon in a steady stream, like heavy cream or kefir. If it mounds on the spoon, add 50 g milk and stir.</p>
-        <p>From about day 8, bands come out to eat, so spoonable thickness (yogurt, pudding) is fine.</p>
+        <p>Bands stay on until the doctor says otherwise (TBD at the 10/12 visit). Once they come out to eat, spoonable thickness (yogurt, pudding) is fine.</p>
       </div>
     </div>
 
@@ -588,8 +588,7 @@ img{max-width:100%}
   const phaseLine = d =>
     d<=2 ? 'Ice on, head up. Sip something every hour.' :
     d===3 ? 'Swelling peaks right about now. It gets better from here.' :
-    d<=7 ? 'Bands stay on, so keep everything pourable.' :
-    d<=9 ? 'Bands come out to eat. Thicker is OK now.' :
+    d<=9 ? 'Bands stay on, so keep everything pourable.' :
     d<=14 ? 'Soft food starts. If it needs chewing, mash it first.' :
     d<=21 ? 'Two weeks down. Nose blowing and straws are back.' :
     d<=27 ? 'Real meals again. Still nothing you have to chew.' :
@@ -613,9 +612,8 @@ img{max-width:100%}
     else if (d<=14) add('heat','Swelling','Warm damp washcloth on sore spots and in front of your ears.','Test on your forearm first. Warm, never hot. No heating pad on numb skin.',d===3);
     if (d<=7) add('sleep','Sleep','Head up on 2–3 pillows or the recliner.');
     add('fluid','Fluid','2 to 2.5 liters today.','Shakes, broth, and smoothies all count. Water between meals. Dark urine or dizzy standing means drink more.');
-    if (d<=7) add('bands','Bands','Bands stay on. Scissors within reach.','If you feel like vomiting or can\'t breathe: cut the bands first, then call.',true);
-    else if (d<=14) add('bands','Bands','Bands out to eat and clean, fresh set back in right after.','New bands every day. Same pattern as your day 1 photo.');
-    else add('bands','Bands','Follow the band plan from your last visit.');
+    if (d<=9) add('bands','Bands','Bands stay on. Scissors within reach.','If you feel like vomiting or can\'t breathe: cut the bands first, then call.',true);
+    else add('bands','Bands','Bands stay on until the doctor says otherwise.','Follow the band plan from your last visit. Scissors within reach.');
     add('brush','Mouth', d<=7 ? 'Brush with the kid toothbrush after every meal. Salt-water rinse between meals, no swishing.' : 'Brush after every meal. Salt-water rinse between meals.', '½ tsp salt in 240 g warm water. Let it sit, tip side to side, let it fall out.' + (d>=8 ? ' Waterpik OK on the lowest setting.' : ' No Waterpik yet.'));
     if (d<=14) add('chx','Mouth','Chlorhexidine rinse morning and night.','Or as your label says. It can stain teeth a little; that cleans off later.');
     if (d<=14) add('nose','Nose','Saline spray several times today. Humidifier on tonight.','No blowing. Afrin no more than 3 days in a row.');
@@ -628,7 +626,7 @@ img{max-width:100%}
     if (d>=28) add('jaw','Jaw','Finger stretches, 3–4 times today.','Fingers between front teeth, hold a comfortable stretch 30 sec, 5 times. A pull, never sharp pain. Goal about 30–35 mm, two fingers.',d===28);
     if (d>=14 && wd===5) add('measure','Jaw','Measure your opening with a ruler at the front teeth. Write it down.', d>=28 && d<35 ? 'Call if you can\'t open more than about 20 mm, or it\'s getting worse.' : 'Watch the number climb week to week.');
     if (wd===1 || wd===4) add('weigh','Weigh in','Weigh yourself first thing, before eating.', null, true);
-    if (d===10) add('visit','Visit','1-week follow-up with Angelstad today.','Checks healing, bite, and bands. Ask when bands come out for meals.',true);
+    if (d===10) add('visit','Visit','1-week follow-up with Angelstad today.','Checks healing, bite, and bands. Ask when bands can come out for meals. They may defer to Dr. Dennis.',true);
     if (d===42) add('visit','Visit','6-week visit.','Checks bone healing. Ask what you can start chewing and what training you\'re cleared for.',true);
     if (d>=4 && d<=10) add('mood','Head','Feeling low or regretful this week is normal.','Your face this week is not your result. Don\'t judge the surgery yet.');
     return L;
@@ -689,7 +687,7 @@ img{max-width:100%}
     const meals = M.slots.map((id,i) => {
       const [name,how,prot] = I[id];
       let h = how;
-      if (id==='yogThin' && d<=7) h = '150 g Greek yogurt + 225 g milk + 10 g honey. Whisk. Thin for bands-on days.';
+      if (id==='yogThin' && d<=9) h = '150 g Greek yogurt + 225 g milk + 10 g honey. Whisk. Thin for bands-on days.';
       if (id==='berry' && d<=7) h += ' Vitamix only this week, for the seeds.';
       return `<div class="meal${st.meals?.[i]?' done':''}" role="button" tabindex="0" data-g="meals" data-k="${i}">
         <span class="t">${hm(MEAL_MIN[i])}</span><h3>${name}</h3><span class="p">${prot} g</span>
