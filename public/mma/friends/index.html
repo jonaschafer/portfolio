@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>Jon's Jaw Surgery</title>
+<title>My jaw surgery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -51,12 +51,6 @@ h1,h2,h3{font-weight:500;text-wrap:balance}
 .step .visit{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:4px 9px;background:var(--card)}
 .help{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 @media (max-width:560px){.help{grid-template-columns:1fr}}
-.jday{margin-top:18px}
-.jday h3{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;display:flex;justify-content:space-between;gap:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
-.jentry{display:grid;grid-template-columns:62px 1fr;gap:14px;padding-block:12px;border-bottom:1px solid var(--line)}
-.jentry .t{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:4px;font-variant-numeric:tabular-nums}
-.jentry p{font-size:19px;white-space:pre-wrap;overflow-wrap:anywhere}
-.more{margin-top:16px;border:1px solid var(--line);background:none;border-radius:999px;padding:9px 16px;font:inherit;font-size:15px;color:var(--ink);cursor:pointer}
 .card{background:var(--card);border-radius:22px;padding:18px 18px 16px}
 .card h3{font-size:22px;letter-spacing:-.015em}
 .card p{margin-top:6px;font-size:17px;color:var(--muted)}
@@ -81,12 +75,10 @@ body{margin:0}
     <a href="/mma/friends" aria-current="page">Friends</a>
   </nav>
   <p class="mono">For friends and family</p>
-  <h1 class="big">Jon's jaw surgery.</h1>
+  <h1 class="big">My jaw surgery.</h1>
   <p class="say">What's happening, where I'm at, and how to help.</p>
 
   <div class="now" id="now"></div>
-
-  <div class="sec" id="notesSec" hidden><h2>Notes from me</h2><div id="notes"></div></div>
 
   <div class="sec"><h2>What's going on</h2>
     <p>On Friday, October 2 I had MMA surgery (maxillomandibular advancement) at OHSU. The surgeons cut both my upper and lower jaw, moved them forward, and held them in place with small titanium plates and screws. Moving the jaws forward opens up the airway behind the tongue. The goal is to fix my sleep apnea.</p>
@@ -158,31 +150,6 @@ body{margin:0}
     <p>${s.h}. ${s.p}</p>
     ${d>0?`<div class="bar" aria-label="${Math.round(pct)}% of the way to 3 months"><i style="width:${pct}%"></i></div><p class="mono" style="margin-top:8px">${Math.round(pct)}% of the way to 3 months</p>`:''}`;
 
-  // Journal entries Jon shared (read-only, public via RLS).
-  const SB_URL = 'https://hvuxoknvfrlthamjkzcb.supabase.co', SB_KEY = 'sb_publishable_GqrMhNwpVS-wOeDYb64M_g_Vdi2iROe';
-  const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MO = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const esc = s => String(s??'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const hm = t => { const [h,m] = String(t).split(':').map(Number); return `${((h+11)%12)+1}:${String(m||0).padStart(2,'0')}${h<12?'a':'p'}`; };
-  let all = [], showAll = false;
-  function renderNotes(){
-    const rows = showAll ? all : all.slice(0, 8), groups = {};
-    rows.forEach(e => (groups[e.date] ||= []).push(e));
-    document.getElementById('notes').innerHTML = Object.entries(groups).map(([date, L]) => {
-      const [y,mo,da] = date.split('-').map(Number), dt = new Date(y,mo-1,da), pd = Math.round((dt - SURGERY)/DAY);
-      return `<div class="jday"><h3><span>${WD[dt.getDay()]} ${MO[dt.getMonth()]} ${dt.getDate()}</span><span>${pd<0?'Before':pd===0?'Surgery':'Day '+pd}</span></h3>${L.map(e =>
-        `<div class="jentry"><span class="t">${e.at?hm(e.at):''}</span><p>${esc(e.text)}</p></div>`).join('')}</div>`;
-    }).join('') + (!showAll && all.length > 8 ? `<button class="more" id="more">Show all ${all.length}</button>` : '');
-    const m = document.getElementById('more'); if (m) m.onclick = () => { showAll = true; renderNotes(); };
-  }
-  fetch(`${SB_URL}/rest/v1/mma_docs?collection=eq.journal&select=data`, {headers:{apikey:SB_KEY}})
-    .then(r => r.ok ? r.json() : [])
-    .then(rows => {
-      all = rows.map(r => r.data).filter(e => e && e.text).sort((a,b) => (b.date+b.at+b.id).localeCompare(a.date+a.at+a.id));
-      if (!all.length) return;
-      document.getElementById('notesSec').hidden = false;
-      renderNotes();
-    })
-    .catch(() => {});
 })();
 </script>
 
