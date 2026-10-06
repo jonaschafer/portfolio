@@ -83,8 +83,6 @@ a{color:inherit}
 .meal h3{font-size:25px;letter-spacing:-.015em;line-height:1.12}
 .meal .how{grid-column:2 / 4;color:var(--muted);font-size:18px;line-height:1.38}
 .meal .p{font-family:var(--mono);font-size:14px;background:var(--card);border-radius:999px;padding:5px 10px;white-space:nowrap;margin-top:2px}
-.meds{grid-column:2 / 4;display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.pill{background:var(--pink);color:var(--pink-ink);border-radius:999px;padding:6px 12px;font-family:var(--mono);font-size:13px;letter-spacing:.03em}
 .done h3,.done > p{text-decoration:line-through;text-decoration-thickness:2px;color:var(--stone)}
 .done .t::before,.done .tag::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--green);margin-right:6px;vertical-align:1px}
 .note{font-size:16px;color:var(--muted);margin-top:12px;line-height:1.4}
@@ -96,7 +94,6 @@ a{color:inherit}
 .do p{font-size:20px;line-height:1.35}
 .do small{display:block;font-size:16px;color:var(--muted);margin-top:4px;text-decoration:none}
 .do li.key > p{font-weight:500}
-.medrow .tag{font-size:14px;letter-spacing:.02em;text-transform:none;font-variant-numeric:tabular-nums}
 .inline-log{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-weight:400}
 
 .rules{background:var(--block);color:var(--block-ink);border-radius:26px;padding:24px 22px 10px;margin-top:40px}
@@ -160,26 +157,6 @@ table.w td:last-child{text-align:right;font-family:var(--mono);font-size:15px;wh
 .alarm ul{margin:10px 0 0;padding-left:22px}.alarm li{margin-top:6px}
 
 /* settings */
-.med{background:var(--card);border-radius:22px;padding:18px;margin-top:12px}
-.med.off{opacity:.55}
-.med .top{display:flex;gap:12px;align-items:center}
-.med input[type="text"]{width:100%;border:0;border-bottom:1px solid var(--line);background:none;padding:6px 0;border-radius:0}
-.med .name{font-size:24px;font-weight:500;letter-spacing:-.015em}
-.med .notein{font-size:17px;color:var(--muted);margin-top:4px}
-.field{margin-top:14px}
-.field > span{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.days{display:flex;gap:6px;flex-wrap:wrap}
-.days button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:none;cursor:pointer;font-size:15px;font-weight:500}
-.days button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.times{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.time{display:flex;align-items:center;gap:2px;background:var(--paper);border-radius:12px;padding:4px 4px 4px 10px}
-.time input{border:0;background:none;font-size:18px;font-variant-numeric:tabular-nums;padding:4px 0}
-.time button{border:0;background:none;cursor:pointer;font-size:20px;padding:0 8px;color:var(--muted)}
-.switch{position:relative;flex:0 0 auto;width:52px;height:30px;border-radius:99px;border:0;background:var(--line);cursor:pointer}
-.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--paper);transition:transform .15s}
-.switch[aria-checked="true"]{background:var(--green)}
-.switch[aria-checked="true"]::after{transform:translateX(22px)}
-.medfoot{display:flex;justify-content:space-between;margin-top:16px;gap:10px}
 .danger{color:var(--red)}
 .numin{font:inherit;font-size:20px;width:120px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
 .wlog{margin-top:10px}
@@ -204,7 +181,6 @@ table.w td:last-child{text-align:right;font-family:var(--mono);font-size:15px;wh
   .menu-card .row{font-size:14px;padding-block:5px}
   table.w{font-size:14px}
 }
-@media (prefers-reduced-motion:reduce){.switch::after{transition:none}}
 </style>
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -483,12 +459,7 @@ img{max-width:100%}
 
   <!-- SETTINGS -->
   <section class="view" id="view-settings" hidden>
-    <h2 class="lead">Settings. <span class="stone">Meds, weight, and your baseline.</span></h2>
-    <div class="sec"><h2>Medications</h2>
-      <p class="note">Names, days, and times show up on each day's plan. Turn one off when you're done with it.</p>
-      <div id="medList"></div>
-      <button class="cta" id="addMed">+ Add a medication</button>
-    </div>
+    <h2 class="lead">Settings. <span class="stone">Weight, baseline, and sync.</span></h2>
     <div class="sec"><h2>Weight</h2>
       <div class="card"><h3>Baseline</h3><p class="sub">Weigh yourself Thu 10/1 or Fri 10/2 morning.</p>
         <p class="inline-log"><input class="numin" id="baseline" inputmode="decimal" placeholder="lb" aria-label="Baseline weight in pounds"><span id="thresh" class="sub"></span></p>
@@ -523,7 +494,7 @@ img{max-width:100%}
   const thresh = b => Math.max(b-10, b*0.95);
 
   // ---------- state + storage ----------
-  let S = {meds:null, profile:{}, days:{}, weights:{}, journal:{}};
+  let S = {profile:{}, days:{}, weights:{}, journal:{}};
   try { const c = JSON.parse(localStorage.getItem('jaw-state')||'null'); if (c) S = Object.assign(S,c); } catch(e){}
   const cache = () => { try{ localStorage.setItem('jaw-state', JSON.stringify(S)) }catch(e){} };
   let db = null;
@@ -540,7 +511,7 @@ img{max-width:100%}
     if (db) db.from('mma_docs').delete().eq('path', path).then(({error}) => { if (error) setSync('Could not delete: '+error.message); });
   }
   const setSync = t => { const el = document.getElementById('sync'); if (el) el.textContent = t; };
-  const dayState = d => (S.days['d'+d] ||= {meals:{}, todos:{}, meds:{}});
+  const dayState = d => (S.days['d'+d] ||= {meals:{}, todos:{}});
   function toggleDay(d, group, key){
     const st = dayState(d); st[group] ||= {};
     st[group][key] = !st[group][key];
@@ -616,21 +587,6 @@ img{max-width:100%}
     {what:'No chewing', end:new Date(2026,10,13), note:'Until your 6-week visit clears you.'},
   ];
 
-  // ---------- meds ----------
-  const DEFAULT_MEDS = [
-    {id:'pain', name:'Pain med (placeholder)', note:'Rename once you have the label. Scheduled days 1–4, then as needed.', days:[0,1,2,3,4,5,6], times:['08:00','14:00','20:00'], on:true},
-    {id:'abx', name:'Antibiotic (placeholder)', note:'Finish the whole bottle.', days:[0,1,2,3,4,5,6], times:['08:00','20:00'], on:true},
-    {id:'stool', name:'Stool softener (placeholder)', note:'Daily while on opioids or a liquid diet.', days:[0,1,2,3,4,5,6], times:['08:00'], on:true},
-  ];
-  if (!S.meds) S.meds = DEFAULT_MEDS.map(m => ({...m, days:[...m.days], times:[...m.times]}));
-  const medsList = () => S.meds || DEFAULT_MEDS;
-  function medsForDay(dt){
-    const wd = dt.getDay(), out = [];
-    medsList().forEach(m => { if (m.on && (m.days||[]).includes(wd)) (m.times||[]).forEach(t => out.push({m, t, min:toMin(t)})); });
-    return out.sort((a,b) => a.min-b.min);
-  }
-  const nearestMeal = min => { let best=-1, bd=61; MEAL_MIN.forEach((mm,i)=>{ const x=Math.abs(mm-min); if (x<bd){bd=x;best=i;} }); return best; };
-
   // ---------- to-dos ----------
   function doList(d, dt){
     const L = [];
@@ -691,7 +647,6 @@ img{max-width:100%}
       ['broth','Thu 10/1','Move 3 broth containers from the freezer to the fridge for Sat to Mon.'],
       ['batch','Thu 10/1','Make one Vitamix batch of mango smoothies. Freeze all four jars for days 4–6.'],
       ['kitchen','Kitchen','Scale, cups, sippy cup, and syringe next to the blender. Tape the yogurt ratio to the fridge: 150 g yogurt + 225 g milk.'],
-      ['meds','Fri 10/2','When you get your prescriptions, add them in Settings.'],
       ['base','Weigh in','Weigh yourself Thu or Fri morning and save it in Settings as your baseline.' + (b ? ` Saved: ${b} lb.` : '')],
     ];
     dayEl.innerHTML = `
@@ -713,27 +668,17 @@ img{max-width:100%}
     const p = total(k,2);
     let fl = total(k,3); if (d<=7) fl += M.slots.filter(s=>s==='yogThin').length*75;
     const cups = Math.max(2, Math.ceil((2250-fl)/240));
-    const doses = medsForDay(dt);
-    const byMeal = {}; doses.forEach(x => { const i = nearestMeal(x.min); if (i>=0) (byMeal[i] ||= []).push(x.m.name); });
 
     const meals = M.slots.map((id,i) => {
       const [name,how,prot] = I[id];
       let h = how;
       if (id==='yogThin' && d<=7) h = '150 g Greek yogurt + 225 g milk + 10 g honey. Whisk. Thin for bands-on days.';
       if (id==='berry' && d<=7) h += ' Vitamix only this week, for the seeds.';
-      const md = byMeal[i]||[];
       return `<div class="meal${st.meals?.[i]?' done':''}" role="button" tabindex="0" data-g="meals" data-k="${i}">
         <span class="t">${hm(MEAL_MIN[i])}</span><h3>${name}</h3><span class="p">${prot} g</span>
         <p class="how">${h}</p>
-        ${md.length?`<div class="meds">${md.map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div>`:''}
       </div>`;
     }).join('');
-
-    const medRows = doses.map(x => {
-      const key = `${x.m.id}@${x.t}`;
-      return `<li role="button" tabindex="0" class="medrow${st.meds?.[key]?' done':''}" data-g="meds" data-k="${esc(key)}"><span class="tag">${hm(x.min)}</span><p>${esc(x.m.name)}${x.m.note?`<small>${esc(x.m.note)}</small>`:''}</p></li>`;
-    }).join('');
-    const medsTaken = doses.filter(x => st.meds?.[`${x.m.id}@${x.t}`]).length;
 
     const rules = RULES.map(r => {
       const left = Math.round((r.end - dt)/DAY);
@@ -771,11 +716,9 @@ img{max-width:100%}
       </div>
       <p class="note">The menu aims high on purpose. Get through two-thirds of it and you're at goal. Tap anything when it's done.</p>
       <div class="sec"><h2><span>Eat</span><span class="count">${Object.values(st.meals||{}).filter(Boolean).length}/6</span></h2>${meals}</div>
-      <div class="sec"><h2><span>Meds</span>${doses.length?`<span class="count">${medsTaken}/${doses.length}</span>`:''}</h2>
-        ${doses.length ? `<ul class="do">${medRows}</ul>` : `<p class="note">${medsList().length ? 'Nothing scheduled today.' : 'No meds set up yet.'} Add or change them in Settings.</p>`}
+      <div class="sec"><h2><span>Do</span><span class="count">${todoDone}/${todos.length}</span></h2><ul class="do">${tasks}</ul>
         ${d<=14 ? '<p class="note">Keep total Tylenol under 3,000 mg a day from all sources. Opioids only for breakthrough pain. Finish every antibiotic.</p>':''}
       </div>
-      <div class="sec"><h2><span>Do</span><span class="count">${todoDone}/${todos.length}</span></h2><ul class="do">${tasks}</ul></div>
       <div class="rules"><h2>Rules in effect</h2>${rules}</div>`;
 
     wireToggles(d);
@@ -846,54 +789,6 @@ img{max-width:100%}
   });
 
   // ---------- SETTINGS ----------
-  const medList = document.getElementById('medList');
-  let medTimer = null;
-  function saveMeds(){ clearTimeout(medTimer); medTimer = setTimeout(() => put('settings/meds', {items:S.meds}), 500); cache(); }
-  function renderMeds(){
-    const L = S.meds || [];
-    medList.innerHTML = L.length ? L.map(m => `
-      <div class="med${m.on?'':' off'}" data-id="${m.id}">
-        <div class="top">
-          <input type="text" class="name" id="med-${m.id}-name" value="${esc(m.name)}" placeholder="Name, e.g. Tylenol 500 mg" aria-label="Medication name">
-          <button class="switch" role="switch" aria-checked="${!!m.on}" aria-label="Taking this" data-act="on"></button>
-        </div>
-        <input type="text" class="notein" id="med-${m.id}-note" value="${esc(m.note)}" placeholder="Note, e.g. 2 pills, with food" aria-label="Note">
-        <div class="field"><span>Days</span><div class="days">${WD.map((w,i)=>`<button aria-pressed="${(m.days||[]).includes(i)}" data-act="day" data-i="${i}" aria-label="${w}">${w[0]}</button>`).join('')}
-          <button class="btn" data-act="alldays" style="width:auto;border-radius:99px">Every day</button></div></div>
-        <div class="field"><span>Times</span><div class="times">${(m.times||[]).map((t,i)=>`<span class="time"><input type="time" id="med-${m.id}-t${i}" value="${t}" data-act="time" data-i="${i}" aria-label="Time"><button data-act="rmtime" data-i="${i}" aria-label="Remove time">×</button></span>`).join('')}
-          <button class="btn" data-act="addtime">+ Time</button></div></div>
-        <div class="medfoot"><span class="sub" style="color:var(--muted);font-size:15px">${m.on?'On the daily plan':'Off. Hidden from the daily plan.'}</span><button class="btn danger" data-act="del">Delete</button></div>
-      </div>`).join('') : '<p class="note">No medications yet. Add your pain med, antibiotic, and stool softener once you have the labels.</p>';
-  }
-  medList.addEventListener('click', e => {
-    const b = e.target.closest('[data-act]'); if (!b) return;
-    const card = b.closest('.med'), m = (S.meds||[]).find(x => x.id===card.dataset.id); if (!m) return;
-    const act = b.dataset.act;
-    if (act==='on') m.on = !m.on;
-    else if (act==='day'){ const i = +b.dataset.i; m.days = (m.days||[]).includes(i) ? m.days.filter(x=>x!==i) : [...(m.days||[]), i].sort(); }
-    else if (act==='alldays') m.days = [0,1,2,3,4,5,6];
-    else if (act==='addtime') m.times = [...(m.times||[]), '12:00'];
-    else if (act==='rmtime') m.times = m.times.filter((_,i)=>i!==+b.dataset.i);
-    else if (act==='del'){
-      if (b.dataset.confirm){ S.meds = S.meds.filter(x=>x!==m); }
-      else { b.dataset.confirm = '1'; b.textContent = 'Tap again to delete'; return; }
-    } else return;
-    saveMeds(); renderMeds();
-  });
-  medList.addEventListener('input', e => {
-    const card = e.target.closest('.med'); if (!card) return;
-    const m = (S.meds||[]).find(x => x.id===card.dataset.id); if (!m) return;
-    if (e.target.classList.contains('name')) m.name = e.target.value;
-    else if (e.target.classList.contains('notein')) m.note = e.target.value;
-    else if (e.target.dataset.act==='time' && e.target.value) m.times[+e.target.dataset.i] = e.target.value;
-    saveMeds();
-  });
-  document.getElementById('addMed').addEventListener('click', () => {
-    S.meds = [...(S.meds||[]), {id:'m'+Date.now().toString(36), name:'', note:'', days:[0,1,2,3,4,5,6], times:['08:00'], on:true}];
-    saveMeds(); renderMeds();
-    const inp = medList.querySelector('.med:last-child .name'); if (inp) inp.focus();
-  });
-
   const bIn = document.getElementById('baseline'), tEl = document.getElementById('thresh');
   function renderWeights(){
     if (document.activeElement!==bIn) bIn.value = S.profile.baseline || '';
@@ -944,14 +839,12 @@ img{max-width:100%}
   tabs.forEach(t => t.addEventListener('click', () => { setView(t.dataset.view); window.scrollTo({top:0}); }));
 
   function renderAll(){
-    const settingsBusy = document.getElementById('view-settings').contains(document.activeElement);
-    if (!settingsBusy) renderMeds();
     renderWeights();
     if (!dayEl.contains(document.activeElement) || document.activeElement.tagName!=='INPUT') { const y = scrollY; renderCurrent(); if (view==='today') scrollTo(0,y); }
     renderJournal();
   }
 
-  buildStrip(); buildPlan(); renderJournal(); renderMeds(); renderWeights(); show(cur);
+  buildStrip(); buildPlan(); renderJournal(); renderWeights(); show(cur);
   const hv = (location.hash||'').slice(1);
   if (['plan','recipes','journal','clinic','settings'].includes(hv)) setView(hv);
   setSync('Saved on this device only.');
@@ -967,14 +860,13 @@ img{max-width:100%}
 
   function applyDoc(path, data){
     const i = path.indexOf('/'), col = path.slice(0,i), id = path.slice(i+1);
-    if (col==='settings'){ if (!data) return; if (id==='meds') S.meds = data.items||[]; if (id==='profile') S.profile = {...data}; return; }
+    if (col==='settings'){ if (!data) return; if (id==='profile') S.profile = {...data}; return; }
     const bucket = {days:S.days, weights:S.weights, journal:S.journal}[col];
     if (!bucket) return;
     if (data) bucket[id] = data; else delete bucket[id];
   }
   function localDocs(){
     const out = [];
-    if (S.meds) out.push(['settings/meds', {items:S.meds}]);
     if (Object.keys(S.profile||{}).length) out.push(['settings/profile', S.profile]);
     Object.entries(S.days).forEach(([k,v]) => out.push(['days/'+k, v]));
     Object.entries(S.weights).forEach(([k,v]) => out.push(['weights/'+k, v]));
