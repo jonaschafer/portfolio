@@ -879,7 +879,7 @@ img{max-width:100%}
   const SB_URL = 'https://hvuxoknvfrlthamjkzcb.supabase.co', SB_KEY = 'sb_publishable_GqrMhNwpVS-wOeDYb64M_g_Vdi2iROe';
   const sb = window.supabase ? window.supabase.createClient(SB_URL, SB_KEY) : null;
   const acct = document.getElementById('acct'), jHint = document.getElementById('jHint'), wHint = document.getElementById('wHint');
-  let channel = null, signedIn = null;
+  let channel = null, signedIn = null, recovering = false;
 
   function applyDoc(path, data){
     const i = path.indexOf('/'), col = path.slice(0,i), id = path.slice(i+1);
@@ -929,16 +929,38 @@ img{max-width:100%}
     wHint.textContent = signedIn ? 'Syncs to your other devices.' : 'Saved on this device only. Sign in under Settings to see weigh-ins on your other devices.';
     if (!sb){ acct.innerHTML = '<p class="sub">Sync is unavailable right now. Everything saves on this device.</p>'; return; }
     acct.innerHTML = signedIn
-      ? `<h3>Signed in</h3><p class="sub">${esc(signedIn)}. Changes sync to your other devices.</p><div class="row"><button class="btn" id="sbOut">Sign out</button></div>`
+      ? `<h3>Signed in</h3><p class="sub">${esc(signedIn)}. Changes sync to your other devices.</p><div class="row"><button class="btn" id="sbOut">Sign out</button></div>
+         <h3>${recovering ? 'Set a new password' : 'Change password'}</h3>
+         <input class="numin" id="sbNewPass" type="password" autocomplete="new-password" placeholder="New password" aria-label="New password">
+         <div class="row"><button class="btn${recovering ? ' solid' : ''}" id="sbSetPass">Save password</button></div>
+         <p class="sub" id="sbMsg"></p>`
       : `<h3>Sign in to sync</h3><p class="sub">Same account on your phone and computer keeps everything in step.</p>
          <input class="numin" id="sbEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email">
          <input class="numin" id="sbPass" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password">
-         <div class="row"><button class="btn solid" id="sbIn">Sign in</button><button class="btn" id="sbUp">Create account</button></div>
+         <div class="row"><button class="btn solid" id="sbIn">Sign in</button><button class="btn" id="sbUp">Create account</button><button class="btn" id="sbForgot">Forgot password</button></div>
          <p class="sub" id="sbMsg"></p>`;
   }
   acct.addEventListener('click', async e => {
     const b = e.target.closest('button'); if (!b || !sb) return;
     if (b.id==='sbOut'){ await sb.auth.signOut(); return; }
+    if (b.id==='sbSetPass'){
+      const msg = document.getElementById('sbMsg'), password = document.getElementById('sbNewPass').value;
+      if (password.length < 6){ msg.textContent = 'At least 6 characters, please.'; return; }
+      msg.textContent = '…';
+      const {error} = await sb.auth.updateUser({password});
+      if (error){ msg.textContent = error.message; return; }
+      recovering = false; renderAcct();
+      document.getElementById('sbMsg').textContent = 'Password saved. Use it to sign in on your other devices.';
+      return;
+    }
+    if (b.id==='sbForgot'){
+      const msg = document.getElementById('sbMsg'), email = document.getElementById('sbEmail').value.trim();
+      if (!email){ msg.textContent = 'Enter your email first.'; return; }
+      msg.textContent = '…';
+      const {error} = await sb.auth.resetPasswordForEmail(email, {redirectTo: location.origin+'/mma/food#settings'});
+      msg.textContent = error ? error.message : 'Check your email for a reset link. It opens in Safari, where you can set a new password.';
+      return;
+    }
     const email = document.getElementById('sbEmail').value.trim(), password = document.getElementById('sbPass').value;
     const msg = document.getElementById('sbMsg');
     if (!email || !password){ msg.textContent = 'Email and password, please.'; return; }
@@ -956,6 +978,7 @@ img{max-width:100%}
   renderAcct();
   if (sb) sb.auth.onAuthStateChange((event, session) => {
     const email = session?.user?.email || null;
+    if (event==='PASSWORD_RECOVERY') recovering = true;
     // Defer: Supabase calls inside this callback can deadlock the auth lock.
     setTimeout(() => {
       if (email && !db) startSync();
