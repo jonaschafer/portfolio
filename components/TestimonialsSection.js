@@ -1,3 +1,16 @@
+import Image from 'next/image'
+
+// Headshot, or initials on mustard until a photo lands in
+// public/images/people/ and is set as `photo` on the testimonial.
+function Face({ name, photo }) {
+  const initials = name.split(' ').map((w) => w[0]).slice(0, 2).join('')
+  return (
+    <span className="relative shrink-0 w-[40px] h-[40px] rounded-full overflow-hidden bg-[#F8DB79] text-[#333333] flex items-center justify-center text-[13.4px] tracking-[0.167px]">
+      {photo ? <Image src={photo} alt="" fill sizes="40px" className="object-cover" /> : initials}
+    </span>
+  )
+}
+
 export default function TestimonialsSection() {
   const testimonials = [
     {
@@ -40,9 +53,12 @@ export default function TestimonialsSection() {
                 <p className="font-['Haas_Grot_Disp',_sans-serif] text-[14px] md:text-[16px] lg:text-[19.4px] leading-[1.2] text-[#FAFAFA] tracking-[0.167px]">
                   {testimonial.quote}
                 </p>
-                <div className="text-[13.4px] leading-[16.44px] text-[#FAFAFA] font-['Haas_Grot_Disp',_sans-serif] tracking-[0.167px]">
-                  <p className="mb-0 font-medium">{testimonial.name}</p>
-                  <p className="opacity-80">{testimonial.title}</p>
+                <div className="flex items-center gap-[12px] text-[13.4px] leading-[16.44px] text-[#FAFAFA] font-['Haas_Grot_Disp',_sans-serif] tracking-[0.167px]">
+                  <Face name={testimonial.name} photo={testimonial.photo} />
+                  <div>
+                    <p className="mb-0 font-medium">{testimonial.name}</p>
+                    <p className="opacity-80">{testimonial.title}</p>
+                  </div>
                 </div>
               </div>
             ))}

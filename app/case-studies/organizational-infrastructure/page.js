@@ -141,7 +141,7 @@ export default function OrganizationalInfrastructurePage() {
           </ReactMarkdown>
         </div>
       </article>
-      <Footer backgroundColor={bgColor} textColor={textColor} />
+      <Footer backgroundColor={bgColor} textColor={textColor} colophon />
     </main>
   )
 }

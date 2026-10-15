@@ -18,7 +18,7 @@ export default function WorkPage() {
       <IntroSection />
       <WorkIndex />
       <TestimonialsSection />
-      <Footer />
+      <Footer colophon />
     </main>
   )
 }

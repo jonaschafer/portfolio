@@ -1,4 +1,5 @@
 import './globals.css'
+import HoverHighlight from '../components/HoverHighlight'
 
 export const metadata = {
   title: 'Jon Schafer',
@@ -21,7 +22,10 @@ export default function RootLayout({ children }) {
  \\____|_|\\__,_|\\__,_|\\__,_|\\___|                `
         }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <HoverHighlight />
+      </body>
     </html>
   )
 }

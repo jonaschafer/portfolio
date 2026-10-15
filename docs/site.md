@@ -164,6 +164,31 @@ Same `backgroundColor` / `textColor` props. Typeface credit left, a scroll-to-to
 right reading "Beam me up, Scotty ↑", both Haas Grot 16px. Stacks and centers under `sm`.
 `minimal` renders the bar empty.
 
+`colophon` (on `/work`, `/work/*`, `/bio`, case studies) adds a row above the bar: a
+"Let's talk" heading in Mondwest, one line and an outlined "Email me" pill, the social
+links (entries without an href don't render), and a live Portland clock with the
+copyright. Below the bar, "Jon Schafer" is set in Mondwest at `min(19.3vw, 288px)` so it
+spans the shell. That's the one place type sizes to the viewport, because it works as a
+graphic rather than text on the scale.
+
+### Work index (`components/WorkIndex.js`, data in `app/work/projects.js`)
+
+Replaces the project carousels on `/work`. A Grid / List toggle (Haas 16px, inactive at
+`/40`) remembers the last choice and reads `?view=`. Grid: every project image in a
+2 / 4 / 6 column grid, gap 8px, `rounded-4`, greyscale on hover-capable devices until
+hovered. List: numbered rows (`001`), title, org and role, year, hairline rules; a row
+expands to the description, a "View project →" link, and thumbnails. Rows marked `soon`
+render at `/35` with no interaction. Any image opens `components/Lightbox.js`: solid
+`#1f2a1a` field, arrow keys, Esc, click backdrop to close.
+
+### Project page (`app/work/[slug]/page.js`, `components/ProjectBody.js`)
+
+Header on a 12-column grid: title (Mondwest 31/48px, 4 cols), description (5 cols),
+then a role / year / with list (3 cols). Images follow in rows that cycle full, 7+5
+offset, indented 9, 6+6, 8, so the page doesn't stack one big frame after another; every
+image opens the lightbox. Ends with "Next project" in Mondwest whose arrow slides 12px
+and whose preview fades up on hover.
+
 ### Project block (`components/ProjectCarousel.js`)
 
 The signature layout of `/work`: a narrow text column above a wide frame.
@@ -222,6 +247,14 @@ Restrained and almost entirely opacity.
 - Carousel slide: `transform 0.5s ease-out`, with the transition disabled for the
   wrap-around jump so the loop is seamless
 - Advising cards: `transition-all duration-200`
+- **Highlight hover** (`.hl`, `components/HoverHighlight.js`): inline text links get a
+  random field color pair on each hover (mustard/charcoal, cream/green, charcoal/mustard,
+  green/cream), skipping the pair that matches the field they sit on. Hover-capable
+  devices only; touch keeps the underline. Use it on inline links in copy, not on nav.
+- **Image loading** (`components/WorkMedia.js`): media sits on a faint 16px checkerboard
+  (`.load-checker`) and fades in over 500ms on `cubic-bezier(0.23, 1, 0.32, 1)`.
+- Grid tiles go greyscale to color over 300ms. Next-project arrow and preview use the same
+  curve over 300ms. `prefers-reduced-motion` drops the fades and highlight transition.
 
 Anything beyond this in the repo (`mma-btn-press`, the `git-*` keyframes in
 `app/globals.css`) belongs to `/mma` and `/play/git`, not to the site register.
@@ -244,9 +277,8 @@ Covered fully in `~/.claude/CLAUDE.md`, but the parts that show up in the layout
 
 Real inconsistencies in the running code. Listed so they get fixed rather than copied.
 
-1. **The footer credits the wrong typeface.** `components/Footer.js:11` says "PP Mondwest,
-   PP Neue Montreal", but the loaded file reports internally as "Haas Grot Disp 55 Roman".
-   Either the credit or the font file is wrong.
+1. ~~The footer credits the wrong typeface.~~ Fixed Oct 2026: the credit now reads
+   "PP Mondwest, Neue Haas Grotesk Display".
 2. **`/overview` is stale.** It has no mustard field, its page list is missing `/work`,
    `/advising` and `/case-studies`, and it documents an unused `#ebac1e`. Treat this file
    as the source of truth until `/overview` is rebuilt from it.

@@ -47,8 +47,8 @@ export default function Navigation({
   )
 
   const isTransparent = backgroundColor === 'transparent'
-  const hasActivePage = pathname === '/work' || pathname?.startsWith('/play') || pathname?.startsWith('/bio')
-  const workActive = pathname === '/work'
+  const hasActivePage = pathname?.startsWith('/work') || pathname?.startsWith('/play') || pathname?.startsWith('/bio')
+  const workActive = pathname?.startsWith('/work')
   const playActive = pathname?.startsWith('/play')
   const bioActive = pathname?.startsWith('/bio')
   const isHomepage = pathname === '/'

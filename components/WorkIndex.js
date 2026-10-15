@@ -1,8 +1,10 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
-import { PROJECTS, mediaSrc, isVideo, isGif } from '../app/work/projects'
+import Link from 'next/link'
+import { PROJECTS, isVideo } from '../app/work/projects'
+import WorkMedia from './WorkMedia'
+import Lightbox from './Lightbox'
 
 const VIEW_KEY = 'work-view'
 const haas = "font-['Haas_Grot_Disp',_sans-serif]"
@@ -12,35 +14,6 @@ const withMedia = PROJECTS.filter((p) => p.images?.length)
 
 // Every image across projects, in project order, for the grid.
 const TILES = withMedia.flatMap((p) => p.images.map((file, i) => ({ project: p, file, index: i })))
-
-function Media({ project, file, sizes, className, controls = false, eager = false }) {
-  const src = mediaSrc(project, file)
-  if (isVideo(file)) {
-    // `#t=0.1` makes browsers paint a first frame instead of a blank box.
-    return (
-      <video
-        className={className}
-        src={`${src}#t=0.1`}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        autoPlay={controls}
-      />
-    )
-  }
-  return (
-    <Image
-      src={src}
-      alt={`${project.title}`}
-      fill
-      sizes={sizes}
-      className={className}
-      unoptimized={isGif(file)}
-      priority={eager}
-    />
-  )
-}
 
 function Toggle({ view, setView }) {
   const opt = (value, label) => (
@@ -76,7 +49,7 @@ function GridTile({ tile, onOpen }) {
       className="group relative block w-full aspect-[1300/731] overflow-hidden rounded-[4px] bg-[#FAFAFA]/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#FAFAFA]"
       aria-label={`${tile.project.title}, image ${tile.index + 1}`}
     >
-      <Media
+      <WorkMedia
         project={tile.project}
         file={tile.file}
         sizes="(min-width: 1200px) 16vw, (min-width: 768px) 25vw, 50vw"
@@ -112,7 +85,7 @@ function List({ onOpen }) {
           <>
             <span className="w-[44px] shrink-0 text-[#FAFAFA]/60">{n}</span>
             <span className="flex-1">{p.title}</span>
-            <span className={`hidden md:block flex-1 ${p.soon ? '' : 'text-[#FAFAFA]/80'}`}>{p.role}</span>
+            <span className={`hidden md:block flex-1 ${p.soon ? '' : 'text-[#FAFAFA]/80'}`}>{p.org}, {p.role}</span>
             <span className="w-[88px] shrink-0 text-right whitespace-nowrap">{p.year}</span>
           </>
         )
@@ -133,7 +106,12 @@ function List({ onOpen }) {
             )}
             {expanded && (
               <div className="pb-[32px] pt-[8px] md:pl-[60px] grid gap-[24px] md:grid-cols-[minmax(0,360px)_1fr] md:gap-[40px]">
-                <p className={`${haas} text-[16px] leading-[1.4] tracking-[0.16px] text-[#FAFAFA]`}>{p.description}</p>
+                <div className={`${haas} flex flex-col gap-[16px] text-[16px] leading-[1.4] tracking-[0.16px] text-[#FAFAFA]`}>
+                  <p>{p.description}</p>
+                  <Link href={`/work/${p.slug}`} className="self-start hover:opacity-80 transition-opacity">
+                    View project →
+                  </Link>
+                </div>
                 <div className="grid grid-cols-3 desktop:grid-cols-4 gap-[8px]">
                   {p.images.map((file, idx) => (
                     <button
@@ -143,7 +121,7 @@ function List({ onOpen }) {
                       className="relative block w-full aspect-[1300/731] overflow-hidden rounded-[4px] bg-[#FAFAFA]/10 hover:opacity-90"
                       aria-label={`${p.title}, image ${idx + 1}`}
                     >
-                      <Media project={p} file={file} sizes="(min-width: 768px) 15vw, 33vw" className="absolute inset-0 w-full h-full object-cover" />
+                      <WorkMedia project={p} file={file} sizes="(min-width: 768px) 15vw, 33vw" className="absolute inset-0 w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
@@ -153,79 +131,6 @@ function List({ onOpen }) {
         )
       })}
     </ul>
-  )
-}
-
-function Lightbox({ project, index, setIndex, onClose }) {
-  const closeRef = useRef(null)
-  const count = project.images.length
-  const go = useCallback((d) => setIndex((i) => (i + d + count) % count), [count, setIndex])
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
-      else if (e.key === 'ArrowRight') go(1)
-      else if (e.key === 'ArrowLeft') go(-1)
-    }
-    window.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    closeRef.current?.focus()
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-    }
-  }, [go, onClose])
-
-  const file = project.images[index]
-  const arrow = (d, label, path) => (
-    <button
-      type="button"
-      onClick={() => go(d)}
-      aria-label={label}
-      className="w-12 h-12 flex items-center justify-center rounded-full border border-[#FAFAFA]/30 text-[#FAFAFA] hover:bg-[#FAFAFA]/10"
-    >
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path d={path} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </button>
-  )
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] bg-[#1f2a1a] flex flex-col"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${project.title} images`}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div className={`${haas} flex items-baseline justify-between px-5 md:px-[60px] pt-[20px] text-[16px] text-[#FAFAFA]`}>
-        <span className={`${mondwest} text-[20px] md:text-[24px]`}>{project.title}</span>
-        <button ref={closeRef} type="button" onClick={onClose} className="hover:opacity-70">
-          Close
-        </button>
-      </div>
-      <div className="relative flex-1 m-5 md:mx-[60px] md:my-[24px]" onClick={(e) => e.target === e.currentTarget && onClose()}>
-        <Media
-          key={file}
-          project={project}
-          file={file}
-          sizes="100vw"
-          controls
-          eager
-          className="absolute inset-0 w-full h-full object-contain"
-        />
-      </div>
-      <div className={`${haas} flex items-center justify-between px-5 md:px-[60px] pb-[20px] text-[16px] text-[#FAFAFA]`}>
-        <span>
-          {index + 1} / {count}
-        </span>
-        <div className="flex gap-[12px]">
-          {arrow(-1, 'Previous image', 'M15 18L9 12L15 6')}
-          {arrow(1, 'Next image', 'M9 18L15 12L9 6')}
-        </div>
-      </div>
-    </div>
   )
 }
 
@@ -266,7 +171,7 @@ export default function WorkIndex() {
         </div>
         {view === 'grid' ? <Grid onOpen={open} /> : <List onOpen={open} />}
       </section>
-      {box && <Lightbox project={box.project} index={box.index} setIndex={setIndex} onClose={close} />}
+      {box && <Lightbox project={box.project} index={box.index} setIndex={setIndex} onClose={close} href={`/work/${box.project.slug}`} />}
     </div>
   )
 }

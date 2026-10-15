@@ -141,7 +141,7 @@ export default function ResourcingIvyPage() {
           </ReactMarkdown>
         </div>
       </article>
-      <Footer backgroundColor={bgColor} textColor={textColor} />
+      <Footer backgroundColor={bgColor} textColor={textColor} colophon />
     </main>
   )
 }

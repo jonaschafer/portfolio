@@ -23,6 +23,12 @@ const HATS = [
   'Design educator', 'Writer',
 ]
 
+// TODO Jon: confirm. Drafted from things already on the site (play
+// prototypes, the Strava and running plans, the footer's Star Trek line).
+const INTERESTS = [
+  'Trail running', 'Sourdough', 'Camping', 'Star Trek', 'Grid systems', 'Lance Wyman',
+]
+
 const SURFACES = [
   'Identities', 'Illustrations', 'Animation', 'Marketing', 'Swag', 'Fabrication',
   'Product', 'System design', 'Ops', 'Storyboarding', 'Education',
@@ -89,7 +95,7 @@ export default function BioPage() {
                     href="https://www.linkedin.com/in/laeltyler/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity"
+                    className="hl"
                   >
                     Lael Tyler
                   </a>
@@ -99,7 +105,8 @@ export default function BioPage() {
 
               <div className="flex flex-col gap-[40px]">
                 <RailList label="hats worn" items={HATS} />
-                <RailList label="surfaces" items={SURFACES} />
+                <RailList label="expertise" items={SURFACES} />
+                <RailList label="interests" items={INTERESTS} />
               </div>
             </div>
           </div>
@@ -136,7 +143,7 @@ export default function BioPage() {
         </section>
       </div>
 
-      <Footer />
+      <Footer colophon />
     </main>
   )
 }
