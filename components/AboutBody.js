@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Navigation from './Navigation'
 import Footer from './Footer'
@@ -38,24 +39,45 @@ function Bullets({ items }) {
 
 export default function AboutBody() {
   const { theme: t, ready } = useRandomTheme()
+  const photoRef = useRef(null)
+  const [photoLoaded, setPhotoLoaded] = useState(false)
+  const [showPhoto, setShowPhoto] = useState(false)
+  // The photo may finish before hydration attaches onLoad.
+  useEffect(() => {
+    const el = photoRef.current
+    if (el?.complete && el.naturalWidth > 0) setPhotoLoaded(true)
+  }, [])
+  // Hold the color block for a beat after the page appears, then reveal.
+  useEffect(() => {
+    if (!ready || !photoLoaded) return
+    const id = setTimeout(() => setShowPhoto(true), 450)
+    return () => clearTimeout(id)
+  }, [ready, photoLoaded])
   return (
     <main style={{ backgroundColor: t.bg, color: t.ink, visibility: ready ? 'visible' : 'hidden' }}>
       <Navigation backgroundColor={t.bg} textColor={t.ink} />
 
       {/* Figma: Website — Oct 26, node 7:880 */}
       <section className="max-w-[1440px] mx-auto px-[20px] md:px-[60px] desktop:px-[100px] pt-[20px] md:pt-[40px] pb-[80px] md:pb-[120px]">
-        <div className="relative w-full max-w-[867px] aspect-[867/577] overflow-hidden rounded-[6px]">
+        {/* Portrait: starts as a block of the theme's ink color, then the photo
+            fades in over it. Tilts 2° on hover. */}
+        <div
+          className="relative w-[200px] md:w-[280px] aspect-[1162/990] overflow-hidden rounded-[6px] transition-transform duration-300 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:hover:rotate-2 motion-reduce:transition-none"
+          style={{ backgroundColor: t.ink }}
+        >
           <Image
-            src="/images/about/jon-trail.jpg"
-            alt="Jon running a trail high above the Columbia River Gorge"
+            ref={photoRef}
+            src="/images/about/jon-portrait.webp"
+            alt="Jon, grinning, in a striped shirt and clear glasses"
             fill
             priority
-            sizes="(min-width: 1024px) 867px, 100vw"
-            className="object-cover"
+            sizes="(min-width: 768px) 280px, 200px"
+            onLoad={() => setPhotoLoaded(true)}
+            className={`object-cover transition-opacity duration-700 motion-reduce:transition-none ${showPhoto ? 'opacity-100' : 'opacity-0'}`}
           />
         </div>
 
-        <p className={`${social} text-[18px] md:text-[21px] leading-[1.2] mt-[48px] md:mt-[96px]`}>
+        <p className={`${social} text-[18px] md:text-[21px] leading-[1.2] mt-[32px] md:mt-[48px]`}>
           Self promotion isn&apos;t my strong suit, so I&apos;ll have my friend{' '}
           <a href="https://www.linkedin.com/in/laeltyler/" target="_blank" rel="noopener noreferrer" className="hl">
             Lael

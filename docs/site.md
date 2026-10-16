@@ -188,7 +188,7 @@ on purpose while Jon buys licenses. Swap in the licensed files at the same paths
 ### About (`app/about/page.js`, `components/AboutBody.js`)
 
 Renamed from `/bio` (which redirects). Built from Figma node 7:880: the page field takes
-one of six random themes, then Jon's trail-running photo (867px wide, `rounded-6`), an
+one of six random themes, then a small portrait (200 / 280px, `rounded-6`) that starts as a block of the theme's ink color, fades the photo in, and tilts 2° on hover, an
 intro line in Social Condensed, Lael's bio in MD Nichrome Regular 24/36px with a hanging
 quote, and a Faves list beside it (Nichrome Ultra 30px heading, Social Condensed items
 with the Figma asterisk from `public/images/asterisk.svg`, drawn as a mask by
