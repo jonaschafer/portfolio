@@ -12,24 +12,28 @@ const TESTIMONIALS = [
     name: 'Lael Tyler',
     photo: '/images/people/lael-tyler.jpg',
     title: 'Creative Director, Cast Iron Coding',
+    linkedin: 'https://www.linkedin.com/in/laeltyler/',
   },
   {
     quote: "Jon has a knack for creating visual stories that stand out—a talent worth its weight in gold. He's always one to offer a fresh perspective, to challenge the status quo, and to riff on ideas big & small. In short: everything he touches packs the right amount of punch (and has a hint of sparkle). He's an amazing collaborator and curious problem solver, always looking to find the right balance between a variety of needs. We've been so lucky to have him on the team at Clockwise and his impact will last for a very long time.",
     name: 'Kacy Boone',
     photo: '/images/people/kacy-boone.jpg',
-    title: 'VP of Marketing, Clockwise',
+    title: 'Senior Director, Growth Marketing, Hover',
+    linkedin: 'https://www.linkedin.com/in/kacyboone/',
   },
   {
     quote: "Jon loves design and he really stays on top of industry trends and tech possibilities. He's got great enthusiasm for ideas, and is very methodical in the way he approaches design, creating helpful and organized systems that make things easier for everyone on the team. He's also an all-around nice guy, which is always a treat.",
     name: 'Kate McCagg',
     photo: '/images/people/kate-mccagg.jpg',
-    title: 'Head of Brand Innovation Lab, Amazon',
+    title: 'Global Head, Brand Innovation Lab, Amazon Ads',
+    linkedin: 'https://www.linkedin.com/in/kate-mccagg-82b9343/',
   },
   {
     quote: "I've had the pleasure of working alongside Jon for over a year. Jon is consistently curious which is a necessity in product development. This combined with a methodical approach and desire to delight customers pushes our team to develop better solutions. He's always willing to learn and is a force for collaboration on the team. His passion for the details shows up in the quality of his work.",
-    name: 'Chris Geohegan',
+    name: 'Chris Geoghegan',
     photo: '/images/people/chris-geohegan.jpg',
-    title: 'VP of Product, Zapier',
+    title: 'VP, Product, Ashby',
+    linkedin: 'https://www.linkedin.com/in/chrisgeoghegan/',
   },
 ]
 
@@ -65,7 +69,18 @@ export default function TestimonialsSection({ theme }) {
             <figcaption className={`${social} flex items-center gap-[16px] md:gap-[20px] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px]`}>
               <Face name={t.name} photo={t.photo} theme={theme} />
               <span>
-                <span className="block">{t.name}</span>
+                {t.linkedin ? (
+                  <a
+                    href={t.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block underline decoration-1 underline-offset-[3px] decoration-current/30 hover:decoration-current transition-[text-decoration-color] duration-150"
+                  >
+                    {t.name}
+                  </a>
+                ) : (
+                  <span className="block">{t.name}</span>
+                )}
                 <span className="block opacity-60">{t.title}</span>
               </span>
             </figcaption>
