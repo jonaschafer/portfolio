@@ -125,14 +125,14 @@ export default function AboutBody() {
               </p>
             </blockquote>
 
-            {/* Career, back from the old bio page */}
+            {/* History: rows take a random theme pair on hover, like links */}
             <div className="flex flex-col gap-[24px]">
-              <h2 className={heading}>Where I&apos;ve worked</h2>
+              <h2 className={heading}>History</h2>
               <ul className="flex flex-col">
                 {ROLES.map((r) => (
                   <li
                     key={r.org}
-                    className={`${item} flex flex-wrap items-baseline gap-x-[24px] gap-y-[2px] py-[14px] border-t last:border-b`}
+                    className={`${item} hl-row flex flex-wrap items-baseline gap-x-[24px] gap-y-[2px] py-[14px] border-t last:border-b`}
                     style={{ borderColor: `${t.ink}40` }}
                   >
                     <span className="w-full sm:w-[200px] shrink-0">{r.org}</span>

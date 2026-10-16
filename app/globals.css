@@ -177,7 +177,21 @@ body {
   }
 }
 
+/* Whole rows (About > History) take the same random pair on hover. */
+.hl-row {
+  transition: background-color 120ms ease-out, color 120ms ease-out, box-shadow 120ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hl-row[data-hl='on'] {
+    background-color: var(--hl-bg);
+    color: var(--hl-fg);
+    /* Bleed the color 10px past each side without moving the text or rules. */
+    box-shadow: -10px 0 0 var(--hl-bg), 10px 0 0 var(--hl-bg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .hl-row,
   .load-fade,
   .hl {
     transition: none;

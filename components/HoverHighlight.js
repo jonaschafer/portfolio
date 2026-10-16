@@ -25,7 +25,7 @@ export default function HoverHighlight() {
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
     let last = -1
     const over = (e) => {
-      const el = e.target.closest?.('.hl')
+      const el = e.target.closest?.('.hl, .hl-row')
       if (!el || el.contains(e.relatedTarget)) return
       const field = fieldColor(el)
       const options = PAIRS.map((p, i) => i).filter((i) => i !== last && toRgb(PAIRS[i][0]) !== field)
@@ -36,7 +36,7 @@ export default function HoverHighlight() {
       el.dataset.hl = 'on'
     }
     const out = (e) => {
-      const el = e.target.closest?.('.hl')
+      const el = e.target.closest?.('.hl, .hl-row')
       if (!el || el.contains(e.relatedTarget)) return
       el.dataset.hl = 'off'
     }
