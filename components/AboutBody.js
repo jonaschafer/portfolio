@@ -96,7 +96,8 @@ export default function AboutBody() {
         </div>
       </section>
 
-      <Footer colophon />
+      {/* One random color for the whole page, footer included */}
+      <Footer colophon theme={t} />
     </main>
   )
 }

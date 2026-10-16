@@ -48,8 +48,13 @@ function PortlandClock() {
 
 // Figma: Website — Oct 26, node 4:126. Hidden until the random theme is
 // picked, so the default colors never flash before the swap.
-function GiantFooter() {
-  const { theme: t, ready, animate } = useRandomTheme(THEMES, 'footer-theme')
+// `pageTheme` ({ bg, ink }) lets a page that already randomized its own
+// color hand it down, so page and footer match. HMU then inverts the page.
+function GiantFooter({ pageTheme }) {
+  const random = useRandomTheme(THEMES, 'footer-theme')
+  const { theme: t, ready, animate } = pageTheme
+    ? { theme: { ...pageTheme, hmu: pageTheme.ink, hmuInk: pageTheme.bg }, ready: true, animate: random.animate }
+    : random
   const small = `${social} text-[17px] md:text-[22px] leading-[1.15] tracking-[0.22px]`
   return (
     <footer
@@ -57,7 +62,8 @@ function GiantFooter() {
       style={{
         backgroundColor: t.bg,
         color: t.ink,
-        visibility: ready ? 'visible' : 'hidden',
+        // With a page theme, inherit the page's own hide-until-picked.
+        visibility: pageTheme ? undefined : ready ? 'visible' : 'hidden',
         '--f-bg': t.bg,
         '--f-ink': t.ink,
         '--f-hmu': t.hmu,
@@ -101,8 +107,8 @@ function GiantFooter() {
   )
 }
 
-export default function Footer({ backgroundColor = '#435938', textColor = '#FAFAFA', className = '', minimal = false, colophon = false }) {
-  if (colophon && !minimal) return <GiantFooter />
+export default function Footer({ backgroundColor = '#435938', textColor = '#FAFAFA', className = '', minimal = false, colophon = false, theme = null }) {
+  if (colophon && !minimal) return <GiantFooter pageTheme={theme} />
   const text = `${haas} leading-[1.4] text-[16px] tracking-[0.16px]`
   return (
     <div className={`w-full ${className}`.trim()} style={{ backgroundColor, color: textColor }}>
