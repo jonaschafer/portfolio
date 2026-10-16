@@ -59,25 +59,26 @@ function GiantFooter({ pageTheme }) {
       }}
     >
       <div className="max-w-[1440px] mx-auto px-[20px] md:px-[42px] pt-[40px] md:pt-[48px] pb-[28px] md:pb-[40px] flex flex-col">
-        <div className="flex flex-col md:flex-row md:justify-between gap-[32px]">
-          <div className="flex flex-col items-start gap-[14px] md:gap-[18px] max-w-[381px]">
-            <p className={small}>Building a brand, or want to swap notes on design? My inbox is (figuratively) open.</p>
+        {/* Two rows on desktop so both blurbs top-align and both button rows
+            share a baseline, however many lines the left blurb wraps to.
+            Stacks in reading order on mobile. */}
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,381px)_auto] md:justify-between gap-y-[14px] md:gap-y-[18px] md:gap-x-[32px] items-start">
+          <p className={`${small} order-1`}>Building a brand, or want to swap notes on design? My inbox is (figuratively) open.</p>
+          <p className={`${small} order-3 md:order-2 mt-[18px] md:mt-0 md:text-right`}>The unusual suspects</p>
+          <div className="order-2 md:order-3 self-end">
             <a href={`mailto:${EMAIL}?subject=Hello%20from%20portfolio`} className={`${small} fbtn fbtn-solid`}>
               Email me ↗
             </a>
           </div>
-          <div className="flex flex-col items-start md:items-end gap-[14px] md:gap-[18px]">
-            <p className={small}>The unusual suspects</p>
-            <ul className="flex flex-wrap gap-[10px]">
-              {LINKS.map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} target="_blank" rel="noopener noreferrer" className={`${small} fbtn fbtn-outline`}>
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="order-4 self-end flex flex-wrap gap-[10px] md:justify-end">
+            {LINKS.map((l) => (
+              <li key={l.label}>
+                <a href={l.href} target="_blank" rel="noopener noreferrer" className={`${small} fbtn fbtn-outline`}>
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="giant-footer-fit mt-[48px] md:mt-[60px]">
