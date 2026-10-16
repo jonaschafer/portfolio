@@ -201,7 +201,7 @@ one of six random themes, then a small portrait (200 / 280px, `rounded-6`) that 
 intro line in Social Condensed, Lael's bio in MD Nichrome Regular 24/36px with a hanging
 quote, and a Faves list beside it (Nichrome Ultra 30px heading, Social Condensed items
 with the Figma asterisk from `public/images/asterisk.svg`, drawn as a mask by
-`components/Asterisk.js`). Skillz and the career list are off for now.
+`components/Asterisk.js`). "Where I've worked" sits under the quote: org, role and years in Social Condensed with hairline rules in the theme ink. Skillz is off for now.
 
 ### Homepage (`app/page.js`, `components/HomeWork.js`, data in `lib/projects.js`)
 

@@ -21,6 +21,16 @@ const FAVES = [
   'Milkshakes in those silver cups', 'Sage advice', 'New adventures',
 ]
 
+const ROLES = [
+  { org: 'ClassDojo', role: 'Head of Brand', years: '2025 to now' },
+  { org: 'Work is Play', role: 'Creative Director', years: '2024 to 2025' },
+  { org: 'Clockwise', role: 'Lead Brand Designer', years: '2022 to 2024' },
+  { org: 'Zapier', role: 'Founding Brand Designer', years: '2017 to 2021' },
+  { org: 'AKQA', role: 'Art Director', years: '2015' },
+  { org: 'Razorfish', role: 'Art Director', years: '2012 to 2014' },
+  { org: 'Freelance', role: 'Designer', years: '2004 to 2012' },
+]
+
 // Faves that open somewhere, in a new tab.
 const FAVE_LINKS = {
   'Bartlett for America': 'https://www.partsnotincluded.com/wp-content/uploads/2025/01/TWW_S3E10_Napkin-Framed.jpg',
@@ -100,19 +110,39 @@ export default function AboutBody() {
         </p>
 
         <div className="mt-[28px] md:mt-[36px] grid grid-cols-1 desktop:grid-cols-[minmax(0,867px)_auto] gap-y-[56px] desktop:gap-x-[80px] desktop:justify-between items-start">
-          <blockquote className={`${nichrome} text-[24px] md:text-[36px] leading-[1.2] tracking-[0.36px] flex flex-col gap-[1.2em]`}>
-            <p>
-              <span className="-ml-[0.45em]">&ldquo;</span>Jon entered the world of design through the accident of obsession.
-              Despite having no formal arts education, he found himself helplessly drawn to Joseph Mueller-Brockman&apos;s
-              &lsquo;Grid Systems,&rsquo; clean Nordic design, and the tireless intricacies of Lance Wyman. His restless
-              exuberance and appetite for knowledge spurred Jon on a self-taught path towards his future craft.
-            </p>
-            <p>
-              Jon moved to Portland, Oregon in 2004 searching for further growth and creative opportunity. In the
-              decades-plus since, he has worked on design projects of nearly every conceivable scale, method, and medium
-              and he shows no signs of stopping anytime soon.&rdquo;
-            </p>
-          </blockquote>
+          <div className="flex flex-col gap-[56px] md:gap-[80px]">
+            <blockquote className={`${nichrome} text-[24px] md:text-[36px] leading-[1.2] tracking-[0.36px] flex flex-col gap-[1.2em]`}>
+              <p>
+                <span className="-ml-[0.45em]">&ldquo;</span>Jon entered the world of design through the accident of obsession.
+                Despite having no formal arts education, he found himself helplessly drawn to Joseph Mueller-Brockman&apos;s
+                &lsquo;Grid Systems,&rsquo; clean Nordic design, and the tireless intricacies of Lance Wyman. His restless
+                exuberance and appetite for knowledge spurred Jon on a self-taught path towards his future craft.
+              </p>
+              <p>
+                Jon moved to Portland, Oregon in 2004 searching for further growth and creative opportunity. In the
+                decades-plus since, he has worked on design projects of nearly every conceivable scale, method, and medium
+                and he shows no signs of stopping anytime soon.&rdquo;
+              </p>
+            </blockquote>
+
+            {/* Career, back from the old bio page */}
+            <div className="flex flex-col gap-[24px]">
+              <h2 className={heading}>Where I&apos;ve worked</h2>
+              <ul className="flex flex-col">
+                {ROLES.map((r) => (
+                  <li
+                    key={r.org}
+                    className={`${item} flex flex-wrap items-baseline gap-x-[24px] gap-y-[2px] py-[14px] border-t last:border-b`}
+                    style={{ borderColor: `${t.ink}40` }}
+                  >
+                    <span className="w-full sm:w-[200px] shrink-0">{r.org}</span>
+                    <span className="flex-1 opacity-80">{r.role}</span>
+                    <span className="opacity-80 tabular-nums">{r.years}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
           <div className="flex flex-col gap-[24px]">
             <h2 className={heading}>Faves</h2>
