@@ -64,7 +64,7 @@ export default function ProjectSlideshow({ project, onOpen, eager = false }) {
               project={project}
               file={file}
               sizes="(min-width: 1024px) 72vw, 100vw"
-              playing
+              playing={k === i}
               eager={eager && k === 0}
               className="absolute inset-0 w-full h-full object-cover"
             />

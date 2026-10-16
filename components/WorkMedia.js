@@ -40,6 +40,14 @@ function Media({ project, file, sizes, className = '', playing = false, eager = 
     if (!el) return
     if (el.tagName === 'VIDEO' ? el.readyState >= 1 : el.complete && el.naturalWidth > 0) setLoaded(true)
   }, [])
+  // Only the visible slide plays, so a project with several clips doesn't
+  // stream them all at once.
+  useEffect(() => {
+    const el = ref.current
+    if (!el || el.tagName !== 'VIDEO') return
+    if (playing) el.play().catch(() => {})
+    else el.pause()
+  }, [playing])
   const src = mediaSrc(project, file)
   const cls = `load-fade ${className}`
   return (
