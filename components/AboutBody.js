@@ -136,8 +136,8 @@ export default function AboutBody() {
                     style={{ borderColor: `${t.ink}40` }}
                   >
                     <span className="w-full sm:w-[200px] shrink-0">{r.org}</span>
-                    <span className="flex-1 opacity-80">{r.role}</span>
-                    <span className="opacity-80 tabular-nums">{r.years}</span>
+                    <span className="flex-1">{r.role}</span>
+                    <span className="tabular-nums">{r.years}</span>
                   </li>
                 ))}
               </ul>
