@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import WorkMedia from './WorkMedia'
 
 // One project's images as a sliding strip (Francine Thompson's gallery):
@@ -8,8 +8,28 @@ import WorkMedia from './WorkMedia'
 // on the image opens the lightbox at that image.
 export default function ProjectSlideshow({ project, onOpen, eager = false }) {
   const [i, setI] = useState(0)
+  // Only the current slide is visible at rest, because the strip's
+  // fractional-pixel offset otherwise lets a neighbor's edge bleed in beside
+  // transparent slides. Mid-transition, everything the strip passes shows.
+  const [leaving, setLeaving] = useState(null)
   const n = project.images.length
-  const go = (d) => setI((x) => (x + d + n) % n)
+  // A ref so back-to-back clicks step from the latest slide, not a stale one.
+  const at = useRef(0)
+  const go = (d) => {
+    const from = at.current
+    at.current = (from + d + n) % n
+    setLeaving(from)
+    setI(at.current)
+  }
+  // Matches the 500ms slide; a timer also covers reduced motion, where no
+  // transition runs and transitionend never fires.
+  useEffect(() => {
+    if (leaving === null) return
+    const t = setTimeout(() => setLeaving(null), 550)
+    return () => clearTimeout(t)
+  }, [leaving, i])
+  const shown = (k) =>
+    leaving === null ? k === i : k >= Math.min(i, leaving) && k <= Math.max(i, leaving)
   const startX = useRef(null)
 
   const arrow = (d, label, path, side) => (
@@ -58,6 +78,7 @@ export default function ProjectSlideshow({ project, onOpen, eager = false }) {
             aria-hidden={k !== i}
             onClick={() => onOpen(project, k)}
             className="relative shrink-0 w-full h-full cursor-zoom-in"
+            style={{ visibility: shown(k) ? 'visible' : 'hidden' }}
             aria-label={`${project.title}, image ${k + 1} of ${n}, open larger`}
           >
             <WorkMedia
