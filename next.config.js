@@ -18,6 +18,7 @@ const nextConfig = {
       { source: '/mma', destination: '/mma/food', permanent: false },
       { source: '/mma/map', destination: '/mma/food', permanent: false },
       { source: '/mma/map/:path*', destination: '/mma/food', permanent: false },
+      { source: '/bio', destination: '/about', permanent: true },
       { source: '/v2', destination: '/', permanent: true },
       { source: '/v2/', destination: '/', permanent: true },
       { source: '/dana-plan', destination: '/dana-plan-v2', permanent: true },

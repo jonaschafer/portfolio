@@ -185,8 +185,13 @@ body {
 }
 
 /* ---- Giant footer fonts ----
-   Trial/test licenses: files live in public/fonts/trial/, which is gitignored,
-   so production falls back until licensed files replace them. */
+   Trial/test files in public/fonts/trial/. Jon is swapping in licensed files. */
+@font-face {
+  font-family: 'Nichrome';
+  src: url('/fonts/trial/MDNichromeTest-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
 @font-face {
   font-family: 'Nichrome';
   src: url('/fonts/trial/MDNichromeTest-Ultra.otf') format('opentype');
@@ -199,20 +204,68 @@ body {
   font-weight: 400;
   font-display: swap;
 }
-/* Giant footer link pills invert on hover. Colors come from the theme. */
+/* "Giant footer" fills its container's width: the type measures about 5.3em
+   wide, so size it in container units (works at any width, scrollbar or not). */
+.giant-footer-fit {
+  container-type: inline-size;
+}
+.giant-footer-type {
+  font-size: min(calc(100cqw / 5.36), 252px);
+}
+
+/* ---- Footer buttons ----
+   Colors come from the theme as CSS vars on the footer (--f-bg, --f-ink,
+   --f-hmu, --f-hmu-ink). Solid (HMU) flips to an outline on hover; outline
+   (link pills) fills on hover. Both press to 0.97 and show an ink focus ring. */
+.fbtn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 7px 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.fbtn:focus-visible {
+  outline: 2px solid var(--f-ink);
+  outline-offset: 3px;
+}
+.fbtn:active {
+  transform: scale(0.97);
+}
+.fbtn-solid {
+  background-color: var(--f-hmu);
+  border-color: var(--f-hmu);
+  color: var(--f-hmu-ink);
+}
+.fbtn-outline {
+  background-color: transparent;
+  border-color: var(--f-ink);
+  color: var(--f-ink);
+}
+.f-anim .fbtn {
+  transition: background-color 140ms ease-out, color 140ms ease-out, border-color 140ms ease-out, transform 100ms ease-out;
+}
 @media (hover: hover) and (pointer: fine) {
-  .footer-pill:hover {
-    background-color: var(--pill-ink);
-    color: var(--pill-bg);
+  .fbtn-solid:hover {
+    background-color: transparent;
+    border-color: var(--f-ink);
+    color: var(--f-ink);
+  }
+  .fbtn-outline:hover {
+    background-color: var(--f-ink);
+    color: var(--f-bg);
   }
 }
-/* "Giant footer*" measures about 5.65em, so size it to fill the space between
-   the gutters (20px mobile, 42px md) and cap it at the 1440 shell. */
-.giant-footer-type {
-  font-size: min(calc((100vw - 40px) / 5.75), 236px);
-}
 @media (min-width: 768px) {
-  .giant-footer-type {
-    font-size: min(calc((100vw - 84px) / 5.75), 236px);
+  .fbtn {
+    padding: 8px 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .f-anim .fbtn {
+    transition: none;
+  }
+  .fbtn:active {
+    transform: none;
   }
 }

@@ -164,19 +164,28 @@ Same `backgroundColor` / `textColor` props. Typeface credit left, a scroll-to-to
 right reading "Beam me up, Scotty ↑", both Haas Grot 16px. Stacks and centers under `sm`.
 `minimal` renders the bar empty.
 
-`colophon` (on `/work`, `/work/*`, `/bio`, case studies) swaps in the giant footer
+`colophon` (on `/work`, `/work/*`, `/about`, case studies) swaps in the giant footer
 (Figma: Website — Oct 26, node 4:126). It's its own field and breaks from the site
 palette on purpose: one of six color themes (Figma node 7:235) is picked at random on
-each load, never the same twice in a row, and the footer stays hidden until the pick so
-the default never flashes. Type is ABC Social Condensed (17/22px, bottom line 18/29px) and
-MD Nichrome Ultra for "Giant footer", sized from the gutter-to-gutter width and capped at
-236px. A six-petal asterisk (`components/Asterisk.js`) footnotes the giant line, and the
-bottom line ("Guilty. They're pretty cool, I get it.") answers it, next to a live 24-hour
-Portland clock. "HMU" is the email button; link pills invert on hover.
+each load by `components/useRandomTheme.js`, never the same twice in a row, and the
+footer stays hidden until the pick so the default never flashes. Type is ABC Social
+Condensed (17/22px, bottom line 18/29px) and MD Nichrome Ultra for "Giant footer", sized
+in container units (`.giant-footer-fit`, `100cqw / 5.36`) so it fills the width at any
+size. Buttons are `.fbtn` in `globals.css`: "HMU" is solid and flips to an outline on
+hover, the link pills are outlines that fill on hover, both press to 0.97 and show an
+ink focus ring.
 
-**Font licensing.** Both faces are trial/test files. They live in `public/fonts/trial/`,
-which is gitignored, so they render locally only and production falls back to Haas Grot
-and Arial Black. Buy web licenses and commit the licensed files before relying on them.
+**Font licensing.** Both faces are trial/test files in `public/fonts/trial/`, committed
+on purpose while Jon buys licenses. Swap in the licensed files at the same paths.
+
+### About (`app/about/page.js`, `components/AboutBody.js`)
+
+Renamed from `/bio` (which redirects). Built from the Figma Faves frames (7:237 to 7:696):
+the page field takes one of six random themes, an intro line in Social Condensed, Lael's
+bio in MD Nichrome Regular 24/36px with a hanging quote, then Skillz and Faves lists
+(Nichrome Ultra headings, Social Condensed items with the Figma asterisk from
+`public/images/asterisk.svg`, drawn as a mask by `components/Asterisk.js`). Skillz is
+grouped coach, strategist, player, builder. The career list follows.
 
 ### Work index (`components/WorkIndex.js`, data in `app/work/projects.js`)
 

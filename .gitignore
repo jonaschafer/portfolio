@@ -41,5 +41,3 @@ docs/training-plan-update-*.md
 .claude/
 z-archive/
 
-# Trial/test fonts: local only, not licensed for publishing (see docs/site.md)
-public/fonts/trial/
