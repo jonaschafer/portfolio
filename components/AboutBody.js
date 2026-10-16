@@ -21,6 +21,14 @@ const FAVES = [
   'Milkshakes in those silver cups', 'Sage advice', 'New adventures',
 ]
 
+// Faves that open somewhere, in a new tab.
+const FAVE_LINKS = {
+  'Bartlett for America': 'https://www.partsnotincluded.com/wp-content/uploads/2025/01/TWW_S3E10_Napkin-Framed.jpg',
+  'Jamming mixtapes': 'https://open.spotify.com/playlist/1em1loy0jdusVEwwryzu6f',
+  'Lance Wyman': 'https://www.designboom.com/design/lance-wyman-interview-10-14-2014-2/',
+  'Milkshakes in those silver cups': 'https://slate.com/culture/2020/05/why-leftover-milkshake-metal-container-lovebirds.html',
+}
+
 const item = `${social} text-[18px] md:text-[21px] leading-[1.15]`
 const heading = `${nichromeUltra} text-[26px] md:text-[30px] leading-none tracking-[0.3px]`
 
@@ -30,7 +38,13 @@ function Bullets({ items }) {
       {items.map((t) => (
         <li key={t} className={`${item} flex items-center gap-[9px]`}>
           <Asterisk />
-          {t}
+          {FAVE_LINKS[t] ? (
+            <a href={FAVE_LINKS[t]} target="_blank" rel="noopener noreferrer" className="hl">
+              {t}
+            </a>
+          ) : (
+            t
+          )}
         </li>
       ))}
     </ul>
