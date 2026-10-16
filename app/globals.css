@@ -143,8 +143,8 @@ body {
    Media sits on a faint checkerboard (a nod to Elana Schlenker's loader) and
    fades in once it has loaded. Used by components/WorkMedia.js. */
 .load-checker {
-  background-color: rgba(250, 250, 250, 0.06);
-  background-image: conic-gradient(rgba(250, 250, 250, 0.09) 25%, transparent 0 50%, rgba(250, 250, 250, 0.09) 0 75%, transparent 0);
+  background-color: rgba(0, 0, 0, 0.03);
+  background-image: conic-gradient(rgba(0, 0, 0, 0.05) 25%, transparent 0 50%, rgba(0, 0, 0, 0.05) 0 75%, transparent 0);
   background-size: 16px 16px;
 }
 .load-fade {
@@ -196,6 +196,13 @@ body {
   font-family: 'Nichrome';
   src: url('/fonts/trial/MDNichromeTest-Ultra.otf') format('opentype');
   font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nichrome';
+  src: url('/fonts/trial/MDNichromeTest-RegularOblique.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
   font-display: swap;
 }
 @font-face {

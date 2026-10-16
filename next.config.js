@@ -19,6 +19,9 @@ const nextConfig = {
       { source: '/mma/map', destination: '/mma/food', permanent: false },
       { source: '/mma/map/:path*', destination: '/mma/food', permanent: false },
       { source: '/bio', destination: '/about', permanent: true },
+      // Work is the homepage now; project pages were folded into it.
+      { source: '/work', destination: '/', permanent: false },
+      { source: '/work/:slug', destination: '/', permanent: false },
       { source: '/v2', destination: '/', permanent: true },
       { source: '/v2/', destination: '/', permanent: true },
       { source: '/dana-plan', destination: '/dana-plan-v2', permanent: true },

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { mediaSrc, isVideo, isGif } from '../app/work/projects'
+import { mediaSrc, isVideo, isGif } from '../lib/projects'
 
 // One image or video from a project folder, filling its (relative) parent.
 // It sits on the checkerboard loading state and fades in once loaded.
@@ -24,7 +24,7 @@ export default function WorkMedia({ project, file, sizes, className = '', playin
         // `#t=0.1` makes browsers paint a first frame instead of a blank box.
         <video
           ref={ref}
-          className={`relative ${cls}`}
+          className={cls}
           data-loaded={loaded}
           src={`${src}#t=0.1`}
           muted

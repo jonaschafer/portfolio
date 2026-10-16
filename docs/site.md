@@ -143,6 +143,13 @@ Breakpoints are Tailwind defaults plus one custom: `desktop: 1200px` in
 
 ### Navigation (`components/Navigation.js`)
 
+October 2026: rebuilt on Francine Thompson's layout. Name left in MD Nichrome Ultra
+(goes home), Play centered and About right in Social Condensed, fixed to the top on the
+page's own field (`backgroundColor` / `textColor` props). Inactive links sit at 70%. The
+notes below describe the previous nav and are kept for history.
+
+### Previous navigation
+
 Fixed, full width, `z-50`. Props are `backgroundColor`, `textColor`, `underlineColor`,
 `arrowColor`, so each field passes its own pair. `backgroundColor="transparent"` overlays
 it on the homepage carousel.
@@ -164,7 +171,7 @@ Same `backgroundColor` / `textColor` props. Typeface credit left, a scroll-to-to
 right reading "Beam me up, Scotty ↑", both Haas Grot 16px. Stacks and centers under `sm`.
 `minimal` renders the bar empty.
 
-`colophon` (on `/work`, `/work/*`, `/about`, case studies) swaps in the giant footer
+`colophon` (on `/`, `/about`, case studies) swaps in the giant footer
 (Figma: Website — Oct 26, node 4:126). It's its own field and breaks from the site
 palette on purpose: one of six color themes (Figma node 7:235) is picked at random on
 each load by `components/useRandomTheme.js`, never the same twice in a row, and the
@@ -180,30 +187,24 @@ on purpose while Jon buys licenses. Swap in the licensed files at the same paths
 
 ### About (`app/about/page.js`, `components/AboutBody.js`)
 
-Renamed from `/bio` (which redirects). Built from the Figma Faves frames (7:237 to 7:696):
-the page field takes one of six random themes, an intro line in Social Condensed, Lael's
-bio in MD Nichrome Regular 24/36px with a hanging quote, then Skillz and Faves lists
-(Nichrome Ultra headings, Social Condensed items with the Figma asterisk from
-`public/images/asterisk.svg`, drawn as a mask by `components/Asterisk.js`). Skillz is
-grouped coach, strategist, player, builder. The career list follows.
+Renamed from `/bio` (which redirects). Built from Figma node 7:880: the page field takes
+one of six random themes, then Jon's trail-running photo (867px wide, `rounded-6`), an
+intro line in Social Condensed, Lael's bio in MD Nichrome Regular 24/36px with a hanging
+quote, and a Faves list beside it (Nichrome Ultra 30px heading, Social Condensed items
+with the Figma asterisk from `public/images/asterisk.svg`, drawn as a mask by
+`components/Asterisk.js`). Skillz and the career list are off for now.
 
-### Work index (`components/WorkIndex.js`, data in `app/work/projects.js`)
+### Homepage (`app/page.js`, `components/HomeWork.js`, data in `lib/projects.js`)
 
-Replaces the project carousels on `/work`. A Grid / List toggle (Haas 16px, inactive at
-`/40`) remembers the last choice and reads `?view=`. Grid: every project image in a
-2 / 4 / 6 column grid, gap 8px, `rounded-4`, greyscale on hover-capable devices until
-hovered. List: numbered rows (`001`), title, org and role, year, hairline rules; a row
-expands to the description, a "View project →" link, and thumbnails. Rows marked `soon`
-render at `/35` with no interaction. Any image opens `components/Lightbox.js`: solid
-`#1f2a1a` field, arrow keys, Esc, click backdrop to close.
-
-### Project page (`app/work/[slug]/page.js`, `components/ProjectBody.js`)
-
-Header on a 12-column grid: title (Mondwest 31/48px, 4 cols), description (5 cols),
-then a role / year / with list (3 cols). Images follow in rows that cycle full, 7+5
-offset, indented 9, 6+6, 8, so the page doesn't stack one big frame after another; every
-image opens the lightbox. Ends with "Next project" in Mondwest whose arrow slides 12px
-and whose preview fades up on hover.
+October 2026 redesign, modeled on Francine Thompson's site. The homepage is the work
+page; `/work` and `/work/*` redirect to `/`, and there are no project pages. White field,
+ink `#2E2E2E`. The bio sentence sits at the top in MD Nichrome Regular (24 / 40 / 54px at
+mobile, md, desktop), with "22 years" in Nichrome oblique. Each project follows inline on
+a 12-column grid (gutter 48px, page padding 20 / 26px): a 9-column slideshow
+(`components/ProjectSlideshow.js`, aspect 1300/731, arrows at the edges, swipe on touch,
+arrow keys when focused, click to open the lightbox) beside a 3-column text block in ABC
+Social Condensed: title, description, *Role:*, *With:* (partners) and "org, year".
+Projects stack 104px apart, 72px on mobile, and collapse to one column below `lg`.
 
 ### Project block (`components/ProjectCarousel.js`)
 
