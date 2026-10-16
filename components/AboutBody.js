@@ -39,6 +39,47 @@ const FAVE_LINKS = {
   'Milkshakes in those silver cups': 'https://slate.com/culture/2020/05/why-leftover-milkshake-metal-container-lovebirds.html',
 }
 
+// Faves that play a sound instead of opening a link.
+const FAVE_SOUNDS = {
+  'Clever voicemails': '/audio/dan-fredman-voicemail.mp3',
+}
+
+function SoundFave({ label, src }) {
+  const audioRef = useRef(null)
+  const [playing, setPlaying] = useState(false)
+  const toggle = () => {
+    const a = audioRef.current
+    if (!a) return
+    if (a.paused) {
+      a.currentTime = 0
+      a.play()
+    } else {
+      a.pause()
+    }
+  }
+  return (
+    <button type="button" onClick={toggle} aria-pressed={playing} className="inline-flex items-center gap-[9px] text-left cursor-pointer">
+      <span className="hl">{label}</span>
+      <span className="inline-flex items-center gap-[5px] text-[14px] md:text-[16px] opacity-80">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M11 5 6 9H2v6h4l5 4V5z" fill="currentColor" />
+          <path d="M15.5 8.5a5 5 0 0 1 0 7" className={playing ? 'animate-pulse motion-reduce:animate-none' : ''} />
+          <path d="M19 5a10 10 0 0 1 0 14" className={playing ? 'animate-pulse motion-reduce:animate-none [animation-delay:200ms]' : ''} />
+        </svg>
+        {playing ? 'playing…' : 'play me!'}
+      </span>
+      <audio
+        ref={audioRef}
+        src={src}
+        preload="none"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onEnded={() => setPlaying(false)}
+      />
+    </button>
+  )
+}
+
 const item = `${social} text-[18px] md:text-[21px] leading-[1.15]`
 const heading = `${nichromeUltra} text-[26px] md:text-[30px] leading-none tracking-[0.3px]`
 
@@ -48,7 +89,9 @@ function Bullets({ items }) {
       {items.map((t) => (
         <li key={t} className={`${item} flex items-center gap-[9px]`}>
           <Asterisk />
-          {FAVE_LINKS[t] ? (
+          {FAVE_SOUNDS[t] ? (
+            <SoundFave label={t} src={FAVE_SOUNDS[t]} />
+          ) : FAVE_LINKS[t] ? (
             <a href={FAVE_LINKS[t]} target="_blank" rel="noopener noreferrer" className="hl">
               {t}
             </a>
