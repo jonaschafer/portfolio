@@ -196,7 +196,10 @@ with the Figma asterisk from `public/images/asterisk.svg`, drawn as a mask by
 
 ### Homepage (`app/page.js`, `components/HomeWork.js`, data in `lib/projects.js`)
 
-October 2026 redesign, modeled on Francine Thompson's site. The homepage is the work
+October 2026 redesign, modeled on Francine Thompson's site. The whole page (nav, body,
+footer) takes one of the six themes in `lib/themes.js`, dealt like a shuffled deck by
+`components/useRandomTheme.js` so six reloads show all six. The link highlight uses the
+same six pairs. The homepage is the work
 page; `/work` and `/work/*` redirect to `/`, and there are no project pages. White field,
 ink `#2E2E2E`. The bio sentence sits at the top in MD Nichrome Regular (24 / 40 / 54px at
 mobile, md, desktop), with "22 years" in Nichrome oblique. Each project follows inline on

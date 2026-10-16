@@ -1,15 +1,11 @@
 'use client'
 
 import { useEffect } from 'react'
+import { THEMES } from '../lib/themes'
 
-// Field color pairs from site.md. A pair whose background matches the field
-// the link sits on is skipped, and the same pair never shows twice in a row.
-const PAIRS = [
-  ['#F8DB79', '#333333'],
-  ['#FAFAFA', '#435938'],
-  ['#333333', '#F8DB79'],
-  ['#435938', '#FAFAFA'],
-]
+// The six site themes as highlight pairs. A pair whose background matches the
+// field the link sits on is skipped, and the same pair never shows twice in a row.
+const PAIRS = THEMES.map((t) => [t.bg, t.ink])
 
 function fieldColor(el) {
   for (let n = el.parentElement; n; n = n.parentElement) {

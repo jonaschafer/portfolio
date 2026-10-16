@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import useRandomTheme from './useRandomTheme'
+import { THEMES } from '../lib/themes'
 
 const haas = "font-['Haas_Grot_Disp',_sans-serif]"
 const social = "font-['Social_Condensed','Haas_Grot_Disp',sans-serif]"
@@ -15,17 +16,6 @@ const LINKS = [
   { label: 'Spotify', href: 'https://open.spotify.com/user/jonaschafer' },
 ]
 
-// Color themes from Figma (Website — Oct 26, node 7:235). One is picked at
-// random on each load, never the same one twice in a row.
-// bg: field, ink: all type and outline borders, hmu/hmuInk: the email button.
-const THEMES = [
-  { bg: '#D5B800', ink: '#19180E', hmu: '#19180E', hmuInk: '#F2F2F2' },
-  { bg: '#FFFFFF', ink: '#2E2E2E', hmu: '#FF000F', hmuInk: '#FFFFFF' },
-  { bg: '#9FAE79', ink: '#3E3C32', hmu: '#FFFFFF', hmuInk: '#3E3C32' },
-  { bg: '#FF4B00', ink: '#511A07', hmu: '#FFFFFF', hmuInk: '#511A07' },
-  { bg: '#F2F2F2', ink: '#130EA8', hmu: '#130EA8', hmuInk: '#F2F2F2' },
-  { bg: '#0F50C8', ink: '#FF69B4', hmu: '#FF69B4', hmuInk: '#0F50C8' },
-]
 
 // Live Portland time, 24-hour, ticking each second. Blank until mounted so
 // server and client markup match.
@@ -48,13 +38,11 @@ function PortlandClock() {
 
 // Figma: Website — Oct 26, node 4:126. Hidden until the random theme is
 // picked, so the default colors never flash before the swap.
-// `pageTheme` ({ bg, ink }) lets a page that already randomized its own
-// color hand it down, so page and footer match. HMU then inverts the page.
+// `pageTheme` lets a page that already picked its color hand it down, so
+// page and footer match.
 function GiantFooter({ pageTheme }) {
-  const random = useRandomTheme(THEMES, 'footer-theme')
-  const { theme: t, ready, animate } = pageTheme
-    ? { theme: { ...pageTheme, hmu: pageTheme.ink, hmuInk: pageTheme.bg }, ready: true, animate: random.animate }
-    : random
+  const random = useRandomTheme(THEMES, !pageTheme)
+  const { theme: t, ready, animate } = pageTheme ? { theme: pageTheme, ready: true, animate: random.animate } : random
   const small = `${social} text-[17px] md:text-[22px] leading-[1.15] tracking-[0.22px]`
   return (
     <footer
@@ -75,11 +63,11 @@ function GiantFooter({ pageTheme }) {
           <div className="flex flex-col items-start gap-[14px] md:gap-[18px] max-w-[381px]">
             <p className={small}>Building a brand, or want to swap notes on design? My inbox is (figuratively) open.</p>
             <a href={`mailto:${EMAIL}?subject=Hello%20from%20portfolio`} className={`${small} fbtn fbtn-solid`}>
-              HMU
+              Email me ↗
             </a>
           </div>
           <div className="flex flex-col items-start md:items-end gap-[14px] md:gap-[18px]">
-            <p className={`${small} md:mt-[14px]`}>The unusual suspects</p>
+            <p className={small}>The unusual suspects</p>
             <ul className="flex flex-wrap gap-[10px]">
               {LINKS.map((l) => (
                 <li key={l.label}>

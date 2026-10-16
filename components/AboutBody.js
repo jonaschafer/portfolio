@@ -10,17 +10,6 @@ const social = "font-['Social_Condensed','Haas_Grot_Disp',sans-serif]"
 const nichromeUltra = "font-['Nichrome','Arial_Black',sans-serif] font-black"
 const nichrome = "font-['Nichrome','Haas_Grot_Disp',sans-serif] font-normal"
 
-// About page themes from Figma (Website — Oct 26, Faves frames 7:237 to 7:696).
-// One is picked at random per load, like the footer. Default is the
-// 7:880 frame's olive.
-const THEMES = [
-  { bg: '#3E3C32', ink: '#9FAE79' },
-  { bg: '#D5AFFE', ink: '#2E2E2E' },
-  { bg: '#130EA8', ink: '#FFFFFF' },
-  { bg: '#0F50C8', ink: '#FF69B4' },
-  { bg: '#FF4B00', ink: '#511A07' },
-  { bg: '#D5B800', ink: '#19180E' },
-]
 
 const FAVES = [
   'Freshly-stirred peanut butter', 'Clever voicemails', 'Jon Stewart', 'Bartlett for America', 'Cherry Coke',
@@ -48,7 +37,7 @@ function Bullets({ items }) {
 }
 
 export default function AboutBody() {
-  const { theme: t, ready } = useRandomTheme(THEMES, 'about-theme')
+  const { theme: t, ready } = useRandomTheme()
   return (
     <main style={{ backgroundColor: t.bg, color: t.ink, visibility: ready ? 'visible' : 'hidden' }}>
       <Navigation backgroundColor={t.bg} textColor={t.ink} />

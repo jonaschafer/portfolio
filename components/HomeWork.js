@@ -6,11 +6,11 @@ import Footer from './Footer'
 import Lightbox from './Lightbox'
 import ProjectSlideshow from './ProjectSlideshow'
 import { WITH_PAGES } from '../lib/projects'
+import useRandomTheme from './useRandomTheme'
 
 // The homepage is the work page, laid out like Francine Thompson's site:
 // a big bio sentence, then each project inline as a 9-column slideshow
 // beside a 3-column text block. No project pages.
-const INK = '#2E2E2E'
 const social = "font-['Social_Condensed','Haas_Grot_Disp',sans-serif]"
 const nichrome = "font-['Nichrome','Haas_Grot_Disp',sans-serif] font-normal"
 
@@ -50,23 +50,26 @@ function ProjectText({ p }) {
 }
 
 export default function HomeWork() {
+  // One theme for the whole page (nav, body, footer), dealt per load.
+  const { theme: t, ready } = useRandomTheme()
   const [box, setBox] = useState(null)
   const open = useCallback((project, index) => setBox({ project, index }), [])
   const close = useCallback(() => setBox(null), [])
   const setIndex = useCallback((fn) => setBox((b) => (b ? { ...b, index: fn(b.index) } : b)), [])
 
   return (
-    <main className="bg-white" style={{ color: INK }}>
-      <Navigation backgroundColor="#FFFFFF" textColor={INK} />
+    <main style={{ backgroundColor: t.bg, color: t.ink, visibility: ready ? 'visible' : 'hidden' }}>
+      <Navigation backgroundColor={t.bg} textColor={t.ink} />
 
       <section className="px-[20px] md:px-[26px] pt-[32px] md:pt-[100px] pb-[48px] md:pb-[80px]">
         <h1 className={`${nichrome} text-[24px] md:text-[40px] desktop:text-[54px] leading-[1.15] tracking-[0.2px] max-w-[1340px]`}>
           I&apos;m Jon, head of brand at{' '}
           <a className="hl" href="https://www.classdojo.com/" target="_blank" rel="noopener noreferrer">
             ClassDojo
-          </a>{' '}
-          in rainy Portland. 🌧️ For <i className="italic">22 years</i> I&apos;ve built identities, the systems that carry
-          them, and the teams that keep them going.
+          </a>
+          , located in rainy Portland. 🌧️ For the last 20 odd years I&apos;ve built <i className="italic">identities</i>,
+          the <i className="italic">systems</i> that carry them, and the <i className="italic">teams</i> that keep them
+          going.
         </h1>
       </section>
 
@@ -83,7 +86,7 @@ export default function HomeWork() {
         ))}
       </div>
 
-      <Footer colophon />
+      <Footer colophon theme={t} />
       {box && <Lightbox project={box.project} index={box.index} setIndex={setIndex} onClose={close} />}
     </main>
   )
