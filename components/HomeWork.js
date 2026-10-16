@@ -5,6 +5,7 @@ import Navigation from './Navigation'
 import Footer from './Footer'
 import Lightbox from './Lightbox'
 import ProjectSlideshow from './ProjectSlideshow'
+import TestimonialsSection from './TestimonialsSection'
 import { WITH_PAGES } from '../lib/projects'
 import useRandomTheme from './useRandomTheme'
 
@@ -85,6 +86,8 @@ export default function HomeWork() {
           </article>
         ))}
       </div>
+
+      <TestimonialsSection theme={t} />
 
       <Footer colophon theme={t} />
       {box && <Lightbox project={box.project} index={box.index} setIndex={setIndex} onClose={close} />}
