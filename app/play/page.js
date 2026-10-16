@@ -1,6 +1,9 @@
-'use client'
+import PlayIndex from '../../components/PlayIndex'
 
-import Link from 'next/link'
+export const metadata = {
+  title: 'Jon Schafer — Play',
+  description: 'Vibe coded ideas, full-on projects and side quests.',
+}
 
 const projects = [
   {
@@ -81,84 +84,6 @@ const projects = [
   }
 ]
 
-// Helper function to format date from YYYY.MM.DD to "Month YYYY"
-function formatDate(dateString) {
-  const [year, month] = dateString.split('.')
-  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
-                      'July', 'August', 'September', 'October', 'November', 'December']
-  return `${monthNames[parseInt(month) - 1]} ${year}`
-}
-
 export default function PlayPage() {
-
-  return (
-    <div className="font-mono bg-white text-black min-h-screen text-[13px] leading-[1.6]">
-      {/* Headline Block */}
-      <div className="bg-white w-full">
-        <section className="min-w-[375px] max-w-[1440px] mx-auto pt-[60px] pb-[40px]">
-          <div className="w-full px-5 md:px-[60px] lg:px-[60px]">
-            <p className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] lg:text-[31px] text-black leading-[1.2] tracking-[0.31px] max-w-[335px] md:max-w-[648px] lg:max-w-[900px] whitespace-pre-wrap">
-              A small, but growing collection of vibe coded ideas, full-on projects and side quests. 🧙
-            </p>
-          </div>
-        </section>
-      </div>
-
-      <div className="min-h-screen max-w-[1440px] mx-auto">
-        {/* Content */}
-        <div className="pt-5 pb-5 md:pt-8 md:pb-8 px-5 md:px-[60px] lg:px-[60px]">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map(project => {
-              // Extract tech stack from tags (HTML/CSS, JavaScript, React, Next.js, Claude)
-              const techStack = project.tags.filter(tag => 
-                ['HTML/CSS', 'JavaScript', 'React', 'Next.js', 'Claude'].includes(tag)
-              )
-              
-              return (
-                <Link
-                  key={project.id}
-                  href={project.path}
-                  className="flex flex-col gap-[28px] text-inherit no-underline transition-opacity hover:opacity-80"
-                >
-                  <div className="flex flex-col gap-[8px]">
-                    <div
-                      className={
-                        project.id === 'gels'
-                          ? 'flex flex-col gap-[2px] pb-[10px]'
-                          : 'flex flex-col gap-[8px] pb-[10px]'
-                      }
-                    >
-                      <h2 className="font-['Mondwest',_sans-serif] text-[24px] text-black text-left align-bottom leading-[28.8px] tracking-[0.31px]">
-                        {project.name}
-                      </h2>
-                      <div className="font-['Haas_Grot_Disp',_sans-serif] text-[13px] leading-[18.20px] tracking-[0.13px] text-[rgba(120,120,120,0.7)]">
-                        {formatDate(project.date)}
-                      </div>
-                    </div>
-                    <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] leading-[16.44px] text-black tracking-[0.17px]">
-                      {project.description}
-                    </p>
-                  </div>
-                  
-                  {/* Tech Stack Bubbles */}
-                  {techStack.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {techStack.map((tech, index) => (
-                        <div
-                          key={index}
-                          className="px-[10px] py-[4px] rounded-[4px] border border-black/70 text-[13px] font-['Haas_Grot_Disp',_sans-serif] leading-[18.20px] tracking-[0.13px] text-black/70 bg-white inline-flex items-center justify-center h-fit"
-                        >
-                          {tech}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  return <PlayIndex projects={projects} />
 }

@@ -185,6 +185,15 @@ ink focus ring.
 **Font licensing.** Both faces are trial/test files in `public/fonts/trial/`, committed
 on purpose while Jon buys licenses. Swap in the licensed files at the same paths.
 
+### Play index (`app/play/page.js`, `components/PlayIndex.js`)
+
+Same system as the homepage: one theme for the whole page, the blurb in Nichrome at the
+homepage's size ("vibe coded" in oblique), and project cards in Social Condensed on a
+1 / 2 / 3 column grid (gap 48px), newest first. Each card has a hairline top rule, the
+title with its date on the right, the description and outlined tech chips; the title
+underlines on hover. Pages under `/play/*` keep their own designs under the white nav
+from `app/play/layout.js`.
+
 ### About (`app/about/page.js`, `components/AboutBody.js`)
 
 Renamed from `/bio` (which redirects). Built from Figma node 7:880: the page field takes
