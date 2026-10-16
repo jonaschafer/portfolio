@@ -1,10 +1,10 @@
-import HomeCarousel from '../components/HomeCarousel'
+import HomeWork from '../components/HomeWork'
 
 export const metadata = {
-  title: 'Jon Schafer — Work',
+  title: 'Jon Schafer',
   description: 'Brand strategy, identity systems, and creative direction.',
 }
 
 export default function Home() {
-  return <HomeCarousel />
+  return <HomeWork />
 }

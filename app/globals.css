@@ -138,3 +138,155 @@ body {
     stroke-dasharray: none !important;
   }
 }
+
+/* ---- Site register: image loading state ----
+   Media sits on a faint checkerboard (a nod to Elana Schlenker's loader) and
+   fades in once it has loaded. Used by components/WorkMedia.js. */
+.load-checker {
+  background-color: rgba(0, 0, 0, 0.03);
+  background-image: conic-gradient(rgba(0, 0, 0, 0.05) 25%, transparent 0 50%, rgba(0, 0, 0, 0.05) 0 75%, transparent 0);
+  background-size: 16px 16px;
+}
+.load-fade {
+  opacity: 0;
+  transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.load-fade[data-loaded='true'] {
+  opacity: 1;
+}
+
+/* ---- Site register: highlight hover ----
+   Inline text links marked .hl get a random field color pair on each hover,
+   set by components/HoverHighlight.js. Touch devices keep the underline. */
+.hl {
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  text-underline-position: from-font;
+  border-radius: 2px;
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hl[data-hl='on'] {
+    background-color: var(--hl-bg);
+    color: var(--hl-fg);
+    text-decoration-color: transparent;
+  }
+}
+
+/* Whole rows (About > History) take the same random pair on hover. */
+.hl-row {
+  transition: background-color 120ms ease-out, color 120ms ease-out, box-shadow 120ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hl-row[data-hl='on'] {
+    background-color: var(--hl-bg);
+    color: var(--hl-fg);
+    /* Bleed the color 10px past each side without moving the text or rules. */
+    box-shadow: -10px 0 0 var(--hl-bg), 10px 0 0 var(--hl-bg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hl-row,
+  .load-fade,
+  .hl {
+    transition: none;
+  }
+}
+
+/* ---- Giant footer fonts ----
+   Trial/test files in public/fonts/trial/. Jon is swapping in licensed files. */
+@font-face {
+  font-family: 'Nichrome';
+  src: url('/fonts/trial/MDNichromeTest-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nichrome';
+  src: url('/fonts/trial/MDNichromeTest-Ultra.otf') format('opentype');
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nichrome';
+  src: url('/fonts/trial/MDNichromeTest-RegularOblique.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Social Condensed';
+  src: url('/fonts/trial/ABCSocialCondensed-Regular-Trial.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+/* "Giant footer" fills its container's width: the type measures about 5.3em
+   wide, so size it in container units (works at any width, scrollbar or not). */
+.giant-footer-fit {
+  container-type: inline-size;
+}
+.giant-footer-type {
+  font-size: min(calc(100cqw / 5.36), 252px);
+}
+
+/* ---- Footer buttons ----
+   Colors come from the theme as CSS vars on the footer (--f-bg, --f-ink,
+   --f-hmu, --f-hmu-ink). Solid (HMU) flips to an outline on hover; outline
+   (link pills) fills on hover. Both press to 0.97 and show an ink focus ring. */
+.fbtn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 7px 10px;
+  -webkit-tap-highlight-color: transparent;
+}
+.fbtn:focus-visible {
+  outline: 2px solid var(--f-ink);
+  outline-offset: 3px;
+}
+.fbtn:active {
+  transform: scale(0.97);
+}
+.fbtn-solid {
+  background-color: var(--f-hmu);
+  border-color: var(--f-hmu);
+  color: var(--f-hmu-ink);
+}
+.fbtn-outline {
+  background-color: transparent;
+  border-color: var(--f-ink);
+  color: var(--f-ink);
+}
+.f-anim .fbtn {
+  transition: background-color 140ms ease-out, color 140ms ease-out, border-color 140ms ease-out, transform 100ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .fbtn-solid:hover {
+    background-color: transparent;
+    border-color: var(--f-ink);
+    color: var(--f-ink);
+  }
+  .fbtn-outline:hover {
+    background-color: var(--f-ink);
+    color: var(--f-bg);
+  }
+}
+@media (min-width: 768px) {
+  .fbtn {
+    padding: 8px 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .f-anim .fbtn {
+    transition: none;
+  }
+  .fbtn:active {
+    transform: none;
+  }
+}

@@ -143,6 +143,13 @@ Breakpoints are Tailwind defaults plus one custom: `desktop: 1200px` in
 
 ### Navigation (`components/Navigation.js`)
 
+October 2026: rebuilt on Francine Thompson's layout. Name left in MD Nichrome Ultra
+(goes home), Play centered and About right in Social Condensed, fixed to the top on the
+page's own field (`backgroundColor` / `textColor` props). Inactive links sit at 70%. The
+notes below describe the previous nav and are kept for history.
+
+### Previous navigation
+
 Fixed, full width, `z-50`. Props are `backgroundColor`, `textColor`, `underlineColor`,
 `arrowColor`, so each field passes its own pair. `backgroundColor="transparent"` overlays
 it on the homepage carousel.
@@ -163,6 +170,53 @@ it on the homepage carousel.
 Same `backgroundColor` / `textColor` props. Typeface credit left, a scroll-to-top button
 right reading "Beam me up, Scotty ↑", both Haas Grot 16px. Stacks and centers under `sm`.
 `minimal` renders the bar empty.
+
+`colophon` (on `/`, `/about`, case studies) swaps in the giant footer
+(Figma: Website — Oct 26, node 4:126). It's its own field and breaks from the site
+palette on purpose: one of six color themes (Figma node 7:235) is picked at random on
+each load by `components/useRandomTheme.js`, never the same twice in a row, and the
+footer stays hidden until the pick so the default never flashes. Type is ABC Social
+Condensed (17/22px, bottom line 18/29px) and MD Nichrome Ultra for "Giant footer", sized
+in container units (`.giant-footer-fit`, `100cqw / 5.36`) so it fills the width at any
+size. Buttons are `.fbtn` in `globals.css`: "HMU" is solid and flips to an outline on
+hover, the link pills are outlines that fill on hover, both press to 0.97 and show an
+ink focus ring.
+
+**Font licensing.** Both faces are trial/test files in `public/fonts/trial/`, committed
+on purpose while Jon buys licenses. Swap in the licensed files at the same paths.
+
+### Play index (`app/play/page.js`, `components/PlayIndex.js`)
+
+Same system as the homepage: one theme for the whole page, the blurb in Nichrome at the
+homepage's size ("vibe coded" in oblique), and project cards in Social Condensed on a
+1 / 2 / 3 column grid (gap 48px), newest first. Each card has a hairline top rule, the
+title with its date on the right, the description and outlined tech chips; the title
+underlines on hover. Pages under `/play/*` keep their own designs under the white nav
+from `app/play/layout.js`.
+
+### About (`app/about/page.js`, `components/AboutBody.js`)
+
+Renamed from `/bio` (which redirects). Built from Figma node 7:880: the page field takes
+one of six random themes, then a small portrait (200 / 280px, `rounded-6`) that starts as a block of the theme's ink color, fades the photo in, and tilts 2° on hover, an
+intro line in Social Condensed, Lael's bio in MD Nichrome Regular 24/36px with a hanging
+quote, and a Faves list beside it (Nichrome Ultra 30px heading, Social Condensed items
+with the Figma asterisk from `public/images/asterisk.svg`, drawn as a mask by
+`components/Asterisk.js`). "Where I've worked" sits under the quote: org, role and years in Social Condensed with hairline rules in the theme ink; each row takes a random theme pair on hover (`.hl-row`, same picker as `.hl` links). Skillz is off for now.
+
+### Homepage (`app/page.js`, `components/HomeWork.js`, data in `lib/projects.js`)
+
+October 2026 redesign, modeled on Francine Thompson's site. The whole page (nav, body,
+footer) takes one of the six themes in `lib/themes.js`, dealt like a shuffled deck by
+`components/useRandomTheme.js` so six reloads show all six. The link highlight uses the
+same six pairs. The homepage is the work
+page; `/work` and `/work/*` redirect to `/`, and there are no project pages. White field,
+ink `#2E2E2E`. The bio sentence sits at the top in MD Nichrome Regular (24 / 40 / 54px at
+mobile, md, desktop), with "22 years" in Nichrome oblique. Each project follows inline on
+a 12-column grid (gutter 48px, page padding 20 / 26px): a 9-column slideshow
+(`components/ProjectSlideshow.js`, aspect 1300/731, arrows at the edges, swipe on touch,
+arrow keys when focused, click to open the lightbox) beside a 3-column text block in ABC
+Social Condensed: title, description, *Role:*, *With:* (partners) and "org, year".
+Projects stack 104px apart, 72px on mobile, and collapse to one column below `lg`.
 
 ### Project block (`components/ProjectCarousel.js`)
 
@@ -222,6 +276,14 @@ Restrained and almost entirely opacity.
 - Carousel slide: `transform 0.5s ease-out`, with the transition disabled for the
   wrap-around jump so the loop is seamless
 - Advising cards: `transition-all duration-200`
+- **Highlight hover** (`.hl`, `components/HoverHighlight.js`): inline text links get a
+  random field color pair on each hover (mustard/charcoal, cream/green, charcoal/mustard,
+  green/cream), skipping the pair that matches the field they sit on. Hover-capable
+  devices only; touch keeps the underline. Use it on inline links in copy, not on nav.
+- **Image loading** (`components/WorkMedia.js`): media sits on a faint 16px checkerboard
+  (`.load-checker`) and fades in over 500ms on `cubic-bezier(0.23, 1, 0.32, 1)`.
+- Grid tiles go greyscale to color over 300ms. Next-project arrow and preview use the same
+  curve over 300ms. `prefers-reduced-motion` drops the fades and highlight transition.
 
 Anything beyond this in the repo (`mma-btn-press`, the `git-*` keyframes in
 `app/globals.css`) belongs to `/mma` and `/play/git`, not to the site register.
@@ -244,9 +306,8 @@ Covered fully in `~/.claude/CLAUDE.md`, but the parts that show up in the layout
 
 Real inconsistencies in the running code. Listed so they get fixed rather than copied.
 
-1. **The footer credits the wrong typeface.** `components/Footer.js:11` says "PP Mondwest,
-   PP Neue Montreal", but the loaded file reports internally as "Haas Grot Disp 55 Roman".
-   Either the credit or the font file is wrong.
+1. ~~The footer credits the wrong typeface.~~ Fixed Oct 2026: the credit now reads
+   "PP Mondwest, Neue Haas Grotesk Display".
 2. **`/overview` is stale.** It has no mustard field, its page list is missing `/work`,
    `/advising` and `/case-studies`, and it documents an unused `#ebac1e`. Treat this file
    as the source of truth until `/overview` is rebuilt from it.
