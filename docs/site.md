@@ -164,12 +164,19 @@ Same `backgroundColor` / `textColor` props. Typeface credit left, a scroll-to-to
 right reading "Beam me up, Scotty ↑", both Haas Grot 16px. Stacks and centers under `sm`.
 `minimal` renders the bar empty.
 
-`colophon` (on `/work`, `/work/*`, `/bio`, case studies) adds a row above the bar: a
-"Let's talk" heading in Mondwest, one line and an outlined "Email me" pill, the social
-links (entries without an href don't render), and a live Portland clock with the
-copyright. Below the bar, "Jon Schafer" is set in Mondwest at `min(19.3vw, 288px)` so it
-spans the shell. That's the one place type sizes to the viewport, because it works as a
-graphic rather than text on the scale.
+`colophon` (on `/work`, `/work/*`, `/bio`, case studies) swaps in the giant footer
+(Figma: Website — Oct 26, node 4:126). It's its own field and breaks from the site
+palette on purpose: one of six color themes (Figma node 7:235) is picked at random on
+each load, never the same twice in a row, and the footer stays hidden until the pick so
+the default never flashes. Type is ABC Social Condensed (17/22px, bottom line 18/29px) and
+MD Nichrome Ultra for "Giant footer", sized from the gutter-to-gutter width and capped at
+236px. A six-petal asterisk (`components/Asterisk.js`) footnotes the giant line, and the
+bottom line ("Guilty. They're pretty cool, I get it.") answers it, next to a live 24-hour
+Portland clock. "HMU" is the email button; link pills invert on hover.
+
+**Font licensing.** Both faces are trial/test files. They live in `public/fonts/trial/`,
+which is gitignored, so they render locally only and production falls back to Haas Grot
+and Arial Black. Buy web licenses and commit the licensed files before relying on them.
 
 ### Work index (`components/WorkIndex.js`, data in `app/work/projects.js`)
 

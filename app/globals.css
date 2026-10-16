@@ -183,3 +183,36 @@ body {
     transition: none;
   }
 }
+
+/* ---- Giant footer fonts ----
+   Trial/test licenses: files live in public/fonts/trial/, which is gitignored,
+   so production falls back until licensed files replace them. */
+@font-face {
+  font-family: 'Nichrome';
+  src: url('/fonts/trial/MDNichromeTest-Ultra.otf') format('opentype');
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Social Condensed';
+  src: url('/fonts/trial/ABCSocialCondensed-Regular-Trial.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+/* Giant footer link pills invert on hover. Colors come from the theme. */
+@media (hover: hover) and (pointer: fine) {
+  .footer-pill:hover {
+    background-color: var(--pill-ink);
+    color: var(--pill-bg);
+  }
+}
+/* "Giant footer*" measures about 5.65em, so size it to fill the space between
+   the gutters (20px mobile, 42px md) and cap it at the 1440 shell. */
+.giant-footer-type {
+  font-size: min(calc((100vw - 40px) / 5.75), 236px);
+}
+@media (min-width: 768px) {
+  .giant-footer-type {
+    font-size: min(calc((100vw - 84px) / 5.75), 236px);
+  }
+}

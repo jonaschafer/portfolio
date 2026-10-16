@@ -40,3 +40,6 @@ docs/training-plan-update-*.md
 # Local agent/worktree files
 .claude/
 z-archive/
+
+# Trial/test fonts: local only, not licensed for publishing (see docs/site.md)
+public/fonts/trial/
