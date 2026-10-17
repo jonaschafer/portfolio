@@ -292,3 +292,21 @@ body {
     transform: none;
   }
 }
+
+/* ---- Speaker waves (Mixtape pill, About button) ----
+   While music plays, the two waves light up inner then outer, like sound
+   radiating out of the speaker. Reduced motion keeps them solid. */
+@keyframes speaker-wave {
+  0%, 100% { opacity: 0.2; }
+  35% { opacity: 1; }
+  70% { opacity: 0.2; }
+}
+.speaker-wave {
+  animation: speaker-wave 0.9s ease-in-out infinite;
+}
+.speaker-wave-2 {
+  animation-delay: 0.18s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .speaker-wave { animation: none; }
+}

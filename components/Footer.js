@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import useRandomTheme from './useRandomTheme'
 import { THEMES } from '../lib/themes'
+import { useSpotifyFeed } from './mixtape'
 
 const haas = "font-['Haas_Grot_Disp',_sans-serif]"
 const social = "font-['Social_Condensed','Haas_Grot_Disp',sans-serif]"
@@ -32,6 +33,24 @@ function PortlandClock() {
   return (
     <span className="tabular-nums shrink-0" title="Portland, Oregon" suppressHydrationWarning>
       {time}
+    </span>
+  )
+}
+
+// What Jon's listening to, from the live Spotify feed; falls back to the last
+// track when nothing's playing. Desktop only, and blank until the feed loads.
+function NowPlaying() {
+  const feed = useSpotifyFeed()
+  const n = feed?.now
+  if (!n) return null
+  return (
+    <span className="hidden md:inline-block truncate max-w-[42vw] text-right">
+      {n.playing ? 'Listening to ' : 'Last played '}
+      <a href={n.url} target="_blank" rel="noopener noreferrer" className="hl">
+        {n.title}
+      </a>
+      , {n.artist}
+      <span aria-hidden="true"> · </span>
     </span>
   )
 }
@@ -89,7 +108,10 @@ function GiantFooter({ pageTheme }) {
 
         <div className={`${social} flex items-baseline justify-between gap-[16px] mt-[20px] md:mt-[36px] text-[18px] md:text-[29px] leading-[1.15]`}>
           <p>Guilty. They&apos;re pretty cool, I get it.</p>
-          <PortlandClock />
+          <span className="flex items-baseline min-w-0">
+            <NowPlaying />
+            <PortlandClock />
+          </span>
         </div>
       </div>
     </footer>

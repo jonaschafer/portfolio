@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Navigation from './Navigation'
+import { mixtape, useMixtape, useSpotifyFeed, SpeakerIcon } from './mixtape'
 import Footer from './Footer'
 import Asterisk from './Asterisk'
 import useRandomTheme from './useRandomTheme'
@@ -63,8 +64,8 @@ function SoundFave({ label, src }) {
       <span className="inline-flex items-center gap-[5px] text-[14px] md:text-[16px] opacity-80">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M11 5 6 9H2v6h4l5 4V5z" fill="currentColor" />
-          <path d="M15.5 8.5a5 5 0 0 1 0 7" className={playing ? 'animate-pulse motion-reduce:animate-none' : ''} />
-          <path d="M19 5a10 10 0 0 1 0 14" className={playing ? 'animate-pulse motion-reduce:animate-none [animation-delay:200ms]' : ''} />
+          <path d="M15.5 8.5a5 5 0 0 1 0 7" className={playing ? 'speaker-wave' : ''} />
+          <path d="M19 5a10 10 0 0 1 0 14" className={playing ? 'speaker-wave speaker-wave-2' : ''} />
         </svg>
         {playing ? 'playing…' : 'play me!'}
       </span>
@@ -101,6 +102,57 @@ function Bullets({ items }) {
         </li>
       ))}
     </ul>
+  )
+}
+
+// Music, between Lael's intro and History. The copy is static; the rows come
+// from Jon's Spotify (top tracks, last four weeks) and refresh themselves.
+function OnRepeat({ t }) {
+  const feed = useSpotifyFeed()
+  const { playing } = useMixtape()
+  const top = feed?.top?.slice(0, 6) ?? []
+  return (
+    <div className="flex flex-col gap-[24px]">
+      <h2 className={heading}>On repeat</h2>
+      <p className={`${social} text-[18px] md:text-[21px] leading-[1.2] max-w-[640px]`}>
+        I don&apos;t play music, but I love the crap outta it. It&apos;s on nearly nonstop, all kinds of genres.
+        Here&apos;s what I&apos;m jammin&apos; to right now.
+      </p>
+      {feed?.now && (
+        <p className={`${item} flex flex-wrap items-baseline gap-x-[10px]`}>
+          <span className="opacity-70">{feed.now.playing ? 'Now playing' : 'Last played'}</span>
+          <a href={feed.now.url} target="_blank" rel="noopener noreferrer" className="hl">
+            {feed.now.title}
+          </a>
+          <span className="opacity-70">{feed.now.artist}</span>
+        </p>
+      )}
+      {top.length > 0 && (
+        <ol className="flex flex-col">
+          {top.map((s, k) => (
+            <li
+              key={s.url ?? k}
+              className={`${item} hl-row flex items-baseline gap-x-[24px] py-[14px] border-t last:border-b`}
+              style={{ borderColor: `${t.ink}40` }}
+            >
+              <span className="tabular-nums w-[24px] shrink-0 opacity-70">{String(k + 1).padStart(2, '0')}</span>
+              <a href={s.url} target="_blank" rel="noopener noreferrer" className="flex-1">
+                {s.title}
+              </a>
+              <span className="text-right opacity-80">{s.artist}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+      <button
+        type="button"
+        onClick={() => mixtape.set({ open: true })}
+        className={`${social} self-start inline-flex items-center gap-[8px] text-[18px] md:text-[21px] leading-none px-[14px] py-[9px] rounded-full border border-current active:scale-[0.97] transition`}
+      >
+        <SpeakerIcon playing={playing} />
+        {playing ? 'Playing the mixtape…' : 'Play the mixtape'}
+      </button>
+    </div>
   )
 }
 
@@ -167,6 +219,8 @@ export default function AboutBody() {
                 and he shows no signs of stopping anytime soon.&rdquo;
               </p>
             </blockquote>
+
+            <OnRepeat t={t} />
 
             {/* History: rows take a random theme pair on hover, like links */}
             <div className="flex flex-col gap-[24px]">

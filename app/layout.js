@@ -1,6 +1,7 @@
 import './globals.css'
 import HoverHighlight from '../components/HoverHighlight'
 import { themeBootScript } from '../lib/themes'
+import MixtapePlayer from '../components/MixtapePlayer'
 
 export const metadata = {
   // Lets the opengraph/twitter images in app/ resolve to absolute URLs.
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <HoverHighlight />
+        <MixtapePlayer />
       </body>
     </html>
   )

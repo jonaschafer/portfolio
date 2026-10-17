@@ -57,6 +57,7 @@ export default function useRandomTheme(themes = THEMES, enabled = true) {
       // Keep the field color right after client-side navigation too.
       if (themes === THEMES && THEMED_PATHS.includes(path.replace(/\/$/, '') || '/')) {
         document.documentElement.style.setProperty('--page-bg', themes[view.pick].bg)
+        document.documentElement.style.setProperty('--page-ink', themes[view.pick].ink)
         setThemeIcon(themes[view.pick])
       }
     }

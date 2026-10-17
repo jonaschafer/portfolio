@@ -77,6 +77,7 @@ This file serves as persistent memory for Cursor AI across chat sessions. Update
   - Example: "Empty state handling: All lists show helpful empty state messages with CTAs"
 
 ### Environment Variables
+- `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `SPOTIFY_REFRESH_TOKEN`: Jon's Spotify, for the live music feed at `/api/spotify` (`lib/spotify.js`). It powers About's "On repeat" rows, the footer "Listening to" line and the Mixtape pill's tooltip. Get the refresh token once with `node scripts/spotify-token.mjs` (instructions at the top of that file). Unset means the route returns `configured: false` and the live bits hide; the Mixtape player still works, since it's a plain Spotify embed of the "Jamming mixtapes" playlist (`MIXTAPE_URI` in `components/mixtape.js`).
 - `ALEPH_PASSWORD`: Password for everything under `/aleph` (read by `middleware.js`). Set in Vercel for production and in `.env.local` for dev. Compared trimmed and case-insensitive. Unset means the gate never opens.
 - `ALEPH_LOOM_URL` (optional, export time only): if set when running `scripts/aleph-audit-export.py`, the audit page shows a "Watch the Loom" link.
 - `[VAR_NAME]`: [Purpose and where it's used]
