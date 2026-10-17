@@ -1,141 +1,170 @@
 # site.md
 
-**The site register.** Colored fields, Mondwest for display, Haas Grot for everything
-else, emoji welcome.
+**The site register.** Six themes dealt like cards, MD Nichrome and ABC Social Condensed,
+hairline rules, color that moves on hover.
 
-This is one of two systems. It covers jonschafer.com: `/`, `/work`, `/play`, `/advising`,
-`/case-studies/*`. The other is the document register in `design.md`, which covers
-`/aleph/audit` and work like it. They stay separate. Aleph audit is one style, the site
-is the rest.
+This is one of two systems. It covers jonschafer.com: `/` (the work page), `/play`,
+`/about`. The other is the document register in `design.md`, which covers `/aleph/audit`
+and work like it. They stay separate.
 
-Source of truth is the running code: `components/` and the page files under `app/`. If
-this file and the code disagree, the code wins and this file needs updating.
+Rebuilt October 2026 on Francine Thompson's layout, replacing the green-field and
+Mondwest system. Source of truth is the running code: `lib/themes.js`, `app/globals.css`,
+and `components/`. If this file and the code disagree, the code wins.
 
-**The live style guide at `/overview` has drifted** and should not be trusted over this
-file. See section 8.
+**Two things to know before using this.** The typefaces are unlicensed trial files, and
+several pages were left behind by the redesign. Both are in section 9.
 
 ---
 
 ## 1. The idea
 
-Three things carry the character:
-
-1. **The page is a field, not a canvas.** Each section sets a full-bleed background color
-   edge to edge. Content sits on the field. There are no page-level containers with
-   visible edges.
-2. **One display face, one workhorse.** Mondwest does titles and headings and nothing
-   else. Haas Grot does body, navigation, captions, labels, everything.
-3. **Warm and first person.** Emoji belong here. So does "Beam me up, Scotty ↑" in the
-   footer. This register is allowed to sound like a person.
+1. **The page has no fixed color.** Six themes, one dealt per page load. Every surface
+   on a page takes the same pair, footer included. The site is recognizable by its
+   behavior rather than by one hue.
+2. **Two faces, three voices.** Nichrome Regular states things, Nichrome Ultra shouts,
+   Social Condensed handles everything else. Nothing else is loaded for the site.
+3. **Rules, not boxes.** A hairline top rule in the theme ink at 25% opens a card. There
+   are no filled containers and no shadows.
+4. **Color is an event.** Links and rows take a random theme pair on hover. It is the
+   main piece of interaction design on the site, and it is why the palette is a list
+   rather than a hierarchy.
 
 ---
 
-## 2. Fields
+## 2. Themes
 
-Three fields, one per area. A page picks one and commits to it.
+Six sets in `lib/themes.js`, from Figma (Website, Oct 26, node 7:235). Four tokens each:
+`bg` is the page field, `ink` is all type and outlines, `hmu` and `hmuInk` are the email
+button.
 
-| Field | Background | Type on it | Where |
-| --- | --- | --- | --- |
-| **Green** | `#435938` | `#FAFAFA` | `/work` nav, intro, project blocks, testimonials, footer |
-| **Mustard** | `#F8DB79` | `#333333` | `/advising`, `/case-studies/*` |
-| **White** | `#FFFFFF` | `#000000` | `/play` |
-| **Media** | the image itself | `#FAFAFA` with a scrim | `/` homepage carousel |
+| | bg | ink | hmu | hmuInk |
+| --- | --- | --- | --- | --- |
+| Gold | `#D5B800` | `#19180E` | `#19180E` | `#F2F2F2` |
+| White | `#FFFFFF` | `#2E2E2E` | `#FF000F` | `#FFFFFF` |
+| Sage | `#9FAE79` | `#3E3C32` | `#FFFFFF` | `#3E3C32` |
+| Orange | `#FF4B00` | `#511A07` | `#FFFFFF` | `#511A07` |
+| Bone | `#F2F2F2` | `#130EA8` | `#130EA8` | `#F2F2F2` |
+| Blue | `#0F50C8` | `#FF69B4` | `#FF69B4` | `#0F50C8` |
 
-Supporting values, all derived rather than new colors:
+Every ink is drawn from its own field rather than being neutral: near-black olive on
+gold, burnt umber on orange, hot pink on blue. That is what stops the set reading as six
+wallpapers behind the same black text.
 
-```
-rgba(51,51,51,0.85)     body copy on mustard
-rgba(51,51,51,0.7)      eyebrows, read times on mustard
-rgba(51,51,51,0.2)      blockquote border on mustard
-rgba(51,51,51,0.1)      card borders on mustard
-rgba(51,51,51,0.05)     card fills on mustard
-rgba(120,120,120,0.7)   dates on /play
-rgba(250,250,250,0.8)   secondary type on green
-```
+There is no dark mode and no neutral default. The themes are the identity.
 
-The homepage scrim, which is the only gradient in the system:
+### Dealing
 
-```css
-background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.15) 40%, transparent);
-text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-```
+`components/useRandomTheme.js` deals them like a shuffled deck rather than rolling dice.
 
-There is no dark mode. The fields are the identity, so they do not invert.
+- A shuffled order lives in `localStorage` under `site-theme-deck`
+- Each page load takes the next card, so six loads show all six before any repeat
+- When the deck runs out it reshuffles, and if the new first card matches the one just
+  shown it moves to the back
+- One pick per page view, held in a module-level `view` object so React's dev double-run
+  does not deal twice
+- `ready` stays false until the pick lands. Callers set `visibility: hidden` until then,
+  so the default never flashes
+- `animate` turns on 80ms later, so hover transitions do not animate the initial swap
+- Pass `enabled = false` when a parent already picked, so the deck advances once per load
+
+A page picks once at the top and hands the theme down. `Footer` takes a `theme` prop for
+exactly this reason, so page and footer always match.
 
 ---
 
 ## 3. Type
 
 ```css
-@font-face { font-family: 'Mondwest';       src: url('/fonts/Mondwest-Regular.woff2') format('woff2'); font-display: swap; }
-@font-face { font-family: 'Haas_Grot_Disp'; src: url('/fonts/HaasGrotDisp-55Roman.otf') format('opentype'); font-display: swap; }
+@font-face { font-family: 'Nichrome';        src: url('/fonts/trial/MDNichromeTest-Regular.otf')        format('opentype'); font-weight: 400; }
+@font-face { font-family: 'Nichrome';        src: url('/fonts/trial/MDNichromeTest-Ultra.otf')          format('opentype'); font-weight: 900; }
+@font-face { font-family: 'Nichrome';        src: url('/fonts/trial/MDNichromeTest-RegularOblique.otf') format('opentype'); font-weight: 400; font-style: italic; }
+@font-face { font-family: 'Social Condensed'; src: url('/fonts/trial/ABCSocialCondensed-Regular-Trial.woff2') format('woff2'); font-weight: 400; }
 ```
 
-Both are self-hosted from `public/fonts/` and ship one weight each, regular. Inter loads
-from Google Fonts and is used for exactly one thing, the name link in the nav.
+Declared at the bottom of `app/globals.css`. **These are trial files.** See section 9.
 
-**Mondwest is display only.** Titles and section headings. Never body, never a label,
-never a number that needs to line up, because it has no tabular figures.
+Fallback stacks, used verbatim in the components:
 
-**Haas Grot does everything else.** Body, nav, descriptions, captions, dates, buttons.
+```
+font-['Nichrome','Haas_Grot_Disp',sans-serif] font-normal        statements, quotes
+font-['Nichrome','Arial_Black',sans-serif] font-black            headings, giant footer
+font-['Social_Condensed','Haas_Grot_Disp',sans-serif]            everything else
+```
+
+Haas Grot Disp survives as the fallback for Nichrome Regular and Social Condensed.
+Arial Black backs the black weight, because Haas Grot ships one weight and cannot fake it.
+
+**Nichrome Regular** sets statements: the h1 on `/` and `/play`, the `Role:` and `With:`
+labels in italic, testimonial quotes in italic, the Lael pull quote on `/about`.
+
+**Nichrome Ultra** sets section headings and the giant footer word. Only ever a few words.
+
+**Social Condensed** sets everything else: nav, project copy, titles, footer, lists,
+dates, chips.
 
 ### Scale
 
-Positive tracking throughout, which is the opposite of the document register and a large
-part of why the two cannot be mixed.
-
 | Role | Size | Leading | Tracking | Face |
 | --- | --- | --- | --- | --- |
-| Project title, section heading | 31px | 1.2 | 0.31px | Mondwest |
-| Case study h1 | 28px / 36px md | tight | 0.31px | Mondwest |
-| Play card title | 24px | 28.8px | 0.31px | Mondwest |
-| Case study h2 | 20px / 24px md | tight | 0.31px | Mondwest, semibold |
-| Mobile intro, advising card title | 20px | 1.2 | 0.31px | Mondwest |
-| Case study h3 | 18px / 20px md | tight | — | Mondwest, semibold |
-| Large body, case study prose | 19.4px | 1.2–1.35 | 0.167px | Haas Grot |
-| Nav, footer, project description | 16px | 1.4 | 0.16px | Haas Grot |
-| Mobile nav menu | 32px | 1.4 | 0.16px | Haas Grot |
-| Testimonial (mobile → desktop) | 14 / 16 / 19.4px | 1.2 | 0.167px | Haas Grot |
-| Small body, descriptions | 13.4px | 16.44px | 0.167px | Haas Grot |
-| Play dates | 13px | 18.2px | 0.13px | Haas Grot |
-| Eyebrow (`/advising`) | 11px | — | 0.14em, uppercase | Haas Grot |
+| Page statement (h1) | 24 / 40 / 54px | 1.15 | 0.2px | Nichrome Regular |
+| About pull quote | 24 / 36px | 1.2 | 0.36px | Nichrome Regular |
+| Section heading | 26 / 30px | none | 0.3px | Nichrome Ultra |
+| Giant footer | `min(100cqw / 5.36, 252px)` | 0.78 | 0.01em | Nichrome Ultra |
+| Testimonial quote | 18 / 21px | 1.45 | 0.2px | Nichrome Regular italic |
+| Project title, play title | 20 / 21px | 1.2 | 0.21px | Social Condensed |
+| Nav | 18 / 19px | none | 0.19px | Nichrome (name) + Social (links) |
+| About list row | 18 / 21px | 1.15 | — | Social Condensed |
+| Footer bottom line | 18 / 29px | 1.15 | — | Social Condensed |
+| Footer blurb, buttons | 17 / 22px | 1.15 | 0.22px | Social Condensed |
+| Body, project copy | 16 / 17px | 1.3 | 0.17px | Social Condensed |
+| Play chip | 14px | 1.2 | — | Social Condensed |
 
-Intro paragraphs step 20px mobile → 31px desktop. Body steps 13.4px → 19.4px. Those two
-jumps are the responsive type system; there is no fluid `clamp()` anywhere.
+Sizes step at breakpoints rather than scaling fluidly. The one exception is the giant
+footer, which is sized in container units so it always fills its width.
+
+The h1 takes a third step at the custom `desktop: 1200px` breakpoint, defined in
+`tailwind.config.js`.
+
+Numerals that line up (dates, the clock, years) carry `tabular-nums`.
 
 ---
 
 ## 4. Layout
 
 ```
-min-width: 375px        every page
-max-width: 1440px       the shell, centered
-padding: 0 20px         mobile
-padding: 0 60px         md and up
+padding: 0 20px        mobile, every page
+padding: 0 26px        md and up, on / and /play
+max-width: 1440px      /about and the footer only
 ```
 
-Narrower columns for reading:
+The 26px gutter is narrow on purpose. Work sits almost edge to edge, which is most of the
+reason the redesign feels different from the old 60px shell.
 
-| Column | Width | Gutters |
-| --- | --- | --- |
-| Advising | 900px | 20px / 40px md |
-| Case study article | 747px | 20px / 60px md |
-| Intro and headline copy | 335px / 648px / 747px by breakpoint | inside the shell |
-| Project info block | 345px | inside the shell |
+| Page | Shell |
+| --- | --- |
+| `/` and `/play` | No max width. `px-20` / `px-26` md |
+| `/about` | `max-w-1440 mx-auto`, `px-20` / `px-60` md / `px-100` desktop |
+| Footer | `max-w-1440 mx-auto`, `px-20` / `px-42` md |
 
-Breakpoints are Tailwind defaults plus one custom: `desktop: 1200px` in
-`tailwind.config.js`.
-
-### Section rhythm
+### Rhythm
 
 | Section | Padding |
 | --- | --- |
-| Intro, play headline | `pt-60 pb-40` |
-| Project block | `pt-50 pb-60`, internal gap 46px |
-| Testimonials | header `pt-60 pb-30`, grid `pb-60` |
-| Footer | `pt-30 pb-60` |
-| Advising section | `pt-40 pb-50`, `pt-48 pb-60` md |
-| Case study header | `pt-40 pb-40`, `pt-60 pb-48` md |
+| Statement (h1) | `pt-32 pb-48`, `pt-100 pb-80` md |
+| Project list, play grid | `pb-80`, `pb-120` md |
+| Between projects | `gap-72`, `gap-104` md |
+| Grid gutters | `gap-x-48`, `gap-y-48` / `gap-y-64` md |
+| Card rule to content | `pt-16`, `pt-20` md |
+| Footer | `pt-40 pb-28`, `pt-48 pb-40` md |
+
+### Grids
+
+- **Work project**: `lg:grid-cols-12`. Slideshow spans 9, text spans 3, `gap-x-48`
+- **Play**: 1 / 2 / 3 columns at base / md / lg
+- **Testimonials**: 1 / 2 columns at base / lg
+- **About**: `desktop:grid-cols-[minmax(0,867px)_auto]`, `gap-x-80`
+- **Footer top**: `md:grid-cols-[minmax(0,381px)_auto]`, ordered so both blurbs top-align
+  and both button rows share a baseline however far the left blurb wraps
 
 ---
 
@@ -143,191 +172,179 @@ Breakpoints are Tailwind defaults plus one custom: `desktop: 1200px` in
 
 ### Navigation (`components/Navigation.js`)
 
-October 2026: rebuilt on Francine Thompson's layout. Name left in MD Nichrome Ultra
-(goes home), Play centered and About right in Social Condensed, fixed to the top on the
-page's own field (`backgroundColor` / `textColor` props). Inactive links sit at 70%. The
-notes below describe the previous nav and are kept for history.
+Fixed, `z-50`, on the page's own field. Name left in Nichrome Regular, `Play` and `About`
+right in Social Condensed at the same size. `px-20` / `px-26` md, `py-20` / `py-24` md,
+`items-baseline`. Renders a 60px / 68px spacer unless transparent. Active link is
+`opacity-100`, inactive `opacity-70`. The name links to `/`, which is the work page.
 
-### Previous navigation
+No mobile menu. Two links do not need one.
 
-Fixed, full width, `z-50`. Props are `backgroundColor`, `textColor`, `underlineColor`,
-`arrowColor`, so each field passes its own pair. `backgroundColor="transparent"` overlays
-it on the homepage carousel.
+### Giant footer (`components/Footer.js`)
 
-- `py-30`, `px-20` / `px-60` md, inside the 1440 shell
-- Renders an 82px spacer below itself unless transparent
-- **Hides on scroll down, returns on scroll up**, with a 60px threshold at the top where
-  it always shows. `translateY(-100%)`, 300ms
-- Name link is Inter 16px. Section links are Haas Grot 16px
-- Active section is `opacity-100`, the others `opacity-50`. On the homepage, or on any
-  page with no active section, all links are `opacity-100`
-- Under `sm`, a hamburger opens a full-screen overlay: links at 32px, `space-y-8`,
-  `pt-140`. Over a transparent nav the overlay is `rgba(0,0,0,0.92)`
-- The email link carries a 17px arrow glyph, stroke `1.0625`
+The signature element. `Footer` takes `colophon` to render it, and `theme` to inherit the
+page's pick.
 
-### Footer (`components/Footer.js`)
+- The word "Giant footer" in Nichrome Ultra, sized to fill its container:
+  `container-type: inline-size` on the wrapper, `font-size: min(100cqw / 5.36, 252px)` on
+  the type. 5.36 is the measured width of the word in ems, so it fits at any width with or
+  without a scrollbar
+- `leading-0.78`, `tracking-0.01em`, `whitespace-nowrap`, `select-none`
+- Theme lands as CSS variables on the footer element: `--f-bg`, `--f-ink`, `--f-hmu`,
+  `--f-hmu-ink`, so the buttons can be plain CSS
+- A live Portland clock, 24 hour, ticking each second, `tabular-nums`, blank until mounted
+  so server and client markup match
 
-Same `backgroundColor` / `textColor` props. Typeface credit left, a scroll-to-top button
-right reading "Beam me up, Scotty ↑", both Haas Grot 16px. Stacks and centers under `sm`.
-`minimal` renders the bar empty.
+Buttons are `.fbtn` in `globals.css`: `border-radius: 4px`, `padding: 7px 10px`
+(`8px 10px` md), `active: scale(0.97)`, focus ring `2px solid var(--f-ink)` at `3px`
+offset. The solid email button flips to an outline on hover; the outline link pills fill
+on hover. Transitions only apply under `.f-anim`, which turns on after the theme lands.
 
-`colophon` (on `/`, `/about`, case studies) swaps in the giant footer
-(Figma: Website — Oct 26, node 4:126). It's its own field and breaks from the site
-palette on purpose: one of six color themes (Figma node 7:235) is picked at random on
-each load by `components/useRandomTheme.js`, never the same twice in a row, and the
-footer stays hidden until the pick so the default never flashes. Type is ABC Social
-Condensed (17/22px, bottom line 18/29px) and MD Nichrome Ultra for "Giant footer", sized
-in container units (`.giant-footer-fit`, `100cqw / 5.36`) so it fills the width at any
-size. Buttons are `.fbtn` in `globals.css`: "HMU" is solid and flips to an outline on
-hover, the link pills are outlines that fill on hover, both press to 0.97 and show an
-ink focus ring.
+### Hover highlight (`components/HoverHighlight.js`, `.hl` / `.hl-row`)
 
-**Font licensing.** Both faces are trial/test files in `public/fonts/trial/`, committed
-on purpose while Jon buys licenses. Swap in the licensed files at the same paths.
+Mounted once in the root layout. On `mouseover` of a `.hl` or `.hl-row` it picks a random
+pair from the six themes, skipping any pair whose background matches the field the element
+sits on (walked up the DOM via `getComputedStyle`), and never repeating the last pick. The
+pair lands as `--hl-bg` and `--hl-fg`.
 
-### Play index (`app/play/page.js`, `components/PlayIndex.js`)
-
-Same system as the homepage: one theme for the whole page, the blurb in Nichrome at the
-homepage's size ("vibe coded" in oblique), and project cards in Social Condensed on a
-1 / 2 / 3 column grid (gap 48px), newest first. Each card has a hairline top rule, the
-title with its date on the right, the description and outlined tech chips; the title
-underlines on hover. Pages under `/play/*` keep their own designs under the white nav
-from `app/play/layout.js`.
-
-### About (`app/about/page.js`, `components/AboutBody.js`)
-
-Renamed from `/bio` (which redirects). Built from Figma node 7:880: the page field takes
-one of six random themes, then a small portrait (200 / 280px, `rounded-6`) that starts as a block of the theme's ink color, fades the photo in, and tilts 2° on hover, an
-intro line in Social Condensed, Lael's bio in MD Nichrome Regular 24/36px with a hanging
-quote, and a Faves list beside it (Nichrome Ultra 30px heading, Social Condensed items
-with the Figma asterisk from `public/images/asterisk.svg`, drawn as a mask by
-`components/Asterisk.js`). "Where I've worked" sits under the quote: org, role and years in Social Condensed with hairline rules in the theme ink; each row takes a random theme pair on hover (`.hl-row`, same picker as `.hl` links). Skillz is off for now.
-
-### Homepage (`app/page.js`, `components/HomeWork.js`, data in `lib/projects.js`)
-
-October 2026 redesign, modeled on Francine Thompson's site. The whole page (nav, body,
-footer) takes one of the six themes in `lib/themes.js`, dealt like a shuffled deck by
-`components/useRandomTheme.js` so six reloads show all six. The link highlight uses the
-same six pairs. The homepage is the work
-page; `/work` and `/work/*` redirect to `/`, and there are no project pages. White field,
-ink `#2E2E2E`. The bio sentence sits at the top in MD Nichrome Regular (24 / 40 / 54px at
-mobile, md, desktop), with "22 years" in Nichrome oblique. Each project follows inline on
-a 12-column grid (gutter 48px, page padding 20 / 26px): a 9-column slideshow
-(`components/ProjectSlideshow.js`, aspect 1300/731, arrows at the edges, swipe on touch,
-arrow keys when focused, click to open the lightbox) beside a 3-column text block in ABC
-Social Condensed: title, description, *Role:*, *With:* (partners) and "org, year".
-Projects stack 104px apart, 72px on mobile, and collapse to one column below `lg`.
-
-### Project block (`components/ProjectCarousel.js`)
-
-The signature layout of `/work`: a narrow text column above a wide frame.
-
-```
-section          pt-50 pb-60
-  stack          gap-46
-    info         max-w-345, gap-28
-      head       gap-8
-        h2       Mondwest 31px
-        p        Haas Grot 16px/1.4
-      counter    Haas Grot 16px, "1/9"
-    frame        aspect-[1300/731], bg white, rounded-10, overflow hidden
+```css
+.hl { text-decoration: underline; text-decoration-skip-ink: none; text-underline-position: from-font;
+      border-radius: 2px; padding: 0 0.12em; margin: 0 -0.12em; box-decoration-break: clone;
+      transition: background-color 120ms ease-out, color 120ms ease-out; }
 ```
 
-The frame advances on click: left half goes back, right half goes forward, wrapping at
-both ends. Arrows appear on `mousemove` and hide on `mouseleave`, as black SVG triangles
-inset 32px, `pointer-events: none`. Video slides autoplay muted and loop.
+Only active under `(hover: hover) and (pointer: fine)`. Touch keeps the plain underline.
+`.hl-row` is the same idea for a whole row on `/about`, bleeding 10px past each side with
+`box-shadow: -10px 0 0 var(--hl-bg), 10px 0 0 var(--hl-bg)` so the text and rules do not
+move.
 
-### Testimonials (`components/TestimonialsSection.js`)
+### Media and loading (`components/WorkMedia.js`)
 
-Heading "Friends" in Mondwest 31px. One column, two at `md`, gap 30px / 40px. Each entry
-is quote, then name at `font-medium`, then title at `opacity-80`.
+Media sits on a faint checkerboard and fades in once loaded, a nod to Elana Schlenker.
 
-### Play card (`app/play/page.js`)
+```css
+.load-checker { background-color: rgba(0,0,0,0.03);
+  background-image: conic-gradient(rgba(0,0,0,0.05) 25%, transparent 0 50%, rgba(0,0,0,0.05) 0 75%, transparent 0);
+  background-size: 16px 16px; }
+.load-fade { opacity: 0; transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1); }
+.load-fade[data-loaded='true'] { opacity: 1; }
+```
 
-Grid of 1 / 2 / 3 columns, gap 32px. Card is `gap-28`: title 24px Mondwest, date 13px in
-`rgba(120,120,120,0.7)`, description 13.4px, then tech chips. Chips are `px-10 py-4`,
-`rounded-4`, `border-black/70`, `text-black/70`, white fill, 13px. Only these tags become
-chips: HTML/CSS, JavaScript, React, Next.js, Claude.
+### Project slideshow (`components/ProjectSlideshow.js`)
 
-### Advising card (`app/advising/page.js`)
+`aspect-[1300/731]`, `rounded-4`, `overflow-hidden`. Slides translate at 500ms on the
+house curve. Arrows are 36px circles, `bg-white/70` with `backdrop-blur-sm`, going opaque
+on hover. The frame is `cursor-zoom-in` and opens `Lightbox`.
 
-`px-20 py-14` (`py-16` md), `rounded-10`, border `#333333/10`, fill `#333333/5`. Hover
-raises both to `/20` and `/10` over 200ms. Title Mondwest 18/20px, description Haas Grot
-13.4/16px, read time 12px at `opacity-70`.
+### Cards (`/play`, testimonials)
 
-List bullets on that page are a 6px circle, `rounded-full`, 1px border in `#333333`, no
-fill, offset `mt-8` with a 10px gap.
+One pattern both places: a hairline top rule in the theme ink at 25%, then content.
 
-### Case study prose (`app/case-studies/*/page.js`)
+```jsx
+<li className="border-t pt-[16px]" style={{ borderColor: `${theme.ink}40` }}>
+```
 
-A `prose` map passed to `react-markdown`. Headings Mondwest, body Haas Grot 13.4/19.4px in
-`rgba(51,51,51,0.85)`, lists keep native discs and numbers at `pl-6 space-y-2`,
-blockquotes take a 4px left border in `rgba(51,51,51,0.2)` and go italic.
+Play titles underline on hover via `decoration-transparent` going to
+`group-hover:decoration-current`. Play chips are `rounded-4`, `border` in theme ink,
+`px-8 py-3`, 14px, `opacity-80`.
+
+Testimonial faces are 56px / 64px circles filled with the theme ink, holding the photo or
+falling back to initials in the theme bg.
 
 ---
 
 ## 6. Motion
 
-Restrained and almost entirely opacity.
+One curve for movement, `cubic-bezier(0.23, 1, 0.32, 1)`:
 
-- Links and buttons: `hover:opacity-80`, `transition-opacity`, Tailwind default 150ms
-- Inactive nav links sit at `opacity-50` and return to 100 on hover
-- Nav show/hide: `translateY`, 300ms
-- Carousel slide: `transform 0.5s ease-out`, with the transition disabled for the
-  wrap-around jump so the loop is seamless
-- Advising cards: `transition-all duration-200`
-- **Highlight hover** (`.hl`, `components/HoverHighlight.js`): inline text links get a
-  random field color pair on each hover (mustard/charcoal, cream/green, charcoal/mustard,
-  green/cream), skipping the pair that matches the field they sit on. Hover-capable
-  devices only; touch keeps the underline. Use it on inline links in copy, not on nav.
-- **Image loading** (`components/WorkMedia.js`): media sits on a faint 16px checkerboard
-  (`.load-checker`) and fades in over 500ms on `cubic-bezier(0.23, 1, 0.32, 1)`.
-- Grid tiles go greyscale to color over 300ms. Next-project arrow and preview use the same
-  curve over 300ms. `prefers-reduced-motion` drops the fades and highlight transition.
+- Slideshow slides, 500ms
+- Media fade in, 500ms
+- About portrait tilt, 300ms, `hover:rotate-2`
 
-Anything beyond this in the repo (`mma-btn-press`, the `git-*` keyframes in
-`app/globals.css`) belongs to `/mma` and `/play/git`, not to the site register.
+Short ease-out for color:
+
+- Hover highlight, 120ms
+- Footer buttons, 140ms background, color and border; 100ms transform
+
+Press feedback is `scale(0.97)` on every button. Hover effects are wrapped in
+`@media (hover: hover) and (pointer: fine)`. Every animated rule has a
+`prefers-reduced-motion` branch, and the portrait and slideshow use `motion-reduce:`
+variants inline.
 
 ---
 
 ## 7. Voice
 
-Covered fully in `~/.claude/CLAUDE.md`, but the parts that show up in the layouts:
+Covered in `~/.claude/CLAUDE.md`. What shows up in these layouts:
 
-- First name only, "Jon"
-- Emoji are part of the register, not decoration to strip
+- First person, in Jon's voice, for case studies, work cards and project pages
+- Emoji are part of the register
 - No em dashes, sentence case always, no antithesis, no copywriter parallelism
-- Don't open a bio with a title list, and don't frame work as "the brief was X"
+- Don't open with a title list, don't frame work as "the brief was X"
 - Lead with decisions, not deliverables
 
----
-
-## 8. Known drift
-
-Real inconsistencies in the running code. Listed so they get fixed rather than copied.
-
-1. ~~The footer credits the wrong typeface.~~ Fixed Oct 2026: the credit now reads
-   "PP Mondwest, Neue Haas Grotesk Display".
-2. **`/overview` is stale.** It has no mustard field, its page list is missing `/work`,
-   `/advising` and `/case-studies`, and it documents an unused `#ebac1e`. Treat this file
-   as the source of truth until `/overview` is rebuilt from it.
-3. **Inter earns one line.** It loads from Google Fonts for a single nav link. Either
-   move that link to Haas Grot and drop the import, or use Inter deliberately.
-4. **Fraunces loads globally and is used only by `/mma`.** It costs every page a font
-   request for a route most visitors never hit.
-5. **`daisyUI` loads sitewide** for `/mma/map` alone, with `base: false` to stop its
-   resets leaking. Worth scoping if the site register ever grows components.
+The footer copy sets the tone: "Building a brand, or want to swap notes on design? My
+inbox is (figuratively) open." and "The unusual suspects" over the link pills.
 
 ---
 
-## 9. The other register
+## 8. What the redesign changed
+
+For anyone reading an older commit or the stale `/overview`:
+
+| Then | Now |
+| --- | --- |
+| Green `#435938` and mustard `#F8DB79` fields | Six themes dealt per load |
+| Mondwest display, Haas Grot body | Nichrome and Social Condensed |
+| `/work` as a page, `/` a photo carousel | `/` **is** the work page |
+| Project carousels with a 345px text column | 9-column slideshow beside a 3-column text block |
+| `/advising` | Removed |
+| `/bio` | `/about`, with History rows and Faves |
+| Small typeface-credit footer | Giant footer with buttons and a live clock |
+| 60px gutters | 26px gutters |
+| Positive tracking, Mondwest | Still positive tracking, tighter leading |
+
+`components/ProjectCarousel.js`, `HomeCarousel.js` and `Hero.js` are still in the repo.
+No live route imports them. `ProjectCarousel` and `Hero` are referenced only by
+`/overview`, which is itself stale, so retiring that page clears all three.
+
+---
+
+## 9. Known drift
+
+1. **The typefaces are unlicensed trial files.** `MDNichromeTest-*.otf` and
+   `ABCSocialCondensed-Regular-Trial.woff2` are in `public/fonts/trial/` and committed.
+   They carry trial restrictions and are served publicly on every page load. License MD
+   Nichrome and ABC Social Condensed and swap the files before this is promoted anywhere.
+   This is the one item on this list that is a real exposure rather than tidying.
+2. **`globals.css` still sets `body { background-color: #435938 }`.** Dead green from the
+   old system. Every page now paints its own field over it, so it only shows if a page
+   forgets to, but it should go or become a theme-neutral value.
+3. **The legacy footer credits the wrong typefaces.** `components/Footer.js:108` says
+   "PP Mondwest, Neue Haas Grotesk Display", which is now wrong twice over. That branch
+   still renders wherever `colophon` is not passed.
+4. **`/case-studies/*` was left behind.** Both articles still run mustard `#F8DB79` and
+   Mondwest, and `/advising`, which was the only thing linking to them, is gone. They are
+   live and unreachable.
+5. **`/overview` is further out of date than before.** It documents the green system, has
+   no themes, and lists routes that no longer exist. Treat this file as the source of
+   truth and rebuild or retire that page.
+6. **Four typefaces load that the site no longer sets.** Mondwest, Inter and Fraunces come
+   in through `globals.css` for `/mma`, `/play/git` and legacy components. Haas Grot Disp
+   is still a real fallback and should stay.
+7. **daisyUI still loads sitewide** for `/mma/map` alone, with `base: false`.
+
+---
+
+## 10. The other register
 
 `design.md`, in this folder. Paper and ink, Geist and Martian Mono, hairline rules, one
-highlighter. It covers `/aleph/audit` and standalone documents, audits, decks and
-data-dense tables.
+highlighter. It covers `/aleph/audit`, audits, decks and data-dense tables.
 
-Do not mix them. Negative tracking and neutral paper against positive tracking and a
-colored field will read as two sites. If a site page ever needs a genuinely dense table,
-build it here and borrow only the register-independent rules: left- and top-aligned, no
-vertical rules, no zebra striping, group headers over a hard rule, tabular figures, and a
-card restack past five columns. Numerals go in Haas Grot, since Mondwest has none.
+Do not mix them. The tell is color behavior: this register deals a field per load and
+flashes random pairs on hover, the document register holds one neutral paper and one
+highlighter. Side by side they read as two sites, which is the point.
+
+If a site page ever needs a dense table, build it here and borrow only the
+register-independent rules: left- and top-aligned, no vertical rules, no zebra striping,
+group headers over a hard rule, tabular figures, and a card restack past five columns.
+Both site faces have tabular figures, so numerals can stay in Social Condensed.
