@@ -29,7 +29,7 @@ const ROLES = [
   { org: 'Zapier', role: 'Founding Brand Designer', years: '2017 to 2021' },
   { org: 'AKQA', role: 'Art Director', years: '2015' },
   { org: 'Razorfish', role: 'Art Director', years: '2012 to 2014' },
-  { org: 'Freelance', role: 'Designer', years: '2004 to 2012' },
+  { org: 'Freelance', role: "A little bit o' everything", years: '2004 to 2012' },
 ]
 
 // Faves that open somewhere, in a new tab.
