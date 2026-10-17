@@ -3,6 +3,8 @@ import HoverHighlight from '../components/HoverHighlight'
 import { themeBootScript } from '../lib/themes'
 
 export const metadata = {
+  // Lets the opengraph/twitter images in app/ resolve to absolute URLs.
+  metadataBase: new URL('https://www.jonschafer.com'),
   title: 'Jon Schafer',
   description: 'Jon leads brand at ClassDojo. Brand strategy, identity systems, and creative direction.',
 }
