@@ -32,7 +32,7 @@ This case study exemplifies how I help founders translate brand instincts into e
 
 **Strategic implementation:** I built actual software using AI tools rather than waiting for engineering bandwidth or settling for process docs. The infrastructure integrates with existing systems and handles real-world complexity.
 
-**Measurable impact:** 18 of 25 problems solved. Timeline compliance increased to 100%. Brief quality improved. Most importantly, the team now gets to do brand work instead of managing process chaos.
+**Measurable impact:** 18 of 25 problems solved. About 127 requests came through the system in its first eight months, while contractor hours were cut in half. On-time design delivery still rose from 58% to 64%, with turnaround holding at a median of 17 days. Brief quality improved. Most importantly, the team now gets to do brand work instead of managing process chaos.
 
 This is the approach I bring to creative direction: identifying where organizational structure is undermining creative effectiveness, designing infrastructure that shifts power dynamics, and building solutions that prove the value through measurable business impact.
 
