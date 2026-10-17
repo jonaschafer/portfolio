@@ -1,9 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { THEMES } from '../lib/themes'
-
-const DECK_KEY = 'site-theme-deck'
+import { THEMES, THEMED_PATHS, DECK_KEY } from '../lib/themes'
 
 // One pick per page view, so React's dev double-run doesn't deal twice.
 const view = { path: null, pick: null }
@@ -43,11 +41,23 @@ export default function useRandomTheme(themes = THEMES, enabled = true) {
   const [animate, setAnimate] = useState(false)
   useEffect(() => {
     if (enabled) {
-      if (view.path !== window.location.pathname || view.pick === null) {
-        view.path = window.location.pathname
-        view.pick = nextIndex(themes.length)
+      const path = window.location.pathname
+      if (view.path !== path || view.pick === null) {
+        view.path = path
+        // Adopt the card the head script already dealt for this load.
+        const boot = window.__sitePick
+        if (boot && boot.path === path && themes === THEMES) {
+          view.pick = boot.pick
+          window.__sitePick = null
+        } else {
+          view.pick = nextIndex(themes.length)
+        }
       }
       setI(view.pick)
+      // Keep the field color right after client-side navigation too.
+      if (themes === THEMES && THEMED_PATHS.includes(path.replace(/\/$/, '') || '/')) {
+        document.documentElement.style.setProperty('--page-bg', themes[view.pick].bg)
+      }
     }
     const t = setTimeout(() => setAnimate(true), 80)
     return () => clearTimeout(t)

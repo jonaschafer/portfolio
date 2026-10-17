@@ -1,5 +1,6 @@
 import './globals.css'
 import HoverHighlight from '../components/HoverHighlight'
+import { themeBootScript } from '../lib/themes'
 
 export const metadata = {
   title: 'Jon Schafer',
@@ -8,8 +9,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Deals the page theme before first paint so the old body color never flashes. */}
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript() }} />
         <script id="made-with-claude" type="text/plain" dangerouslySetInnerHTML={{
           __html: ` __  __           _                 _ _   _     
 |  \\/  | __ _  __| | ___  __      _(_) |_| |__  

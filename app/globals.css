@@ -22,7 +22,8 @@
 }
 
 body {
-  background-color: #435938;
+  /* Themed pages set --page-bg before paint; everything else keeps the old field. */
+  background-color: var(--page-bg, #435938);
 }
 
 .no-scrollbar {
