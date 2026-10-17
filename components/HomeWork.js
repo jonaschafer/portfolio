@@ -69,7 +69,7 @@ export default function HomeWork() {
             ClassDojo
           </a>
           , located in rainy Portland. 🌧️ For the last 20 odd years I&apos;ve built <i className="italic">identities</i>,
-          the <i className="italic">systems</i> that carry them, and the <i className="italic">teams</i> that keep them
+          the <i className="italic">systems</i> that carry them, and the <i className="italic">teams</i> that keep &apos;em
           going.
         </h1>
       </section>
