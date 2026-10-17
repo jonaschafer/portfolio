@@ -58,7 +58,7 @@ function GiantFooter({ pageTheme }) {
         '--f-hmu-ink': t.hmuInk,
       }}
     >
-      <div className="max-w-[1440px] mx-auto px-[20px] md:px-[42px] pt-[40px] md:pt-[48px] pb-[28px] md:pb-[40px] flex flex-col">
+      <div className="px-[20px] md:px-[26px] pt-[40px] md:pt-[48px] pb-[28px] md:pb-[40px] flex flex-col">
         {/* Two rows on desktop so both blurbs top-align and both button rows
             share a baseline, however many lines the left blurb wraps to.
             Stacks in reading order on mobile. */}

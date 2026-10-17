@@ -231,7 +231,8 @@ body {
   container-type: inline-size;
 }
 .giant-footer-type {
-  font-size: min(calc(100cqw / 5.36), 252px);
+  /* Fills the footer's content width, same gutters as the work above it. */
+  font-size: calc(100cqw / 5.29);
 }
 
 /* ---- Footer buttons ----
