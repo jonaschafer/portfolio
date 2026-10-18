@@ -7,11 +7,11 @@ export default function Hero() {
             <span>👋 Howdy! I'm Jon, Creative Director at ClassDojo based in rainy  🌧️ Portland. Prev </span>
             <a 
               className="[text-decoration-skip-ink:none] [text-underline-position:from-font] cursor-pointer decoration-solid underline hover:opacity-80 transition-opacity" 
-              href="https://workisplay.studio/"
+              href="https://www.proofdept.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Work is Play
+              Proof dept
             </a>
             <span>, </span>
             <a 

@@ -104,11 +104,11 @@ export default function OverviewPage() {
   const projects = [
     {
       title: 'Novo',
-      description: 'Novo is a financial platform for small businesses, offering banking features and AI-powered bookkeeping. Despite a brand refresh, their site lacked engagement and clarity. Partnering with →Dawn and →Work Is Play, we redesigned 10 pages, created 50+ illustrations, and built a mini design system in 7 weeks.',
+      description: 'Novo is a financial platform for small businesses, offering banking features and AI-powered bookkeeping. Despite a brand refresh, their site lacked engagement and clarity. Partnering with →Dawn and →Proof dept, we redesigned 10 pages, created 50+ illustrations, and built a mini design system in 7 weeks.',
     },
     {
       title: 'Lineage',
-      description: 'Lineage is a boutique consultancy turning brands into cultural icons with over 20 years of experience. They came to Work is Play to craft a site that signals a major shift from agency to methodology. Partnering with Dawn, we built a complete design system, 4 interactive Next.js + WebGL pages, and 40+ CMS templates.',
+      description: 'Lineage is a boutique consultancy turning brands into cultural icons with over 20 years of experience. They came to Proof dept to craft a site that signals a major shift from agency to methodology. Collaborating with Dawn, we built a complete design system, 4 interactive Next.js + WebGL pages, and 40+ CMS templates.',
     },
     {
       title: 'Prism',

@@ -24,7 +24,7 @@ const FAVES = [
 
 const ROLES = [
   { org: 'ClassDojo', role: 'Head of Brand', years: '2025 to now' },
-  { org: 'Work is Play', role: 'Creative Director', years: '2024 to 2025' },
+  { org: 'Proof dept', role: 'Senior Art Director', years: '2024 to 2025' },
   { org: 'Clockwise', role: 'Lead Brand Designer', years: '2022 to 2024' },
   { org: 'Zapier', role: 'Founding Brand Designer', years: '2017 to 2021' },
   { org: 'AKQA', role: 'Art Director', years: '2015' },
