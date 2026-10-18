@@ -1,13 +1,15 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 import Navigation from './Navigation'
 import Footer from './Footer'
 import Lightbox from './Lightbox'
 import ProjectSlideshow from './ProjectSlideshow'
-import TestimonialsSection from './TestimonialsSection'
+import TestimonialsSection, { PullQuote, placeQuotes } from './TestimonialsSection'
 import { WITH_PAGES } from '../lib/projects'
 import useRandomTheme from './useRandomTheme'
+
+const QUOTES = placeQuotes(WITH_PAGES.map((p) => p.slug))
 
 // The homepage is the work page, laid out like Francine Thompson's site:
 // a big bio sentence, then each project inline as a 9-column slideshow
@@ -76,18 +78,21 @@ export default function HomeWork() {
 
       <div className="px-[20px] md:px-[26px] pb-[80px] md:pb-[120px] flex flex-col gap-[72px] md:gap-[104px]">
         {WITH_PAGES.map((p, k) => (
-          <article key={p.slug} className="grid grid-cols-1 lg:grid-cols-12 gap-y-[20px] lg:gap-x-[48px] items-start">
-            <div className="lg:col-span-9">
-              <ProjectSlideshow project={p} onOpen={open} eager={k === 0} />
-            </div>
-            <div className="lg:col-span-3">
-              <ProjectText p={p} />
-            </div>
-          </article>
+          <Fragment key={p.slug}>
+            <article className="grid grid-cols-1 lg:grid-cols-12 gap-y-[20px] lg:gap-x-[48px] items-start">
+              <div className="lg:col-span-9">
+                <ProjectSlideshow project={p} onOpen={open} eager={k === 0} />
+              </div>
+              <div className="lg:col-span-3">
+                <ProjectText p={p} />
+              </div>
+            </article>
+            {QUOTES.placed[p.slug] && <PullQuote t={QUOTES.placed[p.slug]} theme={t} />}
+          </Fragment>
         ))}
       </div>
 
-      <TestimonialsSection theme={t} />
+      <TestimonialsSection theme={t} rest={QUOTES.rest} />
 
       <Footer colophon theme={t} />
       {box && <Lightbox project={box.project} index={box.index} setIndex={setIndex} onClose={close} />}
