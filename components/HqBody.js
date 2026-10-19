@@ -66,7 +66,7 @@ export default function HqBody() {
               height={height}
               style={{ border: 0 }}
               loading="lazy"
-              className="block w-full rounded-[4px] load-checker"
+              className="block w-full rounded-[4px]"
             />
           ) : (
             <div
