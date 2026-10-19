@@ -1,18 +1,8 @@
 'use client'
 
-import Navigation from '../../components/Navigation'
 import GelsCalculator from '../../components/GelsCalculator'
 
+// Same calculator as /play/gels; it brings its own nav and footer.
 export default function GelsCCPage() {
-  return (
-    <div className="min-h-screen">
-      <Navigation
-        backgroundColor="#edeae5"
-        textColor="#525252"
-        underlineColor="#525252"
-        arrowColor="#525252"
-      />
-      <GelsCalculator />
-    </div>
-  )
+  return <GelsCalculator />
 }

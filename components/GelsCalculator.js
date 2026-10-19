@@ -1,6 +1,9 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import Navigation from './Navigation'
+import Footer from './Footer'
+import { THEMES } from '../lib/themes'
 
 /**
  * Base recipe = one 500ml flask = exactly 4 hr (~90 g/hr).
@@ -73,33 +76,38 @@ function parseNum(str) {
   return Number.isFinite(n) && n >= 0 ? n : null
 }
 
-// ---- Soft visual tokens ----
-const LABEL =
-  'uppercase text-[10px] tracking-[0.18em] text-neutral-400 font-medium'
-const CARD =
-  'bg-white rounded-[28px] shadow-[0_18px_50px_-24px_rgba(60,52,44,0.35)] ring-1 ring-black/[0.03] p-6 sm:p-7 w-full min-w-0 box-border'
-const CARD_SOFT =
-  'bg-[#f5f2ee] rounded-[28px] shadow-[0_14px_44px_-26px_rgba(60,52,44,0.30)] p-6 sm:p-7 w-full min-w-0 box-border'
-const PILL = 'rounded-full px-4 py-2 text-[12px] transition-colors duration-200'
-const PILL_OFF =
-  'bg-[#eae6e1] text-neutral-500 hover:bg-[#e1dcd5] backdrop-blur-sm'
-const PILL_ON = 'bg-neutral-700 text-white shadow-sm'
-const STEPPER =
-  'w-9 h-9 rounded-full bg-[#eae6e1] text-neutral-600 text-[18px] leading-none flex items-center justify-center transition-colors duration-200 hover:bg-neutral-700 hover:text-white disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-[#eae6e1] disabled:hover:text-neutral-600'
+// ---- Site register, cobalt theme ----
+// Fixed to the Blue theme from lib/themes.js rather than dealt per load, so
+// the calculator always reads the same. Colors live as CSS vars on the root:
+// --g-ink for type and outlines, --g-bg for the field, --g-rule for hairlines.
+const T = THEMES[5]
+const social = "font-['Social_Condensed','Haas_Grot_Disp',sans-serif]"
+const nichrome = "font-['Nichrome','Haas_Grot_Disp',sans-serif] font-normal"
+const ultra = "font-['Nichrome','Arial_Black',sans-serif] font-black"
+
+const LABEL = 'text-[15px] md:text-[16px] leading-[1.2] tracking-[0.17px] opacity-70'
+const SMALL = 'text-[14px] md:text-[15px] leading-[1.3] tracking-[0.15px] opacity-70'
+const BIG = 'text-[44px] md:text-[56px] leading-[0.95] tabular-nums tracking-[0.3px]'
+const MID = 'text-[30px] md:text-[36px] leading-[0.95] tabular-nums tracking-[0.3px]'
+// A card is a hairline top rule in the ink at 25%, then content.
+const CARD = 'border-t border-[color:var(--g-rule)] pt-[16px] md:pt-[20px] w-full min-w-0'
+const SECTION_H = `${ultra} text-[26px] md:text-[30px] leading-none tracking-[0.3px] mb-[24px] md:mb-[32px]`
+const PRESS = 'active:scale-[0.97] motion-reduce:active:scale-100'
+const PILL = `rounded-[4px] border border-[color:var(--g-ink)] px-[10px] py-[7px] md:py-[8px] text-[15px] md:text-[16px] leading-none tracking-[0.17px] transition-colors duration-[140ms] ease-out ${PRESS}`
+const PILL_OFF = 'bg-transparent text-[color:var(--g-ink)] g-hover-fill'
+const PILL_ON = 'bg-[color:var(--g-ink)] text-[color:var(--g-bg)]'
+const STEPPER = `w-[36px] h-[36px] rounded-full border border-[color:var(--g-ink)] text-[18px] leading-none flex items-center justify-center transition-colors duration-[140ms] ease-out g-hover-fill disabled:opacity-35 disabled:cursor-not-allowed ${PRESS}`
 const INPUT =
-  'rounded-2xl bg-[#f4f1ed] px-3 py-2.5 text-[14px] text-neutral-700 tabular-nums outline-none transition-shadow focus:ring-2 focus:ring-neutral-300 placeholder:text-neutral-300'
+  'rounded-[4px] border border-[color:var(--g-rule)] bg-transparent px-[10px] py-[9px] text-[17px] md:text-[18px] leading-none tabular-nums text-[color:var(--g-ink)] outline-none transition-colors duration-[140ms] focus:border-[color:var(--g-ink)] placeholder:text-[color:var(--g-rule)]'
 
 function Slider({ value, min, max, step, onChange, ariaLabel }) {
   const pct = sliderPct(value, min, max)
   return (
-    <div className="relative mt-4 h-[28px]">
-      <div className="absolute left-0 right-0 top-[11px] h-[6px] bg-[#e7e2db] rounded-full" />
+    <div className="relative mt-[18px] h-[28px]">
+      <div className="absolute left-0 right-0 top-[13px] h-[2px] bg-[color:var(--g-rule)]" />
+      <div className="absolute left-0 top-[13px] h-[2px] bg-[color:var(--g-ink)]" style={{ width: `${pct}%` }} />
       <div
-        className="absolute left-0 top-[11px] h-[6px] bg-neutral-400 rounded-full"
-        style={{ width: `${pct}%` }}
-      />
-      <div
-        className="absolute top-[2px] w-[22px] h-[22px] bg-white rounded-full shadow-[0_3px_10px_rgba(60,52,44,0.22)] ring-1 ring-black/[0.04]"
+        className="absolute top-[4px] w-[20px] h-[20px] rounded-full bg-[color:var(--g-ink)]"
         style={{ left: `${pct}%`, transform: 'translateX(-50%)' }}
       />
       <input
@@ -109,7 +117,7 @@ function Slider({ value, min, max, step, onChange, ariaLabel }) {
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+        className="g-range absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         aria-label={ariaLabel}
       />
     </div>
@@ -216,10 +224,10 @@ export default function GelsCalculator() {
     let warning = null
     if (leftoverGel < -0.5) {
       warning =
-        'Leftover reading minus the empty flask is negative — check the flask type or the scale reading.'
+        'Leftover reading minus the empty flask is negative. Check the flask type or the scale reading.'
     } else if (consumedGel < 0) {
       warning =
-        'Leftover gel is more than the recipe made — wrong flask, refill, or a typo?'
+        'Leftover gel is more than the recipe made. Wrong flask, a refill, or a typo?'
     }
 
     return {
@@ -243,50 +251,62 @@ export default function GelsCalculator() {
       : hours.toFixed(1)
 
   return (
-    <div className="font-sans bg-[#edeae5] text-neutral-600 min-h-screen min-w-0 overflow-x-hidden antialiased">
+    <div
+      className={`${social} min-h-screen min-w-0 overflow-x-hidden antialiased`}
+      style={{ backgroundColor: T.bg, color: T.ink, '--g-bg': T.bg, '--g-ink': T.ink, '--g-rule': `${T.ink}40` }}
+    >
       <style jsx global>{`
         html,
         body {
-          background: #edeae5;
+          background: ${T.bg};
+        }
+        :root {
+          --page-bg: ${T.bg};
+          --page-ink: ${T.ink};
+        }
+        @media (hover: hover) and (pointer: fine) {
+          .g-hover-fill:not(:disabled):hover {
+            background-color: var(--g-ink);
+            color: var(--g-bg);
+          }
+        }
+        .g-range:focus-visible + *,
+        .g-range:focus-visible {
+          outline: none;
+        }
+        .g-focus:focus-visible,
+        button:focus-visible {
+          outline: 2px solid var(--g-ink);
+          outline-offset: 3px;
         }
       `}</style>
 
-      <main className="w-full max-w-[1100px] mx-auto min-w-0 px-5 md:px-8 lg:px-[60px] pt-24 pb-24 md:pt-[120px]">
-        {/* Header */}
-        <header className="mb-10 md:mb-14">
-          <h1 className="text-[40px] md:text-[54px] leading-[1.02] font-medium tracking-tight text-neutral-700">
-            Gels
+      <Navigation backgroundColor={T.bg} textColor={T.ink} />
+
+      <main className="w-full min-w-0 px-[20px] md:px-[26px] pb-[80px] md:pb-[120px]">
+        {/* Statement */}
+        <header className="pt-[32px] pb-[48px] md:pt-[100px] md:pb-[80px] max-w-[1100px]">
+          <h1 className={`${nichrome} text-[24px] md:text-[40px] desktop:text-[54px] leading-[1.15] tracking-[0.2px]`}>
+            Gels. Pick your run time, and how much sodium you need, and blend this bad boy together.
           </h1>
-          <p className="mt-4 text-[13px] md:text-[15px] text-neutral-400 max-w-[620px] leading-[1.7]">
-            Scale my fructose / maltodextrin gel recipe by run length, plan
-            sodium, and back-calculate carbs/hr from a leftover weigh-in. Base
-            recipe is one 500ml flask = 4 hr at ~90 g/hr; everything scales from
-            there.
+          <p className={`${SMALL} mt-[16px] md:mt-[20px] max-w-[620px]`}>
+            One 500ml flask is 4 hours at about 90 g/hr. Everything scales from there.
           </p>
         </header>
 
         {/* ============ RECIPE ============ */}
-        <section className="mb-10 md:mb-14">
-          <h2 className={`${LABEL} mb-4 ml-1`}>Recipe</h2>
+        <section className="mb-[72px] md:mb-[104px]">
+          <h2 className={SECTION_H}>Recipe</h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-[48px] gap-y-[48px] md:gap-y-[64px]">
             {/* Inputs */}
             <div className={CARD}>
-              <div className="flex justify-between items-start gap-4">
+              <div className="flex justify-between items-baseline gap-4">
                 <span className={LABEL}>Run length</span>
-                <span className="text-[22px] leading-none tabular-nums font-light text-neutral-700">
-                  {hoursLabel} hr
-                </span>
+                <span className="text-[22px] md:text-[24px] leading-none tabular-nums">{hoursLabel} hr</span>
               </div>
-              <Slider
-                value={hours}
-                min={HOURS_MIN}
-                max={HOURS_MAX}
-                step={0.5}
-                onChange={setHours}
-                ariaLabel="Run length in hours"
-              />
-              <div className="mt-4 flex flex-wrap gap-2">
+              <Slider value={hours} min={HOURS_MIN} max={HOURS_MAX} step={0.5} onChange={setHours} ariaLabel="Run length in hours" />
+              <div className="mt-[16px] flex flex-wrap gap-[8px]">
                 {[
                   { label: '3 hr', h: 3 },
                   { label: '4 hr', h: 4 },
@@ -299,98 +319,72 @@ export default function GelsCalculator() {
                     key={p.label}
                     type="button"
                     onClick={() => setHours(p.h)}
-                    className={`${PILL} ${
-                      Math.abs(hours - p.h) < 0.001 ? PILL_ON : PILL_OFF
-                    }`}
+                    aria-pressed={Math.abs(hours - p.h) < 0.001}
+                    className={`${PILL} ${Math.abs(hours - p.h) < 0.001 ? PILL_ON : PILL_OFF}`}
                   >
                     {p.label}
                   </button>
                 ))}
               </div>
 
-              <div className="mt-9 grid grid-cols-2 gap-5">
-                <div>
+              <div className="mt-[40px] grid grid-cols-2 gap-[24px]">
+                <div className="border-t border-[color:var(--g-rule)] pt-[12px]">
                   <div className={LABEL}>Total carbs</div>
-                  <div className="mt-2 text-[44px] leading-none tabular-nums font-light text-neutral-700">
-                    {Math.round(recipe.totalCarbs).toLocaleString()}g
-                  </div>
-                  <div className="mt-2 text-[11px] text-neutral-400">
-                    ≈90 g/hr · {hoursLabel} hr
-                  </div>
+                  <div className={`${BIG} mt-[10px]`}>{Math.round(recipe.totalCarbs).toLocaleString()}g</div>
+                  <div className={`${SMALL} mt-[8px]`}>≈90 g/hr · {hoursLabel} hr</div>
                 </div>
-                <div>
+                <div className="border-t border-[color:var(--g-rule)] pt-[12px]">
                   <div className={LABEL}>500ml flasks</div>
-                  <div className="mt-2 text-[44px] leading-none tabular-nums font-light text-neutral-700">
-                    {recipe.flasks}
-                  </div>
-                  <div className="mt-2 text-[11px] text-neutral-400">
+                  <div className={`${BIG} mt-[10px]`}>{recipe.flasks}</div>
+                  <div className={`${SMALL} mt-[8px]`}>
                     {recipe.flasks === 1
                       ? `${Math.round(recipe.lastFlaskFillPct * 100)}% full`
-                      : `last one ~${Math.round(
-                          recipe.lastFlaskFillPct * 100
-                        )}% full`}
+                      : `last one ~${Math.round(recipe.lastFlaskFillPct * 100)}% full`}
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Scaled ingredient list */}
-            <div className={`${CARD_SOFT} flex flex-col`}>
-              <div className="flex items-baseline justify-between gap-3 mb-1">
+            <div className={`${CARD} flex flex-col`}>
+              <div className="flex items-baseline justify-between gap-3">
                 <span className={LABEL}>Make this</span>
-                <span className="text-[11px] text-neutral-400 tabular-nums">
-                  {(Math.round(recipe.scale * 100) / 100).toFixed(2)}× base
-                </span>
+                <span className={`${SMALL} tabular-nums`}>{(Math.round(recipe.scale * 100) / 100).toFixed(2)}× base</span>
               </div>
-              <p className="text-[11px] text-neutral-400 mb-5 leading-[1.6]">
-                {Math.round(recipe.totalMass).toLocaleString()}g gel total ·{' '}
-                {Math.round(recipe.totalCarbs).toLocaleString()}g carbs. Mix one
-                batch, split across {recipe.flasks} flask
-                {recipe.flasks === 1 ? '' : 's'}.
+              <p className={`${SMALL} mt-[6px] mb-[12px]`}>
+                {Math.round(recipe.totalMass).toLocaleString()}g gel total · {Math.round(recipe.totalCarbs).toLocaleString()}g
+                carbs. Mix one batch, split across {recipe.flasks} flask{recipe.flasks === 1 ? '' : 's'}.
               </p>
 
-              <ul className="divide-y divide-neutral-300/40">
+              <ul>
                 {recipe.ingredients.map((ing) => (
                   <li
                     key={ing.label}
-                    className="flex items-baseline justify-between gap-3 py-3"
+                    className="flex items-baseline justify-between gap-3 py-[12px] border-b border-[color:var(--g-rule)] last:border-b-0"
                   >
-                    <span className="text-[15px] text-neutral-600">
+                    <span className="text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px]">
                       {ing.link ? (
-                        <a
-                          href={ing.link}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="underline decoration-neutral-300 underline-offset-[3px] hover:decoration-neutral-500 transition-colors"
-                        >
+                        <a href={ing.link} target="_blank" rel="noreferrer" className="hl">
                           {ing.label}
                         </a>
                       ) : (
                         ing.label
                       )}
                     </span>
-                    <span className="text-[17px] tabular-nums font-light text-neutral-700">
-                      {ing.amount}
-                    </span>
+                    <span className="text-[20px] md:text-[21px] leading-[1.2] tabular-nums">{ing.amount}</span>
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-5 pt-5 border-t border-neutral-300/40 text-[12px] text-neutral-500 leading-[1.7]">
-                <p className="font-medium text-neutral-600 mb-1">Method</p>
+              <div className="mt-[20px] pt-[16px] border-t border-[color:var(--g-rule)] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px]">
+                <p className={`${nichrome} italic mb-[4px]`}>Method:</p>
                 <p>
-                  Mix dry together. Pour dry into wet in batches, stir with a
-                  whisk. Clumps are fine. Fill 500ml flask, fridge. Lasts 3–5
-                  days.
+                  Mix dry together. Pour dry into wet in batches, stir with a whisk. Clumps are fine. Fill 500ml flask,
+                  fridge. Lasts 3 to 5 days.
                 </p>
-                <p className="mt-3">
-                  Recipe source:{' '}
-                  <a
-                    href={RECIPE_SOURCE}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-neutral-300 underline-offset-[3px] hover:decoration-neutral-500 break-all transition-colors"
-                  >
+                <p className="mt-[12px]">
+                  <span className={`${nichrome} italic`}>Source:</span>{' '}
+                  <a href={RECIPE_SOURCE} target="_blank" rel="noreferrer" className="hl break-all">
                     youtube.com/watch?v=Dj4oYcRLxEo
                   </a>
                 </p>
@@ -400,20 +394,19 @@ export default function GelsCalculator() {
         </section>
 
         {/* ============ SODIUM ============ */}
-        <section className="mb-10 md:mb-14">
-          <h2 className={`${LABEL} mb-4 ml-1`}>Sodium</h2>
+        <section className="mb-[72px] md:mb-[104px]">
+          <h2 className={SECTION_H}>Sodium</h2>
 
           {/* target (sweat loss fixed at 1100) */}
-          <div className={`${CARD} mb-5`}>
-            <div className="flex justify-between items-start gap-4">
+          <div className={`${CARD} mb-[48px] md:mb-[64px]`}>
+            <div className="flex flex-wrap justify-between items-baseline gap-x-4 gap-y-2">
               <div>
                 <span className={LABEL}>Replacement target</span>
-                <div className="mt-2 text-[11px] text-neutral-400 leading-[1.6]">
-                  % of {SWEAT_LOSS} mg/hr sweat loss to replace (~75%
-                  realistic).
+                <div className={`${SMALL} mt-[4px]`}>
+                  Share of {SWEAT_LOSS} mg/hr sweat loss to replace. About 75% is realistic.
                 </div>
               </div>
-              <span className="text-[18px] leading-none tabular-nums font-light text-neutral-700 shrink-0">
+              <span className="text-[22px] md:text-[24px] leading-none tabular-nums shrink-0">
                 {targetPct}% · {Math.round(sodium.targetMg)} mg/hr
               </span>
             </div>
@@ -428,10 +421,10 @@ export default function GelsCalculator() {
           </div>
 
           {/* two source cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-[48px] gap-y-[48px] md:gap-y-[64px]">
             <SodiumCard
               title="SaltStick caps"
-              subtitle="Long training runs — alongside aid-station food."
+              subtitle="Long training runs, alongside aid-station food."
               perUnitLabel={`${SALTSTICK_MG_PER_CAP} mg sodium per cap`}
               unit="cap"
               count={sCapsPerHour}
@@ -444,7 +437,7 @@ export default function GelsCalculator() {
             />
             <SodiumCard
               title="Precision tab"
-              subtitle="Races — effervescent tab in the 500ml flask."
+              subtitle="Races. Effervescent tab in the 500ml flask."
               perUnitLabel={`${PN_TAB_MG} mg sodium per tab`}
               unit="tab"
               count={pnTabsPerHour}
@@ -453,62 +446,52 @@ export default function GelsCalculator() {
               mg={sodium.pnMg}
               coverage={sodium.pnCoverage}
               meetsTarget={sodium.pnMeetsTarget}
-              note="One tab per 500ml flask, ~one flask per hour."
+              note="One tab per 500ml flask, about one flask per hour."
             />
           </div>
         </section>
 
         {/* ============ LEFTOVER WEIGH-IN ============ */}
-        <section className="mb-10 md:mb-14">
-          <h2 className={`${LABEL} mb-4 ml-1`}>Leftover weigh-in</h2>
+        <section>
+          <h2 className={SECTION_H}>Leftover weigh-in</h2>
 
           <div className={CARD}>
-            <p className="mb-5 text-[12px] sm:text-[13px] leading-[1.7] text-neutral-400 max-w-[680px]">
-              Weigh the leftover flask after your run. Pick the flask type to
-              subtract its empty weight — the starting gel comes straight from
-              the recipe above — and enter your run time to see the carbs you
-              actually took per hour.
+            <p className="mb-[24px] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] max-w-[680px]">
+              Weigh the leftover flask after your run. Pick the flask type to subtract its empty weight, and enter your
+              run time to see the carbs you actually took per hour. The starting gel comes from the recipe above.
             </p>
 
             {/* Started-with, on one line, from the recipe above */}
-            <div className="mb-5 flex flex-wrap items-baseline gap-x-2 gap-y-1 rounded-2xl bg-[#f4f1ed] px-4 py-3 text-[13px]">
-              <span className={LABEL}>Started with</span>
-              <span className="tabular-nums font-medium text-neutral-700 ml-1">
-                {Math.round(weighIn.startGel)}g gel
-              </span>
-              <span className="text-neutral-400 text-[12px]">
-                — from recipe above ({hoursLabel} hr, {recipe.flasks} flask
-                {recipe.flasks === 1 ? '' : 's'})
+            <div className="mb-[28px] flex flex-wrap items-baseline gap-x-[8px] gap-y-1">
+              <span className={`${nichrome} italic text-[16px] md:text-[17px]`}>Started with:</span>
+              <span className="text-[20px] md:text-[21px] leading-none tabular-nums">{Math.round(weighIn.startGel)}g gel</span>
+              <span className={SMALL}>
+                from the recipe above ({hoursLabel} hr, {recipe.flasks} flask{recipe.flasks === 1 ? '' : 's'})
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-[13px]">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-[24px]">
               {/* Flask type */}
-              <div className="flex flex-col gap-1 min-w-0">
+              <div className="flex flex-col gap-[6px] min-w-0">
                 <span className={LABEL}>Flask</span>
-                <div className="mt-1 flex flex-col gap-2">
+                <div className="mt-[2px] flex flex-col gap-[8px]">
                   {Object.entries(FLASKS).map(([key, f]) => (
                     <button
                       key={key}
                       type="button"
                       onClick={() => setFlaskType(key)}
-                      className={`rounded-2xl px-3 py-2.5 text-[12px] leading-tight text-left transition-colors duration-200 ${
-                        flaskType === key
-                          ? 'bg-neutral-700 text-white'
-                          : 'bg-[#f4f1ed] text-neutral-600 hover:bg-[#ece8e2]'
-                      }`}
+                      aria-pressed={flaskType === key}
+                      className={`${PILL} py-[9px] md:py-[9px] leading-[1.2] text-left ${flaskType === key ? PILL_ON : PILL_OFF}`}
                     >
                       {f.label}
-                      <span className="block tabular-nums opacity-60">
-                        {f.grams}g empty
-                      </span>
+                      <span className="block tabular-nums opacity-70">{f.grams}g empty</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Leftover reading */}
-              <label className="flex flex-col gap-1 min-w-0">
+              <label className="flex flex-col gap-[6px] min-w-0">
                 <span className={LABEL}>Leftover on scale (g)</span>
                 <input
                   type="text"
@@ -516,37 +499,35 @@ export default function GelsCalculator() {
                   placeholder="flask + gel"
                   value={leftoverStr}
                   onChange={(e) => setLeftoverStr(e.target.value)}
-                  className={`${INPUT} mt-1`}
+                  className={`${INPUT} mt-[2px]`}
                 />
-                <span className="text-[10px] text-neutral-400 leading-snug">
-                  Whole leftover flask, gel inside.
-                </span>
+                <span className={SMALL}>Whole leftover flask, gel inside.</span>
               </label>
 
               {/* Run time */}
-              <div className="flex flex-col gap-1 min-w-0">
+              <div className="flex flex-col gap-[6px] min-w-0">
                 <span className={LABEL}>Run time</span>
-                <div className="mt-1 flex items-end gap-2">
-                  <label className="flex flex-col gap-1">
-                    <span className="text-[10px] text-neutral-400">Hr</span>
+                <div className="mt-[2px] flex items-end gap-[8px]">
+                  <label className="flex flex-col gap-[4px]">
+                    <span className={SMALL}>Hr</span>
                     <input
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
                       value={runHoursStr}
                       onChange={(e) => setRunHoursStr(e.target.value)}
-                      className={`${INPUT} w-16`}
+                      className={`${INPUT} w-[72px]`}
                     />
                   </label>
-                  <label className="flex flex-col gap-1">
-                    <span className="text-[10px] text-neutral-400">Min</span>
+                  <label className="flex flex-col gap-[4px]">
+                    <span className={SMALL}>Min</span>
                     <input
                       type="text"
                       inputMode="numeric"
                       placeholder="0"
                       value={runMinutesStr}
                       onChange={(e) => setRunMinutesStr(e.target.value)}
-                      className={`${INPUT} w-16`}
+                      className={`${INPUT} w-[72px]`}
                     />
                   </label>
                 </div>
@@ -555,111 +536,75 @@ export default function GelsCalculator() {
 
             {/* Results */}
             {weighIn.ready && (
-              <dl className="mt-7 space-y-3 text-[13px] sm:text-[14px] border-t border-neutral-300/40 pt-5">
-                <div className="flex justify-between items-baseline gap-3">
-                  <dt className="text-neutral-400 min-w-0">
-                    Gel remaining (scale − {weighIn.flaskG}g flask)
-                  </dt>
-                  <dd className="tabular-nums shrink-0 text-neutral-600">
-                    {Math.round(weighIn.leftoverGel)}g
+              <dl className="mt-[32px] text-[17px] md:text-[18px] leading-[1.2] tracking-[0.17px]">
+                <div className="flex justify-between items-baseline gap-3 py-[10px] border-t border-[color:var(--g-rule)]">
+                  <dt className="opacity-70 min-w-0">Gel remaining (scale − {weighIn.flaskG}g flask)</dt>
+                  <dd className="tabular-nums shrink-0">{Math.round(weighIn.leftoverGel)}g</dd>
+                </div>
+                <div className="flex justify-between items-baseline gap-3 py-[10px] border-t border-[color:var(--g-rule)]">
+                  <dt className="opacity-70 min-w-0">Gel consumed</dt>
+                  <dd className="tabular-nums shrink-0">
+                    {weighIn.consumedGel >= 0 ? `${Math.round(weighIn.consumedGel)}g` : '–'}
                   </dd>
                 </div>
-                <div className="flex justify-between items-baseline gap-3">
-                  <dt className="text-neutral-400 min-w-0">Gel consumed</dt>
-                  <dd className="tabular-nums font-medium shrink-0 text-neutral-700">
-                    {weighIn.consumedGel >= 0
-                      ? `${Math.round(weighIn.consumedGel)}g`
-                      : '—'}
-                  </dd>
-                </div>
-                <div className="flex justify-between items-baseline gap-3">
-                  <dt className="text-neutral-400 min-w-0">
-                    Carbs consumed (gel × {Math.round(CARB_FRACTION * 100)}%)
-                  </dt>
-                  <dd className="tabular-nums font-medium shrink-0 text-neutral-700">
-                    {weighIn.carbsConsumed != null
-                      ? `${Math.round(weighIn.carbsConsumed)}g`
-                      : '—'}
+                <div className="flex justify-between items-baseline gap-3 py-[10px] border-t border-[color:var(--g-rule)]">
+                  <dt className="opacity-70 min-w-0">Carbs consumed (gel × {Math.round(CARB_FRACTION * 100)}%)</dt>
+                  <dd className="tabular-nums shrink-0">
+                    {weighIn.carbsConsumed != null ? `${Math.round(weighIn.carbsConsumed)}g` : '–'}
                   </dd>
                 </div>
                 {weighIn.runDuration > 0 && (
-                  <div className="flex justify-between items-baseline gap-3 text-[12px] text-neutral-400">
-                    <dt className="min-w-0">Run duration</dt>
+                  <div className="flex justify-between items-baseline gap-3 py-[10px] border-t border-[color:var(--g-rule)]">
+                    <dt className="opacity-70 min-w-0">Run duration</dt>
                     <dd className="tabular-nums shrink-0">
-                      {weighIn.runH}h {weighIn.runM}m (
-                      {(Math.round(weighIn.runDuration * 100) / 100).toFixed(2)}{' '}
-                      h)
+                      {weighIn.runH}h {weighIn.runM}m ({(Math.round(weighIn.runDuration * 100) / 100).toFixed(2)} h)
                     </dd>
                   </div>
                 )}
-                <div className="flex justify-between items-baseline gap-3 pt-3 border-t border-neutral-300/40">
-                  <dt className="font-medium min-w-0 text-neutral-600">
-                    Carbs/hr (consumed ÷ run time)
-                  </dt>
-                  <dd className="tabular-nums font-light text-[20px] shrink-0 text-neutral-700">
-                    {weighIn.carbsPerHr != null
-                      ? `${(Math.round(weighIn.carbsPerHr * 10) / 10).toFixed(
-                          1
-                        )} g/hr`
-                      : '—'}
+                <div className="flex justify-between items-baseline gap-3 pt-[16px] mt-[4px] border-t border-[color:var(--g-ink)]">
+                  <dt className={`${nichrome} italic min-w-0`}>Carbs/hr:</dt>
+                  <dd className={`${MID} shrink-0`}>
+                    {weighIn.carbsPerHr != null ? `${(Math.round(weighIn.carbsPerHr * 10) / 10).toFixed(1)} g/hr` : '–'}
                   </dd>
                 </div>
               </dl>
             )}
 
             {weighIn.ready && weighIn.warning && (
-              <p className="mt-4 text-[12px] text-[#a06a5e] bg-[#f3e6e1] rounded-2xl px-4 py-3 leading-[1.6]">
+              <p className="mt-[20px] rounded-[4px] border border-[color:var(--g-ink)] px-[12px] py-[10px] text-[16px] md:text-[17px] leading-[1.3]">
                 {weighIn.warning}
               </p>
             )}
-            {weighIn.ready &&
-              !weighIn.warning &&
-              weighIn.runDuration <= 0 &&
-              weighIn.consumedGel >= 0 && (
-                <p className="mt-3 text-[11px] text-neutral-400">
-                  Enter run hours and/or minutes to see carbs per hour.
-                </p>
-              )}
+            {weighIn.ready && !weighIn.warning && weighIn.runDuration <= 0 && weighIn.consumedGel >= 0 && (
+              <p className={`${SMALL} mt-[12px]`}>Enter run hours and/or minutes to see carbs per hour.</p>
+            )}
           </div>
         </section>
       </main>
+
+      <Footer colophon theme={T} />
     </div>
   )
 }
 
-function SodiumCard({
-  title,
-  subtitle,
-  perUnitLabel,
-  unit,
-  count,
-  setCount,
-  maxCount,
-  mg,
-  coverage,
-  meetsTarget,
-  note,
-}) {
+function SodiumCard({ title, subtitle, perUnitLabel, unit, count, setCount, maxCount, mg, coverage, meetsTarget, note }) {
   return (
     <div className={`${CARD} flex flex-col`}>
       <div className="flex items-baseline justify-between gap-3">
-        <span className="text-[15px] font-medium text-neutral-700">
-          {title}
-        </span>
+        <span className="text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px]">{title}</span>
+        {/* Status is filled vs outlined in the ink, never a red/green pair. */}
         <span
-          className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-white ${
-            meetsTarget ? 'bg-[#8aa57e]' : 'bg-[#cf8b80]'
+          className={`rounded-[4px] border border-[color:var(--g-ink)] px-[8px] py-[3px] text-[14px] leading-[1.2] ${
+            meetsTarget ? 'bg-[color:var(--g-ink)] text-[color:var(--g-bg)]' : ''
           }`}
         >
           {meetsTarget ? 'Meets target' : 'Below target'}
         </span>
       </div>
-      <p className="mt-2 text-[12px] text-neutral-400 leading-[1.6]">
-        {subtitle}
-      </p>
-      <p className="mt-1 text-[11px] text-neutral-400">{perUnitLabel}</p>
+      <p className="mt-[6px] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px]">{subtitle}</p>
+      <p className={`${SMALL} mt-[2px]`}>{perUnitLabel}</p>
 
-      <div className="mt-5 flex items-center gap-3">
+      <div className="mt-[20px] flex items-center gap-[12px]">
         <button
           type="button"
           aria-label={`Less ${unit}s per hour`}
@@ -669,7 +614,7 @@ function SodiumCard({
         >
           −
         </button>
-        <span className="text-[15px] tabular-nums min-w-[90px] text-center text-neutral-700">
+        <span className="text-[18px] md:text-[19px] tabular-nums min-w-[90px] text-center">
           {count} {unit}
           {count === 1 ? '' : 's'}/hr
         </span>
@@ -684,23 +629,23 @@ function SodiumCard({
         </button>
       </div>
 
-      <div className="mt-6 pt-5 border-t border-neutral-200/70 grid grid-cols-2 gap-4">
-        <div>
+      <div className="mt-[24px] grid grid-cols-2 gap-[24px]">
+        <div className="border-t border-[color:var(--g-rule)] pt-[12px]">
           <div className={LABEL}>Sodium</div>
-          <div className="mt-2 text-[30px] leading-none tabular-nums font-light text-neutral-700">
+          <div className={`${MID} mt-[10px]`}>
             {Math.round(mg)}
-            <span className="text-[14px] text-neutral-400"> mg/hr</span>
+            <span className="text-[16px] opacity-70"> mg/hr</span>
           </div>
         </div>
-        <div>
+        <div className="border-t border-[color:var(--g-rule)] pt-[12px]">
           <div className={LABEL}>Coverage</div>
-          <div className="mt-2 text-[30px] leading-none tabular-nums font-light text-neutral-700">
+          <div className={`${MID} mt-[10px]`}>
             {Math.round(coverage)}
-            <span className="text-[14px] text-neutral-400">%</span>
+            <span className="text-[16px] opacity-70">%</span>
           </div>
         </div>
       </div>
-      <p className="mt-4 text-[11px] text-neutral-400 leading-[1.6]">{note}</p>
+      <p className={`${SMALL} mt-[16px]`}>{note}</p>
     </div>
   )
 }
