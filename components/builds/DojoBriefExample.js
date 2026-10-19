@@ -1,22 +1,25 @@
-// What /dojo-brief does, shown rather than told: a messy thread on the left,
-// the structured brief on the right. Invented example, no real people or
-// projects. Drawn in the page's ink so it takes the dealt theme.
+// What /dojo-brief does, shown rather than told: a real branding thread on
+// the left (people and the partner renamed, trimmed for length), and the
+// brief the skill pulled out of it on the right. Drawn in the page's ink so
+// it takes the dealt theme.
 const THREAD = [
-  ['Maya', 'can brand help w the conferences thing? need something for families before Nov'],
-  ['Maya', 'like an email + maybe a printable? teachers keep asking'],
-  ['Theo', 'esp spanish speaking families, last yr turnout was rough'],
-  ['Maya', 'oh and it has to say the translation feature, legal wants the disclaimer'],
-  ['Theo', 'nov 4 is when invites go out fwiw'],
+  ['Rowan', 'Plus-related branding q. We’re white-labeling Lumen’s AI math tutor and launching it as “Dojo Math.” Should our promo lean into their aesthetic (dark, mesh gradients, very AI-native) or go Dojo-native? Not looking for a full brand exercise.'],
+  ['Priya', 'Leaning into theirs feels cohesive once parents try the freemium. Tho we’re selling it for K-2 and their brand doesn’t work great for that age'],
+  ['Jon', 'Is this a Plus feature or standalone? And what’s the success criteria for the pilot?'],
+  ['Priya', 'Not part of Plus for the pilot. Success is trial starts and booking conversion'],
+  ['Jon', 'Pilots that work become permanent, so I’d keep our emails and landing page Dojo-native. Also “Dojo Math” gives me pause, Tutor teaches math too'],
+  ['Priya', 'Name isn’t final. Sticky stuff for the pilot: naming, learning subtab, kid entry point, post-purchase page + email'],
 ]
 
 const BRIEF = [
-  ['Project', 'Fall family conferences kit'],
-  ['Priority', 'P1, invites go out Nov 4'],
-  ['Core message', 'Every family can show up to conferences ready, in their own language.'],
-  ['Audience', 'Families, with a focus on Spanish-speaking households'],
-  ['Deliverables', 'Family email, printable one-pager'],
-  ['Requirements', 'Mention message translation. Legal disclaimer in footer.'],
-  ['Missing', 'Final decision maker, launch owner'],
+  ['Project', 'Dojo Math pilot: parent promo (working name)'],
+  ['Team', 'Product, P1'],
+  ['Core message', 'A math tutor built for K-2, ready to try free from the app you already use.'],
+  ['Audience', 'Parents of K-2 kids on ClassDojo'],
+  ['Deliverables', 'Pilot banner, learning subtab, kid entry point, post-purchase page and email'],
+  ['Requirements', 'Our surfaces stay Dojo-native. Lumen’s in-app experience stays theirs. Name not final.'],
+  ['Success', 'Trial starts, booking conversion'],
+  ['Missing', 'Launch date, final decision maker'],
 ]
 
 export default function DojoBriefExample() {
@@ -24,7 +27,7 @@ export default function DojoBriefExample() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-[20px] md:gap-[24px] font-['Social_Condensed','Haas_Grot_Disp',sans-serif] text-[15px] leading-[1.3]">
       <div>
-        <p className="pb-[8px] mb-[10px] border-b opacity-70" style={rule}>#marketing, 5 messages</p>
+        <p className="pb-[8px] mb-[10px] border-b opacity-70" style={rule}>Slack thread, 6 messages (trimmed)</p>
         <ul className="flex flex-col gap-[10px]">
           {THREAD.map(([who, msg], i) => (
             <li key={i}>
