@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import Navigation from './Navigation'
 import Footer from './Footer'
 import useRandomTheme from './useRandomTheme'
@@ -16,12 +17,25 @@ const nichromeUltra = "font-['Nichrome','Arial_Black',sans-serif] font-black"
 // paste it here. Empty shows the "coming soon" state.
 const HQ_EMBED_URL = process.env.NEXT_PUBLIC_HQ_EMBED_URL || ''
 
-// Matches the iframe HQ generates. Adjust to fit the form so it doesn't
-// scroll inside the frame.
+// Matches the iframe HQ generates. It's the starting height: HQ's embed posts
+// its real height ({ type: 'hq:embed-height' }) and the frame grows to fit, so
+// the page scrolls instead of the form. Adjust if that message never arrives.
 const EMBED_HEIGHT = 900
 
 export default function HqBody() {
   const { theme: t, ready } = useRandomTheme()
+  const frame = useRef(null)
+  const [height, setHeight] = useState(EMBED_HEIGHT)
+
+  useEffect(() => {
+    const onMessage = (e) => {
+      if (e.source !== frame.current?.contentWindow) return
+      if (e.data?.type !== 'hq:embed-height' || typeof e.data.height !== 'number') return
+      setHeight(Math.max(200, Math.ceil(e.data.height)))
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
 
   return (
     <main style={{ backgroundColor: t.bg, color: t.ink, visibility: ready ? 'visible' : 'hidden' }}>
@@ -45,10 +59,11 @@ export default function HqBody() {
 
           {HQ_EMBED_URL ? (
             <iframe
+              ref={frame}
               src={HQ_EMBED_URL}
               title="HQ intake form"
               width="100%"
-              height={EMBED_HEIGHT}
+              height={height}
               style={{ border: 0 }}
               loading="lazy"
               className="block w-full rounded-[4px] load-checker"
