@@ -1,4 +1,5 @@
 import PlayIndex from '../../components/PlayIndex'
+import { BUILDS } from '../../lib/builds'
 
 export const metadata = {
   title: 'Jon Schafer — Play',
@@ -84,6 +85,9 @@ const projects = [
   }
 ]
 
+// Build write-ups (lib/builds.js) sit in the same grid as everything else.
+const builds = BUILDS.map((b) => ({ id: b.slug, name: b.name, description: b.card, date: b.date, tags: b.tags, path: `/play/${b.slug}` }))
+
 export default function PlayPage() {
-  return <PlayIndex projects={projects} />
+  return <PlayIndex projects={[...builds, ...projects]} />
 }
