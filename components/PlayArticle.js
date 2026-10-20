@@ -9,9 +9,10 @@ import Footer from './Footer'
 import useRandomTheme from './useRandomTheme'
 import HomelabDiagram from './builds/HomelabDiagram'
 import DojoBriefExample from './builds/DojoBriefExample'
+import PlayKeyDiagram from './builds/PlayKeyDiagram'
 
 // Hero diagrams drawn in the page's ink, keyed by hero.src.
-const DIAGRAMS = { homelab: HomelabDiagram, 'dojo-brief': DojoBriefExample }
+const DIAGRAMS = { homelab: HomelabDiagram, 'dojo-brief': DojoBriefExample, 'play-key': PlayKeyDiagram }
 
 // A build write-up on /play. One narrow column (after joshpuckett.me/bloom):
 // the name, a one-line h2 of what it does, the piece itself in a frame, then
@@ -106,6 +107,33 @@ function Media({ type, src, poster, alt, title, ink, bg, height }) {
   )
 }
 
+// A fenced command, in a tinted block with a copy button, so a how-to can be
+// followed without retyping anything.
+function CodeBlock({ text, ink }) {
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1600)
+    })
+  }
+  return (
+    <div className="relative my-[20px] rounded-[4px]" style={{ backgroundColor: `${ink}14` }}>
+      <pre className="whitespace-pre-wrap break-all py-[14px] pl-[16px] pr-[76px] font-mono text-[14px] md:text-[15px] leading-[1.5] tracking-normal">
+        <code>{text}</code>
+      </pre>
+      <button
+        type="button"
+        onClick={copy}
+        className="absolute top-[8px] right-[8px] rounded-[4px] border px-[8px] py-[3px] text-[14px] leading-[1.2] opacity-80 hover:opacity-100"
+        style={{ borderColor: ink }}
+      >
+        {copied ? 'Copied' : 'Copy'}
+      </button>
+    </div>
+  )
+}
+
 export default function PlayArticle({ build, body }) {
   const { theme: t, ready } = useRandomTheme()
   const rule = `${t.ink}40`
@@ -145,6 +173,11 @@ export default function PlayArticle({ build, body }) {
         {children}
       </code>
     ),
+    pre: ({ node }) => {
+      const code = node.children.find((c) => c.tagName === 'code')
+      const text = (code?.children || []).map((c) => c.value || '').join('').replace(/\n$/, '')
+      return <CodeBlock text={text} ink={t.ink} />
+    },
     hr: () => <hr className="my-[40px] border-t" style={{ borderColor: rule }} />,
   }
 
