@@ -10,9 +10,10 @@ import useRandomTheme from './useRandomTheme'
 import HomelabDiagram from './builds/HomelabDiagram'
 import DojoBriefExample from './builds/DojoBriefExample'
 import PlayKeyDiagram from './builds/PlayKeyDiagram'
+import TranscribeDiagram from './builds/TranscribeDiagram'
 
 // Hero diagrams drawn in the page's ink, keyed by hero.src.
-const DIAGRAMS = { homelab: HomelabDiagram, 'dojo-brief': DojoBriefExample, 'play-key': PlayKeyDiagram }
+const DIAGRAMS = { homelab: HomelabDiagram, 'dojo-brief': DojoBriefExample, 'play-key': PlayKeyDiagram, transcribe: TranscribeDiagram }
 
 // A build write-up on /play. One narrow column (after joshpuckett.me/bloom):
 // the name, a one-line h2 of what it does, the piece itself in a frame, then
@@ -56,7 +57,7 @@ function Media({ type, src, poster, alt, title, ink, bg, height }) {
     return (
       // Diagrams keep a readable size on phones and scroll sideways instead.
       <div className="rounded-[4px] p-[16px] md:p-[24px] overflow-x-auto" style={{ boxShadow: `inset 0 0 0 1px ${ink}26` }}>
-        <div className={src === 'homelab' ? 'min-w-[560px]' : ''}>
+        <div className={src === 'homelab' || src === 'transcribe' ? 'min-w-[560px]' : ''}>
           <Diagram />
         </div>
       </div>
