@@ -12,19 +12,18 @@ const nichromeUltra = "font-['Nichrome','Arial_Black',sans-serif] font-black"
 
 export const TESTIMONIALS = [
   {
+    quote: "Jon is a maker and a thinker. A dangerous combination. And with a wonderful 'can-do' attitude sprinkled on top, you got yourself one hell of a teammate on your side. Whenever Jon is involved, I know the project is in good hands.",
+    name: 'Shachar Aylon',
+    photo: '/images/people/shachar-aylon.jpg',
+    title: 'Founder, Dawn',
+    linkedin: 'https://www.linkedin.com/in/saylon/',
+    pull: null,
+  },
+  {
     // Placeholder: Proof dept offered to write something up.
     quote: null,
     pull: null,
     name: 'Proof dept',
-    photo: null,
-    title: '',
-    linkedin: null,
-  },
-  {
-    // Placeholder: Dawn offered to write something up.
-    quote: null,
-    pull: null,
-    name: 'Dawn',
     photo: null,
     title: '',
     linkedin: null,
