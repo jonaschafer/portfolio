@@ -7,7 +7,8 @@ import { PLAN_URL, getCurrentWeek, dateKey, parseLocalDate, getCanonicalRun, get
 import { T, social, ultra, rule, chip, pressable, formatContentHtml } from './planStyle'
 
 // Month view, weeks starting Monday to match the plan. Each cell is a hairline
-// rule and the day's run, row and lift. Tapping a planned day opens it.
+// rule and the day's run, row and lift, with the week's miles at the end of
+// each row. Tapping a planned day opens it.
 
 function contentForDay(w, d) {
   let raw = (d.content || '').trim()
@@ -26,7 +27,6 @@ function buildDateMap(planData) {
   const start = parseLocalDate(planData.startDate)
   const pt = planData.pt || {}
   planData.weeks.forEach((w) => {
-    const miles = Math.round((w.days || []).reduce((n, d) => n + getCanonicalRun(d).mi, 0))
     const weekStart = new Date(start)
     weekStart.setDate(weekStart.getDate() + (w.week - 1) * 7)
     ;(w.days || []).forEach((d) => {
@@ -35,12 +35,13 @@ function buildDateMap(planData) {
       const cellDate = new Date(weekStart)
       cellDate.setDate(weekStart.getDate() + dayIdx)
       const s = d.summary || {}
-      const { distance } = getCanonicalRun(d)
+      const { distance, mi, v } = getCanonicalRun(d)
       map[dateKey(cellDate)] = {
         lines: [distance && `Run ${distance}`, s.rowOneLine && 'Row', s.strengthOneLine && s.strengthOneLine.split(':')[0]].filter(Boolean),
         title: d.title,
         week: w.week,
-        weekMiles: miles,
+        mi,
+        v,
         content: getDayContentWithPT(d.day, contentForDay(w, d), pt),
       }
     })
@@ -130,20 +131,24 @@ export default function DanaPlanCalendar() {
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-x-[4px] md:gap-x-[16px]">
+      <div className="grid grid-cols-[repeat(7,minmax(0,1fr))_auto] gap-x-[4px] md:gap-x-[16px]">
         {DAY_ORDER.map((name) => (
           <div key={name} className={`${social} pb-[10px] text-[14px] md:text-[17px] leading-none opacity-70`}>
             <span className="md:hidden">{name.slice(0, 2)}</span>
             <span className="hidden md:inline">{name.slice(0, 3)}</span>
           </div>
         ))}
-        {cells.slice(0, rows * 7).map((d) => {
+        <div className={`${social} pb-[10px] text-[14px] md:text-[17px] leading-none opacity-70 text-right`}>
+          <span className="md:hidden">Mi</span>
+          <span className="hidden md:inline">Total</span>
+        </div>
+        {cells.slice(0, rows * 7).flatMap((d, i) => {
           const key = dateKey(d)
           const info = dateToDay[key]
           const inMonth = d.getMonth() === calMonth
           const isToday = key === todayKey
           const Cell = info ? 'button' : 'div'
-          return (
+          const cell = (
             <Cell
               key={key}
               type={info ? 'button' : undefined}
@@ -154,11 +159,7 @@ export default function DanaPlanCalendar() {
             >
               <span className="flex items-baseline justify-between gap-[4px] text-[14px] md:text-[17px] leading-none tabular-nums">
                 <span className={isToday ? 'underline underline-offset-[3px]' : ''}>{d.getDate()}</span>
-                {info && d.getDay() === 1 && (
-                  <span className="hidden md:inline text-[14px] opacity-60">
-                    W{info.week} · {info.weekMiles} mi
-                  </span>
-                )}
+                {info && d.getDay() === 1 && <span className="hidden md:inline text-[14px] opacity-60">W{info.week}</span>}
               </span>
               {info && (
                 <span className="text-[12px] md:text-[15px] leading-[1.2] tabular-nums group-hover:underline underline-offset-[3px]">
@@ -167,6 +168,29 @@ export default function DanaPlanCalendar() {
               )}
             </Cell>
           )
+          if (i % 7 !== 6) return [cell]
+          // Sunday closes the row: sum the plan days in it (Monday-start, so one plan week).
+          const days = cells.slice(i - 6, i + 1).map((c) => dateToDay[dateKey(c)]).filter(Boolean)
+          const mi = Math.round(days.reduce((n, x) => n + x.mi, 0))
+          const v = days.reduce((n, x) => n + x.v, 0)
+          return [
+            cell,
+            <div
+              key={`total-${i}`}
+              className={`${social} border-t pt-[8px] md:pt-[10px] pb-[14px] min-w-[34px] md:min-w-[96px] text-right tabular-nums`}
+              style={{ borderColor: T.ink }}
+            >
+              {days.length > 0 && (
+                <>
+                  <span className="block text-[14px] md:text-[21px] leading-none">
+                    {mi}
+                    <span className="hidden md:inline"> mi</span>
+                  </span>
+                  {v > 0 && <span className="hidden md:block mt-[6px] text-[15px] leading-none opacity-60">{v.toLocaleString()} ft</span>}
+                </>
+              )}
+            </div>,
+          ]
         })}
       </div>
 

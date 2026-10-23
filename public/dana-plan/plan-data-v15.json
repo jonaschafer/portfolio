@@ -4,7 +4,7 @@
   "startDate": "2026-10-26",
   "raceDate": "2027-02-14",
   "goal": "40 miles a week",
-  "statement": "Rebuilding to 40 miles a week after jaw surgery, with the erg and two lift days carrying the fitness while my legs catch up.",
+  "statement": "Rebuilding to 40 miles a week after jaw surgery, back to running Tuesday through Friday and Sunday, with the erg and two lift days carrying the fitness while my legs catch up.",
   "liftPhases": [
     {
       "name": "Re-entry",
@@ -157,7 +157,7 @@
       "dateRange": "Oct 26-Nov 1",
       "type": "RE-ENTRY",
       "target": "6 miles, 150 ft · 2 rows · 2 lifts",
-      "content": "**Week 4 after surgery.** Flat, soft, conversational running, nose breathing the whole way. Rows stay steady. Lifts at about 60% of normal, RPE 6, exhale through every rep and keep the jaw loose. Nothing all out and nothing open mouthed until the surgeon says so.",
+      "content": "**Week 4 after surgery.** Cleared for exercise, so this block is about ramping, not permission. Flat, soft, conversational running. Rows stay steady while the running restarts. Lifts at about 60% of normal, RPE 6, exhale through every rep and keep the jaw loose. Still blowing the nose softly, so no breath holds or bearing down on anything.",
       "days": [
         {
           "day": "Monday",
@@ -170,7 +170,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + Heavy A",
-          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee or jaw says anything. Nose breathing pace, which will feel too slow. That’s right.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee says anything. Conversational pace, which will feel too slow. That’s right.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "2 miles",
             "vert": "50 ft",
@@ -181,7 +181,7 @@
         {
           "day": "Wednesday",
           "title": "Steady row, 20 min",
-          "content": "**Row:** 20 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 20 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "20 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -190,7 +190,7 @@
         {
           "day": "Thursday",
           "title": "Easy run + Heavy B",
-          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee or jaw says anything. Nose breathing pace, which will feel too slow. That’s right.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee says anything. Conversational pace, which will feel too slow. That’s right.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "2 miles",
             "vert": "50 ft",
@@ -201,7 +201,7 @@
         {
           "day": "Friday",
           "title": "Steady row, 25 min",
-          "content": "**Row:** 25 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 25 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "25 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -216,7 +216,7 @@
         {
           "day": "Sunday",
           "title": "Longest run of the week",
-          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee or jaw says anything. Nose breathing pace, which will feel too slow. That’s right.",
+          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee says anything. Conversational pace, which will feel too slow. That’s right.",
           "summary": {
             "distance": "2 miles",
             "vert": "50 ft",
@@ -243,7 +243,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + Heavy A",
-          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "3 miles",
             "vert": "100 ft",
@@ -254,7 +254,7 @@
         {
           "day": "Wednesday",
           "title": "Steady row, 25 min",
-          "content": "**Row:** 25 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 25 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "25 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -263,7 +263,7 @@
         {
           "day": "Thursday",
           "title": "Easy run + Heavy B",
-          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "3 miles",
             "vert": "100 ft",
@@ -274,7 +274,7 @@
         {
           "day": "Friday",
           "title": "Rate ladder row",
-          "content": "**Row:** 3 rounds of 5 min at 18, 5 min at 20, 5 min at 22 spm, no rest. Same easy effort, just a faster rhythm. The goal is keeping meters per stroke as the rate climbs. Nose breathing.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 3 rounds of 5 min at 18, 5 min at 20, 5 min at 22 spm, no rest. Same easy effort, just a faster rhythm. The goal is keeping meters per stroke as the rate climbs.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "3 × (5 min @ 18 / 20 / 22 spm)",
             "ptOneLine": "PT, 15 min"
@@ -289,7 +289,7 @@
         {
           "day": "Sunday",
           "title": "Longest run of the week",
-          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.",
           "summary": {
             "distance": "3 miles",
             "vert": "100 ft",
@@ -308,7 +308,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 20 min",
-          "content": "**Row:** 20 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 20 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "20 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -317,7 +317,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + Heavy A",
-          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "3 miles",
             "vert": "100 ft",
@@ -328,7 +328,7 @@
         {
           "day": "Wednesday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -337,7 +337,7 @@
         {
           "day": "Thursday",
           "title": "Easy run + Heavy B",
-          "content": "**Run:** 4 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 4 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "4 miles",
             "vert": "100 ft",
@@ -348,7 +348,7 @@
         {
           "day": "Friday",
           "title": "Steady row, 35 min",
-          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 35 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "35 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -363,7 +363,7 @@
         {
           "day": "Sunday",
           "title": "Longest run of the week",
-          "content": "**Run:** 5 miles, ~150 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.",
+          "content": "**Run:** 5 miles, ~150 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.",
           "summary": {
             "distance": "5 miles",
             "vert": "150 ft",
@@ -377,12 +377,12 @@
       "dateRange": "Nov 16-22",
       "type": "RE-ENTRY · DOWN",
       "target": "10 miles, 300 ft · 3 rows · 2 lifts",
-      "content": "**Week 7 after surgery.**\n\nDown week: about 20% less running so the last three weeks soak in. Every fourth week, no exceptions.\n\nSurgeon follow-up is around here. Ask three things: OK for all-out efforts, OK for mouth-open hard breathing, OK for trail running where a fall is possible.",
+      "content": "**Week 7 after surgery.**\n\nDown week: about 20% less running so the last three weeks soak in. Every fourth week, no exceptions.\n\nFirst 2k test on Friday, four weeks after the Oct 20 row.",
       "days": [
         {
           "day": "Monday",
           "title": "Steady row, 20 min",
-          "content": "**Row:** 20 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 20 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "20 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -391,7 +391,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + Heavy A",
-          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 2 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 2 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 2 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 2 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 2 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 2 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "3 miles",
             "vert": "100 ft",
@@ -402,7 +402,7 @@
         {
           "day": "Wednesday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -411,7 +411,7 @@
         {
           "day": "Thursday",
           "title": "Easy run + Heavy B",
-          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 2 × 10 @ 35 lb\n- SL RDL, 2 × 8 per side @ 25 lb\n- Step-downs, 2 × 10 per side, bodyweight\n- KB swing, 2 × 12 @ 35 lb\n- Dead hang, 2 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 2 × 10 @ 35 lb\n- SL RDL, 2 × 8 per side @ 25 lb\n- Step-downs, 2 × 10 per side, bodyweight\n- KB swing, 2 × 12 @ 35 lb\n- Dead hang, 2 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
           "summary": {
             "distance": "3 miles",
             "vert": "100 ft",
@@ -421,10 +421,10 @@
         },
         {
           "day": "Friday",
-          "title": "2k check",
-          "content": "**Row:** 2k at a locked 24 spm, hard but still controlled, nose breathing if you can. Not all out until the surgeon clears it. Compare to Oct 20 (11:20.0 at 20.7 spm). Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "title": "2k test",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
-            "rowOneLine": "2k controlled @ 24 spm",
+            "rowOneLine": "2k test @ 26 to 30 spm",
             "ptOneLine": "PT, 15 min"
           }
         },
@@ -437,7 +437,7 @@
         {
           "day": "Sunday",
           "title": "Longest run of the week",
-          "content": "**Run:** 4 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.",
+          "content": "**Run:** 4 miles, ~100 ft. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.",
           "summary": {
             "distance": "4 miles",
             "vert": "100 ft",
@@ -451,12 +451,12 @@
       "dateRange": "Nov 23-29",
       "type": "REBUILD",
       "target": "15 miles, 1,050 ft · 2 rows · 2 lifts",
-      "content": "**Week 8 after surgery.** A fourth run comes in and gentle hills come back. If the surgeon clears harder efforts at the follow-up, row intervals start on Wednesday. Lifts go back toward normal loads at RPE 7. Smooth trail only, nothing technical yet: a fall on the face is the one thing this plan can’t absorb.\n\nThanksgiving Thursday. Run in the morning, lift Friday if the day gets eaten.",
+      "content": "**Week 8 after surgery.** A fourth run comes in and gentle hills come back. Row intervals start on Wednesday. Lifts go back toward normal loads at RPE 7. Smooth trail only, nothing technical yet: a fall on the face is the one thing this plan can’t absorb.\n\nThanksgiving Thursday. Run in the morning, lift Friday if the day gets eaten.",
       "days": [
         {
           "day": "Monday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -465,7 +465,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + strides + Heavy A",
-          "content": "**Run:** 4 miles, ~250 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "content": "**Run:** 4 miles, ~250 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
           "summary": {
             "distance": "4 miles",
             "vert": "250 ft",
@@ -476,7 +476,7 @@
         {
           "day": "Wednesday",
           "title": "Row intervals, 4 × 4 min",
-          "content": "**Row:** 10 min easy, then 4 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Only once the surgeon clears harder efforts; otherwise row 30 min steady. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, then 4 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "4 × 4 min @ 24 to 26 spm, 2 min easy",
             "ptOneLine": "PT, 15 min"
@@ -532,7 +532,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -541,7 +541,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + strides + Heavy A",
-          "content": "**Run:** 5 miles, ~300 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "content": "**Run:** 5 miles, ~300 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
           "summary": {
             "distance": "5 miles",
             "vert": "300 ft",
@@ -552,7 +552,7 @@
         {
           "day": "Wednesday",
           "title": "Row intervals, 5 × 4 min",
-          "content": "**Row:** 10 min easy, then 5 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Only once the surgeon clears harder efforts; otherwise row 30 min steady. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, then 5 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "5 × 4 min @ 24 to 26 spm, 2 min easy",
             "ptOneLine": "PT, 15 min"
@@ -608,7 +608,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -617,7 +617,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + strides + Heavy A",
-          "content": "**Run:** 5 miles, ~300 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "content": "**Run:** 5 miles, ~300 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
           "summary": {
             "distance": "5 miles",
             "vert": "300 ft",
@@ -684,7 +684,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -693,7 +693,7 @@
         {
           "day": "Tuesday",
           "title": "Easy run + strides + Heavy A",
-          "content": "**Run:** 4 miles, ~250 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 3 × 8 @ 35 lb\n- 45° back extension, 2 × 12 holding a 10 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 2 × 40 m @ 44 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "content": "**Run:** 4 miles, ~250 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 3 × 8 @ 35 lb\n- 45° back extension, 2 × 12 holding a 10 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 2 × 40 m @ 44 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
           "summary": {
             "distance": "4 miles",
             "vert": "250 ft",
@@ -704,7 +704,7 @@
         {
           "day": "Wednesday",
           "title": "2k test",
-          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Only if the surgeon has cleared all-out and mouth-open efforts. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "2k test @ 26 to 30 spm",
             "ptOneLine": "PT, 15 min"
@@ -760,7 +760,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 35 min",
-          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 35 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "35 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -836,7 +836,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 35 min",
-          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 35 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "35 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -912,7 +912,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 35 min",
-          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 35 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "35 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -988,7 +988,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -1030,7 +1030,7 @@
         {
           "day": "Friday",
           "title": "2k test",
-          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Only if the surgeon has cleared all-out and mouth-open efforts. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "2k test @ 26 to 30 spm",
             "ptOneLine": "PT, 15 min"
@@ -1059,12 +1059,12 @@
       "dateRange": "Jan 18-24",
       "type": "ARRIVE",
       "target": "34 miles, 4,100 ft · 1 row · 2 lifts",
-      "content": "**Week 16 after surgery.** Five runs and one row. 40 by week 15, then hold it. Lifts move to maintenance: fewer sets, same weight.",
+      "content": "**Week 16 after surgery.** Back to the old week: Tuesday through Friday plus Sunday, with Monday’s row as the only erg day. 40 by week 15, then hold it. Lifts move to maintenance: fewer sets, same weight.",
       "days": [
         {
           "day": "Monday",
           "title": "Steady row, 40 min",
-          "content": "**Row:** 40 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 40 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "40 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -1217,7 +1217,7 @@
         {
           "day": "Monday",
           "title": "Steady row, 30 min",
-          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 30 min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "30 min steady @ 20 spm",
             "ptOneLine": "PT, 15 min"
@@ -1295,7 +1295,7 @@
         {
           "day": "Monday",
           "title": "2k test",
-          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Only if the surgeon has cleared all-out and mouth-open efforts. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
             "rowOneLine": "2k test @ 26 to 30 spm",
             "ptOneLine": "PT, 15 min"

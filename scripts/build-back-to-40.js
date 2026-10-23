@@ -15,13 +15,13 @@ const PHASES = [
     name: 'Re-entry',
     weeks: [1, 4],
     note:
-      'Flat, soft, conversational running, nose breathing the whole way. Rows stay steady. Lifts at about 60% of normal, RPE 6, exhale through every rep and keep the jaw loose. Nothing all out and nothing open mouthed until the surgeon says so.',
+      'Cleared for exercise, so this block is about ramping, not permission. Flat, soft, conversational running. Rows stay steady while the running restarts. Lifts at about 60% of normal, RPE 6, exhale through every rep and keep the jaw loose. Still blowing the nose softly, so no breath holds or bearing down on anything.',
   },
   {
     name: 'Rebuild',
     weeks: [5, 8],
     note:
-      'A fourth run comes in and gentle hills come back. If the surgeon clears harder efforts at the follow-up, row intervals start on Wednesday. Lifts go back toward normal loads at RPE 7. Smooth trail only, nothing technical yet: a fall on the face is the one thing this plan can’t absorb.',
+      'A fourth run comes in and gentle hills come back. Row intervals start on Wednesday. Lifts go back toward normal loads at RPE 7. Smooth trail only, nothing technical yet: a fall on the face is the one thing this plan can’t absorb.',
   },
   {
     name: 'Build',
@@ -33,7 +33,7 @@ const PHASES = [
     name: 'Arrive',
     weeks: [13, 16],
     note:
-      'Five runs and one row. 40 by week 15, then hold it. Lifts move to maintenance: fewer sets, same weight.',
+      'Back to the old week: Tuesday through Friday plus Sunday, with Monday’s row as the only erg day. 40 by week 15, then hold it. Lifts move to maintenance: fewer sets, same weight.',
   },
 ]
 
@@ -79,12 +79,12 @@ function runDay(w, day, mi) {
     title = long ? 'Longest run of the week' : 'Easy run'
     body =
       w === 1
-        ? `**Run:** ${one}. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee or jaw says anything. Nose breathing pace, which will feel too slow. That’s right.`
-        : `**Run:** ${one}. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.`
+        ? `**Run:** ${one}. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee says anything. Conversational pace, which will feel too slow. That’s right.`
+        : `**Run:** ${one}. Flat, soft surface, conversational pace. Stop and walk home if the right knee goes from stiff to sharp.`
   } else if (p === 2) {
     if (day === 'Tuesday') {
       title = 'Easy run + strides'
-      body = `**Run:** ${one}. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.`
+      body = `**Run:** ${one}. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back.`
     } else if (day === 'Thursday') {
       title = 'Rolling hills'
       body = `**Run:** ${one}. Gentle hills at easy effort, powerhike anything steep. Short steps on the downs to keep the quad happy.`
@@ -126,24 +126,24 @@ const ROW = {
   steady: (min) => ({
     title: `Steady row, ${min} min`,
     one: `${min} min steady @ 20 spm`,
-    body: `**Row:** ${min} min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).`,
+    body: `**Row:** ${min} min steady at 20 spm, conversational effort. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).`,
   }),
   ladder: {
     title: 'Rate ladder row',
     one: '3 × (5 min @ 18 / 20 / 22 spm)',
-    body: `**Row:** 3 rounds of 5 min at 18, 5 min at 20, 5 min at 22 spm, no rest. Same easy effort, just a faster rhythm. The goal is keeping meters per stroke as the rate climbs. Nose breathing.`,
+    body: `**Row:** 3 rounds of 5 min at 18, 5 min at 20, 5 min at 22 spm, no rest. Same easy effort, just a faster rhythm. The goal is keeping meters per stroke as the rate climbs.`,
   },
   check2k: (cleared) => ({
     title: cleared ? '2k test' : '2k check',
     one: cleared ? '2k test @ 26 to 30 spm' : '2k controlled @ 24 spm',
     body: cleared
-      ? `**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Only if the surgeon has cleared all-out and mouth-open efforts. Log it on /row.`
+      ? `**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.`
       : `**Row:** 2k at a locked 24 spm, hard but still controlled, nose breathing if you can. Not all out until the surgeon clears it. Compare to Oct 20 (11:20.0 at 20.7 spm). Log it on /row.`,
   }),
   intervals4: (n) => ({
     title: `Row intervals, ${n} × 4 min`,
     one: `${n} × 4 min @ 24 to 26 spm, 2 min easy`,
-    body: `**Row:** 10 min easy, then ${n} × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Only once the surgeon clears harder efforts; otherwise row 30 min steady. Exhale on the drive, never hold the breath.`,
+    body: `**Row:** 10 min easy, then ${n} × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Exhale on the drive, never hold the breath.`,
   }),
   intervals6: (n) => ({
     title: `Row intervals, ${n} × 6 min`,
@@ -289,7 +289,7 @@ function postOpWeek(w) {
 // Which row goes where, by week. Keys are day names.
 function rowsFor(w) {
   const p = phaseOf(w)
-  if (p === 1) return { Wednesday: ROW.steady(20 + 5 * (w - 1 > 2 ? 2 : w - 1)), Friday: w === 4 ? ROW.check2k(false) : w === 2 ? ROW.ladder : ROW.steady(25 + 5 * Math.min(w - 1, 2)), Monday: w >= 3 ? ROW.steady(20) : null }
+  if (p === 1) return { Wednesday: ROW.steady(20 + 5 * (w - 1 > 2 ? 2 : w - 1)), Friday: w === 4 ? ROW.check2k(true) : w === 2 ? ROW.ladder : ROW.steady(25 + 5 * Math.min(w - 1, 2)), Monday: w >= 3 ? ROW.steady(20) : null }
   if (p === 2) return { Monday: ROW.steady(30), Wednesday: w === 8 ? ROW.check2k(true) : w === 5 ? ROW.intervals4(4) : w === 6 ? ROW.intervals4(5) : ROW.intervals6(3) }
   if (p === 3) return { Monday: ROW.steady(w === 12 ? 30 : 35), Friday: w === 12 ? ROW.check2k(true) : w === 10 ? ROW.intervals6(4) : ROW.minutes }
   return { Monday: w === 16 ? ROW.check2k(true) : w === 14 ? ROW.intervals6(4) : ROW.steady(w === 15 ? 30 : 40) }
@@ -352,7 +352,7 @@ function buildWeek(w) {
   const notes = [
     `**Week ${postOpWeek(w)} after surgery.** ${w === phase.weeks[0] ? phase.note : ''}`.trim(),
     down ? 'Down week: about 20% less running so the last three weeks soak in. Every fourth week, no exceptions.' : '',
-    w === 4 ? 'Surgeon follow-up is around here. Ask three things: OK for all-out efforts, OK for mouth-open hard breathing, OK for trail running where a fall is possible.' : '',
+    w === 4 ? 'First 2k test on Friday, four weeks after the Oct 20 row.' : '',
     w === 5 ? 'Thanksgiving Thursday. Run in the morning, lift Friday if the day gets eaten.' : '',
     w === 9 ? 'Christmas week. The Wednesday run is the one to drop.' : '',
     w === 15 ? 'First 40 mile week. If the knee is quiet, this is the new normal. Hold it next week before thinking about more.' : '',
@@ -377,7 +377,7 @@ const plan = {
   startDate: START,
   raceDate: '2027-02-14',
   goal: '40 miles a week',
-  statement: 'Rebuilding to 40 miles a week after jaw surgery, with the erg and two lift days carrying the fitness while my legs catch up.',
+  statement: 'Rebuilding to 40 miles a week after jaw surgery, back to running Tuesday through Friday and Sunday, with the erg and two lift days carrying the fitness while my legs catch up.',
   // The lifts view reads this; the days carry the same moves.
   liftPhases: PHASES.map((p, i) => ({
     name: p.name,
