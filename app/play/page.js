@@ -8,6 +8,16 @@ export const metadata = {
 
 const projects = [
   {
+    id: 'row',
+    name: 'Erg log',
+    description:
+      'Strava skips PRs for rowing, so I built my own. Every row I finish lands here by webhook with its splits, PRs against everything before it, and goals for a 2k and pace. I leave a note on Strava about what hurt, and Claude writes back with the why, the strength work to fix it, and the next piece to row.',
+    date: '2026.10.22',
+    type: 'REACT',
+    tags: ['React', 'Next.js', 'Claude'],
+    path: '/row',
+  },
+  {
     id: 'git',
     name: 'Git, drawn out',
     description:
