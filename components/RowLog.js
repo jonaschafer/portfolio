@@ -194,8 +194,8 @@ function Advice({ advice, t }) {
         </button>
       </h4>
       {open && (
-        <div className="flex flex-col gap-[28px] pt-[16px]">
-          <p>{advice.summary}</p>
+        <div className="flex flex-col gap-[32px] pt-[16px] max-w-[640px]">
+          <p className="text-[19px] md:text-[21px] leading-[1.4] tracking-[0.21px]">{advice.summary}</p>
 
           {advice.soreness?.length > 0 && (
             <div>
@@ -205,8 +205,8 @@ function Advice({ advice, t }) {
                   <li key={s.area} className="border-t py-[12px] grid md:grid-cols-[140px_1fr] gap-x-[24px] gap-y-[6px]" style={rule}>
                     <span>{s.area}</span>
                     <div className="flex flex-col gap-[6px]">
-                      <p>{s.why}</p>
-                      <p className="opacity-80">{s.fix}</p>
+                      <p>{s.fix}</p>
+                      <p className="text-[15px] md:text-[16px] opacity-70">{s.why}</p>
                     </div>
                   </li>
                 ))}
@@ -219,19 +219,22 @@ function Advice({ advice, t }) {
               <Label>Strength</Label>
               <p className="mb-[10px]">{advice.strength.cadence}</p>
               {advice.strength.moves?.length > 0 && (
-                <ol className="flex flex-col">
-                  {advice.strength.moves.map((m, i) => (
-                    <li key={m.name} className="border-t py-[12px] grid md:grid-cols-[140px_1fr] gap-x-[24px] gap-y-[4px]" style={rule}>
-                      <span className="tabular-nums">
-                        {i + 1}. {m.name}
-                      </span>
-                      <div className="flex flex-col gap-[4px]">
-                        <span className="tabular-nums">{m.dose}</span>
-                        <span className="opacity-80">{m.why}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
+                <div className="tabular-nums">
+                  <div className="hidden md:grid grid-cols-[170px_150px_1fr] gap-x-[20px] border-b pb-[6px] text-[14px] md:text-[15px] opacity-70" style={{ borderColor: t.ink }}>
+                    <span>Move</span>
+                    <span>Dose</span>
+                    <span>Why</span>
+                  </div>
+                  <ol>
+                    {advice.strength.moves.map((m) => (
+                      <li key={m.name} className="border-b py-[10px] grid md:grid-cols-[170px_150px_1fr] gap-x-[20px] gap-y-[2px]" style={{ borderColor: `${t.ink}26` }}>
+                        <span>{m.name}</span>
+                        <span>{m.dose}</span>
+                        <span className="text-[15px] md:text-[16px] opacity-70">{m.why}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               )}
             </div>
           )}
@@ -254,7 +257,7 @@ function Workout({ w, t }) {
   const mps = metersPerStroke(w)
   return (
     <article className="border-t pt-[16px] md:pt-[20px] grid lg:grid-cols-12 gap-x-[48px] gap-y-[32px]" style={{ borderColor: `${t.ink}40` }}>
-      <div className="lg:col-span-5 flex flex-col gap-[24px]">
+      <div className="lg:col-span-5 lg:sticky lg:top-[88px] lg:self-start flex flex-col gap-[24px]">
         <header className="flex flex-col gap-[4px]">
           <span className="text-[16px] md:text-[17px] opacity-70 tabular-nums">{day(w.start_local)}</span>
           <h3 className="text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px]">{w.name}</h3>
