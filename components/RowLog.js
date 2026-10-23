@@ -194,7 +194,7 @@ function Advice({ advice, t }) {
         </button>
       </h4>
       {open && (
-        <div className="flex flex-col gap-[32px] pt-[16px] max-w-[640px]">
+        <div className="flex flex-col gap-[32px] pt-[16px]">
           <p className="text-[19px] md:text-[21px] leading-[1.4] tracking-[0.21px]">{advice.summary}</p>
 
           {advice.soreness?.length > 0 && (
@@ -273,7 +273,7 @@ function Workout({ w, t }) {
         <Splits laps={w.laps} t={t} />
       </div>
 
-      <div className="lg:col-span-7 flex flex-col gap-[28px]">
+      <div className="lg:col-span-7 w-full max-w-[640px] lg:ml-auto flex flex-col gap-[28px]">
         {w.notes ? (
           <blockquote className={`${nichrome} italic text-[18px] md:text-[21px] leading-[1.45] tracking-[0.2px]`}>“{w.notes}”</blockquote>
         ) : (
