@@ -1,0 +1,1367 @@
+{
+  "planTitle": "Back to 40",
+  "planDates": "Oct 26, 2026 to Feb 14, 2027",
+  "startDate": "2026-10-26",
+  "raceDate": "2027-02-14",
+  "goal": "40 miles a week",
+  "statement": "Rebuilding to 40 miles a week after jaw surgery, with the erg and two lift days carrying the fitness while my legs catch up.",
+  "liftPhases": [
+    {
+      "name": "Re-entry",
+      "weeks": [
+        1,
+        4
+      ],
+      "rule": "RPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+      "sessions": [
+        {
+          "name": "Heavy A",
+          "focus": "Hinge + pull",
+          "day": "Tuesday",
+          "moves": [
+            "RDL, 3 × 8 @ 75 to 95 lb",
+            "Chest-supported DB row, 3 × 10 @ 25 to 30 lb",
+            "45° back extension, 2 × 12, bodyweight",
+            "Hammer curl, 2 × 12 @ 20 lb",
+            "Farmer carry, 3 × 40 m @ 35 lb each hand",
+            "Dead bug, 2 × 8 per side"
+          ]
+        },
+        {
+          "name": "Heavy B",
+          "focus": "Squat + single leg",
+          "day": "Thursday",
+          "moves": [
+            "Goblet squat, 3 × 10 @ 35 lb",
+            "SL RDL, 3 × 8 per side @ 25 lb",
+            "Step-downs, 3 × 10 per side, bodyweight",
+            "KB swing, 3 × 12 @ 35 lb",
+            "Dead hang, 3 × 20 s",
+            "Pallof press, 2 × 10 per side"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rebuild",
+      "weeks": [
+        5,
+        8
+      ],
+      "rule": "RPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+      "sessions": [
+        {
+          "name": "Heavy A",
+          "focus": "Hinge + pull",
+          "day": "Tuesday",
+          "moves": [
+            "Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)",
+            "Chest-supported DB row, 4 × 8 @ 35 lb",
+            "45° back extension, 3 × 12 holding a 10 lb plate",
+            "Hammer curl, 3 × 10 @ 25 lb",
+            "Farmer carry, 3 × 40 m @ 44 lb each hand",
+            "Dead bug, 3 × 8 per side"
+          ]
+        },
+        {
+          "name": "Heavy B",
+          "focus": "Squat + single leg",
+          "day": "Thursday",
+          "moves": [
+            "Back squat, 4 × 6 @ 110 to 125 lb (60 to 70%)",
+            "SL RDL, 3 × 8 per side @ 35 lb",
+            "Step-downs, 3 × 10 per side @ 35 lb",
+            "KB swing, 3 × 15 @ 44 lb",
+            "Dead hang, 3 × 30 s",
+            "Pallof press, 3 × 10 per side"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Build",
+      "weeks": [
+        9,
+        12
+      ],
+      "rule": "RPE 7 to 8. Down weeks: drop one set from everything.",
+      "sessions": [
+        {
+          "name": "Heavy A",
+          "focus": "Hinge + pull",
+          "day": "Tuesday",
+          "moves": [
+            "Deadlift, 4 × 5 @ 135 to 145 lb (70 to 75%)",
+            "Chest-supported DB row, 4 × 8 @ 40 lb",
+            "45° back extension, 3 × 12 holding a 25 lb plate",
+            "Hammer curl, 3 × 10 @ 25 lb",
+            "Farmer carry, 4 × 40 m @ 53 lb each hand",
+            "Dead bug, 3 × 10 per side"
+          ]
+        },
+        {
+          "name": "Heavy B",
+          "focus": "Squat + single leg",
+          "day": "Thursday",
+          "moves": [
+            "Back squat, 4 × 5 @ 125 to 135 lb (70 to 75%)",
+            "SL RDL, 3 × 8 per side @ 44 lb",
+            "Step-downs, 3 × 10 per side @ 35 lb",
+            "KB swing, 3 × 15 @ 53 lb",
+            "Dead hang, 3 × 40 s",
+            "Pallof press, 3 × 12 per side"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arrive",
+      "weeks": [
+        13,
+        16
+      ],
+      "rule": "Maintenance. Same weights, fewer sets, so the running gets the recovery.",
+      "sessions": [
+        {
+          "name": "Heavy A",
+          "focus": "Hinge + pull",
+          "day": "Tuesday",
+          "moves": [
+            "Deadlift, 3 × 5 @ 145 to 155 lb (75 to 80%)",
+            "Chest-supported DB row, 3 × 8 @ 40 lb",
+            "45° back extension, 3 × 12 holding a 25 lb plate",
+            "Hammer curl, 2 × 10 @ 25 lb",
+            "Farmer carry, 3 × 40 m @ 53 lb each hand",
+            "Dead bug, 3 × 10 per side"
+          ]
+        },
+        {
+          "name": "Heavy B",
+          "focus": "Squat + single leg",
+          "day": "Thursday",
+          "moves": [
+            "Back squat, 3 × 5 @ 135 to 145 lb (75 to 80%)",
+            "SL RDL, 3 × 8 per side @ 44 lb",
+            "Step-downs, 2 × 10 per side @ 35 lb",
+            "KB swing, 3 × 15 @ 53 lb",
+            "Dead hang, 3 × 45 s",
+            "Pallof press, 3 × 12 per side"
+          ]
+        }
+      ]
+    }
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "dateRange": "Oct 26-Nov 1",
+      "type": "RE-ENTRY",
+      "target": "6 miles, 150 ft · 2 rows · 2 lifts",
+      "content": "**Week 4 after surgery.** Flat, soft, conversational running, nose breathing the whole way. Rows stay steady. Lifts at about 60% of normal, RPE 6, exhale through every rep and keep the jaw loose. Nothing all out and nothing open mouthed until the surgeon says so.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Rest + PT",
+          "content": "Rest from running and rowing. PT only.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + Heavy A",
+          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee or jaw says anything. Nose breathing pace, which will feel too slow. That’s right.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "2 miles",
+            "vert": "50 ft",
+            "runOneLine": "2 miles, ~50 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Steady row, 20 min",
+          "content": "**Row:** 20 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "20 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy run + Heavy B",
+          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee or jaw says anything. Nose breathing pace, which will feel too slow. That’s right.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "2 miles",
+            "vert": "50 ft",
+            "runOneLine": "2 miles, ~50 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Steady row, 25 min",
+          "content": "**Row:** 25 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "25 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Longest run of the week",
+          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee or jaw says anything. Nose breathing pace, which will feel too slow. That’s right.",
+          "summary": {
+            "distance": "2 miles",
+            "vert": "50 ft",
+            "runOneLine": "2 miles, ~50 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "dateRange": "Nov 2-8",
+      "type": "RE-ENTRY",
+      "target": "9 miles, 300 ft · 2 rows · 2 lifts",
+      "content": "**Week 5 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Rest + PT",
+          "content": "Rest from running and rowing. PT only.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + Heavy A",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "100 ft",
+            "runOneLine": "3 miles, ~100 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Steady row, 25 min",
+          "content": "**Row:** 25 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "25 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy run + Heavy B",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "100 ft",
+            "runOneLine": "3 miles, ~100 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Rate ladder row",
+          "content": "**Row:** 3 rounds of 5 min at 18, 5 min at 20, 5 min at 22 spm, no rest. Same easy effort, just a faster rhythm. The goal is keeping meters per stroke as the rate climbs. Nose breathing.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "3 × (5 min @ 18 / 20 / 22 spm)",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Longest run of the week",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "100 ft",
+            "runOneLine": "3 miles, ~100 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "dateRange": "Nov 9-15",
+      "type": "RE-ENTRY",
+      "target": "12 miles, 350 ft · 3 rows · 2 lifts",
+      "content": "**Week 6 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 20 min",
+          "content": "**Row:** 20 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "20 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + Heavy A",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 3 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 3 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 3 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "100 ft",
+            "runOneLine": "3 miles, ~100 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy run + Heavy B",
+          "content": "**Run:** 4 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 3 × 10 @ 35 lb\n- SL RDL, 3 × 8 per side @ 25 lb\n- Step-downs, 3 × 10 per side, bodyweight\n- KB swing, 3 × 12 @ 35 lb\n- Dead hang, 3 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "100 ft",
+            "runOneLine": "4 miles, ~100 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Steady row, 35 min",
+          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "35 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Longest run of the week",
+          "content": "**Run:** 5 miles, ~150 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "150 ft",
+            "runOneLine": "5 miles, ~150 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "dateRange": "Nov 16-22",
+      "type": "RE-ENTRY · DOWN",
+      "target": "10 miles, 300 ft · 3 rows · 2 lifts",
+      "content": "**Week 7 after surgery.**\n\nDown week: about 20% less running so the last three weeks soak in. Every fourth week, no exceptions.\n\nSurgeon follow-up is around here. Ask three things: OK for all-out efforts, OK for mouth-open hard breathing, OK for trail running where a fall is possible.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 20 min",
+          "content": "**Row:** 20 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "20 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + Heavy A",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- RDL, 2 × 8 @ 75 to 95 lb\n- Chest-supported DB row, 2 × 10 @ 25 to 30 lb\n- 45° back extension, 2 × 12, bodyweight\n- Hammer curl, 2 × 12 @ 20 lb\n- Farmer carry, 2 × 40 m @ 35 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "100 ft",
+            "runOneLine": "3 miles, ~100 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy run + Heavy B",
+          "content": "**Run:** 3 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Goblet squat, 2 × 10 @ 35 lb\n- SL RDL, 2 × 8 per side @ 25 lb\n- Step-downs, 2 × 10 per side, bodyweight\n- KB swing, 2 × 12 @ 35 lb\n- Dead hang, 2 × 20 s\n- Pallof press, 2 × 10 per side\nRPE 6, two reps left in every set. Exhale on the way up, no breath holds or bracing grinds, jaw relaxed and teeth apart.",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "100 ft",
+            "runOneLine": "3 miles, ~100 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "2k check",
+          "content": "**Row:** 2k at a locked 24 spm, hard but still controlled, nose breathing if you can. Not all out until the surgeon clears it. Compare to Oct 20 (11:20.0 at 20.7 spm). Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "2k controlled @ 24 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Longest run of the week",
+          "content": "**Run:** 4 miles, ~100 ft. Flat, soft surface, nose breathing pace. Stop and walk home if the right knee goes from stiff to sharp.",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "100 ft",
+            "runOneLine": "4 miles, ~100 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "dateRange": "Nov 23-29",
+      "type": "REBUILD",
+      "target": "15 miles, 1,050 ft · 2 rows · 2 lifts",
+      "content": "**Week 8 after surgery.** A fourth run comes in and gentle hills come back. If the surgeon clears harder efforts at the follow-up, row intervals start on Wednesday. Lifts go back toward normal loads at RPE 7. Smooth trail only, nothing technical yet: a fall on the face is the one thing this plan can’t absorb.\n\nThanksgiving Thursday. Run in the morning, lift Friday if the day gets eaten.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + strides + Heavy A",
+          "content": "**Run:** 4 miles, ~250 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "250 ft",
+            "runOneLine": "4 miles, ~250 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Row intervals, 4 × 4 min",
+          "content": "**Row:** 10 min easy, then 4 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Only once the surgeon clears harder efforts; otherwise row 30 min steady. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "4 × 4 min @ 24 to 26 spm, 2 min easy",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Rolling hills + Heavy B",
+          "content": "**Run:** 4 miles, ~250 ft. Gentle hills at easy effort, powerhike anything steep. Short steps on the downs to keep the quad happy.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 4 × 6 @ 110 to 125 lb (60 to 70%)\n- SL RDL, 3 × 8 per side @ 35 lb\n- Step-downs, 3 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 44 lb\n- Dead hang, 3 × 30 s\n- Pallof press, 3 × 10 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "250 ft",
+            "runOneLine": "4 miles, ~250 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Shakeout",
+          "content": "**Run:** 2 miles, ~100 ft. Very easy, flat. Fine to swap for a 25 min steady row if the legs are cooked.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "2 miles",
+            "vert": "100 ft",
+            "runOneLine": "2 miles, ~100 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long run",
+          "content": "**Run:** 5 miles, ~450 ft. Easy the whole way, smooth trail or road. Practice eating on the run again: a gel or chews every 40 min once this goes past an hour.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "450 ft",
+            "runOneLine": "5 miles, ~450 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "dateRange": "Nov 30-Dec 6",
+      "type": "REBUILD",
+      "target": "18 miles, 1,300 ft · 2 rows · 2 lifts",
+      "content": "**Week 9 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + strides + Heavy A",
+          "content": "**Run:** 5 miles, ~300 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "300 ft",
+            "runOneLine": "5 miles, ~300 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Row intervals, 5 × 4 min",
+          "content": "**Row:** 10 min easy, then 5 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Only once the surgeon clears harder efforts; otherwise row 30 min steady. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "5 × 4 min @ 24 to 26 spm, 2 min easy",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Rolling hills + Heavy B",
+          "content": "**Run:** 4 miles, ~250 ft. Gentle hills at easy effort, powerhike anything steep. Short steps on the downs to keep the quad happy.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 4 × 6 @ 110 to 125 lb (60 to 70%)\n- SL RDL, 3 × 8 per side @ 35 lb\n- Step-downs, 3 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 44 lb\n- Dead hang, 3 × 30 s\n- Pallof press, 3 × 10 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "250 ft",
+            "runOneLine": "4 miles, ~250 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Shakeout",
+          "content": "**Run:** 3 miles, ~200 ft. Very easy, flat. Fine to swap for a 25 min steady row if the legs are cooked.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "200 ft",
+            "runOneLine": "3 miles, ~200 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long run",
+          "content": "**Run:** 6 miles, ~550 ft. Easy the whole way, smooth trail or road. Practice eating on the run again: a gel or chews every 40 min once this goes past an hour.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "550 ft",
+            "runOneLine": "6 miles, ~550 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "dateRange": "Dec 7-13",
+      "type": "REBUILD",
+      "target": "21 miles, 1,500 ft · 2 rows · 2 lifts",
+      "content": "**Week 10 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + strides + Heavy A",
+          "content": "**Run:** 5 miles, ~300 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 4 × 8 @ 35 lb\n- 45° back extension, 3 × 12 holding a 10 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 44 lb each hand\n- Dead bug, 3 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "300 ft",
+            "runOneLine": "5 miles, ~300 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Row intervals, 3 × 6 min",
+          "content": "**Row:** 10 min easy, then 3 × 6 min at 24 spm, 2 min easy between. Steady-hard, same split every rep.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "3 × 6 min @ 24 spm, 2 min easy",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Rolling hills + Heavy B",
+          "content": "**Run:** 5 miles, ~300 ft. Gentle hills at easy effort, powerhike anything steep. Short steps on the downs to keep the quad happy.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 4 × 6 @ 110 to 125 lb (60 to 70%)\n- SL RDL, 3 × 8 per side @ 35 lb\n- Step-downs, 3 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 44 lb\n- Dead hang, 3 × 30 s\n- Pallof press, 3 × 10 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "300 ft",
+            "runOneLine": "5 miles, ~300 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Shakeout",
+          "content": "**Run:** 3 miles, ~200 ft. Very easy, flat. Fine to swap for a 25 min steady row if the legs are cooked.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "200 ft",
+            "runOneLine": "3 miles, ~200 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long run",
+          "content": "**Run:** 8 miles, ~700 ft. Easy the whole way, smooth trail or road. Practice eating on the run again: a gel or chews every 40 min once this goes past an hour.",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "700 ft",
+            "runOneLine": "8 miles, ~700 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "dateRange": "Dec 14-20",
+      "type": "REBUILD · DOWN",
+      "target": "17 miles, 1,250 ft · 2 rows · 2 lifts",
+      "content": "**Week 11 after surgery.**\n\nDown week: about 20% less running so the last three weeks soak in. Every fourth week, no exceptions.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "Easy run + strides + Heavy A",
+          "content": "**Run:** 4 miles, ~250 ft. Easy, gentle rolling roads or smooth gravel. Finish with 4 × 20s relaxed strides, full walk back. Skip the strides if the surgeon hasn’t cleared harder efforts.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 115 to 135 lb (60 to 70%)\n- Chest-supported DB row, 3 × 8 @ 35 lb\n- 45° back extension, 2 × 12 holding a 10 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 2 × 40 m @ 44 lb each hand\n- Dead bug, 2 × 8 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "250 ft",
+            "runOneLine": "4 miles, ~250 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "2k test",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Only if the surgeon has cleared all-out and mouth-open efforts. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "2k test @ 26 to 30 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Rolling hills + Heavy B",
+          "content": "**Run:** 4 miles, ~250 ft. Gentle hills at easy effort, powerhike anything steep. Short steps on the downs to keep the quad happy.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 3 × 6 @ 110 to 125 lb (60 to 70%)\n- SL RDL, 2 × 8 per side @ 35 lb\n- Step-downs, 2 × 10 per side @ 35 lb\n- KB swing, 2 × 15 @ 44 lb\n- Dead hang, 2 × 30 s\n- Pallof press, 2 × 10 per side\nRPE 7. Breathe out through the hard part of each rep. Still no maxes and no grinding.",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "250 ft",
+            "runOneLine": "4 miles, ~250 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Shakeout",
+          "content": "**Run:** 2 miles, ~100 ft. Very easy, flat. Fine to swap for a 25 min steady row if the legs are cooked.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "2 miles",
+            "vert": "100 ft",
+            "runOneLine": "2 miles, ~100 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long run",
+          "content": "**Run:** 7 miles, ~650 ft. Easy the whole way, smooth trail or road. Practice eating on the run again: a gel or chews every 40 min once this goes past an hour.",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "650 ft",
+            "runOneLine": "7 miles, ~650 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "dateRange": "Dec 21-27",
+      "type": "BUILD",
+      "target": "24 miles, 2,350 ft · 2 rows · 2 lifts",
+      "content": "**Week 12 after surgery.** Trail and vert are back. Tuesday group runs return. Rows drop to two, one steady and one hard, and stop replacing easy miles. Lower body heavy day stays at least 72 hours before the long run.\n\nChristmas week. The Wednesday run is the one to drop.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 35 min",
+          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "35 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 6 miles, ~500 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 135 to 145 lb (70 to 75%)\n- Chest-supported DB row, 4 × 8 @ 40 lb\n- 45° back extension, 3 × 12 holding a 25 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 4 × 40 m @ 53 lb each hand\n- Dead bug, 3 × 10 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "500 ft",
+            "runOneLine": "6 miles, ~500 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 3 miles, ~250 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "250 ft",
+            "runOneLine": "3 miles, ~250 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "BPA hills + Heavy B",
+          "content": "**Run:** 5 miles, ~400 ft. Hill session: 4 to 6 × 2 to 3 min climbs at a strong, relaxed effort, jog down. Powerhike the steep stuff.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 4 × 5 @ 125 to 135 lb (70 to 75%)\n- SL RDL, 3 × 8 per side @ 44 lb\n- Step-downs, 3 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 53 lb\n- Dead hang, 3 × 40 s\n- Pallof press, 3 × 12 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "400 ft",
+            "runOneLine": "5 miles, ~400 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Row 1 on, 1 off",
+          "content": "**Row:** 10 min easy, then 10 × 1 min at 26 to 28 spm with 1 min easy paddle. Fast and long, not frantic. Keeps the top end without beating up the legs.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "10 × 1 min @ 26 to 28 spm, 1 min easy",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 10 miles, ~1,200 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "10 miles",
+            "vert": "1,200 ft",
+            "runOneLine": "10 miles, ~1,200 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "dateRange": "Dec 28-Jan 3",
+      "type": "BUILD",
+      "target": "28 miles, 2,650 ft · 2 rows · 2 lifts",
+      "content": "**Week 13 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 35 min",
+          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "35 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 7 miles, ~550 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 135 to 145 lb (70 to 75%)\n- Chest-supported DB row, 4 × 8 @ 40 lb\n- 45° back extension, 3 × 12 holding a 25 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 4 × 40 m @ 53 lb each hand\n- Dead bug, 3 × 10 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "550 ft",
+            "runOneLine": "7 miles, ~550 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 4 miles, ~300 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "300 ft",
+            "runOneLine": "4 miles, ~300 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "BPA hills + Heavy B",
+          "content": "**Run:** 6 miles, ~500 ft. Hill session: 4 to 6 × 2 to 3 min climbs at a strong, relaxed effort, jog down. Powerhike the steep stuff.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 4 × 5 @ 125 to 135 lb (70 to 75%)\n- SL RDL, 3 × 8 per side @ 44 lb\n- Step-downs, 3 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 53 lb\n- Dead hang, 3 × 40 s\n- Pallof press, 3 × 12 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "500 ft",
+            "runOneLine": "6 miles, ~500 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Row intervals, 4 × 6 min",
+          "content": "**Row:** 10 min easy, then 4 × 6 min at 24 spm, 2 min easy between. Steady-hard, same split every rep.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "4 × 6 min @ 24 spm, 2 min easy",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 11 miles, ~1,300 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "11 miles",
+            "vert": "1,300 ft",
+            "runOneLine": "11 miles, ~1,300 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "dateRange": "Jan 4-10",
+      "type": "BUILD",
+      "target": "32 miles, 3,050 ft · 2 rows · 2 lifts",
+      "content": "**Week 14 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 35 min",
+          "content": "**Row:** 35 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "35 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 8 miles, ~650 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 4 × 5 @ 135 to 145 lb (70 to 75%)\n- Chest-supported DB row, 4 × 8 @ 40 lb\n- 45° back extension, 3 × 12 holding a 25 lb plate\n- Hammer curl, 3 × 10 @ 25 lb\n- Farmer carry, 4 × 40 m @ 53 lb each hand\n- Dead bug, 3 × 10 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "650 ft",
+            "runOneLine": "8 miles, ~650 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 4 miles, ~300 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "300 ft",
+            "runOneLine": "4 miles, ~300 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "BPA hills + Heavy B",
+          "content": "**Run:** 7 miles, ~550 ft. Hill session: 4 to 6 × 2 to 3 min climbs at a strong, relaxed effort, jog down. Powerhike the steep stuff.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 4 × 5 @ 125 to 135 lb (70 to 75%)\n- SL RDL, 3 × 8 per side @ 44 lb\n- Step-downs, 3 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 53 lb\n- Dead hang, 3 × 40 s\n- Pallof press, 3 × 12 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "550 ft",
+            "runOneLine": "7 miles, ~550 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Row 1 on, 1 off",
+          "content": "**Row:** 10 min easy, then 10 × 1 min at 26 to 28 spm with 1 min easy paddle. Fast and long, not frantic. Keeps the top end without beating up the legs.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "10 × 1 min @ 26 to 28 spm, 1 min easy",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 13 miles, ~1,550 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "13 miles",
+            "vert": "1,550 ft",
+            "runOneLine": "13 miles, ~1,550 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "dateRange": "Jan 11-17",
+      "type": "BUILD · DOWN",
+      "target": "26 miles, 2,550 ft · 2 rows · 2 lifts",
+      "content": "**Week 15 after surgery.**\n\nDown week: about 20% less running so the last three weeks soak in. Every fourth week, no exceptions.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 6 miles, ~500 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 135 to 145 lb (70 to 75%)\n- Chest-supported DB row, 3 × 8 @ 40 lb\n- 45° back extension, 2 × 12 holding a 25 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 53 lb each hand\n- Dead bug, 2 × 10 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "500 ft",
+            "runOneLine": "6 miles, ~500 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 3 miles, ~250 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "250 ft",
+            "runOneLine": "3 miles, ~250 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "Easy hills + Heavy B",
+          "content": "**Run:** 6 miles, ~500 ft. Down week. Easy rolling hills, no repeats.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 3 × 5 @ 125 to 135 lb (70 to 75%)\n- SL RDL, 2 × 8 per side @ 44 lb\n- Step-downs, 2 × 10 per side @ 35 lb\n- KB swing, 2 × 15 @ 53 lb\n- Dead hang, 2 × 40 s\n- Pallof press, 2 × 12 per side\nRPE 7 to 8. Down weeks: drop one set from everything.",
+          "summary": {
+            "distance": "6 miles",
+            "vert": "500 ft",
+            "runOneLine": "6 miles, ~500 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "2k test",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Only if the surgeon has cleared all-out and mouth-open efforts. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "2k test @ 26 to 30 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 11 miles, ~1,300 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "11 miles",
+            "vert": "1,300 ft",
+            "runOneLine": "11 miles, ~1,300 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 13,
+      "dateRange": "Jan 18-24",
+      "type": "ARRIVE",
+      "target": "34 miles, 4,100 ft · 1 row · 2 lifts",
+      "content": "**Week 16 after surgery.** Five runs and one row. 40 by week 15, then hold it. Lifts move to maintenance: fewer sets, same weight.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 40 min",
+          "content": "**Row:** 40 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "40 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 8 miles, ~800 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 145 to 155 lb (75 to 80%)\n- Chest-supported DB row, 3 × 8 @ 40 lb\n- 45° back extension, 3 × 12 holding a 25 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 53 lb each hand\n- Dead bug, 3 × 10 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "800 ft",
+            "runOneLine": "8 miles, ~800 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 5 miles, ~500 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "500 ft",
+            "runOneLine": "5 miles, ~500 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "BPA hills + Heavy B",
+          "content": "**Run:** 7 miles, ~700 ft. Hill session: 6 to 8 × 2 to 3 min climbs at a strong, relaxed effort, jog down. Powerhike the steep stuff.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 3 × 5 @ 135 to 145 lb (75 to 80%)\n- SL RDL, 3 × 8 per side @ 44 lb\n- Step-downs, 2 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 53 lb\n- Dead hang, 3 × 45 s\n- Pallof press, 3 × 12 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "7 miles",
+            "vert": "700 ft",
+            "runOneLine": "7 miles, ~700 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "",
+          "content": "**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 14 miles, ~2,100 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "14 miles",
+            "vert": "2,100 ft",
+            "runOneLine": "14 miles, ~2,100 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 14,
+      "dateRange": "Jan 25-31",
+      "type": "ARRIVE",
+      "target": "37 miles, 4,350 ft · 1 row · 2 lifts",
+      "content": "**Week 17 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Row intervals, 4 × 6 min",
+          "content": "**Row:** 10 min easy, then 4 × 6 min at 24 spm, 2 min easy between. Steady-hard, same split every rep.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "4 × 6 min @ 24 spm, 2 min easy",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 8 miles, ~800 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 145 to 155 lb (75 to 80%)\n- Chest-supported DB row, 3 × 8 @ 40 lb\n- 45° back extension, 3 × 12 holding a 25 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 53 lb each hand\n- Dead bug, 3 × 10 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "800 ft",
+            "runOneLine": "8 miles, ~800 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 5 miles, ~500 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "500 ft",
+            "runOneLine": "5 miles, ~500 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "BPA hills + Heavy B",
+          "content": "**Run:** 8 miles, ~800 ft. Hill session: 6 to 8 × 2 to 3 min climbs at a strong, relaxed effort, jog down. Powerhike the steep stuff.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 3 × 5 @ 135 to 145 lb (75 to 80%)\n- SL RDL, 3 × 8 per side @ 44 lb\n- Step-downs, 2 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 53 lb\n- Dead hang, 3 × 45 s\n- Pallof press, 3 × 12 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "8 miles",
+            "vert": "800 ft",
+            "runOneLine": "8 miles, ~800 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Shakeout",
+          "content": "**Run:** 3 miles, ~300 ft. Very easy, flat. The day before rest, two days before the long run.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "3 miles",
+            "vert": "300 ft",
+            "runOneLine": "3 miles, ~300 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 13 miles, ~1,950 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "13 miles",
+            "vert": "1,950 ft",
+            "runOneLine": "13 miles, ~1,950 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 15,
+      "dateRange": "Feb 1-7",
+      "type": "ARRIVE",
+      "target": "40 miles, 4,650 ft · 1 row · 2 lifts",
+      "content": "**Week 18 after surgery.**\n\nFirst 40 mile week. If the knee is quiet, this is the new normal. Hold it next week before thinking about more.",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "Steady row, 30 min",
+          "content": "**Row:** 30 min steady at 20 spm, nose breathing. Watch meters per stroke (9.16 on Oct 22) and pace will follow. Jaw loose at the catch, no gritting on the drive, sit tall instead of leaning back past 11 o’clock (that lean is the sore mid back).\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "30 min steady @ 20 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 9 miles, ~900 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 145 to 155 lb (75 to 80%)\n- Chest-supported DB row, 3 × 8 @ 40 lb\n- 45° back extension, 3 × 12 holding a 25 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 53 lb each hand\n- Dead bug, 3 × 10 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "9 miles",
+            "vert": "900 ft",
+            "runOneLine": "9 miles, ~900 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 5 miles, ~500 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "500 ft",
+            "runOneLine": "5 miles, ~500 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "BPA hills + Heavy B",
+          "content": "**Run:** 9 miles, ~900 ft. Hill session: 6 to 8 × 2 to 3 min climbs at a strong, relaxed effort, jog down. Powerhike the steep stuff.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 3 × 5 @ 135 to 145 lb (75 to 80%)\n- SL RDL, 3 × 8 per side @ 44 lb\n- Step-downs, 2 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 53 lb\n- Dead hang, 3 × 45 s\n- Pallof press, 3 × 12 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "9 miles",
+            "vert": "900 ft",
+            "runOneLine": "9 miles, ~900 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Shakeout",
+          "content": "**Run:** 4 miles, ~400 ft. Very easy, flat. The day before rest, two days before the long run.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "400 ft",
+            "runOneLine": "4 miles, ~400 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 13 miles, ~1,950 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "13 miles",
+            "vert": "1,950 ft",
+            "runOneLine": "13 miles, ~1,950 ft"
+          }
+        }
+      ]
+    },
+    {
+      "week": 16,
+      "dateRange": "Feb 8-14",
+      "type": "ARRIVE",
+      "target": "40 miles, 4,650 ft · 1 row · 2 lifts",
+      "content": "**Week 19 after surgery.**",
+      "days": [
+        {
+          "day": "Monday",
+          "title": "2k test",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Only if the surgeon has cleared all-out and mouth-open efforts. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "rowOneLine": "2k test @ 26 to 30 spm",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Tuesday",
+          "title": "TTT group run + Heavy A",
+          "content": "**Run:** 9 miles, ~900 ft. Tuesday crew is back. Keep it conversational on the climbs and let the group go if they push.\n\n**Heavy A (hinge + pull):** after the run, or later the same day.\n- Deadlift, 3 × 5 @ 145 to 155 lb (75 to 80%)\n- Chest-supported DB row, 3 × 8 @ 40 lb\n- 45° back extension, 3 × 12 holding a 25 lb plate\n- Hammer curl, 2 × 10 @ 25 lb\n- Farmer carry, 3 × 40 m @ 53 lb each hand\n- Dead bug, 3 × 10 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "9 miles",
+            "vert": "900 ft",
+            "runOneLine": "9 miles, ~900 ft",
+            "strengthOneLine": "Heavy A: hinge + pull"
+          }
+        },
+        {
+          "day": "Wednesday",
+          "title": "Recovery run",
+          "content": "**Run:** 5 miles, ~500 ft. Flat and slow, the day after Tuesday. This is the first run to cut if anything aches.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "5 miles",
+            "vert": "500 ft",
+            "runOneLine": "5 miles, ~500 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Thursday",
+          "title": "BPA hills + Heavy B",
+          "content": "**Run:** 9 miles, ~900 ft. Hill session: 6 to 8 × 2 to 3 min climbs at a strong, relaxed effort, jog down. Powerhike the steep stuff.\n\n**Heavy B (squat + single leg):** after the run, or later the same day.\n- Back squat, 3 × 5 @ 135 to 145 lb (75 to 80%)\n- SL RDL, 3 × 8 per side @ 44 lb\n- Step-downs, 2 × 10 per side @ 35 lb\n- KB swing, 3 × 15 @ 53 lb\n- Dead hang, 3 × 45 s\n- Pallof press, 3 × 12 per side\nMaintenance. Same weights, fewer sets, so the running gets the recovery.",
+          "summary": {
+            "distance": "9 miles",
+            "vert": "900 ft",
+            "runOneLine": "9 miles, ~900 ft",
+            "strengthOneLine": "Heavy B: squat + single leg"
+          }
+        },
+        {
+          "day": "Friday",
+          "title": "Shakeout",
+          "content": "**Run:** 4 miles, ~400 ft. Very easy, flat. The day before rest, two days before the long run.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "summary": {
+            "distance": "4 miles",
+            "vert": "400 ft",
+            "runOneLine": "4 miles, ~400 ft",
+            "ptOneLine": "PT, 15 min"
+          }
+        },
+        {
+          "day": "Saturday",
+          "title": "Rest",
+          "content": "Rest. Walk Sadie if you want to move.",
+          "summary": {}
+        },
+        {
+          "day": "Sunday",
+          "title": "Long trail run",
+          "content": "**Run:** 13 miles, ~1,950 ft. Trail, easy effort, real vert. Fuel every 40 min and carry water.",
+          "summary": {
+            "distance": "13 miles",
+            "vert": "1,950 ft",
+            "runOneLine": "13 miles, ~1,950 ft"
+          }
+        }
+      ]
+    }
+  ]
+}

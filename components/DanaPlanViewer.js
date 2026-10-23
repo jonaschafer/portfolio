@@ -4,146 +4,112 @@ import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import DanaPlanHeader from './DanaPlanHeader'
-import { getCurrentWeek, formatRunSummary, getDayDate, formatShortDate, getDayContentWithPT, getCanonicalRun } from '../lib/dana-plan-utils'
+import { PLAN_URL, getCurrentWeek, getDayDate, formatShortDate, getDayContentWithPT, getCanonicalRun, dateKey } from '../lib/dana-plan-utils'
+import { T, social, ultra, rule, chip, pressable, formatContentHtml } from './planStyle'
 
-const STRAVA_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+// Week view: the week's target and notes, then one row per day. Rows on every
+// screen size, since the lift lists are too long for seven narrow columns.
+// On a phone each row folds; from md up they're all open.
 
-function buildStravaCopyText(dayData) {
+const body = `${social} text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px]`
+
+function buildStravaCopyText(dayData, pt) {
   if (!dayData) return ''
   const { distance, vert } = getCanonicalRun(dayData)
   const runMeta = [distance, vert].filter(Boolean).join(' · ')
-  const content = getDayContentWithPT(dayData.day, dayData.content)
+  const content = getDayContentWithPT(dayData.day, dayData.content, pt)
   const header = `${dayData.day}: ${dayData.title}${runMeta ? ` (${runMeta})` : ''}`
   return content ? `${header}\n\n${content}` : header
 }
 
-function formatMeta(day) {
-  const { distance, vert } = formatRunSummary(day || {})
-  const parts = []
-  if (distance) parts.push(<span key="d" className="text-[#FAFAFA]">{distance}</span>)
-  if (vert) parts.push(<span key="v" className="text-[#c4e0d4]">{vert}</span>)
-  if (parts.length === 0) return null
-  return <div className="flex flex-wrap gap-[10px] mt-2 font-['Haas_Grot_Disp',_sans-serif] text-[15px] md:text-[13px] tracking-[0.17px] text-[#FAFAFA]/70">{parts}</div>
-}
-
-function formatContentHtml(text) {
-  if (!text) return ''
-  return text
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/^- /gm, '• ')
-    .replace(/\n/g, '<br/>')
-}
-
-function DayCard({ dayData, day, title, summary, content, isOff, dateLabel, copiedDay, onCopy }) {
-  const [open, setOpen] = useState(false)
+// What the day holds, as chips: run, row, lift.
+function Meta({ day }) {
+  const { distance, vert } = getCanonicalRun(day)
+  const s = day.summary || {}
+  const items = [
+    distance && ['Run', [distance, vert].filter(Boolean).join(' · ')],
+    s.rowOneLine && ['Row', s.rowOneLine],
+    s.strengthOneLine && ['Lift', s.strengthOneLine.split(':')[0]],
+  ].filter(Boolean)
+  if (!items.length) return null
   return (
-    <div
-      className={`rounded-[12px] border overflow-hidden ${
-        isOff ? 'bg-[#FAFAFA]/5 border-[#FAFAFA]/10' : 'bg-[#FAFAFA]/10 border-[#FAFAFA]/15'
-      }`}
-    >
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="w-full text-left px-4 py-4 flex items-start justify-between gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FAFAFA]/50 rounded-[12px]"
-        aria-expanded={open}
-      >
-        <div>
-          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-bold uppercase tracking-[0.05em] text-[#FAFAFA]/60 mb-1">
-            {day}
-            {dateLabel && <span className="md:hidden"> · {dateLabel}</span>}
-          </div>
-            <div
-              className={`font-['Haas_Grot_Disp',_sans-serif] text-[15px] leading-[1.3] tracking-[0.16px] ${isOff ? 'text-[#FAFAFA]/70 font-medium' : 'text-[#FAFAFA] font-semibold'}`}
-            >
-              {title}
-            </div>
-            {formatMeta(dayData)}
-          </div>
-        <div className="flex items-start gap-2 flex-shrink-0">
-          {dayData && STRAVA_DAYS.includes(dayData.day) && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                onCopy?.(dayData)
-              }}
-              className="inline-flex items-center gap-1 text-[11px] uppercase tracking-[0.08em] font-semibold text-[#FAFAFA]/60 hover:text-[#FAFAFA] border border-transparent hover:border-[#FAFAFA]/30 rounded-full px-2 py-1 bg-[#1f1f1f]/60 hover:bg-[#303030]"
-              aria-label={`Copy ${dayData.day} to clipboard`}
-            >
-              <span className="w-3 h-3 relative inline-block">
-                <span className="absolute inset-0 border border-[#FAFAFA]/40 rounded-[2px]" />
-                <span className="absolute -top-[2px] -left-[2px] w-full h-full border border-[#FAFAFA]/80 rounded-[2px] bg-transparent" />
-              </span>
-              <span>{copiedDay === dayData.day ? 'Copied' : 'Copy'}</span>
-            </button>
-          )}
-          <span className="text-[#FAFAFA]/60 text-sm" aria-hidden>
-            {open ? '▲' : '▼'}
-          </span>
-        </div>
-      </button>
-      {open && (content || getDayContentWithPT(day)) && (
-        <div
-          className="px-4 pb-4 pt-0 border-t border-[#FAFAFA]/15 font-['Haas_Grot_Disp',_sans-serif] text-[15px] md:text-[13px] leading-[1.5] tracking-[0.167px] text-[#FAFAFA]/80 [&_strong]:text-[#FAFAFA] [&_br]:block [&_br]:h-2"
-          dangerouslySetInnerHTML={{ __html: formatContentHtml(getDayContentWithPT(day, content)) }}
-        />
-      )}
-    </div>
+    <ul className="flex flex-wrap gap-[6px] mt-[10px]">
+      {items.map(([k, v]) => (
+        <li key={k} className={`${chip} opacity-80`}>
+          <span className="opacity-60">{k}</span> {v}
+        </li>
+      ))}
+    </ul>
   )
 }
 
-function WeekDayCell({ dayData, day, title, content, dateLabel, copiedDay, onCopy }) {
-  const { distance, vert } = getCanonicalRun(dayData)
-  const runLine = [distance, vert].filter(Boolean).join(' ') || null
-  const isOff = /off|rest|yay!/i.test(title)
+function CopyButton({ dayData, copiedDay, onCopy }) {
   return (
-    <div
-      className={`min-h-[280px] flex flex-col border-r last:border-r-0 border-[#FAFAFA]/15 overflow-hidden ${
-        isOff ? 'bg-[#252525]' : 'bg-[#383838]'
-      }`}
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation()
+        onCopy(dayData)
+      }}
+      className={`${chip} ${pressable} hover:bg-[var(--ink)] hover:text-[var(--bg)]`}
+      aria-label={`Copy ${dayData.day} for Strava`}
     >
-      <div className="p-2 flex-shrink-0 border-b border-[#FAFAFA]/15">
-        <div className="flex items-start justify-between gap-2">
-          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-bold uppercase tracking-wider text-[#FAFAFA]/60">
-            {day.toUpperCase().slice(0, 3)}
-          </div>
-          {dayData && STRAVA_DAYS.includes(dayData.day) && (
-            <button
-              type="button"
-              onClick={() => onCopy?.(dayData)}
-              className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.08em] font-semibold text-[#FAFAFA]/55 hover:text-[#FAFAFA] border border-transparent hover:border-[#FAFAFA]/30 rounded-full px-2 py-1 bg-[#1f1f1f]/50 hover:bg-[#303030]"
-              aria-label={`Copy ${dayData.day} to clipboard`}
-            >
-              <span className="w-3 h-3 relative inline-block">
-                <span className="absolute inset-0 border border-[#FAFAFA]/35 rounded-[2px]" />
-                <span className="absolute -top-[2px] -left-[2px] w-full h-full border border-[#FAFAFA]/70 rounded-[2px] bg-transparent" />
+      {copiedDay === dayData.day ? 'Copied' : 'Copy'}
+    </button>
+  )
+}
+
+function DayRow({ dayData, dateLabel, isToday, pt, copiedDay, onCopy }) {
+  const [open, setOpen] = useState(false)
+  const content = getDayContentWithPT(dayData.day, dayData.content, pt)
+  const isRest = /^rest/i.test(dayData.title)
+  return (
+    <li className="border-t pt-[16px] md:pt-[20px] pb-[24px] md:pb-[32px]" style={rule()}>
+      <div className="md:grid md:grid-cols-12 md:gap-x-[48px]">
+        <div className="md:col-span-4 lg:col-span-3">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            className="md:pointer-events-none w-full text-left flex items-start justify-between gap-[12px]"
+          >
+            <span>
+              <span className={`${social} flex items-baseline gap-[10px] text-[16px] md:text-[17px] leading-none tabular-nums`}>
+                <span>{dayData.day}</span>
+                <span className="opacity-60">{dateLabel}</span>
+                {isToday && <span className={`${chip} -my-[3px]`} style={{ backgroundColor: T.ink, color: T.bg, borderColor: T.ink }}>Today</span>}
               </span>
-              <span>{copiedDay === dayData.day ? 'Copied' : 'Copy'}</span>
-            </button>
+              <span className={`${social} block mt-[8px] text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px] ${isRest ? 'opacity-70' : ''}`}>{dayData.title}</span>
+            </span>
+            <span aria-hidden className={`${social} md:hidden text-[20px] leading-none w-[20px] text-right`}>
+              {open ? '–' : '+'}
+            </span>
+          </button>
+          <Meta day={dayData} />
+          {content && (
+            <div className="hidden md:block mt-[14px]">
+              <CopyButton dayData={dayData} copiedDay={copiedDay} onCopy={onCopy} />
+            </div>
           )}
         </div>
-        {dateLabel && (
-          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] text-[#FAFAFA]/50 mt-0.5">
-            {dateLabel}
-          </div>
-        )}
-        <div className={`font-['Haas_Grot_Disp',_sans-serif] text-[13px] font-semibold mt-1 leading-tight ${isOff ? 'text-[#FAFAFA]/70' : 'text-[#FAFAFA]'}`}>
-          {title}
-        </div>
-        {runLine && (
-          <div className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] text-[#c4e0d4] mt-1">
-            {runLine}
+        {content && (
+          <div className={`${open ? 'block' : 'hidden'} md:block md:col-span-8 lg:col-span-9 mt-[16px] md:mt-0`}>
+            <div
+              className={`${body} max-w-[720px] [&_strong]:font-normal [&_strong]:underline [&_strong]:underline-offset-[3px] [&_strong]:decoration-[1px] [&_br]:block [&_br]:h-[6px]`}
+              dangerouslySetInnerHTML={{ __html: formatContentHtml(content) }}
+            />
+            <div className="md:hidden mt-[14px]">
+              <CopyButton dayData={dayData} copiedDay={copiedDay} onCopy={onCopy} />
+            </div>
           </div>
         )}
       </div>
-      <div
-        className="p-2 flex-1 overflow-y-auto font-['Haas_Grot_Disp',_sans-serif] text-[12px] leading-[1.45] text-[#FAFAFA]/85 [&_strong]:text-[#FAFAFA] [&_br]:block [&_br]:h-1.5"
-        dangerouslySetInnerHTML={{ __html: formatContentHtml(getDayContentWithPT(day, content)) }}
-      />
-    </div>
+    </li>
   )
+}
+
+export function PlanStatus({ children, error }) {
+  return <div className={`${body} px-[20px] md:px-[26px] pt-[100px] pb-[160px] ${error ? '' : 'opacity-70'}`}>{children}</div>
 }
 
 export default function DanaPlanViewer() {
@@ -154,7 +120,7 @@ export default function DanaPlanViewer() {
   const [copiedDay, setCopiedDay] = useState(null)
 
   useEffect(() => {
-    fetch('/dana-plan/plan-data-v14.json')
+    fetch(PLAN_URL)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText)
         return res.json()
@@ -192,11 +158,10 @@ export default function DanaPlanViewer() {
     return () => clearTimeout(id)
   }, [copiedDay])
 
-  const week = planData?.weeks?.find((w) => w.week === selectedWeek)
-
+  const pt = planData?.pt || {}
   const handleCopy = async (dayData) => {
     try {
-      const text = buildStravaCopyText(dayData)
+      const text = buildStravaCopyText(dayData, pt)
       if (!text) return
       await navigator.clipboard.writeText(text)
       setCopiedDay(dayData.day)
@@ -205,107 +170,53 @@ export default function DanaPlanViewer() {
     }
   }
 
-  const weekContent = week?.content ?? ''
-  const coachCommentRe = /\*\*WEEK \d+ COACH COMMENT\*\*:[\s\S]*?(?=\n\n---|\n\n###|$)/g
-  const contentSegments = []
-  let lastEnd = 0
-  let match
-  while ((match = coachCommentRe.exec(weekContent)) !== null) {
-    if (match.index > lastEnd) contentSegments.push({ type: 'md', text: weekContent.slice(lastEnd, match.index) })
-    contentSegments.push({ type: 'coach', text: match[0] })
-    lastEnd = match.index + match[0].length
-  }
-  if (lastEnd < weekContent.length) contentSegments.push({ type: 'md', text: weekContent.slice(lastEnd) })
+  if (loading) return <PlanStatus>Loading…</PlanStatus>
+  if (error || !planData) return <PlanStatus error>Could not load the plan. {error}</PlanStatus>
 
-  if (loading) {
-    return (
-      <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] py-[40px] text-center font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[#FAFAFA]/70">
-        Loading…
-      </div>
-    )
-  }
-
-  if (error || !planData) {
-    return (
-      <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] py-[40px] text-center font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[#ff8a8a]">
-        Could not load plan. {error}
-      </div>
-    )
-  }
+  const week = planData.weeks.find((w) => w.week === selectedWeek)
+  const todayKey = dateKey(new Date())
 
   return (
-    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-24 md:pb-[60px]">
-      <DanaPlanHeader
-        planData={planData}
-        selectedWeek={selectedWeek}
-        onWeekChange={setSelectedWeek}
-        currentView="cards"
-        loading={false}
-      />
-      {week?.target && (
-        <div className="rounded-[10px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/15 px-4 py-3 mb-6 font-['Haas_Grot_Disp',_sans-serif] text-[14px] tracking-[0.16px] text-[#FAFAFA] max-w-[640px] md:max-w-[800px] text-left">
-          <strong className="text-[#FAFAFA]">Target:</strong> {week.target}
-        </div>
+    <div className="px-[20px] md:px-[26px] pb-[120px] md:pb-[120px]">
+      <DanaPlanHeader planData={planData} selectedWeek={selectedWeek} onWeekChange={setSelectedWeek} currentView="cards" showRamp />
+      {week && (
+        <section aria-labelledby="week-heading">
+          <div className="md:grid md:grid-cols-12 md:gap-x-[48px] pb-[40px] md:pb-[64px]">
+            <div className="md:col-span-4 lg:col-span-3">
+              <h2 id="week-heading" className={`${ultra} text-[26px] md:text-[30px] leading-none tracking-[0.3px]`}>
+                Week {week.week}
+              </h2>
+              <p className={`${social} mt-[12px] text-[16px] md:text-[17px] leading-[1.3] tabular-nums opacity-70`}>
+                {week.dateRange} · {week.type.charAt(0) + week.type.slice(1).toLowerCase()}
+              </p>
+            </div>
+            <div className="md:col-span-8 lg:col-span-9 mt-[20px] md:mt-0">
+              {week.target && <p className={`${social} text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px] tabular-nums`}>{week.target}</p>}
+              {week.content && (
+                <div className={`${body} mt-[14px] max-w-[720px] [&_p]:mb-[10px] [&_strong]:font-normal [&_strong]:underline [&_strong]:underline-offset-[3px] [&_strong]:decoration-[1px]`}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{week.content}</ReactMarkdown>
+                </div>
+              )}
+            </div>
+          </div>
+          <ol>
+            {week.days.map((d) => {
+              const date = getDayDate(planData, week.week, d.day)
+              return (
+                <DayRow
+                  key={`${week.week}-${d.day}`}
+                  dayData={d}
+                  dateLabel={date ? formatShortDate(date) : ''}
+                  isToday={date ? dateKey(date) === todayKey : false}
+                  pt={pt}
+                  copiedDay={copiedDay}
+                  onCopy={handleCopy}
+                />
+              )
+            })}
+          </ol>
+        </section>
       )}
-      {contentSegments.length > 0 && (
-        <div className="font-['Haas_Grot_Disp',_sans-serif] text-[15px] leading-[1.5] tracking-[0.167px] text-[#FAFAFA]/90 max-w-[640px] md:max-w-[800px] prose-invert mb-8 text-left [&_h4]:text-[#FAFAFA] [&_h4]:font-['Mondwest',_sans-serif] [&_h4]:text-[16px] [&_h4]:mt-5 [&_h4]:mb-2 [&_h4]:first:mt-0 [&_ul]:pl-6 [&_ol]:pl-6 [&_li]:my-1 [&_p]:my-2 [&_strong]:text-[#FAFAFA] [&_hr]:border-[#FAFAFA]/20 [&_hr]:my-6">
-          {contentSegments.map((seg, i) =>
-            seg.type === 'coach' ? (
-              <div
-                key={i}
-                className="bg-[#FAFAFA]/10 rounded-lg p-4 my-4 border-l-4 border-[#FAFAFA]/40"
-              >
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{seg.text}</ReactMarkdown>
-              </div>
-            ) : (
-              <ReactMarkdown key={i} remarkPlugins={[remarkGfm]}>
-                {seg.text}
-              </ReactMarkdown>
-            )
-          )}
-        </div>
-      )}
-      {/* Mobile: single column, collapsible cards */}
-      <div className="md:hidden space-y-3 max-w-[520px] mx-auto">
-        {week?.days?.map((d) => {
-          const isOff = /off|rest|yay!/i.test(d.title)
-          const dayDate = getDayDate(planData, week.week, d.day)
-          const dateLabel = dayDate ? formatShortDate(dayDate) : null
-          return (
-            <DayCard
-              key={`${week.week}-${d.day}`}
-              dayData={d}
-              day={d.day}
-              title={d.title}
-              summary={d.summary}
-              content={d.content}
-              isOff={isOff}
-              dateLabel={dateLabel}
-              copiedDay={copiedDay}
-              onCopy={handleCopy}
-            />
-          )
-        })}
-      </div>
-      {/* Desktop: one row, 7 equal cells, calendar-style, all expanded */}
-      <div className="hidden md:grid md:grid-cols-7 rounded-[10px] border border-[#FAFAFA]/15 overflow-hidden bg-[#FAFAFA]/5">
-        {week?.days?.map((d) => {
-          const dayDate = getDayDate(planData, week.week, d.day)
-          const dateLabel = dayDate ? formatShortDate(dayDate) : null
-          return (
-            <WeekDayCell
-              key={`${week.week}-${d.day}`}
-              dayData={d}
-              day={d.day}
-              title={d.title}
-              content={d.content}
-              dateLabel={dateLabel}
-              copiedDay={copiedDay}
-              onCopy={handleCopy}
-            />
-          )
-        })}
-      </div>
     </div>
   )
 }

@@ -1,187 +1,175 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
-import { getCurrentWeek, formatRaceDate, getPlanSubtitleLabel } from '../lib/dana-plan-utils'
-
-function ViewIcon({ name, active }) {
-  const c = active ? '#FAFAFA' : 'rgba(250,250,250,0.6)'
-  const size = 22
-  switch (name) {
-    case 'calendar':
-      return (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-          <line x1="16" y1="2" x2="16" y2="6" />
-          <line x1="8" y1="2" x2="8" y2="6" />
-          <line x1="3" y1="10" x2="21" y2="10" />
-        </svg>
-      )
-    case 'cards':
-      return (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="4" width="20" height="14" rx="2" ry="2" />
-          <line x1="2" y1="10" x2="22" y2="10" />
-        </svg>
-      )
-    case 'lifts':
-      return (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="4" y1="12" x2="20" y2="12" />
-          <line x1="4" y1="8" x2="4" y2="16" />
-          <line x1="20" y1="8" x2="20" y2="16" />
-          <circle cx="4" cy="12" r="2.5" />
-          <circle cx="20" cy="12" r="2.5" />
-        </svg>
-      )
-    default:
-      return null
-  }
-}
+import { getCurrentWeek, getCanonicalRun, formatRaceDate } from '../lib/dana-plan-utils'
+import { T, social, nichrome, rule, chip, pressable } from './planStyle'
 
 const VIEWS = [
-  { slug: 'calendar', label: 'Month', icon: 'calendar' },
-  { slug: '', label: 'Week', icon: 'cards' },
-  { slug: 'lifts', label: 'Lifts', icon: 'lifts' },
+  { slug: '', label: 'Week', view: 'cards' },
+  { slug: 'calendar', label: 'Month', view: 'calendar' },
+  { slug: 'lifts', label: 'Lifts', view: 'lifts' },
 ]
+const basePath = '/dana-plan-v2'
 
-export default function DanaPlanHeader({
-  planData,
-  selectedWeek,
-  onWeekChange,
-  currentView,
-  loading,
-}) {
-  const currentWeek = planData ? getCurrentWeek(planData) : 1
-  const maxWeek = planData?.weeks?.length ?? 27
-  const week = planData?.weeks?.find((w) => w.week === selectedWeek)
+const weekMiles = (w) => Math.round((w.days || []).reduce((n, d) => n + getCanonicalRun(d).mi, 0))
+const isDown = (w) => /DOWN|RESTORE/i.test(w.type || '')
+const phaseName = (type = '') => {
+  const name = type.split('·')[0].trim().toLowerCase()
+  return name.charAt(0).toUpperCase() + name.slice(1)
+}
 
-  const handlePrev = () => onWeekChange(Math.max(1, selectedWeek - 1))
-  const handleNext = () => onWeekChange(Math.min(maxWeek, selectedWeek + 1))
-  const handleThisWeek = () => onWeekChange(currentWeek)
+// The ramp: one bar per week, height is the week's miles. Tapping a bar picks
+// the week, so it doubles as the week picker on every screen size.
+function Ramp({ planData, selectedWeek, currentWeek, onWeekChange }) {
+  const weeks = planData.weeks
+  const max = Math.max(...weeks.map(weekMiles), 1)
+  return (
+    <div className="pt-[16px] md:pt-[20px] border-t" style={rule()}>
+      <div className={`${social} flex items-baseline justify-between text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] mb-[16px]`}>
+        <span>Miles by week</span>
+        <span className="opacity-70">● this week · tap a bar to jump</span>
+      </div>
+      <ol className="grid gap-[3px] md:gap-[6px]" style={{ gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))` }}>
+        {weeks.map((w) => {
+          const mi = weekMiles(w)
+          const on = w.week === selectedWeek
+          return (
+            <li key={w.week}>
+              <button
+                type="button"
+                onClick={() => onWeekChange(w.week)}
+                aria-label={`Week ${w.week}, ${w.dateRange}, ${mi} miles`}
+                aria-pressed={on}
+                className={`group w-full flex flex-col items-stretch ${pressable}`}
+              >
+                <span className={`${social} block text-center text-[12px] md:text-[15px] leading-none tabular-nums mb-[6px] ${on ? '' : 'opacity-70'}`}>{mi}</span>
+                <span className="relative block h-[72px] md:h-[120px]">
+                  <span
+                    className="absolute bottom-0 left-0 right-0 rounded-[2px] transition-[background-color,opacity] duration-[120ms] ease-out group-hover:opacity-100 motion-reduce:transition-none"
+                    style={{
+                      height: `${Math.max(6, (mi / max) * 100)}%`,
+                      backgroundColor: on ? T.ink : `${T.ink}${isDown(w) ? '26' : '4D'}`,
+                    }}
+                  />
+                </span>
+                <span className={`${social} block text-center text-[12px] md:text-[14px] leading-none tabular-nums mt-[8px] ${on ? '' : 'opacity-60'}`}>
+                  {w.week === currentWeek ? '●' : w.week}
+                </span>
+              </button>
+            </li>
+          )
+        })}
+      </ol>
+    </div>
+  )
+}
 
-  const basePath = '/dana-plan-v2'
+export default function DanaPlanHeader({ planData, selectedWeek, onWeekChange, currentView, showRamp = false }) {
+  // The body still carries the old green under the page; match it so overscroll stays Bone.
+  useEffect(() => {
+    document.documentElement.style.setProperty('--page-bg', T.bg)
+    return () => document.documentElement.style.removeProperty('--page-bg')
+  }, [])
 
-  const selectStyles = {
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23FAFAFA' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 12px center',
-    paddingRight: '36px',
-  }
+  const currentWeek = getCurrentWeek(planData)
+  const maxWeek = planData.weeks.length
+  const week = planData.weeks.find((w) => w.week === selectedWeek)
+  const btn = `${chip} ${pressable} px-[10px] py-[6px] text-[16px] md:text-[17px] hover:bg-[var(--ink)] hover:text-[var(--bg)] disabled:opacity-30 disabled:pointer-events-none`
 
   return (
-    <section className="pt-[40px] md:pt-[52px] pb-[24px] md:pb-[28px]">
-      {!loading && planData ? (
-        <>
-          {/* Desktop: single row — title left, week controls right */}
-          <div className="md:flex md:items-start md:justify-between md:gap-6">
-            <div>
-              <h1 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[28px] leading-[1.2] tracking-[0.31px] text-[#FAFAFA]">
-                {getPlanSubtitleLabel(planData)}
-              </h1>
-              {formatRaceDate(planData) && (
-                <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[15px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
-                  {formatRaceDate(planData)}
-                </p>
-              )}
-            </div>
-            <div className="mt-6 md:mt-0 md:flex md:items-center md:gap-3 md:flex-shrink-0">
-              <select
-                value={selectedWeek}
-                onChange={(e) => onWeekChange(Number(e.target.value))}
-                aria-label="Week"
-                className="w-full md:w-auto md:min-w-[260px] py-3 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[15px] tracking-[0.16px] bg-[#FAFAFA]/10 border border-[#FAFAFA]/20 text-[#FAFAFA] appearance-none cursor-pointer"
-                style={selectStyles}
+    <header style={{ '--ink': T.ink, '--bg': T.bg }}>
+      <section className="pt-[32px] pb-[40px] md:pt-[100px] md:pb-[64px]">
+        <h1 className={`${nichrome} text-[24px] md:text-[40px] desktop:text-[54px] leading-[1.15] tracking-[0.2px] max-w-[1100px]`}>
+          {planData.statement || planData.planTitle}
+        </h1>
+        <p className={`${social} mt-[16px] md:mt-[24px] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] tabular-nums`}>
+          <span className="opacity-70">
+            {planData.planTitle} · {planData.planDates || formatRaceDate(planData)} · {maxWeek} weeks ·{' '}
+          </span>
+          <Link href="/row" className="hl">
+            Erg log
+          </Link>
+        </p>
+      </section>
+
+      {/* Views left, week controls right. On a phone the views move to the bottom bar. */}
+      <div className="flex flex-wrap items-center justify-between gap-x-[24px] gap-y-[12px] pb-[24px] md:pb-[32px]">
+        <nav aria-label="Plan views" className="hidden md:flex items-baseline gap-[24px]">
+          {VIEWS.map((v) => {
+            const active = currentView === v.view
+            return (
+              <Link
+                key={v.view}
+                href={v.slug ? `${basePath}/${v.slug}` : basePath}
+                aria-current={active ? 'page' : undefined}
+                className={`${social} text-[18px] md:text-[19px] leading-none tracking-[0.19px] transition-opacity hover:opacity-100 ${active ? 'opacity-100 underline underline-offset-[5px]' : 'opacity-70'}`}
               >
-                {planData.weeks.map((w) => (
-                  <option key={w.week} value={w.week}>
-                    Week {w.week} ({w.dateRange}) — {w.type}
-                    {w.week === currentWeek ? ' ★' : ''}
-                  </option>
-                ))}
-              </select>
-              <div className="flex items-center gap-2 mt-3 md:mt-0">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  aria-label="Previous week"
-                  className="py-2 px-3 md:px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-                >
-                  ←
-                </button>
-                <button
-                  type="button"
-                  onClick={handleThisWeek}
-                  className="flex-1 md:flex-none py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[14px] bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-                >
-                  This week
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  aria-label="Next week"
-                  className="py-2 px-3 md:px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-                >
-                  →
-                </button>
-              </div>
-            </div>
+                {v.label}
+              </Link>
+            )
+          })}
+        </nav>
+        {onWeekChange && (
+          <div className="flex w-full md:w-auto items-center gap-[8px]">
+            <button type="button" className={btn} onClick={() => onWeekChange(Math.max(1, selectedWeek - 1))} disabled={selectedWeek <= 1} aria-label="Previous week">
+              ←
+            </button>
+            <select
+              value={selectedWeek}
+              onChange={(e) => onWeekChange(Number(e.target.value))}
+              aria-label="Week"
+              className={`${btn} min-w-0 flex-1 md:flex-none md:min-w-[280px] truncate appearance-none bg-transparent cursor-pointer pr-[28px] hover:bg-transparent hover:text-current`}
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='${encodeURIComponent(T.ink)}' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 10px center',
+              }}
+            >
+              {planData.weeks.map((w) => (
+                <option key={w.week} value={w.week}>
+                  Week {w.week}, {w.dateRange}, {phaseName(w.type)}
+                  {w.week === currentWeek ? ' (now)' : ''}
+                </option>
+              ))}
+            </select>
+            <button type="button" className={btn} onClick={() => onWeekChange(Math.min(maxWeek, selectedWeek + 1))} disabled={selectedWeek >= maxWeek} aria-label="Next week">
+              →
+            </button>
+            <button type="button" className={btn} onClick={() => onWeekChange(currentWeek)} disabled={selectedWeek === currentWeek}>
+              <span className="md:hidden">Now</span>
+              <span className="hidden md:inline">This week</span>
+            </button>
           </div>
+        )}
+      </div>
 
-          {/* Desktop: view links as pill row */}
-          <div className="hidden md:flex md:items-center md:gap-1 mt-4">
-            <span className="font-['Haas_Grot_Disp',_sans-serif] text-[11px] uppercase tracking-wider text-[#FAFAFA]/50 mr-2">View</span>
-            {VIEWS.map((v) => {
-              const isActive = currentView === (v.slug === '' ? 'cards' : v.slug)
-              const href = v.slug ? `${basePath}/${v.slug}` : basePath
-              return (
-                <Link
-                  key={v.slug || 'cards'}
-                  href={href}
-                  className={`font-['Haas_Grot_Disp',_sans-serif] text-[13px] tracking-[0.02em] py-1.5 px-3 rounded-full transition-colors ${
-                    isActive ? 'bg-[#FAFAFA]/20 text-[#FAFAFA]' : 'text-[#FAFAFA]/70 hover:bg-[#FAFAFA]/10 hover:text-[#FAFAFA]'
-                  }`}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  {v.label}
-                </Link>
-              )
-            })}
-          </div>
-
-          {/* Mobile: fixed bottom nav with icons */}
-          <nav
-            className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex items-center justify-around py-2 px-2 bg-[#2e2e2e] border-t border-[#FAFAFA]/15 safe-area-pb"
-            aria-label="View switcher"
-          >
-            {VIEWS.map((v) => {
-              const isActive = currentView === (v.slug === '' ? 'cards' : v.slug)
-              const href = v.slug ? `${basePath}/${v.slug}` : basePath
-              return (
-                <Link
-                  key={v.slug || 'cards'}
-                  href={href}
-                  className={`flex flex-col items-center gap-0.5 py-1 px-2 min-w-0 flex-1 ${isActive ? 'text-[#FAFAFA]' : 'text-[#FAFAFA]/60'}`}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  <ViewIcon name={v.icon} active={isActive} />
-                  <span className="font-['Haas_Grot_Disp',_sans-serif] text-[10px] truncate w-full text-center">{v.label}</span>
-                </Link>
-              )
-            })}
-          </nav>
-        </>
-      ) : (
-        <>
-          <h1 className="font-['Mondwest',_sans-serif] text-[20px] md:text-[31px] leading-[1.2] tracking-[0.31px] text-[#FAFAFA]">
-            {getPlanSubtitleLabel(planData)}
-          </h1>
-          {planData && formatRaceDate(planData) && (
-            <p className="font-['Haas_Grot_Disp',_sans-serif] text-[13.4px] md:text-[16px] leading-[1.35] tracking-[0.167px] text-[#FAFAFA]/70 mt-1">
-              {formatRaceDate(planData)}
-            </p>
-          )}
-        </>
+      {showRamp && week && (
+        <div className="pb-[48px] md:pb-[80px]">
+          <Ramp planData={planData} selectedWeek={selectedWeek} currentWeek={currentWeek} onWeekChange={onWeekChange} />
+        </div>
       )}
-    </section>
+
+      {/* Phone: views as a fixed bottom bar on the page field. */}
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 grid grid-cols-3 border-t safe-area-pb"
+        style={{ backgroundColor: T.bg, color: T.ink, ...rule() }}
+        aria-label="Plan views"
+      >
+        {VIEWS.map((v) => {
+          const active = currentView === v.view
+          return (
+            <Link
+              key={v.view}
+              href={v.slug ? `${basePath}/${v.slug}` : basePath}
+              aria-current={active ? 'page' : undefined}
+              className={`${social} py-[14px] text-center text-[18px] leading-none tracking-[0.19px] ${active ? 'opacity-100 underline underline-offset-[5px]' : 'opacity-70'}`}
+            >
+              {v.label}
+            </Link>
+          )
+        })}
+      </nav>
+    </header>
   )
 }

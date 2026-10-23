@@ -2,30 +2,21 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import DanaPlanHeader from './DanaPlanHeader'
-import {
-  getCurrentWeek,
-  getStartDate,
-  dateKey,
-  parseLocalDate,
-  getPhaseClass,
-  getCanonicalRun,
-  getDayContentWithPT,
-  DAY_ORDER,
-  MONTH_NAMES,
-} from '../lib/dana-plan-utils'
+import { PlanStatus } from './DanaPlanViewer'
+import { PLAN_URL, getCurrentWeek, dateKey, parseLocalDate, getCanonicalRun, getDayContentWithPT, DAY_ORDER, MONTH_NAMES } from '../lib/dana-plan-utils'
+import { T, social, ultra, rule, chip, pressable, formatContentHtml } from './planStyle'
+
+// Month view, weeks starting Monday to match the plan. Each cell is a hairline
+// rule and the day's run, row and lift. Tapping a planned day opens it.
 
 function contentForDay(w, d) {
   let raw = (d.content || '').trim()
   if (raw.length >= 120) return raw
   const weekBlob = (w.content || '').trim()
   if (!weekBlob) return raw
-  const dayName = d.day
-  const re = new RegExp('####\\s+' + dayName.replace(/\s+/g, '\\s+') + '[^\\n]*\\n([\\s\\S]*?)(?=####|$)', 'i')
+  const re = new RegExp('####\\s+' + d.day.replace(/\s+/g, '\\s+') + '[^\\n]*\\n([\\s\\S]*?)(?=####|$)', 'i')
   const m = weekBlob.match(re)
-  if (m && m[1]) {
-    const section = m[1].trim()
-    if (section.length > raw.length) return section
-  }
+  if (m && m[1] && m[1].trim().length > raw.length) return m[1].trim()
   return raw
 }
 
@@ -33,18 +24,9 @@ function buildDateMap(planData) {
   const map = {}
   if (!planData?.weeks?.length || !planData.startDate) return map
   const start = parseLocalDate(planData.startDate)
+  const pt = planData.pt || {}
   planData.weeks.forEach((w) => {
-    let totalMiles = 0
-    let totalVert = 0
-    ;(w.days || []).forEach((d) => {
-      const run = getCanonicalRun(d)
-      totalMiles += run.mi
-      totalVert += run.v
-    })
-    const weekTargetStr =
-      (totalMiles ? Math.round(totalMiles) + ' mi' : '') +
-      (totalMiles && totalVert ? ' · ' : '') +
-      (totalVert ? totalVert.toLocaleString() + ' ft' : '')
+    const miles = Math.round((w.days || []).reduce((n, d) => n + getCanonicalRun(d).mi, 0))
     const weekStart = new Date(start)
     weekStart.setDate(weekStart.getDate() + (w.week - 1) * 7)
     ;(w.days || []).forEach((d) => {
@@ -52,332 +34,171 @@ function buildDateMap(planData) {
       if (dayIdx === -1) return
       const cellDate = new Date(weekStart)
       cellDate.setDate(weekStart.getDate() + dayIdx)
-      const key = dateKey(cellDate)
-      const { distance: dist, vert } = getCanonicalRun(d)
-      const run = [dist, vert].filter(Boolean).join(' ') || (d.title || '').slice(0, 30)
-      map[key] = {
-        run: run || (d.title || '').slice(0, 30),
+      const s = d.summary || {}
+      const { distance } = getCanonicalRun(d)
+      map[dateKey(cellDate)] = {
+        lines: [distance && `Run ${distance}`, s.rowOneLine && 'Row', s.strengthOneLine && s.strengthOneLine.split(':')[0]].filter(Boolean),
         title: d.title,
-        phase: w.type,
-        content: getDayContentWithPT(d.day, contentForDay(w, d)),
-        weekTarget: weekTargetStr,
+        week: w.week,
+        weekMiles: miles,
+        content: getDayContentWithPT(d.day, contentForDay(w, d), pt),
       }
     })
   })
   return map
 }
 
-function formatContentHtml(text) {
-  if (!text) return ''
-  return text
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/^- /gm, '• ')
-    .replace(/\n/g, '<br/>')
-}
-
-const PHASE_COLORS = {
-  build: 'text-[#FAFAFA]',
-  restore: 'text-[#c9a82a]',
-  test: 'text-[#a78bfa]',
-  taper: 'text-[#7ec8e3]',
-  race: 'text-[#ff8a8a]',
-}
-
 export default function DanaPlanCalendar() {
   const [planData, setPlanData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [selectedWeek, setSelectedWeek] = useState(1)
   const [calYear, setCalYear] = useState(2026)
-  const [calMonth, setCalMonth] = useState(2)
+  const [calMonth, setCalMonth] = useState(9)
   const [dayModal, setDayModal] = useState(null)
 
   const dateToDay = useMemo(() => (planData ? buildDateMap(planData) : {}), [planData])
 
   useEffect(() => {
-    fetch('/dana-plan/plan-data-v14.json')
+    fetch(PLAN_URL)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText)
         return res.json()
       })
       .then((data) => {
         setPlanData(data)
-        setSelectedWeek(getCurrentWeek(data))
         setError(null)
-        const start = getStartDate(data)
-        setCalYear(start.getFullYear())
-        setCalMonth(start.getMonth())
+        // Open on this month while the plan is running, else the month it starts.
+        const start = parseLocalDate(data.startDate)
+        const end = new Date(start)
+        end.setDate(end.getDate() + data.weeks.length * 7 - 1)
+        const today = new Date()
+        const at = today >= new Date(start.getFullYear(), start.getMonth(), 1) && today <= end ? today : start
+        setCalYear(at.getFullYear())
+        setCalMonth(at.getMonth())
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
   }, [])
 
+  const step = (n) => {
+    const d = new Date(calYear, calMonth + n, 1)
+    setCalYear(d.getFullYear())
+    setCalMonth(d.getMonth())
+  }
+
   useEffect(() => {
     if (!planData) return
-    const maxWeek = planData.weeks.length
     const onKey = (e) => {
-      if (e.target?.tagName === 'INPUT' || e.target?.tagName === 'TEXTAREA') return
-      if (e.key === 'Escape') {
-        setDayModal(null)
-        return
-      }
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target?.tagName)) return
+      if (e.key === 'Escape') return setDayModal(null)
       if (dayModal) return
-      if (e.key === 'ArrowLeft') {
-        setCalMonth((m) => {
-          if (m <= 0) {
-            setCalYear((y) => y - 1)
-            return 11
-          }
-          return m - 1
-        })
-        e.preventDefault()
-      }
-      if (e.key === 'ArrowRight') {
-        setCalMonth((m) => {
-          if (m >= 11) {
-            setCalYear((y) => y + 1)
-            return 0
-          }
-          return m + 1
-        })
-        e.preventDefault()
-      }
+      if (e.key === 'ArrowLeft') step(-1)
+      if (e.key === 'ArrowRight') step(1)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [planData, dayModal])
-
-  const week = planData?.weeks?.find((w) => w.week === selectedWeek)
-
-  if (loading) {
-    return (
-      <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] py-[40px] text-center font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[#FAFAFA]/70">
-        Loading…
-      </div>
-    )
-  }
-
-  if (error || !planData) {
-    return (
-      <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] py-[40px] text-center font-['Haas_Grot_Disp',_sans-serif] text-[16px] text-[#ff8a8a]">
-        Could not load plan. {error}
-      </div>
-    )
-  }
-
-  const today = new Date()
-  const todayKey = dateKey(today)
-  const first = new Date(calYear, calMonth, 1)
-  const startDow = first.getDay()
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate()
-  const prevMonth = new Date(calYear, calMonth, 0)
-  const prevDays = prevMonth.getDate()
-
-  const cells = []
-  const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
-  dayNames.forEach((name) => {
-    cells.push(
-      <div
-        key={'head-' + name}
-        className="py-2 text-center font-['Haas_Grot_Disp',_sans-serif] text-[11px] font-bold uppercase tracking-wider border-b border-[#FAFAFA]/15"
-        style={{ color: '#e8e8f0' }}
-      >
-        {name}
-      </div>
-    )
   })
 
-  for (let i = 0; i < startDow; i++) {
-    const num = prevDays - startDow + i + 1
-    const d = new Date(calYear, calMonth - 1, num)
-    const key = dateKey(d)
-    const info = dateToDay[key]
-    cells.push(
-      <div
-        key={'p-' + i}
-        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col bg-[#252525] ${info ? 'cursor-pointer hover:bg-[#353535]' : ''}`}
-        onClick={info ? () => setDayModal(key) : undefined}
-        style={{ color: '#e8e8f0' }}
-      >
-        <span className="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold flex-shrink-0 mb-1" style={{ color: '#e8e8f0' }}>
-          {num}
-        </span>
-        {info?.run && (
-          <div className="text-[11px] line-clamp-3 leading-tight" style={{ color: '#e8e8f0' }}>{info.run}</div>
-        )}
-        {info?.weekTarget && d.getDay() === 1 && (
-          <div className="text-[10px] font-bold mt-1 flex-shrink-0" style={{ color: '#c4e0d4' }}>
-            {info.weekTarget}
-          </div>
-        )}
-        {info?.phase && (
-          <div className={`text-[10px] font-semibold uppercase mt-0.5 flex-shrink-0 ${PHASE_COLORS[getPhaseClass(info.phase)] || PHASE_COLORS.build}`}>
-            {info.phase}
-          </div>
-        )}
-      </div>
-    )
-  }
+  if (loading) return <PlanStatus>Loading…</PlanStatus>
+  if (error || !planData) return <PlanStatus error>Could not load the plan. {error}</PlanStatus>
 
-  for (let i = 1; i <= daysInMonth; i++) {
-    const d = new Date(calYear, calMonth, i)
-    const key = dateKey(d)
-    const info = dateToDay[key]
-    const isToday = key === todayKey
-    cells.push(
-      <div
-        key={'c-' + i}
-        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col ${isToday ? 'bg-[#FAFAFA]/25' : 'bg-[#383838]'} ${info ? 'cursor-pointer hover:opacity-95' : ''}`}
-        onClick={info ? () => setDayModal(key) : undefined}
-        style={!isToday ? { color: '#FAFAFA' } : undefined}
-      >
-        <span
-          className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold flex-shrink-0 mb-1 ${isToday ? 'bg-[#2e2e2e] text-[#333]' : ''}`}
-          style={!isToday ? { color: '#FAFAFA' } : undefined}
-        >
-          {i}
-        </span>
-        {info?.run && (
-          <div
-            className="text-[11px] line-clamp-3 leading-tight"
-            style={isToday ? { color: 'rgba(0,0,0,0.85)' } : { color: '#FAFAFA' }}
-          >
-            {info.run}
-          </div>
-        )}
-        {info?.weekTarget && d.getDay() === 1 && (
-          <div
-            className="text-[10px] font-bold mt-1 flex-shrink-0"
-            style={isToday ? { color: '#333' } : { color: '#c4e0d4' }}
-          >
-            {info.weekTarget}
-          </div>
-        )}
-        {info?.phase && (
-          <div className={`text-[10px] font-semibold uppercase mt-0.5 flex-shrink-0 ${isToday ? 'text-[#333]' : PHASE_COLORS[getPhaseClass(info.phase)] || 'text-[#FAFAFA]'}`}>
-            {info.phase}
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  const trailing = Math.max(0, 42 - startDow - daysInMonth)
-  for (let i = 1; i <= trailing; i++) {
-    const d = new Date(calYear, calMonth + 1, i)
-    const key = dateKey(d)
-    const info = dateToDay[key]
-    cells.push(
-      <div
-        key={'n-' + i}
-        className={`min-h-[70px] p-2 border-r border-b border-[#FAFAFA]/15 flex flex-col bg-[#252525] ${info ? 'cursor-pointer hover:bg-[#353535]' : ''}`}
-        onClick={info ? () => setDayModal(key) : undefined}
-        style={{ color: '#e8e8f0' }}
-      >
-        <span className="inline-flex items-center justify-center w-7 h-7 rounded-full text-sm font-bold flex-shrink-0 mb-1" style={{ color: '#e8e8f0' }}>
-          {i}
-        </span>
-        {info?.run && (
-          <div className="text-[11px] line-clamp-3 leading-tight" style={{ color: '#e8e8f0' }}>{info.run}</div>
-        )}
-        {info?.weekTarget && d.getDay() === 1 && (
-          <div className="text-[10px] font-bold mt-1 flex-shrink-0" style={{ color: '#c4e0d4' }}>
-            {info.weekTarget}
-          </div>
-        )}
-        {info?.phase && (
-          <div className={`text-[10px] font-semibold uppercase mt-0.5 flex-shrink-0 ${PHASE_COLORS[getPhaseClass(info.phase)] || PHASE_COLORS.build}`}>
-            {info.phase}
-          </div>
-        )}
-      </div>
-    )
-  }
+  const todayKey = dateKey(new Date())
+  const first = new Date(calYear, calMonth, 1)
+  const lead = (first.getDay() + 6) % 7 // Monday first
+  const cells = Array.from({ length: 42 }, (_, i) => new Date(calYear, calMonth, i - lead + 1))
+  const rows = cells[35].getMonth() === calMonth ? 6 : 5
+  const btn = `${chip} ${pressable} px-[10px] py-[6px] text-[16px] md:text-[17px] hover:bg-[var(--ink)] hover:text-[var(--bg)]`
 
   const modalInfo = dayModal ? dateToDay[dayModal] : null
-  const modalDate = dayModal ? new Date(dayModal) : null
-  const modalDateStr = modalDate
-    ? `${MONTH_NAMES[modalDate.getMonth()]} ${modalDate.getDate()}, ${modalDate.getFullYear()}`
-    : ''
+  const modalDate = dayModal ? parseLocalDate(dayModal) : null
 
   return (
-    <div className="min-w-[375px] max-w-[1440px] mx-auto px-[20px] md:px-[60px] pb-24 md:pb-[60px]">
-      <DanaPlanHeader
-        planData={planData}
-        selectedWeek={selectedWeek}
-        onWeekChange={setSelectedWeek}
-        currentView="calendar"
-        loading={false}
-      />
-      <div className="flex items-center justify-between gap-2 mb-3">
-        <button
-          type="button"
-          onClick={() => {
-            if (calMonth <= 0) {
-              setCalYear((y) => y - 1)
-              setCalMonth(11)
-            } else setCalMonth((m) => m - 1)
-          }}
-          aria-label="Previous month"
-          className="py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-        >
-          ←
-        </button>
-        <span className="font-['Mondwest',_sans-serif] text-[16px] font-bold text-[#FAFAFA]">
+    <div className="px-[20px] md:px-[26px] pb-[120px]" style={{ '--ink': T.ink, '--bg': T.bg }}>
+      <DanaPlanHeader planData={planData} currentView="calendar" selectedWeek={getCurrentWeek(planData)} />
+
+      <div className="flex items-center justify-between gap-[12px] pb-[24px] md:pb-[32px]">
+        <h2 className={`${ultra} text-[26px] md:text-[30px] leading-none tracking-[0.3px]`}>
           {MONTH_NAMES[calMonth]} {calYear}
-        </span>
-        <button
-          type="button"
-          onClick={() => {
-            if (calMonth >= 11) {
-              setCalYear((y) => y + 1)
-              setCalMonth(0)
-            } else setCalMonth((m) => m + 1)
-          }}
-          aria-label="Next month"
-          className="py-2 px-4 rounded-[8px] font-['Haas_Grot_Disp',_sans-serif] text-[18px] leading-none bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 transition-colors"
-        >
-          →
-        </button>
+        </h2>
+        <div className="flex gap-[8px]">
+          <button type="button" className={btn} onClick={() => step(-1)} aria-label="Previous month">
+            ←
+          </button>
+          <button type="button" className={btn} onClick={() => step(1)} aria-label="Next month">
+            →
+          </button>
+        </div>
       </div>
-      <div
-        className="grid grid-cols-7 rounded-[10px] border border-[#FAFAFA]/15 overflow-hidden bg-[#FAFAFA]/5"
-        style={{ gridTemplateRows: 'auto repeat(6, minmax(70px, 1fr))' }}
-      >
-        {cells}
+
+      <div className="grid grid-cols-7 gap-x-[4px] md:gap-x-[16px]">
+        {DAY_ORDER.map((name) => (
+          <div key={name} className={`${social} pb-[10px] text-[14px] md:text-[17px] leading-none opacity-70`}>
+            <span className="md:hidden">{name.slice(0, 2)}</span>
+            <span className="hidden md:inline">{name.slice(0, 3)}</span>
+          </div>
+        ))}
+        {cells.slice(0, rows * 7).map((d) => {
+          const key = dateKey(d)
+          const info = dateToDay[key]
+          const inMonth = d.getMonth() === calMonth
+          const isToday = key === todayKey
+          const Cell = info ? 'button' : 'div'
+          return (
+            <Cell
+              key={key}
+              type={info ? 'button' : undefined}
+              onClick={info ? () => setDayModal(key) : undefined}
+              className={`${social} text-left border-t pt-[8px] md:pt-[10px] pb-[14px] min-h-[76px] md:min-h-[128px] flex flex-col gap-[4px] ${inMonth ? '' : 'opacity-40'} ${info ? 'group cursor-pointer' : ''}`}
+              style={isToday ? { borderColor: T.ink, borderTopWidth: 2 } : rule()}
+              aria-label={info ? `${MONTH_NAMES[d.getMonth()]} ${d.getDate()}: ${info.title}` : undefined}
+            >
+              <span className="flex items-baseline justify-between gap-[4px] text-[14px] md:text-[17px] leading-none tabular-nums">
+                <span className={isToday ? 'underline underline-offset-[3px]' : ''}>{d.getDate()}</span>
+                {info && d.getDay() === 1 && (
+                  <span className="hidden md:inline text-[14px] opacity-60">
+                    W{info.week} · {info.weekMiles} mi
+                  </span>
+                )}
+              </span>
+              {info && (
+                <span className="text-[12px] md:text-[15px] leading-[1.2] tabular-nums group-hover:underline underline-offset-[3px]">
+                  {info.lines.length ? info.lines.map((l) => <span key={l} className="block">{l}</span>) : <span className="block opacity-60">Rest</span>}
+                </span>
+              )}
+            </Cell>
+          )
+        })}
       </div>
 
       {modalInfo && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+          className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-[16px]"
+          style={{ backgroundColor: `${T.ink}33` }}
           onClick={() => setDayModal(null)}
           role="dialog"
+          aria-modal="true"
           aria-labelledby="dayModalTitle"
         >
           <div
-            className="bg-[#2e2e2e] border border-[#FAFAFA]/20 rounded-xl max-w-[480px] w-full max-h-[85vh] overflow-hidden flex flex-col shadow-xl"
+            className="w-full max-w-[560px] max-h-[85vh] overflow-y-auto rounded-[4px] border px-[20px] md:px-[26px] pt-[16px] pb-[28px]"
+            style={{ backgroundColor: T.bg, color: T.ink, borderColor: T.ink }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 border-b border-[#FAFAFA]/15 flex-shrink-0">
+            <div className="flex items-start justify-between gap-[16px] pb-[16px] mb-[16px] border-b" style={rule()}>
               <div>
-                <div id="dayModalTitle" className="font-['Haas_Grot_Disp',_sans-serif] text-[16px] font-semibold text-[#FAFAFA]">
+                <p className={`${social} text-[16px] md:text-[17px] leading-none tabular-nums opacity-70`}>
+                  {modalDate && `${MONTH_NAMES[modalDate.getMonth()]} ${modalDate.getDate()}, week ${modalInfo.week}`}
+                </p>
+                <h3 id="dayModalTitle" className={`${social} mt-[8px] text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px]`}>
                   {modalInfo.title}
-                </div>
-                <div className="font-['Haas_Grot_Disp',_sans-serif] text-[13px] text-[#FAFAFA]/70 mt-0.5">
-                  {modalDateStr}
-                </div>
+                </h3>
               </div>
-              <button
-                type="button"
-                onClick={() => setDayModal(null)}
-                aria-label="Close"
-                className="py-2 px-3 rounded-lg bg-[#FAFAFA]/10 text-[#FAFAFA] hover:bg-[#FAFAFA]/20 text-xl leading-none"
-              >
+              <button type="button" onClick={() => setDayModal(null)} aria-label="Close" className={btn}>
                 ×
               </button>
             </div>
             <div
-              className="p-4 overflow-y-auto font-['Haas_Grot_Disp',_sans-serif] text-[14px] leading-[1.5] text-[#FAFAFA]/80 [&_strong]:text-[#FAFAFA] [&_br]:block [&_br]:h-2"
+              className={`${social} text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] [&_strong]:font-normal [&_strong]:underline [&_strong]:underline-offset-[3px] [&_strong]:decoration-[1px] [&_br]:block [&_br]:h-[6px]`}
               dangerouslySetInnerHTML={{ __html: formatContentHtml(modalInfo.content || '') }}
             />
           </div>

@@ -1,18 +1,19 @@
 import Navigation from '../../../components/Navigation'
 import Footer from '../../../components/Footer'
 import DanaPlanLifts from '../../../components/DanaPlanLifts'
+import { T } from '../../../components/planStyle'
 
 export const metadata = {
-  title: "Lifts — Dana's Plan",
-  description: 'Strength lift percentages, weights, and plate loading for the training plan.',
+  title: 'Jon Schafer · Back to 40, lifts',
+  description: 'Heavy A and Heavy B by phase, plus plate math for deadlifts and squats.',
 }
 
 export default function DanaPlanLiftsPage() {
   return (
-    <main className="min-h-screen bg-[#2e2e2e]">
-      <Navigation backgroundColor="#2e2e2e" />
+    <main className="min-h-screen pb-[47px] md:pb-0" style={{ backgroundColor: T.bg, color: T.ink }}>
+      <Navigation backgroundColor={T.bg} textColor={T.ink} />
       <DanaPlanLifts />
-      <Footer backgroundColor="#2e2e2e" minimal />
+      <Footer colophon theme={T} />
     </main>
   )
 }
