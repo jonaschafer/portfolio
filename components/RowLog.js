@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Navigation from './Navigation'
 import Footer from './Footer'
 import useRandomTheme from './useRandomTheme'
@@ -253,6 +254,40 @@ function Advice({ advice, t }) {
   )
 }
 
+// Strava sends no webhook for a description edit, so this pulls one row again
+// and waits while the advice is written, then reloads the page data.
+function CheckStrava({ id, t }) {
+  const router = useRouter()
+  const [state, setState] = useState('idle') // idle | busy | none | error
+  const check = async () => {
+    setState('busy')
+    try {
+      const res = await fetch(`/api/row/refresh?id=${id}`, { method: 'POST' })
+      const j = await res.json()
+      if (!res.ok) throw new Error(j.error)
+      if (j.notes) router.refresh()
+      setState(j.notes ? 'idle' : 'none')
+    } catch {
+      setState('error')
+    }
+  }
+  const msg = { busy: 'Checking Strava and writing advice. This can take a minute.', none: 'No description on Strava yet.', error: 'That didn’t work. Try again in a bit.' }[state]
+  return (
+    <div className="flex flex-col items-start gap-[10px]">
+      <button
+        type="button"
+        onClick={check}
+        disabled={state === 'busy'}
+        className="border px-[14px] py-[6px] hover:opacity-80 transition-opacity disabled:opacity-50"
+        style={{ borderColor: t.ink }}
+      >
+        {state === 'busy' ? 'Checking…' : 'Check Strava for notes'}
+      </button>
+      {msg && <p className="text-[15px] md:text-[16px] opacity-70">{msg}</p>}
+    </div>
+  )
+}
+
 function Workout({ w, t }) {
   const mps = metersPerStroke(w)
   return (
@@ -280,6 +315,7 @@ function Workout({ w, t }) {
           <p className="opacity-70">No notes yet. A description on Strava turns into advice here.</p>
         )}
         {w.advice ? <Advice advice={w.advice} t={t} /> : w.notes ? <p className="opacity-70">Advice is on its way.</p> : null}
+        {!w.advice && <CheckStrava id={w.id} t={t} />}
       </div>
     </article>
   )
