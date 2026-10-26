@@ -13,13 +13,15 @@ import { T, social, ultra, rule, chip, pressable, formatContentHtml } from './pl
 
 const body = `${social} text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px]`
 
+// Just the exercise lines, for pasting into a Strava description. Days with
+// no list (rest, run only) fall back to the day's text without markdown.
 function buildStravaCopyText(dayData, pt) {
   if (!dayData) return ''
-  const { distance, vert } = getCanonicalRun(dayData)
-  const runMeta = [distance, vert].filter(Boolean).join(' · ')
   const content = getDayContentWithPT(dayData.day, dayData.content, pt)
-  const header = `${dayData.day}: ${dayData.title}${runMeta ? ` (${runMeta})` : ''}`
-  return content ? `${header}\n\n${content}` : header
+  const lines = content.split('\n').map((l) => l.trim())
+  const exercises = lines.filter((l) => /^[-*] /.test(l)).map((l) => '- ' + l.slice(2).trim())
+  if (exercises.length) return exercises.join('\n')
+  return content.replace(/\*\*/g, '').trim()
 }
 
 // What the day holds, as chips: run, row, lift.
