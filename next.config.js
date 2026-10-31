@@ -55,8 +55,6 @@ const nextConfig = {
       // Jaw recovery food + care plan: static page in public/mma/food (gated in middleware)
       { source: '/mma/food', destination: '/mma/food/index.html' },
       { source: '/mma/friends', destination: '/mma/friends/index.html' },
-      // Erg physics simulator: static page in public/row-simulator
-      { source: '/row-simulator', destination: '/row-simulator/index.html' },
       // (Redirects send /dana-plan and /dana-plan/ to /dana-plan-v2; static files under /dana-plan/* still served from public.)
     ]
   },

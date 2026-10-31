@@ -333,7 +333,7 @@ export default function RowLog({ workouts, bests }) {
         </h1>
         <p className={`${social} mt-[16px] md:mt-[24px] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] max-w-[640px]`}>
           I’ve found rowing to be a mix of exercise and a lesson in physics. So I created{' '}
-          <a href="/row-simulator" className="underline underline-offset-[3px]">this simulator</a>{' '}
+          <a href="/row-simulator" className="hl">this simulator</a>{' '}
           to better understand the forces and how to get better at them.
         </p>
       </section>
