@@ -434,6 +434,32 @@ export default function RowSimulator() {
                 <span>catch</span><span data-cycle /><span>next catch</span>
               </div>
               </div>
+              <div>
+              <Heading>Try one thing at a time</Heading>
+              <div className="grid gap-x-[48px] gap-y-[24px] lg:grid-cols-2">
+                <div>
+                  <p className={`${nichrome} italic text-[18px] md:text-[21px] leading-[1.45] tracking-[0.2px] mb-[24px]`}>
+                    “spm is how fast you return to the start. Then realizing you can keep that while lengthening the stroke, then pressing hard lowers pace.”
+                  </p>
+                  <div className="flex flex-wrap gap-[8px] mb-[24px]">
+                    {Object.entries(EXP).map(([k, e]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        data-exp={k}
+                        aria-pressed="false"
+                        className="text-left rounded-[4px] border px-[10px] py-[8px] transition-colors duration-[120ms] active:scale-[0.97] aria-pressed:bg-[var(--rs-ink)] aria-pressed:text-[var(--rs-bg)]"
+                        style={{ borderColor: t.ink, '--rs-ink': t.ink, '--rs-bg': t.bg }}
+                      >
+                        <span className="block text-[17px] leading-[1.15]">{e.title}</span>
+                        <span className="block text-[14px] opacity-80">{e.sub}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <p data-exp-out className="border-t pt-[16px] self-start max-w-[560px]" style={rule}>{INTRO}</p>
+              </div>
+              </div>
             </div>
 
             {/* Monitor and inputs share a column so the numbers stay in view while a slider moves. */}
@@ -505,33 +531,6 @@ export default function RowSimulator() {
                   ))}
                 </div>
               </div>
-            </div>
-          </section>
-
-          <section className="px-[20px] md:px-[26px] pb-[56px] md:pb-[120px]">
-            <Heading>Try one thing at a time</Heading>
-            <div className="grid gap-x-[48px] gap-y-[24px] lg:grid-cols-2">
-              <div>
-                <p className={`${nichrome} italic text-[18px] md:text-[21px] leading-[1.45] tracking-[0.2px] mb-[24px]`}>
-                  “spm is how fast you return to the start. Then realizing you can keep that while lengthening the stroke, then pressing hard lowers pace.”
-                </p>
-                <div className="flex flex-wrap gap-[8px] mb-[24px]">
-                  {Object.entries(EXP).map(([k, e]) => (
-                    <button
-                      key={k}
-                      type="button"
-                      data-exp={k}
-                      aria-pressed="false"
-                      className="text-left rounded-[4px] border px-[10px] py-[8px] transition-colors duration-[120ms] active:scale-[0.97] aria-pressed:bg-[var(--rs-ink)] aria-pressed:text-[var(--rs-bg)]"
-                      style={{ borderColor: t.ink, '--rs-ink': t.ink, '--rs-bg': t.bg }}
-                    >
-                      <span className="block text-[17px] leading-[1.15]">{e.title}</span>
-                      <span className="block text-[14px] opacity-80">{e.sub}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <p data-exp-out className="border-t pt-[16px] self-start max-w-[560px]" style={rule}>{INTRO}</p>
             </div>
           </section>
 
