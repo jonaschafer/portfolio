@@ -13,7 +13,20 @@ const nichrome = "font-['Nichrome','Haas_Grot_Disp',sans-serif] font-normal"
 const ultra = "font-['Nichrome','Arial_Black',sans-serif] font-black"
 const lcdFont = "font-['ui-monospace','SF_Mono','Menlo',monospace]"
 
-const DEF = { spm: 24, len: 1.45, force: 345, damper: 4 }
+// Jon's setup: 20 spm, a full stroke, damper 2, about 2:40 today. The page opens here.
+const DEF = { spm: 20, len: 1.6, force: 160, damper: 2 }
+const NOW_PACE = 160
+// Paces to aim for at that setup. 2:10 is the 20 minute goal on /row.
+const TARGETS = [
+  { pace: 150 },
+  { pace: 140 },
+  { pace: 130, note: '20 min goal' },
+  { pace: 120 },
+]
+// Average handle force that holds a pace at a given rate and stroke length.
+const forceFor = (pace, s) => Math.round(((2.8 / Math.pow(pace / 500, 3)) * 60) / (s.spm * s.len) / 5) * 5
+const SETUP_OUT =
+  'Rate, length and damper are set, so what’s left is a push problem. Tap a target to see how much harder each pace has to be pushed.'
 const INTRO =
   'Pick an experiment. It pins the starting point as your baseline, then changes one input so the monitor shows the difference.'
 const EXP = {
@@ -80,6 +93,7 @@ const fmtTime = (t) => {
   const s = Math.floor(t % 60)
   return m + ':' + (s < 10 ? '0' : '') + s
 }
+const fmtShort = (p) => fmtPace(p).replace(/\.0$/, '')
 const sign = (x, d) => (x > 0 ? '▲ ' : '▼ ') + Math.abs(x).toFixed(d)
 const alpha = (hex, a) => hex + Math.round(a * 255).toString(16).padStart(2, '0')
 
@@ -216,6 +230,28 @@ export default function RowSimulator() {
     }
     const expButtons = [...el.querySelectorAll('[data-exp]')]
     const setPressed = (btn) => expButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)))
+    const pushButtons = [...el.querySelectorAll('[data-push]')]
+    const setPushPressed = (btn) => pushButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)))
+    const runTween = (to) => {
+      const start = { ...S }, dur = 1400
+      tweenDelay = setTimeout(() => {
+        const t0 = performance.now()
+        const step = (now) => {
+          const k = Math.min(1, (now - t0) / dur), ek = k * k * (3 - 2 * k)
+          for (const key in to) {
+            let v = start[key] + (to[key] - start[key]) * ek
+            if (key === 'spm' || key === 'damper') v = Math.round(v)
+            if (key === 'len') v = Math.round(v * 100) / 100
+            if (key === 'force') v = Math.round(v / 5) * 5
+            S[key] = v
+          }
+          syncInputs()
+          render()
+          tween = k < 1 ? requestAnimationFrame(step) : null
+        }
+        tween = requestAnimationFrame(step)
+      }, 350)
+    }
 
     let elapsed = 0, dist = 0
     const offs = []
@@ -238,37 +274,50 @@ export default function RowSimulator() {
       elapsed = 0
       dist = 0
       setPressed(null)
+      setPushPressed(null)
       $('[data-exp-out]').textContent = INTRO
+      $('[data-push-out]').textContent = SETUP_OUT
     })
     expButtons.forEach((btn) =>
       on(btn, 'click', () => {
         const e = EXP[btn.dataset.exp]
         setPressed(btn)
+        setPushPressed(null)
         cancelTween()
         Object.assign(S, e.from)
         syncInputs()
         pin()
         $('[data-exp-out]').textContent = e.text
-        const start = { ...S }, dur = 1400
-        tweenDelay = setTimeout(() => {
-          const t0 = performance.now()
-          const step = (now) => {
-            const k = Math.min(1, (now - t0) / dur), ek = k * k * (3 - 2 * k)
-            for (const key in e.to) {
-              let v = start[key] + (e.to[key] - start[key]) * ek
-              if (key === 'spm' || key === 'damper') v = Math.round(v)
-              if (key === 'len') v = Math.round(v * 100) / 100
-              if (key === 'force') v = Math.round(v / 5) * 5
-              S[key] = v
-            }
-            syncInputs()
-            render()
-            tween = k < 1 ? requestAnimationFrame(step) : null
-          }
-          tween = requestAnimationFrame(step)
-        }, 350)
+        runTween(e.to)
       })
     )
+    pushButtons.forEach((btn) =>
+      on(btn, 'click', () => {
+        const pace = +btn.dataset.push
+        setPressed(null)
+        setPushPressed(btn)
+        cancelTween()
+        Object.assign(S, DEF)
+        syncInputs()
+        pin()
+        const F = forceFor(pace, DEF), m = model({ ...DEF, force: F })
+        $('[data-push-out]').textContent =
+          'To hold ' + fmtShort(pace) + ' at this setup you’d average about ' + F + ' N on the handle, ' +
+          Math.round((F / DEF.force - 1) * 100) + '% more than today. The handle moves faster too, so the drive drops to ' +
+          m.drive.toFixed(2) + ' s and the recovery stretches to ' + Math.max(m.rec, 0).toFixed(2) + ' s.'
+        runTween({ force: F })
+      })
+    )
+    on($('[data-act="mine"]'), 'click', () => {
+      cancelTween()
+      Object.assign(S, DEF)
+      syncInputs()
+      pin()
+      setPressed(null)
+      setPushPressed(null)
+      $('[data-push-out]').textContent = SETUP_OUT
+      $('[data-exp-out]').textContent = INTRO
+    })
 
     // drawing
     const cv = $('canvas'), ctx = cv.getContext('2d')
@@ -402,7 +451,7 @@ export default function RowSimulator() {
       <Navigation backgroundColor={t.bg} textColor={t.ink} />
 
       <div ref={root}>
-        <section className="px-[20px] md:px-[26px] pt-[32px] md:pt-[100px] pb-[48px] md:pb-[80px]">
+        <section className="px-[20px] md:px-[26px] pt-[32px] md:pt-[100px] pb-[32px] md:pb-[48px]">
           <h1 className={`${nichrome} text-[24px] md:text-[40px] desktop:text-[54px] leading-[1.15] tracking-[0.2px] max-w-[1340px]`}>
             Concept2 rowing physics. Move the sliders and watch rate, stroke length and force turn into watts, pace and meters per stroke. 🚣
           </h1>
@@ -410,6 +459,48 @@ export default function RowSimulator() {
             Built to make sense of my own rows. The real ones are in my{' '}
             <a href="/row" className="hl">erg log</a>.
           </p>
+        </section>
+
+        <section className={`${social} px-[20px] md:px-[26px] pb-[48px] md:pb-[64px] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] tabular-nums`}>
+          <div className="border-t pt-[16px] md:pt-[20px] grid gap-x-[48px] gap-y-[32px] lg:grid-cols-12" style={rule}>
+            <div className="lg:col-span-5">
+              <h2 className={`${ultra} text-[26px] md:text-[30px] leading-none tracking-[0.3px] mb-[16px] md:mb-[20px]`}>My setup</h2>
+              <dl className="grid grid-cols-[96px_minmax(0,1fr)] gap-x-[16px] gap-y-[8px]">
+                <dt className="opacity-70">Rate</dt><dd>20 spm, about 1 s drive and 2 s back</dd>
+                <dt className="opacity-70">Stroke</dt><dd>Full. Shins vertical at the catch, butt almost off the seat (1.60 m)</dd>
+                <dt className="opacity-70">Damper</dt><dd>2, a drag factor around 95</dd>
+                <dt className="opacity-70">Push</dt><dd>About 160 N, which holds {fmtShort(NOW_PACE)} today</dd>
+              </dl>
+            </div>
+            <div className="lg:col-span-7">
+              <h2 className={`${ultra} text-[26px] md:text-[30px] leading-none tracking-[0.3px] mb-[16px] md:mb-[20px]`}>Push targets</h2>
+              <div className="flex flex-wrap gap-[8px] mb-[16px]">
+                {TARGETS.map((g) => (
+                  <button
+                    key={g.pace}
+                    type="button"
+                    data-push={g.pace}
+                    aria-pressed="false"
+                    className="text-left rounded-[4px] border px-[10px] py-[8px] transition-colors duration-[120ms] active:scale-[0.97] aria-pressed:bg-[var(--rs-ink)] aria-pressed:text-[var(--rs-bg)]"
+                    style={{ borderColor: t.ink, '--rs-ink': t.ink, '--rs-bg': t.bg }}
+                  >
+                    <span className="block text-[17px] leading-[1.15]">{fmtShort(g.pace)}</span>
+                    <span className="block text-[14px] opacity-80">{forceFor(g.pace, DEF)} N{g.note ? ` · ${g.note}` : ''}</span>
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  data-act="mine"
+                  className="text-left rounded-[4px] border border-dashed px-[10px] py-[8px] active:scale-[0.97]"
+                  style={{ borderColor: t.ink }}
+                >
+                  <span className="block text-[17px] leading-[1.15]">Back to today</span>
+                  <span className="block text-[14px] opacity-80">{fmtShort(NOW_PACE)} · {DEF.force} N</span>
+                </button>
+              </div>
+              <p data-push-out className="max-w-[640px]">{SETUP_OUT}</p>
+            </div>
+          </div>
         </section>
 
         <div className={`${social} text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] tabular-nums`}>
