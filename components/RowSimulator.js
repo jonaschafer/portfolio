@@ -413,120 +413,125 @@ export default function RowSimulator() {
         </section>
 
         <div className={`${social} text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] tabular-nums`}>
-          <section className="px-[20px] md:px-[26px] pb-[56px] md:pb-[120px] grid gap-x-[48px] gap-y-[32px] lg:grid-cols-12">
-            <div className="lg:col-span-9 min-w-0 border-t pt-[16px] md:pt-[20px]" style={rule}>
-              <div className="flex gap-[16px] flex-wrap opacity-70 text-[14px]">
-                <span>━ drive, chain loaded</span>
-                <span>╌ recovery, chain slack</span>
+          <section className="px-[20px] md:px-[26px] pb-[56px] md:pb-[120px] grid gap-x-[48px] gap-y-[56px] lg:grid-cols-12">
+            <div className="lg:col-span-8 min-w-0 grid gap-[48px] md:gap-[64px] content-start">
+              <div className="border-t pt-[16px] md:pt-[20px]" style={rule}>
+                <div className="flex gap-[16px] flex-wrap opacity-70 text-[14px]">
+                  <span>━ drive, chain loaded</span>
+                  <span>╌ recovery, chain slack</span>
+                </div>
+                <canvas aria-label="Animated line drawing of a person rowing on a Concept2 erg" className="block w-full max-w-full" style={{ aspectRatio: '3.4 / 1.75' }} />
               </div>
-              <canvas aria-label="Animated line drawing of a person rowing on a Concept2 erg" className="block w-full max-w-full" style={{ aspectRatio: '3.4 / 1.75' }} />
+              <div>
+              <Heading>One stroke, start to start</Heading>
+              <p data-note className="mb-[16px] max-w-[640px]" />
+              <div className="relative h-[36px] flex overflow-hidden rounded-[4px] border" style={{ borderColor: t.ink }}>
+                <div data-seg="drive" className="flex items-center px-[10px] whitespace-nowrap overflow-hidden transition-[width] duration-200" style={{ backgroundColor: t.ink, color: t.bg }} />
+                <div data-seg="rec" className="flex flex-1 items-center px-[10px] whitespace-nowrap overflow-hidden" style={{ backgroundColor: `${t.ink}1f` }} />
+                <div data-cursor className="absolute top-0 bottom-0 w-[2px]" style={{ backgroundColor: t.ink, left: 0 }} />
+              </div>
+              <div className="flex justify-between mt-[8px] text-[14px] opacity-70">
+                <span>catch</span><span data-cycle /><span>next catch</span>
+              </div>
+              </div>
             </div>
 
-            {/* The PM5 is drawn as the object it is, so it keeps its own colors on every theme. */}
-            <div className="lg:col-span-3 self-start w-full max-w-[340px] rounded-[16px] bg-[#1e2226] p-[14px] grid gap-[10px] border border-[#0d0f11]">
-              <div className={`${ultra} text-center italic text-[#e9ecef] text-[15px] tracking-[0.06em]`}>CONCEPT2</div>
-              <div className="grid grid-cols-[minmax(0,1fr)_26px] gap-[10px]">
-                <div className={`${lcdFont} bg-[#b8c3ae] text-[#1c261b] rounded-[4px] border-[3px] border-[#0b0d0f] p-[8px] grid grid-cols-[minmax(0,1fr)_auto] gap-[6px] min-w-0`}>
-                  <div className="grid gap-[4px] min-w-0 [&>div]:border-b-[1.5px] [&>div]:border-[#1c261b] [&>div]:pb-[4px] [&>div:last-child]:border-0">
-                    <div className="flex justify-between items-end gap-[8px]">
-                      <LcdCell id="time" unit="time" inline={false} />
-                      <LcdCell id="spm" unit="s/m" right />
+            {/* Monitor and inputs share a column so the numbers stay in view while a slider moves. */}
+            <div className="lg:col-span-4 min-w-0 grid gap-[40px] content-start">
+              {/* The PM5 is drawn as the object it is, so it keeps its own colors on every theme. */}
+              <div className="w-full max-w-[340px] rounded-[16px] bg-[#1e2226] p-[14px] grid gap-[10px] border border-[#0d0f11]">
+                <div className={`${ultra} text-center italic text-[#e9ecef] text-[15px] tracking-[0.06em]`}>CONCEPT2</div>
+                <div className="grid grid-cols-[minmax(0,1fr)_26px] gap-[10px]">
+                  <div className={`${lcdFont} bg-[#b8c3ae] text-[#1c261b] rounded-[4px] border-[3px] border-[#0b0d0f] p-[8px] grid grid-cols-[minmax(0,1fr)_auto] gap-[6px] min-w-0`}>
+                    <div className="grid gap-[4px] min-w-0 [&>div]:border-b-[1.5px] [&>div]:border-[#1c261b] [&>div]:pb-[4px] [&>div:last-child]:border-0">
+                      <div className="flex justify-between items-end gap-[8px]">
+                        <LcdCell id="time" unit="time" inline={false} />
+                        <LcdCell id="spm" unit="s/m" right />
+                      </div>
+                      <div><LcdCell id="pace" unit="/500m" big inline="big" /></div>
+                      <div className="flex justify-between items-end gap-[8px]">
+                        <LcdCell id="watts" unit="watts" />
+                        <LcdCell id="mps" unit="m/stroke" right />
+                      </div>
+                      <div><LcdCell id="dist" unit="m" inline="lg" /></div>
                     </div>
-                    <div><LcdCell id="pace" unit="/500m" big inline="big" /></div>
-                    <div className="flex justify-between items-end gap-[8px]">
-                      <LcdCell id="watts" unit="watts" />
-                      <LcdCell id="mps" unit="m/stroke" right />
+                    <div aria-hidden className="flex flex-col justify-around text-right text-[9px] font-semibold pl-[5px] border-l-[1.5px] border-[#1c261b]">
+                      <span>PIN</span><span>RESET</span><span /><span /><span />
                     </div>
-                    <div><LcdCell id="dist" unit="m" inline="lg" /></div>
                   </div>
-                  <div aria-hidden className="flex flex-col justify-around text-right text-[9px] font-semibold pl-[5px] border-l-[1.5px] border-[#1c261b]">
-                    <span>PIN</span><span>RESET</span><span /><span /><span />
+                  <div className="flex flex-col justify-around items-center py-[6px]">
+                    {['pin', 'reset', null, null, null].map((act, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        data-act={act || undefined}
+                        disabled={!act}
+                        aria-label={act === 'pin' ? 'Pin as baseline' : act === 'reset' ? 'Reset' : undefined}
+                        aria-hidden={act ? undefined : true}
+                        tabIndex={act ? undefined : -1}
+                        className="w-[22px] h-[22px] rounded-full border border-[#0b0d0f] bg-[#3a4046] enabled:hover:bg-[#59616a] enabled:active:scale-[0.97] disabled:opacity-70 transition-colors"
+                      />
+                    ))}
                   </div>
                 </div>
-                <div className="flex flex-col justify-around items-center py-[6px]">
-                  {['pin', 'reset', null, null, null].map((act, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      data-act={act || undefined}
-                      disabled={!act}
-                      aria-label={act === 'pin' ? 'Pin as baseline' : act === 'reset' ? 'Reset' : undefined}
-                      aria-hidden={act ? undefined : true}
-                      tabIndex={act ? undefined : -1}
-                      className="w-[22px] h-[22px] rounded-full border border-[#0b0d0f] bg-[#3a4046] enabled:hover:bg-[#59616a] enabled:active:scale-[0.97] disabled:opacity-70 transition-colors"
-                    />
-                  ))}
+                <div className="flex justify-between items-center text-[#c9ced3] text-[12px]">
+                  <span className="flex items-center gap-[8px] uppercase tracking-[0.08em]">
+                    <i className="inline-block w-[26px] h-[14px] rounded-[7px] bg-[#3a4046] border border-[#0b0d0f]" />Menu
+                  </span>
+                  <span className={`${ultra} text-[15px]`}>PM5</span>
                 </div>
               </div>
-              <div className="flex justify-between items-center text-[#c9ced3] text-[12px]">
-                <span className="flex items-center gap-[8px] uppercase tracking-[0.08em]">
-                  <i className="inline-block w-[26px] h-[14px] rounded-[7px] bg-[#3a4046] border border-[#0b0d0f]" />Menu
-                </span>
-                <span className={`${ultra} text-[15px]`}>PM5</span>
+              <div>
+                <Heading>Inputs</Heading>
+                <div className="grid gap-[24px]">
+                  {CONTROLS.map((c) => (
+                    <div key={c.key} className="border-t pt-[16px]" style={rule}>
+                      <div className="flex justify-between items-baseline gap-[12px]">
+                        <label htmlFor={`rs-${c.key}`} className="text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px]">{c.label}</label>
+                        <output data-v={c.key} htmlFor={`rs-${c.key}`} />
+                      </div>
+                      <input
+                        id={`rs-${c.key}`}
+                        type="range"
+                        min={c.min}
+                        max={c.max}
+                        step={c.step}
+                        defaultValue={DEF[c.key]}
+                        className="w-full my-[8px]"
+                        style={{ accentColor: t.ink }}
+                      />
+                      <p className="opacity-70 text-[14px] md:text-[15px]">{c.help}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
 
           <section className="px-[20px] md:px-[26px] pb-[56px] md:pb-[120px]">
-            <Heading>One stroke, start to start</Heading>
-            <p data-note className="mb-[16px] max-w-[640px]" />
-            <div className="relative h-[36px] flex overflow-hidden rounded-[4px] border" style={{ borderColor: t.ink }}>
-              <div data-seg="drive" className="flex items-center px-[10px] whitespace-nowrap overflow-hidden transition-[width] duration-200" style={{ backgroundColor: t.ink, color: t.bg }} />
-              <div data-seg="rec" className="flex flex-1 items-center px-[10px] whitespace-nowrap overflow-hidden" style={{ backgroundColor: `${t.ink}1f` }} />
-              <div data-cursor className="absolute top-0 bottom-0 w-[2px]" style={{ backgroundColor: t.ink, left: 0 }} />
-            </div>
-            <div className="flex justify-between mt-[8px] text-[14px] opacity-70">
-              <span>catch</span><span data-cycle /><span>next catch</span>
-            </div>
-          </section>
-
-          <section className="px-[20px] md:px-[26px] pb-[56px] md:pb-[120px] grid gap-x-[48px] gap-y-[56px] lg:grid-cols-2">
-            <div>
-              <Heading>Inputs</Heading>
-              <div className="grid gap-[24px]">
-                {CONTROLS.map((c) => (
-                  <div key={c.key} className="border-t pt-[16px]" style={rule}>
-                    <div className="flex justify-between items-baseline gap-[12px]">
-                      <label htmlFor={`rs-${c.key}`} className="text-[20px] md:text-[21px] leading-[1.2] tracking-[0.21px]">{c.label}</label>
-                      <output data-v={c.key} htmlFor={`rs-${c.key}`} />
-                    </div>
-                    <input
-                      id={`rs-${c.key}`}
-                      type="range"
-                      min={c.min}
-                      max={c.max}
-                      step={c.step}
-                      defaultValue={DEF[c.key]}
-                      className="w-full my-[8px]"
-                      style={{ accentColor: t.ink }}
-                    />
-                    <p className="opacity-70">{c.help}</p>
-                  </div>
-                ))}
+            <Heading>Try one thing at a time</Heading>
+            <div className="grid gap-x-[48px] gap-y-[24px] lg:grid-cols-2">
+              <div>
+                <p className={`${nichrome} italic text-[18px] md:text-[21px] leading-[1.45] tracking-[0.2px] mb-[24px]`}>
+                  “spm is how fast you return to the start. Then realizing you can keep that while lengthening the stroke, then pressing hard lowers pace.”
+                </p>
+                <div className="flex flex-wrap gap-[8px] mb-[24px]">
+                  {Object.entries(EXP).map(([k, e]) => (
+                    <button
+                      key={k}
+                      type="button"
+                      data-exp={k}
+                      aria-pressed="false"
+                      className="text-left rounded-[4px] border px-[10px] py-[8px] transition-colors duration-[120ms] active:scale-[0.97] aria-pressed:bg-[var(--rs-ink)] aria-pressed:text-[var(--rs-bg)]"
+                      style={{ borderColor: t.ink, '--rs-ink': t.ink, '--rs-bg': t.bg }}
+                    >
+                      <span className="block text-[17px] leading-[1.15]">{e.title}</span>
+                      <span className="block text-[14px] opacity-80">{e.sub}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div>
-              <Heading>Try one thing at a time</Heading>
-              <p className={`${nichrome} italic text-[18px] md:text-[21px] leading-[1.45] tracking-[0.2px] mb-[24px]`}>
-                “spm is how fast you return to the start. Then realizing you can keep that while lengthening the stroke, then pressing hard lowers pace.”
-              </p>
-              <div className="flex flex-wrap gap-[8px] mb-[24px]">
-                {Object.entries(EXP).map(([k, e]) => (
-                  <button
-                    key={k}
-                    type="button"
-                    data-exp={k}
-                    aria-pressed="false"
-                    className="text-left rounded-[4px] border px-[10px] py-[8px] transition-colors duration-[120ms] active:scale-[0.97] aria-pressed:bg-[var(--rs-ink)] aria-pressed:text-[var(--rs-bg)]"
-                    style={{ borderColor: t.ink, '--rs-ink': t.ink, '--rs-bg': t.bg }}
-                  >
-                    <span className="block text-[17px] leading-[1.15]">{e.title}</span>
-                    <span className="block text-[14px] opacity-80">{e.sub}</span>
-                  </button>
-                ))}
-              </div>
-              <p data-exp-out className="border-t pt-[16px] max-w-[560px]" style={rule}>{INTRO}</p>
+              <p data-exp-out className="border-t pt-[16px] self-start max-w-[560px]" style={rule}>{INTRO}</p>
             </div>
           </section>
 
