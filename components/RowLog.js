@@ -331,6 +331,11 @@ export default function RowLog({ workouts, bests }) {
         <h1 className={`${nichrome} text-[24px] md:text-[40px] desktop:text-[54px] leading-[1.15] tracking-[0.2px] max-w-[1340px]`}>
           My erg log. Every row I finish lands here from Strava, with the PRs Strava doesn’t track and what to work on next. 🚣
         </h1>
+        <p className={`${social} mt-[16px] md:mt-[24px] text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px] max-w-[640px]`}>
+          I’ve found rowing to be a mix of exercise and a lesson in physics. So I created{' '}
+          <a href="/row-simulator" className="underline underline-offset-[3px]">this simulator</a>{' '}
+          to better understand the forces and how to get better at them.
+        </p>
       </section>
 
       <div className={`${social} text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px]`}>

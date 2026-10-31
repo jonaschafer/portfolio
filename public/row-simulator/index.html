@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive Concept2 rowing simulator: see how stroke rate, stroke length, force and damper turn into watts, pace and meters per stroke.">
+<title>Concept2 rowing physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+/* Layout: a workbench. Machine drawing + monitor on top, the stroke-cycle bar under it, controls and the calculation chain below. */
+:root {
+  --paper: #edf0f2;
+  --panel: #f8f9fa;
+  --ink: #1b242c;
+  --ink-2: #5a6772;
+  --line: #c6ced5;
+  --accent: #2552c4;
+  --accent-soft: #d6e0f7;
+  --warn: #b5581a;
+  --lcd-bg: #b8c3ae;
+  --lcd-ink: #1c261b;
+  --lcd-dim: #4d5a4b;
+  --f-display: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12171c; --panel: #192027; --ink: #e1e7ec; --ink-2: #8f9ca7; --line: #2c3742;
+    --accent: #7aa2ff; --accent-soft: #1f2d4d; --warn: #f0a060;
+    --lcd-bg: #9db093; --lcd-ink: #141c13; --lcd-dim: #3d4a3b; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #12171c; --panel: #192027; --ink: #e1e7ec; --ink-2: #8f9ca7; --line: #2c3742;
+  --accent: #7aa2ff; --accent-soft: #1f2d4d; --warn: #f0a060;
+  --lcd-bg: #9db093; --lcd-ink: #141c13; --lcd-dim: #3d4a3b; color-scheme: dark;
+}
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+h1, h2 { font-family: var(--f-display); font-weight: 700; text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+h1 { font-size: clamp(2rem, 5vw, 2.9rem); line-height: 1.05; }
+h2 { font-size: 1.35rem; }
+.eyebrow { font-family: var(--f-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); margin: 0 0 6px; }
+.lede { max-width: 62ch; color: var(--ink-2); margin: 8px 0 0; }
+header { display: grid; gap: 2px; }
+
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 310px; gap: 20px; align-items: stretch; }
+.canvas-box { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; min-width: 0; position: relative; }
+canvas { display: block; width: 100%; aspect-ratio: 3.4 / 1.75; max-width: 100%; }
+.legend { position: absolute; left: 12px; top: 10px; font-family: var(--f-mono); font-size: 0.7rem; color: var(--ink-2); display: flex; gap: 14px; flex-wrap: wrap; }
+.legend span::before { content: ""; display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; background: var(--ink-2); }
+.legend .drv::before { background: var(--accent); }
+
+/* PM5 monitor */
+.pm5 { background: linear-gradient(160deg, #3a3f44 0%, #1e2226 45%, #15181b 100%); border-radius: 18px; padding: 14px 14px 12px; display: grid; gap: 10px; align-content: start; box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 6px 18px rgba(0,0,0,.25); border: 1px solid #0d0f11; }
+.pm5-top { display: flex; justify-content: center; }
+.pm5-logo { font-family: var(--f-display); font-weight: 700; font-style: italic; font-size: 1.05rem; letter-spacing: 0.06em; color: #e9ecef; }
+.pm5-face { display: grid; grid-template-columns: minmax(0, 1fr) 30px; gap: 10px; align-items: stretch; }
+.lcd .cell.r { padding-right: 2px; }
+.lcd { background: linear-gradient(180deg, color-mix(in srgb, var(--lcd-bg) 92%, #fff) 0%, var(--lcd-bg) 100%); color: var(--lcd-ink); border-radius: 4px; border: 3px solid #0b0d0f; padding: 8px 8px; font-family: var(--f-mono); font-variant-numeric: tabular-nums; display: grid; gap: 4px; box-shadow: inset 0 2px 8px rgba(0,0,0,.3); min-width: 0; }
+.lcd-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; border-bottom: 1.5px solid var(--lcd-ink); padding-bottom: 4px; }
+.lcd-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.lcd .v { font-weight: 600; font-size: 1.05rem; line-height: 1.05; }
+.lcd .v.lg { font-size: 1.4rem; }
+.lcd .v.big { font-size: 2.05rem; }
+.lcd .u { font-size: 0.62rem; color: var(--lcd-ink); font-weight: 600; letter-spacing: 0.02em; }
+.lcd .d { font-size: 0.62rem; color: var(--lcd-dim); min-height: 1em; }
+.cell { display: grid; gap: 0; }
+.cell.r { text-align: right; }
+.unit-inline { display: flex; align-items: baseline; gap: 4px; }
+.softkeys { display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding-block: 6px; }
+.softkey { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #0b0d0f; background: radial-gradient(circle at 35% 30%, #6b737b, #2d3237 70%); box-shadow: 0 1px 0 rgba(255,255,255,.12); padding: 0; cursor: pointer; }
+.softkey[disabled] { cursor: default; opacity: .75; }
+.softkey:not([disabled]):hover { background: radial-gradient(circle at 35% 30%, #868f98, #3a4046 70%); }
+.keylabels { display: flex; flex-direction: column; justify-content: space-around; font-size: 0.55rem; font-weight: 600; text-align: right; padding-left: 5px; border-left: 1.5px solid var(--lcd-ink); }
+.lcd-wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
+.pm5-bottom { display: flex; justify-content: space-between; align-items: center; padding: 0 2px; }
+.menu-btn { display: flex; align-items: center; gap: 8px; color: #c9ced3; font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.menu-btn i { width: 26px; height: 14px; border-radius: 7px; background: radial-gradient(circle at 40% 30%, #6b737b, #2d3237 70%); border: 1px solid #0b0d0f; display: inline-block; }
+.pm5-badge { font-family: var(--f-display); font-weight: 700; font-size: 0.95rem; color: #c9ced3; letter-spacing: 0.04em; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* stroke cycle bar */
+.cycle { display: grid; gap: 8px; }
+.cycle-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
+.cycle-head .note { color: var(--ink-2); font-size: 0.95rem; }
+.cycle-head .note.warn { color: var(--warn); }
+.bar { position: relative; height: 34px; border-radius: 5px; overflow: hidden; display: flex; border: 1px solid var(--line); background: var(--panel); }
+.bar .seg { display: flex; align-items: center; padding: 0 10px; font-family: var(--f-mono); font-size: 0.75rem; white-space: nowrap; overflow: hidden; transition: width .25s ease; }
+.bar .drive { background: var(--accent); color: var(--panel); }
+.bar .rec { background: var(--accent-soft); color: var(--ink); flex: 1; }
+.bar .cursor { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); left: 0; }
+.scale { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 0.7rem; color: var(--ink-2); }
+
+/* controls */
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; }
+.controls { display: grid; gap: 18px; }
+.ctl { display: grid; gap: 4px; }
+.ctl-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.ctl label { font-family: var(--f-display); font-weight: 600; font-size: 1.1rem; }
+.ctl output { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+.ctl p { margin: 0; color: var(--ink-2); font-size: 0.92rem; }
+input[type="range"] { width: 100%; accent-color: var(--accent); margin: 4px 0; }
+
+.experiments { display: grid; gap: 12px; align-content: start; }
+.exp-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.exp-list button { text-align: left; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; cursor: pointer; font-family: var(--f-body); font-size: 0.95rem; line-height: 1.3; }
+.exp-list button b { display: block; font-family: var(--f-display); font-size: 1.05rem; font-weight: 600; }
+.exp-list button span { color: var(--ink-2); font-size: 0.85rem; }
+.exp-list button:hover, .exp-list button[aria-pressed="true"] { border-color: var(--accent); }
+.exp-out { background: var(--accent-soft); border-radius: 6px; padding: 12px 14px; font-size: 0.97rem; min-height: 3em; }
+.quote { border-left: 3px solid var(--line); padding-left: 12px; color: var(--ink-2); font-style: italic; margin: 0; font-size: 0.95rem; }
+
+/* calculation chain */
+.chain { display: grid; gap: 0; counter-reset: step; border-top: 1px solid var(--line); }
+.step { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.step::before { counter-increment: step; content: counter(step); font-family: var(--f-mono); color: var(--accent); font-weight: 600; }
+.step .what { display: grid; gap: 2px; }
+.step .what strong { font-family: var(--f-display); font-weight: 600; font-size: 1.05rem; }
+.step .what span { color: var(--ink-2); font-size: 0.92rem; }
+.step code { font-family: var(--f-mono); font-size: 0.85rem; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.fine { color: var(--ink-2); font-size: 0.85rem; max-width: 70ch; margin: 0; }
+
+@media (max-width: 820px) {
+  .stage, .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .pm5 { max-width: 420px; }
+}
+@media (max-width: 480px) {
+  .exp-list { grid-template-columns: minmax(0, 1fr); }
+  .step { grid-template-columns: 1.5rem minmax(0, 1fr); }
+  .step code { grid-column: 2; text-align: left; white-space: normal; }
+}
+</style>
+
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1>Concept2 rowing physics</h1>
+    <p class="lede">Move the sliders and watch how stroke rate, stroke length and how hard you push turn into watts, pace and meters per stroke.</p>
+  </header>
+
+  <section class="stage" aria-label="Rower and monitor">
+    <div class="canvas-box">
+      <div class="legend"><span class="drv">drive (chain loaded)</span><span>recovery</span></div>
+      <canvas id="erg" aria-label="Animated line drawing of a person rowing on a Concept2 erg"></canvas>
+    </div>
+    <div class="pm5">
+      <div class="pm5-top"><span class="pm5-logo">CONCEPT2</span></div>
+      <div class="pm5-face">
+        <div class="lcd">
+          <div class="lcd-wrap">
+            <div style="display:grid; gap:4px; min-width:0;">
+              <div class="lcd-row">
+                <div class="cell"><span class="v lg" id="o-time">0:00</span><span class="u">time</span></div>
+                <div class="cell r"><span class="v lg" id="o-spm">24</span><span class="u">s/m</span><span class="d" id="d-spm"></span></div>
+              </div>
+              <div class="lcd-row">
+                <div class="cell"><span class="unit-inline"><span class="v big" id="o-pace">2:00.5</span><span class="u">/500m</span></span><span class="d" id="d-pace"></span></div>
+              </div>
+              <div class="lcd-row">
+                <div class="cell"><span class="v" id="o-watts">200</span><span class="u">watts</span><span class="d" id="d-watts"></span></div>
+                <div class="cell r"><span class="v" id="o-mps">10.4</span><span class="u">m/stroke</span><span class="d" id="d-mps"></span></div>
+              </div>
+              <div class="lcd-row">
+                <div class="cell"><span class="unit-inline"><span class="v lg" id="o-dist">0</span><span class="u">m</span></span></div>
+              </div>
+            </div>
+            <div class="keylabels" aria-hidden="true"><span>PIN</span><span>RESET</span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+        <div class="softkeys">
+          <button class="softkey" id="pin" type="button" aria-label="Pin as baseline" title="Pin as baseline"></button>
+          <button class="softkey" id="reset" type="button" aria-label="Reset" title="Reset"></button>
+          <button class="softkey" type="button" disabled aria-hidden="true" tabindex="-1"></button>
+          <button class="softkey" type="button" disabled aria-hidden="true" tabindex="-1"></button>
+          <button class="softkey" type="button" disabled aria-hidden="true" tabindex="-1"></button>
+        </div>
+      </div>
+      <div class="pm5-bottom"><span class="menu-btn"><i></i>Menu</span><span class="pm5-badge">PM5</span></div>
+    </div>
+  </section>
+
+  <section class="cycle" aria-label="One stroke cycle">
+    <div class="cycle-head">
+      <h2>One stroke, start to start</h2>
+      <span class="note" id="ratio-note"></span>
+    </div>
+    <div class="bar">
+      <div class="seg drive" id="seg-drive">drive</div>
+      <div class="seg rec" id="seg-rec">recovery</div>
+      <div class="cursor" id="cursor"></div>
+    </div>
+    <div class="scale"><span>catch</span><span id="cycle-len">2.50 s per stroke</span><span>next catch</span></div>
+  </section>
+
+  <section class="grid2">
+    <div class="controls">
+      <h2>Inputs</h2>
+      <div class="ctl">
+        <div class="ctl-top"><label for="spm">Stroke rate</label><output id="v-spm" for="spm"></output></div>
+        <input id="spm" type="range" min="16" max="36" step="1" value="24">
+        <p>Strokes per minute. The drive takes about the same time at any rate, so this mostly sets how quickly you slide back to the catch.</p>
+      </div>
+      <div class="ctl">
+        <div class="ctl-top"><label for="len">Stroke length</label><output id="v-len" for="len"></output></div>
+        <input id="len" type="range" min="1.00" max="1.65" step="0.01" value="1.45">
+        <p>How far the handle travels from catch to finish. More compression at the catch and a full finish add length.</p>
+      </div>
+      <div class="ctl">
+        <div class="ctl-top"><label for="force">Push force</label><output id="v-force" for="force"></output></div>
+        <input id="force" type="range" min="150" max="700" step="5" value="345">
+        <p>Average force on the handle during the drive. This is the "pressing hard" part.</p>
+      </div>
+      <div class="ctl">
+        <div class="ctl-top"><label for="damper">Damper</label><output id="v-damper" for="damper"></output></div>
+        <input id="damper" type="range" min="1" max="10" step="1" value="4">
+        <p>The lever on the flywheel. Higher feels heavier and slows the handle, so the drive takes longer. It does not add watts on its own.</p>
+      </div>
+    </div>
+
+    <div class="experiments">
+      <h2>Try one thing at a time</h2>
+      <p class="quote">"spm is how fast you return to the start. Then realizing you can keep that while lengthening the stroke, then pressing hard lowers pace."</p>
+      <div class="exp-list">
+        <button type="button" data-exp="slow"><b>Slow the return</b><span>24 to 20 spm, same stroke</span></button>
+        <button type="button" data-exp="long"><b>Lengthen the stroke</b><span>1.30 to 1.55 m at 24 spm</span></button>
+        <button type="button" data-exp="hard"><b>Press harder</b><span>300 to 420 N at 24 spm</span></button>
+        <button type="button" data-exp="rate"><b>Rate up</b><span>24 to 30 spm, same stroke</span></button>
+      </div>
+      <div class="exp-out" id="exp-out">Pick an experiment. It pins the starting point as your baseline, then changes one input so the monitor shows the difference.</div>
+    </div>
+  </section>
+
+  <section class="grid2" style="grid-template-columns: minmax(0,1fr);">
+    <div style="display:grid; gap:12px;">
+      <h2>How the numbers connect</h2>
+      <div class="chain">
+        <div class="step"><div class="what"><strong>Work per stroke</strong><span>Force times how far the handle travels.</span></div><code id="c1"></code></div>
+        <div class="step"><div class="what"><strong>Watts</strong><span>Work per stroke times strokes per second. Rate multiplies whatever each stroke is worth.</span></div><code id="c2"></code></div>
+        <div class="step"><div class="what"><strong>Pace</strong><span>The PM5 converts watts to pace with a cube root, so doubling watts only makes you about 21% faster.</span></div><code id="c3"></code></div>
+        <div class="step"><div class="what"><strong>Meters per stroke</strong><span>Boat speed times the seconds each stroke takes. A higher rate gives each stroke less time to carry you.</span></div><code id="c4"></code></div>
+        <div class="step"><div class="what"><strong>Drive and recovery</strong><span>Drive time comes from length and handle speed. Whatever is left of the stroke is the slide back.</span></div><code id="c5"></code></div>
+      </div>
+      <p class="fine">Watts to pace uses Concept2's published formula (watts = 2.80 ÷ (seconds per meter)³). Handle speed, drive time and the damper effect are simplified estimates, so read those as directional.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const DEF = { spm: 24, len: 1.45, force: 345, damper: 4 };
+  const S = { ...DEF };
+  const inputs = { spm: $("spm"), len: $("len"), force: $("force"), damper: $("damper") };
+
+  function model(s) {
+    const drag = 80 + (s.damper - 1) * 15.5;
+    const work = s.force * s.len;
+    const watts = work * s.spm / 60;
+    const pace = 500 * Math.cbrt(2.8 / watts);
+    const speed = 500 / pace;
+    const mps = speed * 60 / s.spm;
+    const handle = Math.sqrt(s.force / (0.9 * drag));
+    const drive = s.len / handle;
+    const cycle = 60 / s.spm;
+    const rec = cycle - drive;
+    return { drag, work, watts, pace, speed, mps, handle, drive, cycle, rec, ratio: rec / drive };
+  }
+
+  const fmtPace = p => { const m = Math.floor(p / 60); const s = p - m * 60; return m + ":" + (s < 10 ? "0" : "") + s.toFixed(1); };
+  const fmtTime = t => { const m = Math.floor(t / 60); const s = Math.floor(t % 60); return m + ":" + (s < 10 ? "0" : "") + s; };
+  const sign = (x, d) => (x > 0 ? "▲ " : "▼ ") + Math.abs(x).toFixed(d);
+
+  let base = model(S);
+  let M = model(S);
+
+  function render() {
+    M = model(S);
+    $("v-spm").textContent = S.spm + " spm";
+    $("v-len").textContent = S.len.toFixed(2) + " m";
+    $("v-force").textContent = Math.round(S.force) + " N · about " + Math.round(S.force / 9.81) + " kg";
+    $("v-damper").textContent = S.damper + " · drag factor " + Math.round(M.drag);
+
+    $("o-pace").textContent = fmtPace(M.pace);
+    $("o-spm").textContent = Math.round(S.spm);
+    $("o-watts").textContent = Math.round(M.watts);
+    $("o-mps").textContent = M.mps.toFixed(1);
+
+    const dp = M.pace - base.pace, dw = M.watts - base.watts, dm = M.mps - base.mps, ds = S.spm - base.spmIn;
+    $("d-pace").textContent = Math.abs(dp) < 0.05 ? "" : (dp < 0 ? "▼ " + (-dp).toFixed(1) + " s faster" : "▲ " + dp.toFixed(1) + " s slower");
+    $("d-watts").textContent = Math.abs(dw) < 0.5 ? "" : sign(dw, 0);
+    $("d-mps").textContent = Math.abs(dm) < 0.05 ? "" : sign(dm, 1);
+    $("d-spm").textContent = Math.abs(ds) < 0.5 ? "" : sign(ds, 0);
+
+    const rec = Math.max(M.rec, 0);
+    const dPct = Math.min(100, M.drive / M.cycle * 100);
+    $("seg-drive").style.width = dPct + "%";
+    $("seg-drive").textContent = "drive " + M.drive.toFixed(2) + " s";
+    $("seg-rec").textContent = "recovery " + rec.toFixed(2) + " s";
+    $("cycle-len").textContent = M.cycle.toFixed(2) + " s per stroke";
+    const note = $("ratio-note");
+    note.classList.toggle("warn", M.ratio < 1.2);
+    if (M.rec < 0.3) note.textContent = "Not doable: the drive alone takes " + M.drive.toFixed(2) + " s, leaving almost no time to come back.";
+    else if (M.ratio < 1.2) note.textContent = "Rushing the slide: recovery is about as fast as the drive (" + M.ratio.toFixed(1) + " : 1).";
+    else if (M.ratio < 1.8) note.textContent = "Race rhythm: recovery is " + M.ratio.toFixed(1) + "× the drive.";
+    else note.textContent = "Steady rhythm: recovery is " + M.ratio.toFixed(1) + "× the drive. Coaches aim for about 2 : 1 at steady rates.";
+
+    $("c1").textContent = Math.round(S.force) + " N × " + S.len.toFixed(2) + " m = " + Math.round(M.work) + " J";
+    $("c2").textContent = Math.round(M.work) + " J × " + S.spm + "/60 = " + Math.round(M.watts) + " W";
+    $("c3").textContent = "500 × ∛(2.80 ÷ " + Math.round(M.watts) + ") = " + fmtPace(M.pace) + " /500m";
+    $("c4").textContent = M.speed.toFixed(2) + " m/s × " + M.cycle.toFixed(2) + " s = " + M.mps.toFixed(1) + " m";
+    $("c5").textContent = S.len.toFixed(2) + " m ÷ " + M.handle.toFixed(2) + " m/s = " + M.drive.toFixed(2) + " s drive, " + rec.toFixed(2) + " s back";
+  }
+
+  function pin() { base = model(S); base.spmIn = S.spm; render(); }
+  base.spmIn = S.spm;
+
+  function syncInputs() { for (const k in inputs) inputs[k].value = S[k]; }
+  for (const k in inputs) inputs[k].addEventListener("input", () => {
+    cancelTween(); S[k] = parseFloat(inputs[k].value); render();
+  });
+  $("pin").addEventListener("click", pin);
+  $("reset").addEventListener("click", () => {
+    cancelTween(); Object.assign(S, DEF); syncInputs(); pin(); elapsed = 0; dist = 0;
+    document.querySelectorAll("[data-exp]").forEach(b => b.setAttribute("aria-pressed", "false"));
+    $("exp-out").textContent = "Pick an experiment. It pins the starting point as your baseline, then changes one input so the monitor shows the difference.";
+  });
+
+  // experiments
+  const EXP = {
+    slow: { from: { spm: 24, len: 1.45, force: 345, damper: 4 }, to: { spm: 20 },
+      text: "The drive still takes the same time. Only the slide back got longer, so the rate dropped. Each stroke now carries you farther, but you take fewer of them, so watts fall and pace slows." },
+    long: { from: { spm: 24, len: 1.30, force: 345, damper: 4 }, to: { len: 1.55 },
+      text: "Same rate, more handle travel. More work goes into every stroke, so watts rise, pace drops and meters per stroke go up. The longer drive eats into the recovery a little." },
+    hard: { from: { spm: 24, len: 1.45, force: 300, damper: 4 }, to: { force: 420 },
+      text: "Same rate and length, more force. Watts rise and pace drops. The handle also moves faster, so the drive gets shorter and you get a bit more time on the slide." },
+    rate: { from: { spm: 24, len: 1.45, force: 345, damper: 4 }, to: { spm: 30 },
+      text: "Same stroke, more of them. Watts and pace improve, but meters per stroke go down because each stroke has less time to carry you. The recovery shrinks fast." }
+  };
+  let tween = null;
+  function cancelTween() { if (tween) cancelAnimationFrame(tween); tween = null; }
+  document.querySelectorAll("[data-exp]").forEach(btn => btn.addEventListener("click", () => {
+    const e = EXP[btn.dataset.exp];
+    document.querySelectorAll("[data-exp]").forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+    cancelTween();
+    Object.assign(S, e.from); syncInputs(); pin();
+    $("exp-out").textContent = e.text;
+    const start = { ...S }, t0 = performance.now(), dur = 1400;
+    const step = now => {
+      const k = Math.min(1, (now - t0) / dur), ek = k * k * (3 - 2 * k);
+      for (const key in e.to) {
+        let v = start[key] + (e.to[key] - start[key]) * ek;
+        if (key === "spm" || key === "damper") v = Math.round(v);
+        if (key === "len") v = Math.round(v * 100) / 100;
+        if (key === "force") v = Math.round(v / 5) * 5;
+        S[key] = v;
+      }
+      syncInputs(); render();
+      tween = k < 1 ? requestAnimationFrame(step) : null;
+    };
+    setTimeout(() => { tween = requestAnimationFrame(step); }, 350);
+  }));
+
+  // ---------- drawing ----------
+  const cv = $("erg"), ctx = cv.getContext("2d");
+  const W0 = -0.75, W1 = 2.65, H0 = -0.05, H1 = 1.70;
+  let sc = 100, dpr = 1;
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    const r = cv.getBoundingClientRect();
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    sc = cv.width / (W1 - W0);
+  }
+  window.addEventListener("resize", resize);
+  const X = x => (x - W0) * sc, Y = y => cv.height - (y - H0) * sc;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const clamp = t => Math.max(0, Math.min(1, t));
+  const sm = t => { t = clamp(t); return t * t * (3 - 2 * t); };
+
+  const ANKLE = { x: 0.60, y: 0.50 }, TOE = { x: 0.49, y: 0.64 }, HIP_Y = 0.56;
+  const THIGH = 0.46, SHIN = 0.46, TORSO = 0.60, UPPER = 0.31, FORE = 0.30;
+
+  function ik(a, b, l1, l2, pickUp) {
+    // joint between a (end of l1 from a) and b; returns point
+    let dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy);
+    d = Math.max(Math.abs(l1 - l2) + 1e-3, Math.min(l1 + l2 - 1e-3, d));
+    const base = Math.atan2(dy, dx);
+    const ang = Math.acos((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d));
+    const p1 = { x: a.x + l1 * Math.cos(base + ang), y: a.y + l1 * Math.sin(base + ang) };
+    const p2 = { x: a.x + l1 * Math.cos(base - ang), y: a.y + l1 * Math.sin(base - ang) };
+    return pickUp ? (p1.y > p2.y ? p1 : p2) : (p1.y < p2.y ? p1 : p2);
+  }
+
+  function pose(l, b, a, q) {
+    const catchHip = Math.max(0.80, 1.50 - 0.62 * q);
+    const hip = { x: lerp(catchHip, 1.50, l), y: HIP_Y };
+    const catchAng = -(22 + 10 * Math.min(q, 1.15)) * Math.PI / 180;
+    const ang = lerp(catchAng, 15 * Math.PI / 180, b);
+    const sh = { x: hip.x + TORSO * Math.sin(ang), y: hip.y + TORSO * Math.cos(ang) };
+    const hy = lerp(0.70, 0.88, a);
+    const R = 0.595, dy = sh.y - hy;
+    const reachX = sh.x - Math.sqrt(Math.max(0, R * R - dy * dy));
+    const finX = hip.x + 0.35 * Math.sin(ang) - 0.12;
+    const hand = { x: lerp(reachX, finX, sm(a)), y: hy };
+    const knee = ik(ANKLE, hip, SHIN, THIGH, true);
+    const elbow = ik(sh, hand, UPPER, FORE, false);
+    const head = { x: sh.x + 0.17 * Math.sin(ang) - 0.03, y: sh.y + 0.17 * Math.cos(ang) + 0.02 };
+    return { hip, sh, hand, knee, elbow, head, ang };
+  }
+
+  const css = () => { const s = getComputedStyle(document.documentElement); const g = n => s.getPropertyValue(n).trim(); return { ink: g("--ink"), ink2: g("--ink-2"), line: g("--line"), accent: g("--accent"), panel: g("--panel") }; };
+
+  let phase = 0, elapsed = 0, dist = 0, fanAng = 0, last = performance.now();
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function line(pts, w, col) {
+    ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.beginPath(); ctx.moveTo(X(pts[0].x), Y(pts[0].y));
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(X(pts[i].x), Y(pts[i].y));
+    ctx.stroke();
+  }
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    const drive = M.drive, rec = Math.max(0.3, M.rec), cyc = drive + rec;
+    if (!reduce) { phase = (phase + dt) % cyc; elapsed += dt; dist += M.speed * dt; }
+    else { phase = drive * 0.999; }
+    const inDrive = phase < drive;
+    let l, b, a;
+    if (inDrive) {
+      const p = sm(phase / drive);
+      l = sm(p / 0.62); b = sm((p - 0.25) / 0.55); a = sm((p - 0.62) / 0.38);
+    } else {
+      const r = (phase - drive) / rec;
+      a = 1 - sm(r / 0.28); b = 1 - sm((r - 0.12) / 0.33); l = 1 - sm((r - 0.33) / 0.67);
+    }
+    $("cursor").style.left = (phase / cyc * 100) + "%";
+    $("o-time").textContent = fmtTime(elapsed);
+    $("o-dist").textContent = Math.floor(dist);
+
+    const q = S.len / 1.45;
+    const P = pose(l, b, a, q);
+    const C = css();
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const lw = Math.max(1.5, 0.012 * sc), body = Math.max(3, 0.034 * sc);
+
+    // floor
+    line([{ x: W0 + 0.1, y: 0 }, { x: W1 - 0.1, y: 0 }], 1 * dpr, C.line);
+    // rail + legs
+    ctx.fillStyle = C.panel;
+    line([{ x: -0.05, y: 0.40 }, { x: 2.42, y: 0.40 }], lw * 1.6, C.ink2);
+    line([{ x: 2.40, y: 0.40 }, { x: 2.40, y: 0.0 }], lw, C.ink2);
+    line([{ x: 2.25, y: 0.0 }, { x: 2.55, y: 0.0 }], lw * 1.4, C.ink2);
+    line([{ x: -0.30, y: 0.36 }, { x: -0.30, y: 0.04 }], lw, C.ink2);
+    line([{ x: -0.62, y: 0.02 }, { x: 0.02, y: 0.02 }], lw * 1.4, C.ink2);
+    // flywheel housing + fan
+    const fc = { x: -0.30, y: 0.66 }, fr = 0.30;
+    ctx.strokeStyle = C.ink2; ctx.lineWidth = lw;
+    ctx.beginPath(); ctx.arc(X(fc.x), Y(fc.y), fr * sc, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(X(fc.x), Y(fc.y), fr * 0.86 * sc, 0, Math.PI * 2); ctx.stroke();
+    fanAng += (reduce ? 0 : dt) * M.speed * (inDrive ? 3.4 : 3.0);
+    for (let i = 0; i < 10; i++) {
+      const t = fanAng + i * Math.PI / 5;
+      line([{ x: fc.x + 0.06 * Math.cos(t), y: fc.y + 0.06 * Math.sin(t) }, { x: fc.x + 0.24 * Math.cos(t + 0.25), y: fc.y + 0.24 * Math.sin(t + 0.25) }], lw * 0.7, C.line);
+    }
+    ctx.beginPath(); ctx.arc(X(fc.x), Y(fc.y), 0.05 * sc, 0, Math.PI * 2); ctx.stroke();
+    // damper lever
+    const dA = (-150 + S.damper * 9) * Math.PI / 180;
+    line([{ x: fc.x - 0.21, y: fc.y }, { x: fc.x - 0.21 + 0.12 * Math.cos(dA), y: fc.y + 0.12 * Math.sin(dA) }], lw * 1.2, C.accent);
+    // monitor arm + PM5
+    line([{ x: -0.12, y: 0.90 }, { x: 0.02, y: 1.26 }], lw, C.ink2);
+    ctx.save(); ctx.translate(X(0.06), Y(1.33)); ctx.rotate(-0.25);
+    ctx.strokeStyle = C.ink2; ctx.lineWidth = lw; ctx.strokeRect(-0.07 * sc, -0.10 * sc, 0.12 * sc, 0.2 * sc);
+    ctx.restore();
+    // footplate
+    line([{ x: 0.64, y: 0.42 }, { x: 0.46, y: 0.70 }], lw * 1.4, C.ink2);
+    // seat
+    const sx = P.hip.x;
+    ctx.fillStyle = C.ink2;
+    ctx.beginPath(); ctx.roundRect ? ctx.roundRect(X(sx - 0.15), Y(0.53), 0.27 * sc, 0.06 * sc, 0.02 * sc) : ctx.rect(X(sx - 0.15), Y(0.53), 0.27 * sc, 0.06 * sc); ctx.fill();
+    line([{ x: sx - 0.08, y: 0.47 }, { x: sx + 0.06, y: 0.47 }], lw, C.ink2);
+
+    // handle travel dimension
+    const cP = pose(0, 0, 0, q), fP = pose(1, 1, 1, q);
+    const dimY = 0.18;
+    line([{ x: cP.hand.x, y: dimY }, { x: fP.hand.x, y: dimY }], 1 * dpr, C.ink2);
+    line([{ x: cP.hand.x, y: dimY - 0.04 }, { x: cP.hand.x, y: dimY + 0.04 }], 1 * dpr, C.ink2);
+    line([{ x: fP.hand.x, y: dimY - 0.04 }, { x: fP.hand.x, y: dimY + 0.04 }], 1 * dpr, C.ink2);
+    ctx.fillStyle = C.ink2; ctx.font = `${Math.round(0.055 * sc)}px "JetBrains Mono", monospace`; ctx.textAlign = "center";
+    ctx.fillText("stroke length " + S.len.toFixed(2) + " m", X((cP.hand.x + fP.hand.x) / 2), Y(dimY + 0.05));
+    // current handle marker on dimension
+    ctx.fillStyle = inDrive ? C.accent : C.ink2;
+    ctx.beginPath(); ctx.arc(X(P.hand.x), Y(dimY), 0.022 * sc, 0, Math.PI * 2); ctx.fill();
+
+    // chain
+    line([{ x: 0.0, y: 0.68 }, P.hand], inDrive ? lw * 1.5 : lw * 0.8, inDrive ? C.accent : C.ink2);
+
+    // rower
+    line([TOE, ANKLE, P.knee, P.hip], body, C.ink);
+    line([P.hip, P.sh], body * 1.15, C.ink);
+    line([P.sh, P.elbow, P.hand], body * 0.85, C.ink);
+    ctx.strokeStyle = C.ink; ctx.lineWidth = body * 0.6; ctx.fillStyle = C.panel;
+    ctx.beginPath(); ctx.arc(X(P.head.x), Y(P.head.y), 0.095 * sc, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    // handle
+    line([{ x: P.hand.x - 0.01, y: P.hand.y - 0.03 }, { x: P.hand.x + 0.01, y: P.hand.y + 0.03 }], body * 0.7, inDrive ? C.accent : C.ink2);
+
+    requestAnimationFrame(frame);
+  }
+
+  resize(); render();
+  requestAnimationFrame(t => { last = t; frame(t); });
+})();
+</script>
+</body>
+</html>
