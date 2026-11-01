@@ -156,7 +156,7 @@
       "week": 1,
       "dateRange": "Oct 26-Nov 1",
       "type": "RE-ENTRY",
-      "target": "6 miles, 150 ft · 2 rows · 2 lifts",
+      "target": "6 miles, 150 ft · 3 rows · 2 lifts",
       "content": "**Week 4 after surgery.** Cleared for exercise, so this block is about ramping, not permission. Flat, soft, conversational running. Rows stay steady while the running restarts. Lifts at about 60% of normal, RPE 6, exhale through every rep and keep the jaw loose. Still blowing the nose softly, so no breath holds or bearing down on anything.",
       "days": [
         {
@@ -215,12 +215,13 @@
         },
         {
           "day": "Sunday",
-          "title": "Longest run of the week",
-          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee says anything. Conversational pace, which will feel too slow. That’s right.",
+          "title": "Longest run of the week + Row + lift circuit",
+          "content": "**Run:** 2 miles, ~50 ft. Flat and soft, a park loop or the waterfront. Run 4 min, walk 1 min if the knee says anything. Conversational pace, which will feel too slow. That’s right.\n\n**Row + lift circuit with Andrew and Joel:** 4 rounds of 3:00 stations, rowing a rate ladder at 22, 24, 26 and 28 spm between lifts. 2:34, 2:21, 2:16.8, 2:16.8. Meters per stroke peaked at 9.12 at 24 and fell to 7.78 at 28, so 28 bought no speed. 26 spm with longer strokes is the target from here.",
           "summary": {
             "distance": "2 miles",
             "vert": "50 ft",
-            "runOneLine": "2 miles, ~50 ft"
+            "runOneLine": "2 miles, ~50 ft",
+            "rowOneLine": "4 × 3:00 @ 22 / 24 / 26 / 28 spm, with lifts"
           }
         }
       ]
@@ -422,9 +423,9 @@
         {
           "day": "Friday",
           "title": "2k test",
-          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out at 26 spm with long strokes. Open at about 2:15, the pace you held for 3:00 at 26 on Nov 1, settle there for the first 1,500, and only lift the rate for the last 500 if there’s something left. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
-            "rowOneLine": "2k test @ 26 to 30 spm",
+            "rowOneLine": "2k test @ 26 spm",
             "ptOneLine": "PT, 15 min"
           }
         },
@@ -476,9 +477,9 @@
         {
           "day": "Wednesday",
           "title": "Row intervals, 4 × 4 min",
-          "content": "**Row:** 10 min easy, then 4 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, then 4 × 4 min at 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s from the Nov 20 test, or 2:15 if you don’t have one yet. Hold 9 m or more per stroke. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
-            "rowOneLine": "4 × 4 min @ 24 to 26 spm, 2 min easy",
+            "rowOneLine": "4 × 4 min @ 26 spm, 2 min easy",
             "ptOneLine": "PT, 15 min"
           }
         },
@@ -552,9 +553,9 @@
         {
           "day": "Wednesday",
           "title": "Row intervals, 5 × 4 min",
-          "content": "**Row:** 10 min easy, then 5 × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, then 5 × 4 min at 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s from the Nov 20 test, or 2:15 if you don’t have one yet. Hold 9 m or more per stroke. Exhale on the drive, never hold the breath.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
-            "rowOneLine": "5 × 4 min @ 24 to 26 spm, 2 min easy",
+            "rowOneLine": "5 × 4 min @ 26 spm, 2 min easy",
             "ptOneLine": "PT, 15 min"
           }
         },
@@ -704,9 +705,9 @@
         {
           "day": "Wednesday",
           "title": "2k test",
-          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out at 26 spm with long strokes. Open at your last 2k’s average pace, settle there for the first 1,500, and only lift the rate for the last 500 if there’s something left. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
-            "rowOneLine": "2k test @ 26 to 30 spm",
+            "rowOneLine": "2k test @ 26 spm",
             "ptOneLine": "PT, 15 min"
           }
         },
@@ -1030,9 +1031,9 @@
         {
           "day": "Friday",
           "title": "2k test",
-          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out at 26 spm with long strokes. Open at your last 2k’s average pace, settle there for the first 1,500, and only lift the rate for the last 500 if there’s something left. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
-            "rowOneLine": "2k test @ 26 to 30 spm",
+            "rowOneLine": "2k test @ 26 spm",
             "ptOneLine": "PT, 15 min"
           }
         },
@@ -1295,9 +1296,9 @@
         {
           "day": "Monday",
           "title": "2k test",
-          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
+          "content": "**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out at 26 spm with long strokes. Open at your last 2k’s average pace, settle there for the first 1,500, and only lift the rate for the last 500 if there’s something left. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.\n\n**PT, 15 min:**\n- Step-downs, 2 × 10 per side\n- Wall sit, 3 × 45 to 60 s\n- SL glute bridge, 2 × 12 per side",
           "summary": {
-            "rowOneLine": "2k test @ 26 to 30 spm",
+            "rowOneLine": "2k test @ 26 spm",
             "ptOneLine": "PT, 15 min"
           }
         },

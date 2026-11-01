@@ -133,23 +133,29 @@ const ROW = {
     one: '3 × (5 min @ 18 / 20 / 22 spm)',
     body: `**Row:** 3 rounds of 5 min at 18, 5 min at 20, 5 min at 22 spm, no rest. Same easy effort, just a faster rhythm. The goal is keeping meters per stroke as the rate climbs.`,
   },
-  check2k: (cleared) => ({
+  // Nov 1: 26 spm tied 28 for pace with longer strokes, so tests hold 26.
+  check2k: (cleared, first) => ({
     title: cleared ? '2k test' : '2k check',
-    one: cleared ? '2k test @ 26 to 30 spm' : '2k controlled @ 24 spm',
+    one: cleared ? '2k test @ 26 spm' : '2k controlled @ 24 spm',
     body: cleared
-      ? `**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out. Rate 26 to 30. Go out at goal pace, not faster. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.`
+      ? `**Row:** 10 min easy, 3 × 10 strokes building, 3 min easy, then 2k all out at 26 spm with long strokes. ${first ? 'Open at about 2:15, the pace you held for 3:00 at 26 on Nov 1' : 'Open at your last 2k’s average pace'}, settle there for the first 1,500, and only lift the rate for the last 500 if there’s something left. Compare to Oct 20 (11:20.0 at 20.7 spm). Exhale hard on every drive, no breath holds. Log it on /row.`
       : `**Row:** 2k at a locked 24 spm, hard but still controlled, nose breathing if you can. Not all out until the surgeon clears it. Compare to Oct 20 (11:20.0 at 20.7 spm). Log it on /row.`,
   }),
   intervals4: (n) => ({
     title: `Row intervals, ${n} × 4 min`,
-    one: `${n} × 4 min @ 24 to 26 spm, 2 min easy`,
-    body: `**Row:** 10 min easy, then ${n} × 4 min at 24 to 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s. Exhale on the drive, never hold the breath.`,
+    one: `${n} × 4 min @ 26 spm, 2 min easy`,
+    body: `**Row:** 10 min easy, then ${n} × 4 min at 26 spm, 2 min easy between. Threshold effort, about 2k pace + 10s from the Nov 20 test, or 2:15 if you don’t have one yet. Hold 9 m or more per stroke. Exhale on the drive, never hold the breath.`,
   }),
   intervals6: (n) => ({
     title: `Row intervals, ${n} × 6 min`,
     one: `${n} × 6 min @ 24 spm, 2 min easy`,
     body: `**Row:** 10 min easy, then ${n} × 6 min at 24 spm, 2 min easy between. Steady-hard, same split every rep.`,
   }),
+  circuit: {
+    title: 'Row + lift circuit',
+    one: '4 × 3:00 @ 22 / 24 / 26 / 28 spm, with lifts',
+    body: `**Row + lift circuit with Andrew and Joel:** 4 rounds of 3:00 stations, rowing a rate ladder at 22, 24, 26 and 28 spm between lifts. 2:34, 2:21, 2:16.8, 2:16.8. Meters per stroke peaked at 9.12 at 24 and fell to 7.78 at 28, so 28 bought no speed. 26 spm with longer strokes is the target from here.`,
+  },
   minutes: {
     title: 'Row 1 on, 1 off',
     one: '10 × 1 min @ 26 to 28 spm, 1 min easy',
@@ -289,7 +295,7 @@ function postOpWeek(w) {
 // Which row goes where, by week. Keys are day names.
 function rowsFor(w) {
   const p = phaseOf(w)
-  if (p === 1) return { Wednesday: ROW.steady(20 + 5 * (w - 1 > 2 ? 2 : w - 1)), Friday: w === 4 ? ROW.check2k(true) : w === 2 ? ROW.ladder : ROW.steady(25 + 5 * Math.min(w - 1, 2)), Monday: w >= 3 ? ROW.steady(20) : null }
+  if (p === 1) return { Wednesday: ROW.steady(20 + 5 * (w - 1 > 2 ? 2 : w - 1)), Friday: w === 4 ? ROW.check2k(true, true) : w === 2 ? ROW.ladder : ROW.steady(25 + 5 * Math.min(w - 1, 2)), Monday: w >= 3 ? ROW.steady(20) : null, Sunday: w === 1 ? ROW.circuit : null }
   if (p === 2) return { Monday: ROW.steady(30), Wednesday: w === 8 ? ROW.check2k(true) : w === 5 ? ROW.intervals4(4) : w === 6 ? ROW.intervals4(5) : ROW.intervals6(3) }
   if (p === 3) return { Monday: ROW.steady(w === 12 ? 30 : 35), Friday: w === 12 ? ROW.check2k(true) : w === 10 ? ROW.intervals6(4) : ROW.minutes }
   return { Monday: w === 16 ? ROW.check2k(true) : w === 14 ? ROW.intervals6(4) : ROW.steady(w === 15 ? 30 : 40) }
