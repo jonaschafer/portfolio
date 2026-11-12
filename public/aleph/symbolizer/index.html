@@ -140,7 +140,7 @@ function buildSymbol(c){
   for(let i=0;i<3;i++){const a=place(A,ANG[i]),nb=place(E,ANG[((i+dir)%3+3)%3]);parts.push(g>0?clean(a.subtract(nb,{insert:false})):a)}
   let u=parts[0];for(let i=1;i<3;i++)u=u.unite(parts[i],{insert:false});
   return {symbol:u,parts,A}}
-const EXP2={type:'path',anchors:[{name:'Top tip',p:[64.61,0],r:0},{name:'Left tip',p:[0,84.43],r:0},{name:'Bottom tip',p:[117.95,159.33],r:0},{name:'Inner curve',p:[69.59,67.38],r:0}],w:131.36,h:160.26,w0:131.36,h0:160.26,x:-39.85,y:-52.45,d:'M69.59,67.38c-1.65,-0.06 -3.31,-0.1 -4.98,-0.1c-23.52,0 -45.58,6.24 -64.61,17.15c7.12,-37.2 31.56,-68.24 64.61,-84.43c39.53,19.36 66.75,59.98 66.75,106.96c0,18.89 -4.4,36.75 -12.23,52.61c-0.56,1.14 -2.26,0.79 -2.34,-0.47c-2.21,-35.68 -18.47,-67.54 -43.31,-90.15c-1.06,-0.97 -2.45,-1.51 -3.89,-1.57z'};
+const EXP2={type:'path',anchors:[{name:'Top tip',p:[64.61,0],r:0},{name:'Left tip',p:[0,84.43],r:0},{name:'Bottom tip',p:[117.95,159.33],r:0},{name:'Inner curve',p:[69.59,67.38],r:0,max:100}],w:131.36,h:160.26,w0:131.36,h0:160.26,x:-39.85,y:-52.45,d:'M69.59,67.38c-1.65,-0.06 -3.31,-0.1 -4.98,-0.1c-23.52,0 -45.58,6.24 -64.61,17.15c7.12,-37.2 31.56,-68.24 64.61,-84.43c39.53,19.36 66.75,59.98 66.75,106.96c0,18.89 -4.4,36.75 -12.23,52.61c-0.56,1.14 -2.26,0.79 -2.34,-0.47c-2.21,-35.68 -18.47,-67.54 -43.31,-90.15c-1.06,-0.97 -2.45,-1.51 -3.89,-1.57z'};
 const PRESETS=[
  {name:'Exp 2',from:'exp2',body:EXP2},
  {name:'Oval hook',from:'10',body:{type:'ellipse',w:82,h:106,x:-15,y:-6},cut:{type:'ellipse',w:56,h:72,x:-15,y:33}},
@@ -186,7 +186,7 @@ function shapeCtl(sec,o,pre){
   const types=[['ellipse','Ellipse'],['box','Box'],['point','Point']];if(pre==='b')types.push(['line','Line']);if(o.d)types.push(['path','Custom']);
   sec.append(seg(types,o.type,v=>{if(v==='line'&&!o.nodes)Object.assign(o,lineBody({nodes:HOOK,dx:-3,dy:21,weight:25,rt:32,cap:'flat'}));o.type=v;presetIdx=-1}));
   if(o.type==='line')sec.append(seg([['flat','Flat'],['round','Round'],['square','Square']],o.cap,v=>{o.cap=v;presetIdx=-1}));
-  if(o.type==='path'&&o.anchors)o.anchors.forEach((an,i)=>sec.append(slider(pre+'r'+i,'Round '+an.name.toLowerCase(),an.r,0,45,.5,v=>{an.r=v;presetIdx=-1})));
+  if(o.type==='path'&&o.anchors)o.anchors.forEach((an,i)=>sec.append(slider(pre+'r'+i,'Round '+an.name.toLowerCase(),an.r,0,an.max||45,.5,v=>{an.r=v;presetIdx=-1})));
   FIELDS.filter(f=>applies(o,f[0])).forEach(([k,l,a,b,st])=>sec.append(slider(pre+k,o.type==='line'&&k==='rt'?'Corner':l,o[k],a,b,st,v=>{o[k]=v;presetIdx=-1})))}
 function panel(){
   const P=$('panel');P.innerHTML='';
