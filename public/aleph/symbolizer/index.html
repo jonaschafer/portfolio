@@ -106,6 +106,7 @@ function outline(s,g){
   const r=out.unite(out);out.remove();return r}
 function shape(s,g){
   if(s.type==='path'){let p=new paper.Path(s.d);p.scale(s.w/s.w0,s.h/s.h0,new paper.Point(0,0));p.translate(new paper.Point(s.x,s.y));
+    if(s.arc&&s.arc.on)p=innerArc(p,s);
     (s.anchors||[]).forEach(a=>{if(a.r>0)p=roundAt(p,anchorPt(s,a),a.r,a.smooth??.55)});
     if(g){const c=new paper.Point(s.x+s.w/2,s.y+s.h/2);p.scale((s.w+2*g)/s.w,(s.h+2*g)/s.h,c)}
     if(s.rot)p.rotate(s.rot,new paper.Point(s.x+s.w/2,s.y+s.h/2));return p}
@@ -125,6 +126,17 @@ function roundAt(path,pt,r,k){
   const len=md(a-b);const tail=q.splitAt(q.getLocationAt(Math.min(len,q.length-.001)));if(tail)tail.remove(); // keep b → a
   const h=pa.getDistance(pb)*k;q.lastSegment.handleOut=ta.multiply(h);q.firstSegment.handleIn=tb.multiply(-h);q.closed=true;
   path.remove();return q}
+/* Swap the drawn inner edge for a perfect circular arc: keep the outline from the left tip, over the top,
+   down to the bottom tip, then close it with one arc through a point set by depth (how far it bows) and
+   apex (where along the edge the deepest point sits, 0 = left tip, 1 = bottom tip). */
+function innerArc(path,s){
+  const a=s.arc,P=v=>anchorPt(s,{p:v}),L=P(a.from),B=P(a.to),side=P(a.side),k=(s.w/s.w0+s.h/s.h0)/2;
+  const q=path.clone({insert:false});q.splitAt(q.getNearestLocation(L));
+  const tail=q.splitAt(q.getNearestLocation(B));if(tail)tail.remove();
+  const ch=B.subtract(L),n=new paper.Point(-ch.y,ch.x).normalize(),sg=Math.sign(side.subtract(L).dot(n))||1;
+  const thru=L.add(ch.multiply(a.apex)).add(n.multiply(sg*Math.max(a.depth,.01)*k)),start=q.firstSegment.point.clone();
+  q.arcTo(thru,start);const end=q.lastSegment;q.firstSegment.handleIn=end.handleIn;end.remove();q.closed=true;
+  path.remove();return q}
 const anchorPt=(s,a)=>new paper.Point(s.x+a.p[0]*s.w/s.w0,s.y+a.p[1]*s.h/s.h0);
 function cutOut(c,gb,gc){const B=shape(c.body,gb);if(!c.cut.on)return B;const C=shape(c.cut,gc),r=B.subtract(C);B.remove();C.remove();return r}
 function clean(p){ // drop the specks left where three shapes meet, keep real fragments of a blade
@@ -140,7 +152,7 @@ function buildSymbol(c){
   for(let i=0;i<3;i++){const a=place(A,ANG[i]),nb=place(E,ANG[((i+dir)%3+3)%3]);parts.push(g>0?clean(a.subtract(nb,{insert:false})):a)}
   let u=parts[0];for(let i=1;i<3;i++)u=u.unite(parts[i],{insert:false});
   return {symbol:u,parts,A}}
-const EXP2={type:'path',anchors:[{name:'Top tip',p:[64.61,0],r:0},{name:'Left tip',p:[0,84.43],r:0},{name:'Bottom tip',p:[117.95,159.33],r:0},{name:'Inner curve',p:[69.59,67.38],r:0,max:100}],w:131.36,h:160.26,w0:131.36,h0:160.26,x:-39.85,y:-52.45,d:'M69.59,67.38c-1.65,-0.06 -3.31,-0.1 -4.98,-0.1c-23.52,0 -45.58,6.24 -64.61,17.15c7.12,-37.2 31.56,-68.24 64.61,-84.43c39.53,19.36 66.75,59.98 66.75,106.96c0,18.89 -4.4,36.75 -12.23,52.61c-0.56,1.14 -2.26,0.79 -2.34,-0.47c-2.21,-35.68 -18.47,-67.54 -43.31,-90.15c-1.06,-0.97 -2.45,-1.51 -3.89,-1.57z'};
+const EXP2={type:'path',anchors:[{name:'Top tip',p:[64.61,0],r:0},{name:'Left tip',p:[0,84.43],r:0},{name:'Bottom tip',p:[117.95,159.33],r:0}],arc:{on:true,from:[0,84.43],to:[116.79,159.1],side:[69.59,67.38],depth:51.86,apex:.36},w:131.36,h:160.26,w0:131.36,h0:160.26,x:-39.85,y:-52.45,d:'M69.59,67.38c-1.65,-0.06 -3.31,-0.1 -4.98,-0.1c-23.52,0 -45.58,6.24 -64.61,17.15c7.12,-37.2 31.56,-68.24 64.61,-84.43c39.53,19.36 66.75,59.98 66.75,106.96c0,18.89 -4.4,36.75 -12.23,52.61c-0.56,1.14 -2.26,0.79 -2.34,-0.47c-2.21,-35.68 -18.47,-67.54 -43.31,-90.15c-1.06,-0.97 -2.45,-1.51 -3.89,-1.57z'};
 const PRESETS=[
  {name:'Exp 2',from:'exp2',body:EXP2},
  {name:'Oval hook',from:'10',body:{type:'ellipse',w:82,h:106,x:-15,y:-6},cut:{type:'ellipse',w:56,h:72,x:-15,y:33}},
@@ -186,6 +198,8 @@ function shapeCtl(sec,o,pre){
   const types=[['ellipse','Ellipse'],['box','Box'],['point','Point']];if(pre==='b')types.push(['line','Line']);if(o.d)types.push(['path','Custom']);
   sec.append(seg(types,o.type,v=>{if(v==='line'&&!o.nodes)Object.assign(o,lineBody({nodes:HOOK,dx:-3,dy:21,weight:25,rt:32,cap:'flat'}));o.type=v;presetIdx=-1}));
   if(o.type==='line')sec.append(seg([['flat','Flat'],['round','Round'],['square','Square']],o.cap,v=>{o.cap=v;presetIdx=-1}));
+  if(o.type==='path'&&o.arc){const lb=document.createElement('label');lb.className='check';lb.innerHTML=`<input type="checkbox" ${o.arc.on?'checked':''}> Perfect inner arc`;lb.firstChild.onchange=e=>{o.arc.on=e.target.checked;presetIdx=-1;panel();draw()};sec.append(lb);
+    if(o.arc.on)sec.append(slider(pre+'ad','Arc depth',o.arc.depth,0,120,.25,v=>{o.arc.depth=v;presetIdx=-1}),slider(pre+'aa','Arc apex',o.arc.apex,.05,.95,.01,v=>{o.arc.apex=v;presetIdx=-1}))}
   if(o.type==='path'&&o.anchors)o.anchors.forEach((an,i)=>sec.append(slider(pre+'r'+i,'Round '+an.name.toLowerCase(),an.r,0,an.max||45,.5,v=>{an.r=v;presetIdx=-1})));
   FIELDS.filter(f=>applies(o,f[0])).forEach(([k,l,a,b,st])=>sec.append(slider(pre+k,o.type==='line'&&k==='rt'?'Corner':l,o[k],a,b,st,v=>{o[k]=v;presetIdx=-1})))}
 function panel(){
