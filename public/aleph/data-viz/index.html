@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chart kit</title>
+<link rel="stylesheet" href="/aleph/data-viz/fonts.css">
+<style>
+  :root { --ink:#0B0C0D; --ink2:#444547; --muted:#8A8E96; --rule:#E3E4E7; --bg:#F0F1F2; --card:#FFFFFF; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 'Cassette', system-ui, sans-serif; }
+  .mono { font-family:'Cassette SemiMono', ui-monospace, monospace; font-size:11px; color:var(--muted); }
+  :root { --hdr: 58px; }
+  header { position:sticky; top:0; z-index:20; height:var(--hdr); padding:0 24px; border-bottom:1px solid var(--rule); display:flex; gap:16px; align-items:center; flex-wrap:nowrap; overflow:hidden; background:#fff; }
+  header h1 { font-size:20px; font-weight:500; margin:0; letter-spacing:-.02em; white-space:nowrap; }
+  header .mono { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  main { display:grid; grid-template-columns: 380px 1fr; align-items:start; }
+  aside { position:sticky; top:var(--hdr); height:calc(100vh - var(--hdr)); border-right:1px solid var(--rule); padding:20px 24px; background:var(--card); overflow:auto; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } aside { position:static; height:auto; } }
+  .toolbar { position:sticky; top:var(--hdr); z-index:10; background:var(--bg); margin:0 -24px 20px; padding:14px 24px; border-bottom:1px solid var(--rule); }
+  .swatches { display:flex; gap:4px; flex-wrap:wrap; max-width:460px; }
+  .swatches button { width:26px; height:26px; padding:0; border-radius:50%; border:2px solid transparent; display:grid; place-items:center; }
+  .swatches button i { width:16px; height:16px; border-radius:50%; display:block; }
+  .swatches button.on { border-color:var(--ink); background:var(--card); }
+  .themeName { margin-left:6px; }
+  .step { margin-bottom:28px; }
+  .step h2 { font-size:15px; font-weight:500; margin:4px 0 4px; }
+  .step p { margin:0 0 10px; color:var(--ink2); font-size:13px; }
+  .tabs { display:flex; gap:4px; margin-bottom:14px; flex-wrap:wrap; }
+  button { font:inherit; font-size:13px; border:1px solid var(--rule); background:var(--card); color:var(--ink); padding:6px 10px; border-radius:4px; cursor:pointer; }
+  button:hover { border-color:var(--ink2); }
+  button.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  textarea, input[type=text] { width:100%; font-family:'Cassette SemiMono', ui-monospace, monospace; font-size:12px; line-height:1.5; border:1px solid var(--rule); border-radius:4px; padding:10px; background:#FAFAFA; color:var(--ink); resize:vertical; }
+  textarea { min-height:150px; }
+  .row { display:flex; gap:6px; margin-top:6px; } .row input { flex:1; }
+  .err { color:#CC4A3D; font-size:12px; min-height:16px; margin-top:4px; }
+  section.stage { padding:0 24px 60px; min-width:0; }
+  .toolbar { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end; }
+  .seg { display:inline-flex; }
+  .seg button { border-radius:0; margin-left:-1px; }
+  .seg button:first-child { border-radius:4px 0 0 4px; margin-left:0; }
+  .seg button:last-child { border-radius:0 4px 4px 0; }
+  .page { width:660px; max-width:100%; padding:40px; margin:0 auto; display:grid; gap:28px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .slide { margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  .web { max-width:1160px; margin:0 auto; padding:40px; border-radius:8px; display:grid; grid-template-columns:repeat(auto-fill, minmax(480px, 1fr)); gap:24px; }
+  .chart-wrap { position:relative; }
+  .exports { display:flex; gap:6px; justify-content:flex-end; margin:6px 0 0; }
+  .exports button { font-size:11px; padding:3px 7px; opacity:.8; }
+  .ac-tip { position:absolute; pointer-events:none; opacity:0; transition:opacity .12s; background:#0B0C0D; color:#fff; font:12px/1.5 'Cassette SemiMono', monospace; padding:8px 10px; border-radius:4px; white-space:nowrap; z-index:5; }
+  .ac-tip b { font-family:'Cassette', sans-serif; font-weight:500; } .ac-tip span { margin-left:6px; }
+  .ac-tip i { display:inline-block; width:7px; height:7px; margin-right:6px; vertical-align:middle; }
+  .note { font-size:12px; color:var(--muted); max-width:660px; margin:16px auto 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Chart kit</h1>
+  <span class="mono">Prototype v0 · Red Antler data viz direction · data + recipe in, ebook / slide / web out</span>
+</header>
+<main>
+  <aside>
+    <div class="tabs" id="chartTabs"></div>
+    <div class="step">
+      <div class="mono">Step 1</div>
+      <h2>Data</h2>
+      <p>Rows and columns, like a spreadsheet. Edit it here, or point it at a Google Sheet (File &gt; Share &gt; Publish to web &gt; CSV).</p>
+      <textarea id="csv" spellcheck="false"></textarea>
+      <div class="row"><input type="text" id="sheetUrl" placeholder="https://docs.google.com/…/pub?output=csv"><button id="loadSheet">Load</button></div>
+      <div class="err" id="csvErr"></div>
+    </div>
+    <div class="step">
+      <div class="mono">Step 2</div>
+      <h2>Recipe</h2>
+      <p>What the chart says: which columns, the headline, what to highlight, the source. Type, color, spacing and motion come from the RA system, so nobody sets them.</p>
+      <textarea id="spec" spellcheck="false" style="min-height:260px"></textarea>
+      <div class="err" id="specErr"></div>
+    </div>
+  </aside>
+
+  <section class="stage">
+    <div class="toolbar">
+      <div><div class="mono" style="margin-bottom:4px">Step 3 · Output</div>
+        <div class="seg" id="fmt"><button data-v="ebook" class="on">Ebook page</button><button data-v="slide">Slide 16:9</button><button data-v="web">Website</button></div></div>
+      <div><div class="mono" style="margin-bottom:4px">Theme · <span id="themeName"></span></div>
+        <div class="swatches" id="theme"></div></div>
+      <div><div class="mono" style="margin-bottom:4px">Mode</div>
+        <div class="seg" id="mode"><button data-v="light" class="on">Light</button><button data-v="dark">Dark</button></div></div>
+      <div><div class="mono" style="margin-bottom:4px">Motion</div><button id="replay">Play animation</button></div>
+    </div>
+    <div id="out"></div>
+    <p class="note" id="note"></p>
+  </section>
+</main>
+
+<script src="/aleph/data-viz/fonts.js"></script>
+<script src="/aleph/data-viz/charts.js"></script>
+<script>
+const CHARTS = {
+  kpi: {
+    name: 'Big numbers',
+    csv: `value,unit,label
+79,%,of finance postings are for senior individual contributor (IC) roles or above.
+8,%,of postings with an experience requirement ask for two years or less.`,
+    spec: { type: 'kpi', value: 'value', unit: 'unit', label: 'label' },
+  },
+  bar: {
+    name: 'Bar',
+    csv: `title_family,share,group
+IC,18,IC
+Senior IC,29,Senior IC and above
+Manager / Controller,34,Senior IC and above
+Director,10,Senior IC and above
+VP / Head,6,Senior IC and above
+Other finance,3,Other finance`,
+    spec: {
+      type: 'bar', title: 'Junior finance roles are few and far between',
+      label: 'title_family', value: 'share', group: 'group',
+      columns: ['Title family', 'Share'], format: 'pct', scale: 100,
+      highlight: 'Senior IC and above',
+      colors: { 'Senior IC and above': 'highlight', 'IC': 'strong', 'Other finance': 'soft' },
+      separateLast: true,
+      source: 'Source: analysis of 1,000+ U.S. finance job postings, 2027 Finance Hiring Index.',
+    },
+  },
+  dots: {
+    name: 'Dots',
+    csv: `team,people
+Engineering,48
+Sales,36
+Customer Success,22
+Marketing,14
+General and admin,11`,
+    spec: { type: 'dots', title: 'Headcount', label: 'team', value: 'people', source: 'Sample data from RA’s data viz frames.' },
+  },
+  columns: {
+    name: 'Stacked columns',
+    csv: `month,Customer Support,Engineering,Finance,HR,Marketing,Product,Sales
+Jan 26,170000,420000,160000,390000,400000,200000,300000
+Feb 26,180000,400000,170000,400000,380000,210000,310000
+Mar 26,190000,430000,180000,420000,460000,260000,350000
+Apr 26,180000,420000,170000,400000,430000,250000,340000
+May 26,190000,410000,180000,410000,400000,240000,330000
+Jun 26,180000,420000,170000,420000,410000,250000,340000
+Jul 26,190000,430000,180000,430000,440000,260000,330000
+Aug 26,200000,470000,190000,460000,490000,300000,370000
+Sep 26,190000,460000,190000,450000,480000,290000,380000
+Oct 26,220000,490000,230000,490000,520000,350000,430000
+Nov 26,190000,450000,170000,420000,460000,280000,340000
+Dec 26,200000,480000,190000,460000,500000,320000,450000`,
+    spec: {
+      type: 'columns', title: 'Monthly operating expenses by department', x: 'month',
+      series: ['Customer Support', 'Engineering', 'Finance', 'HR', 'Marketing', 'Product', 'Sales'],
+      format: 'compact', decimals: 2, tickDecimals: 2, source: 'Sample data, for layout only.',
+    },
+  },
+  ring: {
+    name: 'Ring',
+    csv: `region,share
+Americas,61
+EMEA,24
+APAC,15`,
+    spec: { type: 'ring', title: 'Revenue by region', subtitle: 'Share of October revenue.', label: 'region', value: 'share', total: 2400000, format: 'compact', decimals: 1, source: 'Sample data from RA’s data viz frames.' },
+  },
+  line: {
+    name: 'Line',
+    csv: `month,Actual,Budget
+Jan,412,450
+Feb,436,450
+Mar,471,475
+Apr,455,475
+May,489,500
+Jun,502,500
+Jul,478,525
+Aug,511,525
+Sep,534,550
+Oct,529,550
+Nov,548,575
+Dec,561,575`,
+    spec: {
+      type: 'line', title: 'Marketing spend tracked under budget most of the year',
+      x: 'month', series: ['Actual', 'Budget'], highlight: 'Actual', dashed: ['Budget'],
+      colors: { Actual: 'highlight', Budget: 'muted' }, format: 'currency', suffix: 'K', area: true,
+      source: 'Sample data, for layout only. Monthly spend in $K.',
+    },
+  },
+  table: {
+    name: 'Table',
+    csv: `department,budget,actual,variance
+Engineering,4200,4080,-2.9
+Sales,3100,3290,6.1
+Marketing,1500,1440,-4.0
+G&A,900,915,1.7
+Customer success,750,720,-4.0
+Total,10450,10445,0.0`,
+    spec: {
+      type: 'table', title: 'Sales is the only team well over budget',
+      columns: [
+        { key: 'department', label: 'Department' },
+        { key: 'budget', label: 'Budget', format: 'currency', suffix: 'K', muted: true },
+        { key: 'actual', label: 'Actual', format: 'currency', suffix: 'K' },
+        { key: 'variance', label: 'Variance', format: 'delta', decimals: 1 },
+      ],
+      highlightRow: { column: 'department', equals: 'Sales', note: 'Over budget by more than 5%' },
+      totalRow: true, source: 'Sample data, for layout only. Q3 spend in $K.',
+    },
+  },
+};
+let active = 'bar', format = 'ebook', theme = 'violet', mode = 'light', handles = [];
+const $ = (s) => document.querySelector(s);
+const page = () => Charts.makeTheme(theme, mode).page;
+function swatches() {
+  $('#theme').innerHTML = Object.entries(Charts.THEMES).map(([k, T]) => {
+    const [bg, , accent] = T[mode];
+    return `<button data-v="${k}" title="${T.name}" class="${k === theme ? 'on' : ''}"><i style="background:linear-gradient(135deg, ${bg} 50%, ${accent} 50%); box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)"></i></button>`;
+  }).join('');
+  $('#themeName').textContent = Charts.THEMES[theme].name;
+  $('#theme').querySelectorAll('button').forEach((b) => b.onclick = () => { theme = b.dataset.v; swatches(); draw(true); });
+}
+swatches();
+
+function tabs() {
+  $('#chartTabs').innerHTML = Object.entries(CHARTS).map(([k, c]) => `<button data-k="${k}" class="${k === active ? 'on' : ''}">${c.name}</button>`).join('');
+  $('#chartTabs').querySelectorAll('button').forEach((b) => b.onclick = () => { active = b.dataset.k; load(); });
+}
+function load() {
+  tabs();
+  $('#csv').value = CHARTS[active].csv;
+  $('#spec').value = JSON.stringify(CHARTS[active].spec, null, 2);
+  $('#csvErr').textContent = $('#specErr').textContent = '';
+}
+function seg(id, cb) {
+  $(id).querySelectorAll('button').forEach((b) => b.onclick = () => {
+    $(id).querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b)); cb(b.dataset.v); draw(true);
+  });
+}
+seg('#fmt', (v) => format = v);
+seg('#mode', (v) => { mode = v; swatches(); });
+function download(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); }
+
+function draw(animate = false) {
+  const out = $('#out'); handles = [];
+  const list = Object.keys(CHARTS);
+  const notes = {
+    ebook: 'Ebook: static at print size. Download SVG and place it in Figma or Paper; it keeps the fonts and stays editable as vectors.',
+    slide: 'Slide: the same chart on a 1920×1080 frame at presentation scale. Drop the PNG or SVG into Google Slides or Keynote.',
+    web: 'Website: live SVG. Scales to its container, animates when scrolled into view, hover shows values. This is the version that would ship as a site component.',
+  };
+  $('#note').textContent = notes[format];
+  const cells = list.map((k) => `<div class="chart-wrap${format === 'slide' ? ' slide' : ''}"><div class="chart" id="c-${k}"></div></div>`).join('');
+  if (format === 'ebook') out.innerHTML = `<div class="page" style="background:${page()}">${cells}</div>`;
+  if (format === 'slide') out.innerHTML = cells;
+  if (format === 'web') out.innerHTML = `<div class="web" style="background:${page()}">${cells}</div>`;
+
+  list.forEach((k) => {
+    const c = CHARTS[k]; const el = $('#c-' + k);
+    let rows; try { rows = Charts.parseCSV(c.csv); } catch (e) { return; }
+    const opt = { theme, mode, animate, transparent: true };
+    if (format === 'ebook') Object.assign(opt, { width: 580, scale: 1 });
+    if (format === 'slide') Object.assign(opt, { width: { kpi: 1500, ring: 760, dots: 1100 }[k] || 1400, scale: { kpi: 1.6, bar: 1.9, line: 1.7, table: 1.9, dots: 1.7, columns: 1.6, ring: 1.6 }[k], frame: [1920, 1080], fit: true });
+    if (format === 'web') Object.assign(opt, { width: el.clientWidth || 520, scale: 1 });
+    const h = Charts.render(el, rows, c.spec, opt);
+    handles.push(h);
+    const ex = document.createElement('div'); ex.className = 'exports';
+    ex.innerHTML = `<button>SVG</button><button>PNG</button>`;
+    const [bs, bp] = ex.querySelectorAll('button');
+    bs.onclick = () => download(new Blob([h.svg()], { type: 'image/svg+xml' }), `chart-${k}-${format}-${theme}-${mode}.svg`);
+    bp.onclick = async () => download(await h.png(2), `chart-${k}-${format}-${theme}-${mode}.png`);
+    el.parentElement.appendChild(ex);
+    if (format === 'web' && !animate) {
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { h.play(); io.disconnect(); } }), { threshold: .4 });
+      io.observe(el);
+    }
+  });
+}
+
+let timer;
+$('#csv').oninput = () => { clearTimeout(timer); timer = setTimeout(() => {
+  try { const rows = Charts.parseCSV($('#csv').value); if (!rows.length) throw new Error('No rows yet');
+    CHARTS[active].csv = $('#csv').value; $('#csvErr').textContent = ''; draw(); }
+  catch (e) { $('#csvErr').textContent = e.message; } }, 250); };
+$('#spec').oninput = () => { clearTimeout(timer); timer = setTimeout(() => {
+  try { CHARTS[active].spec = JSON.parse($('#spec').value); $('#specErr').textContent = ''; draw(); }
+  catch (e) { $('#specErr').textContent = 'Recipe has a typo: ' + e.message; } }, 300); };
+$('#loadSheet').onclick = async () => {
+  const url = $('#sheetUrl').value.trim(); if (!url) return;
+  try { const txt = await (await fetch(url)).text(); Charts.parseCSV(txt); $('#csv').value = txt; CHARTS[active].csv = txt; $('#csvErr').textContent = 'Loaded from Sheet. Update the recipe column names to match.'; draw(true); }
+  catch (e) { $('#csvErr').textContent = 'Could not load that link. Make sure the Sheet is published to the web as CSV.'; }
+};
+$('#replay').onclick = () => handles.forEach((h) => h.play());
+window.addEventListener('resize', () => { if (format === 'web') { clearTimeout(timer); timer = setTimeout(() => draw(), 150); } });
+
+load();
+document.fonts.ready.then(() => draw());
+</script>
+</body>
+</html>

@@ -7,6 +7,18 @@ const PAGES = [
     note: 'Which surfaces Red Antler owns, which are shared, and which are ours regardless.',
     date: 'Sep 2026',
   },
+  {
+    href: '/aleph/data-viz',
+    title: 'Chart kit',
+    note: 'Data plus a recipe in, the same chart out as an ebook page, a slide or a live web component.',
+    date: 'Nov 2026',
+  },
+  {
+    href: '/aleph/symbolizer',
+    title: 'Symbolizer',
+    note: 'One piece, placed at 0°, 120° and −120°. Change the piece and all three follow.',
+    date: 'Nov 2026',
+  },
 ]
 
 export default function AlephIndex() {

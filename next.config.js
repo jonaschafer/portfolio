@@ -55,6 +55,9 @@ const nextConfig = {
       // Jaw recovery food + care plan: static page in public/mma/food (gated in middleware)
       { source: '/mma/food', destination: '/mma/food/index.html' },
       { source: '/mma/friends', destination: '/mma/friends/index.html' },
+      // Static tools under /aleph (gated by middleware.js, which runs on the original path)
+      { source: '/aleph/data-viz', destination: '/aleph/data-viz/index.html' },
+      { source: '/aleph/symbolizer', destination: '/aleph/symbolizer/index.html' },
       // (Redirects send /dana-plan and /dana-plan/ to /dana-plan-v2; static files under /dana-plan/* still served from public.)
     ]
   },
