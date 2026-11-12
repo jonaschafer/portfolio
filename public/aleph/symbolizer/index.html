@@ -17,28 +17,12 @@ body{background:var(--canvas);color:var(--ink);font:14px/1.4 var(--sans);-webkit
 h1{font-size:14px;font-weight:600;margin:0}
 .head p{margin:0;color:var(--mute);font-size:13px}
 .push{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
-.stages{flex:1;display:grid;grid-template-columns:minmax(0,1fr);min-height:320px}
-.stages.split{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-.stage{min-height:320px;position:relative;touch-action:none;cursor:grab;overflow:hidden}
-.stages.split .stage+.stage{border-left:1px solid var(--line)}
-.stages.split .stage:not(.active){cursor:pointer}
-.stages.split .stage:not(.active) .view{opacity:.55}
-.zbar{position:absolute;top:10px;left:16px;right:16px;display:flex;gap:10px;align-items:center;z-index:2;font:300 10px/1 var(--mono);color:var(--mute)}
-.zbar input{width:150px}
-.zbar .zv{min-width:34px;font-variant-numeric:tabular-nums}
-.plabel{font:400 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
-.stage.active .plabel{color:var(--ink)}
-.stages:not(.split) .plabel,.stages:not(.split) .mini{display:none}
-.mini{margin-left:auto;background:none;border:1px solid var(--line);color:var(--mute);border-radius:3px;padding:3px 7px;font:300 10px var(--mono);cursor:pointer}
-.mini:hover{color:var(--ink);border-color:var(--ink)}
-.stage.light .zbar,.stage.light .plabel{color:#666}.stage.light.active .plabel{color:#1e1e1e}
-.stages.drag .stage{cursor:grabbing}
+.stage{flex:1;min-height:320px;position:relative;touch-action:none;cursor:grab;overflow:hidden}
+.stage.drag{cursor:grabbing}
 .stage.light{background:var(--paper)}
-.view{position:absolute;inset:0;width:100%;height:100%;display:block}
-.view.sized{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%)}
+#view{position:absolute;inset:0;width:100%;height:100%;display:block}
 .hint{position:absolute;left:20px;bottom:14px;color:var(--mute);font:300 10px/1.5 var(--mono);pointer-events:none}
 .stage.light .hint{color:#666}
-.strip:has(.pins:empty){display:none}
 .strip{display:flex;gap:28px;align-items:center;flex-wrap:wrap;padding-block:12px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:20px;border-top:1px solid var(--line)}
 .sizes{display:flex;gap:16px;align-items:center}
 .sizes.lt{background:var(--paper);padding:8px 12px;border-radius:4px}
@@ -75,9 +59,9 @@ textarea{width:100%;height:84px;background:var(--canvas);color:var(--mute);borde
 <div class="app" id="app">
  <div class="main">
   <div class="head"><h1>Symbolizer</h1><p>One piece, placed at 0&deg;, 120&deg; and &minus;120&deg;. Change the piece and all three follow.</p>
-   <div class="push"><button class="btn" id="tSplit" aria-pressed="false">Large + small</button><button class="btn" id="tConstruct" aria-pressed="true">Construction</button><button class="btn" id="tLight" aria-pressed="false">Light</button></div></div>
-  <div class="stages" id="stages"><div class="stage active" data-pane="0"><div class="zbar"><span class="plabel">Large</span><label for="z0">Size</label><input type="range" id="z0" min="8" max="260" step="1" value="260" aria-label="Large preview size"><span class="zv" id="zv0"></span></div><svg class="view" id="view0" viewBox="-145 -145 290 290" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Large symbol"></svg><div class="hint" id="hint0"></div></div><div class="stage" data-pane="1" hidden><div class="zbar"><span class="plabel">Small</span><label for="z1">Size</label><input type="range" id="z1" min="8" max="260" step="1" value="32" aria-label="Small preview size"><span class="zv" id="zv1"></span><button class="mini" id="sync1">Match large</button></div><svg class="view" id="view1" viewBox="-145 -145 290 290" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Small symbol"></svg><div class="hint" id="hint1"></div></div></div>
-  <div class="strip"><div class="pins" id="pins"></div></div>
+   <div class="push"><button class="btn" id="tConstruct" aria-pressed="true">Construction</button><button class="btn" id="tLight" aria-pressed="false">Light</button></div></div>
+  <div class="stage" id="stage"><svg id="view" viewBox="-145 -145 290 290" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Live symbol"></svg><div class="hint" id="hint"></div></div>
+  <div class="strip"><div class="sizes" id="sDark"></div><div class="sizes lt" id="sLight"></div><div class="pins" id="pins"></div></div>
  </div>
  <aside id="panel"></aside>
 </div>
@@ -185,7 +169,7 @@ function config(p,o={}){const b=p.line?lineBody(p.line):p.body,cut=p.cut||{on:fa
 <script>
 paper.setup(document.createElement('canvas'));
 const $=i=>document.getElementById(i),SVGNS='http://www.w3.org/2000/svg';
-let S=config(PRESETS[0]),PANES=[{cfg:null,zoom:0},{cfg:null,zoom:32}],active=0,split=false,presetIdx=0,target='body',construct=true,light=false,last=null,pins=[];
+let S=config(PRESETS[0]),presetIdx=0,target='body',construct=true,light=false,last=null,pins=[];
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)),rd=v=>+(+v).toFixed(2);
 const short=d=>d.replace(/-?\d+\.\d+/g,n=>String(+(+n).toFixed(3)));
 const FIELDS=[['w','Width',10,220,1],['h','Height',10,220,1],['x','Left, right',-120,120,.5],['y','Up, down',-120,160,.5],['rot','Rotation',-180,180,1],['rt','Round top',0,300,1],['rb','Round bottom',0,300,1],['taper','Taper',0,80,1],['shoulder','Shoulder',5,160,1],['weight','Weight',2,60,.25]];
@@ -240,17 +224,10 @@ function draw(){
     if(S.body.type==='path'&&S.body.anchors)ov+=S.body.anchors.map(an=>{let q=anchorPt(S.body,an);if(S.body.rot)q=q.rotate(S.body.rot,new paper.Point(S.body.x+S.body.w/2,S.body.y+S.body.h/2));q=q.add(new paper.Point(0,-S.spread));if(S.lean)q=q.rotate(S.lean,new paper.Point(PIVOT.x,PIVOT.y-S.spread-44));return `<circle cx="${q.x}" cy="${q.y}" r="${an.r>0?1.8:1.3}" fill="${an.r>0?'var(--body)':'var(--canvas)'}" stroke="var(--body)" stroke-width=".6"><title>${an.name}</title></circle>`}).join('');
     if(S.body.type==='line')ov+=nodePts().map(q=>`<circle cx="${q.x}" cy="${q.y}" r="2" fill="var(--canvas)" stroke="var(--body)" stroke-width=".7"/>`).join('');
     B.remove();C&&C.remove()}
-  PANES[active].cfg=S;paint(active,m,ink,ov);
-  $('hint'+active).textContent=`${m.w} \u00D7 ${m.h}  ${S.body.type==='line'&&construct?'Drag a point to reshape the line, or':'Drag to'} move the ${target==='cut'?'cut':'piece'}. Arrow keys nudge it.`;
-  if(split){const o=1-active;paint(o,compute(PANES[o].cfg),ink,'');$('hint'+o).textContent='Click to tweak this one.'}
+  $('view').innerHTML=`<g transform="translate(${-PIVOT.x} ${-PIVOT.y})"><path fill="${ink}" fill-rule="evenodd" d="${m.d}"/>${ov}</g>`;
+  $('hint').textContent=`${m.w} \u00D7 ${m.h}  ${S.body.type==='line'&&construct?'Drag a point to reshape the line, or':'Drag to'} move the ${target==='cut'?'cut':'piece'}. Arrow keys nudge it.`;
+  [['sDark','#F2F2F2'],['sLight','#1E1E1E']].forEach(([id,f])=>{const r=$(id);r.innerHTML='';[48,32,24,16].forEach(z=>{const s=document.createElement('span');s.style.cssText=`width:${z}px;height:${z}px`;s.innerHTML=`<svg width="${z}" height="${z}" viewBox="0 0 ${m.w} ${m.h}" style="display:block"><path fill="${f}" fill-rule="evenodd" d="${m.nd}"/></svg>`;r.append(s)})});
   syncOut();syncNums()}
-/* Each pane shows its symbol at a chosen height in pixels (or fit). Construction lines hide below 140px. */
-function paint(i,m,ink,ov){const v=$('view'+i),z=PANES[i].zoom;
-  v.innerHTML=`<g transform="translate(${-PIVOT.x} ${-PIVOT.y})"><path fill="${ink}" fill-rule="evenodd" d="${m.d}"/>${!z||z>=140?ov:''}</g>`;
-  if(z){const px=290*z/m.h;v.classList.add('sized');v.style.width=v.style.height=px+'px'}else{v.classList.remove('sized');v.style.width=v.style.height=''}
-  $('zv'+i).textContent=z?z+'px':'Fit';$('z'+i).value=z||260}
-function switchPane(i){if(i===active)return;PANES[active].cfg=S;active=i;S=PANES[i].cfg;presetIdx=-1;target='body';
-  document.querySelectorAll('.stage').forEach(x=>x.classList.toggle('active',+x.dataset.pane===i));panel();draw()}
 function nodePts(){const s=S.body,sx=s.w/s.w0,sy=s.h/s.h0,c=new paper.Point(s.x+s.w/2,s.y+s.h/2),l=new paper.Point(PIVOT.x,PIVOT.y-S.spread-44);
   return s.nodes.map(n=>{let q=new paper.Point(s.x+n.p[0]*sx,s.y+n.p[1]*sy);if(s.rot)q=q.rotate(s.rot,c);q=q.add(new paper.Point(0,-S.spread));if(S.lean)q=q.rotate(S.lean,l);return q})}
 function syncOut(){if($('out')&&last)$('out').value=last.svg}
@@ -258,9 +235,9 @@ function syncNums(){[['b',S.body],['c',S.cut]].forEach(([p,o])=>['x','y'].forEac
 function savePins(){try{localStorage.setItem('symbolPins',JSON.stringify(pins))}catch(_){}}
 function drawPins(){const r=$('pins');r.innerHTML='';pins.forEach(p=>{const b=document.createElement('button');b.className='pin';b.setAttribute('aria-label','Open pinned version');b.append(thumb(p,'#F2F2F2'));b.onclick=()=>{S=JSON.parse(JSON.stringify(p));presetIdx=-1;panel();draw()};r.append(b)})}
 /* Drag on any of the three pieces. The move is turned back into the top piece's frame. */
-const st=$('stages');let drag=null;
-function toUnits(e){const v=$('view'+active),p=v.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(v.getScreenCTM().inverse());return {x:q.x,y:q.y}}
-st.onpointerdown=e=>{if(e.target.closest('.zbar'))return;const pn=e.target.closest('.stage');if(!pn)return;if(+pn.dataset.pane!==active){switchPane(+pn.dataset.pane);return}const u=toUnits(e),ang=Math.atan2(u.x,-u.y)*180/Math.PI,a=[0,120,-120].reduce((m,x)=>{const d=z=>Math.abs(((ang+z+540)%360)-180);return d(x)<d(m)?x:m},0);
+const st=$('stage');let drag=null;
+function toUnits(e){const v=$('view'),p=v.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(v.getScreenCTM().inverse());return {x:q.x,y:q.y}}
+st.onpointerdown=e=>{const u=toUnits(e),ang=Math.atan2(u.x,-u.y)*180/Math.PI,a=[0,120,-120].reduce((m,x)=>{const d=z=>Math.abs(((ang+z+540)%360)-180);return d(x)<d(m)?x:m},0);
   const pt=new paper.Point(u.x+PIVOT.x,u.y+PIVOT.y).rotate(a,new paper.Point(PIVOT.x,PIVOT.y));
   let hitNode=-1;if(construct&&S.body.type==='line'){nodePts().forEach((q,i)=>{if(q.getDistance(pt)<6)hitNode=i})}
   if(hitNode>=0){target='body';drag={u,a,o:S.body,node:hitNode};st.setPointerCapture(e.pointerId);st.classList.add('drag');presetIdx=-1;draw();return}
@@ -273,12 +250,7 @@ st.onpointerup=st.onpointercancel=()=>{drag=null;st.classList.remove('drag');doc
 st.tabIndex=0;st.setAttribute('aria-label','Symbol stage. Arrow keys move the selected shape.');
 st.onkeydown=e=>{const k={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(!k)return;e.preventDefault();const o=target==='cut'?S.cut:S.body,m=e.shiftKey?5:.5;o.x+=k[0]*m;o.y+=k[1]*m;draw()};
 $('tConstruct').onclick=e=>{construct=!construct;e.target.setAttribute('aria-pressed',construct);draw()};
-$('tLight').onclick=e=>{light=!light;e.target.setAttribute('aria-pressed',light);document.querySelectorAll('.stage').forEach(x=>x.classList.toggle('light',light));draw()};
-[0,1].forEach(i=>{$('z'+i).oninput=e=>{const v=+e.target.value;PANES[i].zoom=v>=260?0:v;draw()}});
-$('tSplit').onclick=e=>{split=!split;e.target.setAttribute('aria-pressed',split);$('stages').classList.toggle('split',split);document.querySelector('.stage[data-pane="1"]').hidden=!split;
-  if(split&&!PANES[1].cfg){PANES[0].cfg=S;PANES[1].cfg=JSON.parse(JSON.stringify(S))}
-  if(!split&&active===1)switchPane(0);else draw()};
-$('sync1').onclick=()=>{PANES[active].cfg=S;PANES[1].cfg=JSON.parse(JSON.stringify(PANES[0].cfg));if(active===1){S=PANES[1].cfg;panel()}draw()};
+$('tLight').onclick=e=>{light=!light;e.target.setAttribute('aria-pressed',light);st.classList.toggle('light',light);draw()};
 try{const h=location.hash.slice(1);if(h){const v=JSON.parse(decodeURIComponent(atob(h)));if(v.body&&v.cut){S=v;presetIdx=-1}}}catch(_){}
 try{pins=JSON.parse(localStorage.getItem('symbolPins')||'[]')}catch(_){pins=[]}
 draw();panel();drawPins();
