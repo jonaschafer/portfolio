@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Navigation from './Navigation'
 import Footer from './Footer'
 import useRandomTheme from './useRandomTheme'
-import { generate, boardText, sundayOf, isoDay, benchmarkFor, SHAPES } from '../lib/sesh/generate'
+import { generate, boardText, sundayOf, isoDay, benchmarkFor, SHAPES, LEVELS } from '../lib/sesh/generate'
 import { GLOSSARY } from '../lib/sesh/data'
 
 // /sunday-sesh, in the site register. Pick the headcount and length, get a
@@ -127,6 +127,7 @@ export default function SundaySesh() {
   const [minutes, setMinutes] = useState(45)
   const [roll, setRoll] = useState(0)
   const [shape, setShape] = useState('mix')
+  const [level, setLevel] = useState('advanced')
   const [warm, setWarm] = useState(true)
   const [finisher, setFinisher] = useState(true)
   const [copied, setCopied] = useState(false)
@@ -140,6 +141,7 @@ export default function SundaySesh() {
     if (qt === 30 || qt === 45 || qt === 60) setMinutes(qt)
     setRoll(Number(q.get('r')) || 0)
     if (SHAPES[q.get('s')]) setShape(q.get('s'))
+    if (q.get('l') === 'beginner' || q.get('s') === 'beginner') setLevel('beginner') // s=beginner: links from when it was a shape
     if (q.get('w') === '0') setWarm(false)
     if (q.get('f') === '0') setFinisher(false)
     setDay(parseDay(q.get('d')) || sundayOf())
@@ -149,13 +151,14 @@ export default function SundaySesh() {
     if (!day) return
     const q = new URLSearchParams({ n: String(n), t: String(minutes), d: isoDay(day) })
     if (shape !== 'mix') q.set('s', shape)
+    if (level !== 'advanced') q.set('l', level)
     if (roll) q.set('r', String(roll))
     if (!warm) q.set('w', '0')
     if (!finisher) q.set('f', '0')
     window.history.replaceState(null, '', `?${q}`)
-  }, [day, n, minutes, roll, shape, warm, finisher])
+  }, [day, n, minutes, roll, shape, level, warm, finisher])
 
-  const sesh = useMemo(() => (day ? generate({ date: day, n, minutes, roll, shape, warm, finisher }) : null), [day, n, minutes, roll, shape, warm, finisher])
+  const sesh = useMemo(() => (day ? generate({ date: day, n, minutes, roll, shape, level, warm, finisher }) : null), [day, n, minutes, roll, shape, level, warm, finisher])
   const bench = day ? benchmarkFor(day) : null
 
   const shift = (weeks) => {
@@ -222,6 +225,10 @@ export default function SundaySesh() {
                 options={[['mix', 'Mix'], ...Object.entries(SHAPES).map(([k, v]) => [k, v.name])]}
               />
             </div>
+            <div>
+              <p className="mb-[6px] opacity-70">Level</p>
+              <Seg label="Level" t={t} value={level} onChange={setLevel} options={Object.entries(LEVELS).map(([k, v]) => [k, v.name])} />
+            </div>
             <div className="flex gap-[8px]">
               <Btn t={t} onClick={() => setRoll(roll + 1)}>Reroll 🎲</Btn>
               <Btn t={t} solid onClick={copy}>{copied ? 'Copied' : 'Copy board'}</Btn>
@@ -240,10 +247,17 @@ export default function SundaySesh() {
             <p className="-mt-[12px] md:-mt-[16px] mb-[24px] md:mb-[32px] max-w-[640px]">
               <span className={`${nichrome} italic`}>{SHAPES[sesh.shape].name}{shape === 'mix' ? ' this week' : ''}: </span>
               {SHAPES[sesh.shape].what}
+              {LEVELS[level].what && (
+                <>
+                  {' '}
+                  <span className={`${nichrome} italic`}>{LEVELS[level].name}: </span>
+                  {LEVELS[level].what}
+                </>
+              )}
             </p>
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[48px] gap-y-[40px] md:gap-y-[56px]">
               {sesh.blocks.map((b) => (
-                <Block key={`${b.key}-${b.label}-${roll}-${n}-${minutes}-${shape}-${warm}-${finisher}-${isoDay(day)}`} b={b} t={t} />
+                <Block key={`${b.key}-${b.label}-${roll}-${n}-${minutes}-${shape}-${level}-${warm}-${finisher}-${isoDay(day)}`} b={b} t={t} />
               ))}
             </ul>
             <p className="mt-[32px] opacity-70 max-w-[640px]">
