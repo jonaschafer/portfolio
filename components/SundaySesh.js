@@ -127,6 +127,8 @@ export default function SundaySesh() {
   const [minutes, setMinutes] = useState(45)
   const [roll, setRoll] = useState(0)
   const [shape, setShape] = useState('mix')
+  const [warm, setWarm] = useState(true)
+  const [finisher, setFinisher] = useState(true)
   const [copied, setCopied] = useState(false)
 
   // Read ?n=&t=&d=&r= once, so a link drops the crew on the same board.
@@ -135,9 +137,11 @@ export default function SundaySesh() {
     const qn = Number(q.get('n'))
     const qt = Number(q.get('t'))
     if (qn >= 1 && qn <= 6) setN(qn)
-    if (qt === 45 || qt === 60) setMinutes(qt)
+    if (qt === 30 || qt === 45 || qt === 60) setMinutes(qt)
     setRoll(Number(q.get('r')) || 0)
     if (SHAPES[q.get('s')]) setShape(q.get('s'))
+    if (q.get('w') === '0') setWarm(false)
+    if (q.get('f') === '0') setFinisher(false)
     setDay(parseDay(q.get('d')) || sundayOf())
   }, [])
 
@@ -146,10 +150,12 @@ export default function SundaySesh() {
     const q = new URLSearchParams({ n: String(n), t: String(minutes), d: isoDay(day) })
     if (shape !== 'mix') q.set('s', shape)
     if (roll) q.set('r', String(roll))
+    if (!warm) q.set('w', '0')
+    if (!finisher) q.set('f', '0')
     window.history.replaceState(null, '', `?${q}`)
-  }, [day, n, minutes, roll, shape])
+  }, [day, n, minutes, roll, shape, warm, finisher])
 
-  const sesh = useMemo(() => (day ? generate({ date: day, n, minutes, roll, shape }) : null), [day, n, minutes, roll, shape])
+  const sesh = useMemo(() => (day ? generate({ date: day, n, minutes, roll, shape, warm, finisher }) : null), [day, n, minutes, roll, shape, warm, finisher])
   const bench = day ? benchmarkFor(day) : null
 
   const shift = (weeks) => {
@@ -195,7 +201,15 @@ export default function SundaySesh() {
             </div>
             <div>
               <p className="mb-[6px] opacity-70">Length</p>
-              <Seg label="Length" t={t} value={minutes} onChange={setMinutes} options={[[45, '45 min'], [60, '60 min']]} />
+              <Seg label="Length" t={t} value={minutes} onChange={setMinutes} options={[[30, '30 min'], [45, '45 min'], [60, '60 min']]} />
+            </div>
+            <div>
+              <p className="mb-[6px] opacity-70">Warmup</p>
+              <Seg label="Warmup" t={t} value={warm} onChange={setWarm} options={[[true, 'On'], [false, 'Off']]} />
+            </div>
+            <div>
+              <p className="mb-[6px] opacity-70">Finisher</p>
+              <Seg label="Finisher" t={t} value={finisher} onChange={setFinisher} options={[[true, 'On'], [false, 'Off']]} />
             </div>
             <div>
               <p className="mb-[6px] opacity-70">Shape</p>
@@ -229,7 +243,7 @@ export default function SundaySesh() {
             </p>
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[48px] gap-y-[40px] md:gap-y-[56px]">
               {sesh.blocks.map((b) => (
-                <Block key={`${b.key}-${b.label}-${roll}-${n}-${minutes}-${shape}-${isoDay(day)}`} b={b} t={t} />
+                <Block key={`${b.key}-${b.label}-${roll}-${n}-${minutes}-${shape}-${warm}-${finisher}-${isoDay(day)}`} b={b} t={t} />
               ))}
             </ul>
             <p className="mt-[32px] opacity-70 max-w-[640px]">
