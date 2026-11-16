@@ -5,7 +5,8 @@ import Navigation from './Navigation'
 import Footer from './Footer'
 import useRandomTheme from './useRandomTheme'
 import { generate, boardText, sundayOf, isoDay, benchmarkFor, SHAPES, LEVELS } from '../lib/sesh/generate'
-import { GLOSSARY } from '../lib/sesh/data'
+import { GLOSSARY, BENCHMARKS } from '../lib/sesh/data'
+import { GIRLS, GIRL_SETS, GIRL } from '../lib/sesh/girls'
 
 // /sunday-sesh, in the site register. Pick the headcount and length, get a
 // board for the garage whiteboard. Seeded by date so the crew sees the same
@@ -131,6 +132,7 @@ export default function SundaySesh() {
   const [warm, setWarm] = useState(true)
   const [finisher, setFinisher] = useState(true)
   const [copied, setCopied] = useState(false)
+  const [pick, setPick] = useState(null) // benchmark picker: null = this month's, garage-<i>, or a girl's id
 
   // Read ?n=&t=&d=&r= once, so a link drops the crew on the same board.
   useEffect(() => {
@@ -144,6 +146,8 @@ export default function SundaySesh() {
     if (q.get('l') === 'beginner' || q.get('s') === 'beginner') setLevel('beginner') // s=beginner: links from when it was a shape
     if (q.get('w') === '0') setWarm(false)
     if (q.get('f') === '0') setFinisher(false)
+    const qb = q.get('b')
+    if (qb && (GIRL[qb] || BENCHMARKS[Number(qb.replace('garage-', ''))])) setPick(qb)
     setDay(parseDay(q.get('d')) || sundayOf())
   }, [])
 
@@ -155,11 +159,13 @@ export default function SundaySesh() {
     if (roll) q.set('r', String(roll))
     if (!warm) q.set('w', '0')
     if (!finisher) q.set('f', '0')
+    if (pick) q.set('b', pick)
     window.history.replaceState(null, '', `?${q}`)
-  }, [day, n, minutes, roll, shape, level, warm, finisher])
+  }, [day, n, minutes, roll, shape, level, warm, finisher, pick])
 
   const sesh = useMemo(() => (day ? generate({ date: day, n, minutes, roll, shape, level, warm, finisher }) : null), [day, n, minutes, roll, shape, level, warm, finisher])
   const bench = day ? benchmarkFor(day) : null
+  const shown = !pick ? bench : GIRL[pick] ? { ...GIRL[pick], girl: true } : BENCHMARKS[Number(pick.replace('garage-', ''))] || bench
 
   const shift = (weeks) => {
     const d = new Date(day)
@@ -268,25 +274,85 @@ export default function SundaySesh() {
 
         {bench && (
           <section className="px-[20px] md:px-[26px] pb-[80px] md:pb-[120px]">
-            <h2 className={`${ultra} text-[26px] md:text-[30px] leading-none tracking-[0.3px] mb-[24px] md:mb-[32px]`}>Benchmark of the month</h2>
-            <div className="border-t pt-[16px] md:pt-[20px] grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-x-[48px] gap-y-[16px] max-w-[1100px]" style={{ borderColor: `${t.ink}40` }}>
-              <div>
-                <p className={`${ultra} text-[20px] md:text-[24px] leading-[1.05]`}>{bench.name}</p>
-                <ul className="mt-[12px] text-[18px] md:text-[20px] leading-[1.25]">
-                  {bench.lines.map((l) => (
-                    <li key={l} className="py-[3px]">{l}</li>
+            <div className="flex flex-wrap items-end justify-between gap-x-[24px] gap-y-[16px] mb-[24px] md:mb-[32px]">
+              <h2 className={`${ultra} text-[26px] md:text-[30px] leading-none tracking-[0.3px]`}>Benchmarks</h2>
+              <label className="flex flex-col">
+                <span className="mb-[6px] opacity-70">Pick one</span>
+                <select
+                  value={pick || ''}
+                  onChange={(e) => setPick(e.target.value || null)}
+                  className="h-[38px] pl-[10px] pr-[32px] rounded-[4px] border appearance-none max-w-[calc(100vw-40px)] bg-no-repeat"
+                  style={{
+                    borderColor: t.ink,
+                    color: t.ink,
+                    backgroundColor: 'transparent',
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='${encodeURIComponent(t.ink)}'/%3E%3C/svg%3E")`,
+                    backgroundPosition: 'right 12px center',
+                  }}
+                >
+                  <option value="">This month: {bench.name}</option>
+                  <optgroup label="Garage benchmarks">
+                    {BENCHMARKS.map((b, i) => (
+                      <option key={b.name} value={`garage-${i}`}>{b.name}</option>
+                    ))}
+                  </optgroup>
+                  {GIRL_SETS.map((set) => (
+                    <optgroup key={set} label={`Girls: ${set.replace(/^The /, '')}`}>
+                      {GIRLS.filter((x) => x.set === set).map((x) => (
+                        <option key={x.id} value={x.id}>{x.name}</option>
+                      ))}
+                    </optgroup>
                   ))}
-                </ul>
-              </div>
-              <div className="max-w-[460px]">
-                <p>
-                  <span className={`${nichrome} italic`}>Score: </span>
-                  {bench.score}
-                </p>
-                <p className="mt-[8px]">{bench.note}</p>
-                <p className="mt-[8px] opacity-70">On Mix, it runs as block B on the first Sunday of the month. Write the score down and beat it next time it comes around.</p>
-              </div>
+                </select>
+              </label>
             </div>
+            {shown.girl ? (
+              <div className="border-t pt-[16px] md:pt-[20px] max-w-[1100px]" style={{ borderColor: `${t.ink}40` }}>
+                <p className={`${ultra} text-[20px] md:text-[24px] leading-[1.05]`}>{shown.name}</p>
+                <div className="mt-[12px] grid grid-cols-1 md:grid-cols-3 gap-x-[48px] gap-y-[20px]">
+                  {[['Rx', shown.rx], ['Scaled', shown.scaled]].map(([label, lines]) => (
+                    <div key={label}>
+                      <p className={`${nichrome} italic text-[18px] md:text-[19px]`}>{label}</p>
+                      <ul className="mt-[6px] text-[18px] md:text-[20px] leading-[1.25]">
+                        {lines.map((l) => (
+                          <li key={l} className="py-[3px]">{l}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                  <div className="max-w-[460px]">
+                    <p>
+                      <span className={`${nichrome} italic`}>Score: </span>
+                      {shown.score}
+                    </p>
+                    <p className="mt-[8px]">{shown.note}</p>
+                    <p className="mt-[8px] opacity-70">{shown.set}. Write down which version you did, and retest the same one next time.</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="border-t pt-[16px] md:pt-[20px] grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-x-[48px] gap-y-[16px] max-w-[1100px]" style={{ borderColor: `${t.ink}40` }}>
+                <div>
+                  <p className={`${ultra} text-[20px] md:text-[24px] leading-[1.05]`}>{shown.name}</p>
+                  <ul className="mt-[12px] text-[18px] md:text-[20px] leading-[1.25]">
+                    {shown.lines.map((l) => (
+                      <li key={l} className="py-[3px]">{l}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="max-w-[460px]">
+                  <p>
+                    <span className={`${nichrome} italic`}>Score: </span>
+                    {shown.score}
+                  </p>
+                  <p className="mt-[8px]">{shown.note}</p>
+                  <p className="mt-[8px] opacity-70">
+                    {shown === bench ? 'This month\'s. On Mix, it runs as block B on the first Sunday of the month. ' : 'Garage benchmark, built for this gear. '}
+                    Write the score down and beat it next time it comes around.
+                  </p>
+                </div>
+              </div>
+            )}
           </section>
         )}
 
