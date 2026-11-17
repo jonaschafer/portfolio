@@ -8,7 +8,7 @@ specs and data-dense reads: `/aleph/audit` and work like it. The portfolio site 
 its own register (green and mustard, Mondwest and Haas Grot) and the two stay separate.
 Section 8 has the split and how to pick.
 
-Source of truth for the running version is `app/aleph/aleph.css`. If the two ever
+Source of truth for the running version is `app/aleph.css` in the brand repo (`~/git/brand`), where the Aleph audit now lives. If the two ever
 disagree, the CSS wins and this file needs updating.
 
 **Using it:** copy the token block and the table CSS into the new project, load the two
