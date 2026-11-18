@@ -39,15 +39,20 @@
     background: rgba(246,243,236,.92); border: 2px dashed var(--muted); border-radius: 10px; z-index: 4; }
   #wrap.dragging #drop { display: grid; }
   #empty { padding: 60px 20px; text-align: center; color: var(--muted); }
-  #done { display: none; position: fixed; bottom: 190px; z-index: 7; left: 50%; transform: translateX(-50%);
+  #done { display: none; position: fixed; bottom: 226px; z-index: 7; left: 50%; transform: translateX(-50%);
     background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 8px; }
   .hint { color: var(--muted); font-size: 12px; margin: 10px 2px 0; }
   #vol { width: 80px; accent-color: var(--ink); }
   #soundHint { color: var(--miss); }
-  main { padding-bottom: 190px; }
-  #keys { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; height: 170px;
+  main { padding-bottom: 226px; }
+  #keys { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; height: 206px;
     background: var(--ink); padding: 12px 16px 16px; box-shadow: 0 -6px 20px rgba(0,0,0,.12); }
-  #kb { position: relative; height: 100%; max-width: 1400px; margin: 0 auto; }
+  #kbbar { display: flex; gap: 8px; align-items: center; max-width: 1400px; margin: 0 auto 8px; color: #cfc9bd; font-size: 12px; }
+  #kbbar select, #kbbar button { background-color: #2a2723; color: #f6f3ec; border-color: #4a463f; padding: 3px 8px; font-size: 12px; }
+  #kbbar select { padding-right: 24px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23f6f3ec' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+  #kbRange { min-width: 4.5em; text-align: center; font-variant-numeric: tabular-nums; }
+  #kbMsg { color: #e8a317; font-weight: 600; }
+  #kb { position: relative; height: calc(100% - 34px); max-width: 1400px; margin: 0 auto; }
   .k { position: absolute; top: 0; border-radius: 0 0 6px 6px; transition: background-color .06s; }
   .wk { bottom: 0; background: #fffdf8; border: 1px solid var(--ink); }
   .bk { height: 60%; background: #2a2723; border: 1px solid #000; z-index: 2;
@@ -123,7 +128,20 @@
   <p class="hint">Play the notes at the cursor; it moves on when you've hit them all. Green = right, red = wrong.
     Piano samples: <a href="https://archive.org/details/SalamanderGrandPianoV3">Salamander Grand</a> by Alexander Holm (CC BY 3.0).</p>
 </main>
-<div id="keys"><div id="kb"></div></div>
+<div id="keys">
+  <div id="kbbar">
+    <select id="kbsize" title="Your keyboard">
+      <option value="25">25 keys</option><option value="32">Mini 32 (C–G)</option><option value="37">37 keys</option>
+      <option value="49">49 keys</option><option value="61">61 keys</option><option value="88">88 keys</option>
+    </select>
+    <button id="kbDown" title="Shift the view down an octave">‹</button>
+    <span id="kbRange"></span>
+    <button id="kbUp" title="Shift the view up an octave">›</button>
+    <button id="kbAlign" title="Match the view to your keyboard by pressing its lowest key">Line up</button>
+    <span id="kbMsg"></span>
+  </div>
+  <div id="kb"></div>
+</div>
 <div id="done">Done. Nice.</div>
 
 <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.9/build/opensheetmusicdisplay.min.js"></script>
@@ -573,7 +591,9 @@ function mapKey(raw) {
   let m = raw; while (m - avg > 6) m -= 12; while (avg - m > 6) m += 12;
   return Math.max(21, Math.min(108, m));
 }
-function keyOn(raw, vel) { const m = mapKey(raw); rawToNote.set(raw, m); rawState.set(raw, noteOn(m, vel)); kbFit(raw); updateKeyboard(); }
+function keyOn(raw, vel) {
+  if (lineUp) { lineUp = false; $("kbMsg").textContent = ""; kbLo = raw; applyKb(true); return; }
+  const m = mapKey(raw); rawToNote.set(raw, m); rawState.set(raw, noteOn(m, vel)); kbFit(raw); updateKeyboard(); }
 function keyOff(raw) { const m = rawToNote.has(raw) ? rawToNote.get(raw) : raw; rawToNote.delete(raw); rawState.delete(raw); noteOff(m); updateKeyboard(); }
 
 // ---------- on-screen keyboard ----------
@@ -582,26 +602,40 @@ function keyOff(raw) { const m = rawToNote.has(raw) ? rawToNote.get(raw) : raw; 
 const rawState = new Map();    // raw key -> hit | miss | free
 const IS_BLACK = [0,1,0,1,0,0,1,0,1,0,1,0];
 const NOTE = ["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
-let kbLo = 48, kbHi = 84, kbFixedWidth = false;
+// Each keyboard has a fixed layout; the octave buttons only slide which notes it sends.
+// Mini 32 (Keystation Mini 32 MK3) runs C to G. Saved per MIDI device.
+const KB_SIZES = { "25": [48, 24], "32": [48, 31], "37": [48, 36], "49": [36, 48], "61": [36, 60], "88": [21, 87] };
+let kbSize = "37", kbLo = 48, kbHi = 84, lineUp = false;
 const kbKeys = new Map();      // midi -> element
-function kbRangeFor(name) {
-  if (/\b25\b/.test(name)) return [48, 72, true];
-  if (/\b32\b/.test(name) || /mini/i.test(name)) return [53, 84, true];   // Keystation Mini 32: F to C
-  if (/\b37\b/.test(name)) return [48, 84, true];
-  if (/\b49\b/.test(name)) return [36, 84, true];
-  if (/\b61\b/.test(name)) return [36, 96, true];
-  if (/\b88\b/.test(name)) return [21, 108, true];
-  return name ? [36, 96, false] : [48, 84, false];
+function kbGuess(name) {
+  if (!name) return "37";
+  for (const n of ["25", "32", "37", "49", "61", "88"]) if (new RegExp("\\b" + n + "\\b").test(name)) return n;
+  return /mini|nano|micro/i.test(name) ? "32" : "61";
 }
-function setKbRange(name) { [kbLo, kbHi, kbFixedWidth] = kbRangeFor(name); renderKeyboard(); }
-function kbFit(raw) {
-  // small keyboards keep their width and slide by octaves (the octave buttons); others just grow
-  if (raw >= kbLo && raw <= kbHi) return;
-  if (kbFixedWidth) { const d = raw < kbLo ? -12 * Math.ceil((kbLo - raw) / 12) : 12 * Math.ceil((raw - kbHi) / 12); kbLo += d; kbHi += d; }
-  else { while (raw < kbLo) kbLo -= 12; while (raw > kbHi) kbHi += 12; }
-  kbLo = Math.max(21, kbLo); kbHi = Math.min(108, kbHi);
+function setKbRange(name) {
+  let saved = null; try { saved = JSON.parse(store.get("pp-kb:" + (name || "keys"))); } catch {}
+  kbSize = saved && KB_SIZES[saved.size] ? saved.size : kbGuess(name);
+  kbLo = saved && saved.size === kbSize ? saved.lo : KB_SIZES[kbSize][0];
+  applyKb();
+}
+function applyKb(save) {
+  kbLo = Math.max(21, Math.min(108 - KB_SIZES[kbSize][1], kbLo));
+  kbHi = kbLo + KB_SIZES[kbSize][1];
+  $("kbsize").value = kbSize;
+  $("kbRange").textContent = name(kbLo) + "–" + name(kbHi);
+  if (save) store.set("pp-kb:" + (midiDevice || "keys"), JSON.stringify({ size: kbSize, lo: kbLo }));
   renderKeyboard();
 }
+function kbFit(raw) {
+  // a key outside the view means the octave buttons moved: slide the view by octaves
+  if (raw >= kbLo && raw <= kbHi) return;
+  kbLo += raw < kbLo ? -12 * Math.ceil((kbLo - raw) / 12) : 12 * Math.ceil((raw - kbHi) / 12);
+  applyKb(true);
+}
+$("kbsize").onchange = (e) => { kbSize = e.target.value; kbLo = KB_SIZES[kbSize][0]; applyKb(true); e.target.blur(); };
+$("kbDown").onclick = () => { kbLo -= 12; applyKb(true); };
+$("kbUp").onclick = () => { kbLo += 12; applyKb(true); };
+$("kbAlign").onclick = () => { lineUp = !lineUp; $("kbMsg").textContent = lineUp ? "Press the lowest key on your keyboard" : ""; $("kbAlign").blur(); };
 function renderKeyboard() {
   const kb = $("kb"); kb.innerHTML = ""; kbKeys.clear();
   const whites = []; for (let m = kbLo; m <= kbHi; m++) if (!IS_BLACK[m % 12]) whites.push(m);
