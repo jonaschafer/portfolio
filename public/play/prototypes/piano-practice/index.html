@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piano practice</title>
+<style>
+  :root {
+    --paper: #f6f3ec; --ink: #1d1b17; --muted: #6f6a60; --line: #d9d3c6;
+    --hit: #1f8a4c; --miss: #d23b2a; --free: #2f5fd0; --card: #fffdf8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: var(--paper);
+    border-bottom: 1px solid var(--line); padding: 10px 16px;
+    display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+  h1 { font-size: 15px; margin: 0 8px 0 0; font-weight: 650; }
+  select, button, label.file { font: inherit; background: var(--card); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px; padding: 5px 9px; cursor: pointer; }
+  button:hover, select:hover, label.file:hover { border-color: var(--muted); }
+  label.file input { display: none; }
+  .group { display: flex; gap: 6px; align-items: center; }
+  .status { margin-left: auto; display: flex; gap: 14px; align-items: center; color: var(--muted); font-size: 13px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #bbb; margin-right: 6px; }
+  .dot.on { background: var(--hit); }
+  #played { font-variant-numeric: tabular-nums; min-width: 9em; color: var(--ink); }
+  main { padding: 16px; }
+  #wrap { position: relative; background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; min-height: 60vh; }
+  #score { position: relative; }
+  #overlay { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; }
+  #drop { position: absolute; inset: 0; display: none; place-items: center; font-size: 18px;
+    background: rgba(246,243,236,.92); border: 2px dashed var(--muted); border-radius: 10px; z-index: 4; }
+  #wrap.dragging #drop { display: grid; }
+  #empty { padding: 60px 20px; text-align: center; color: var(--muted); }
+  #done { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 8px; }
+  .hint { color: var(--muted); font-size: 12px; margin: 10px 2px 0; }
+  #vol { width: 80px; accent-color: var(--ink); }
+  #soundHint { color: var(--miss); }
+  kbd { font: 11px ui-monospace, monospace; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; background: var(--card); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Piano practice</h1>
+  <div class="group">
+    <select id="songs"><option value="">Pick a song…</option></select>
+    <label class="file">Open file<input id="file" type="file" accept=".mxl,.musicxml,.xml"></label>
+  </div>
+  <div class="group">
+    <select id="part" title="Which part you're playing" hidden></select>
+    <select id="hand" title="Which hand to check">
+      <option value="both">Both hands</option>
+      <option value="right">Right hand</option>
+      <option value="left">Left hand</option>
+    </select>
+    <button id="back" title="Step back (←)">◀</button>
+    <button id="skip" title="Skip step (→)">▶</button>
+    <button id="restart">Restart</button>
+    <button id="zoomOut" title="Zoom out">−</button>
+    <button id="zoomIn" title="Zoom in">+</button>
+  </div>
+  <div class="group">
+    <select id="sound" title="Sound">
+      <option value="grand">Grand piano</option>
+      <option value="felt">Felt piano</option>
+      <option value="ep">Electric piano</option>
+      <option value="organ">Organ</option>
+      <option value="pad">Synth pad</option>
+      <option value="off" title="For keyboards with their own speakers">No sound</option>
+    </select>
+    <input id="vol" type="range" min="0" max="1" step="0.01" value="0.8" title="Volume">
+  </div>
+  <div class="status">
+    <span id="played">—</span>
+    <span id="pos"></span>
+    <span id="soundHint" hidden></span>
+    <span><span id="midiDot" class="dot"></span><span id="midiName">No MIDI</span></span>
+  </div>
+</header>
+<main>
+  <div id="wrap">
+    <div id="empty">Plug in your keyboard, then pick a song or drop a MusicXML file here.</div>
+    <div id="score"></div>
+    <svg id="overlay"></svg>
+    <div id="drop">Drop .mxl / .musicxml</div>
+  </div>
+  <p class="hint">Play the notes at the cursor; it moves on when you've hit them all. Green = right, red = wrong.
+    No keyboard handy? <kbd>A</kbd>–<kbd>;</kbd> play white keys from middle C, <kbd>W E T Y U O P</kbd> the black keys, <kbd>Z</kbd>/<kbd>X</kbd> shift octave, hold <kbd>Space</kbd> for the sustain pedal.
+    Piano samples: <a href="https://archive.org/details/SalamanderGrandPianoV3">Salamander Grand</a> by Alexander Holm (CC BY 3.0).</p>
+</main>
+<div id="done">Done. Nice.</div>
+
+<script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.9/build/opensheetmusicdisplay.min.js"></script>
+<script>
+const BASE = "/play/prototypes/piano-practice/";
+const $ = (id) => document.getElementById(id);
+const SVGNS = "http://www.w3.org/2000/svg";
+const scoreEl = $("score"), overlay = $("overlay"), wrap = $("wrap");
+
+const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay(scoreEl, {
+  backend: "svg", autoResize: true, drawTitle: true, followCursor: true,
+  drawPartNames: true, drawingParameters: "compacttight",
+});
+let loaded = false;
+let zoom = 1;
+let hand = "both";
+let part = 0;   // instrument index to check, -1 = every part
+const held = new Map();      // midi -> svg group
+const hitThisStep = new Set();
+let octaveShift = 0;
+
+// ---------- pitch helpers ----------
+const SHARP_SPELL = [[0,0],[0,1],[1,0],[1,1],[2,0],[3,0],[3,1],[4,0],[4,1],[5,0],[5,1],[6,0]];
+const STEP_NAMES = "CDEFGAB";
+const FUND_TO_STEP = {0:0, 2:1, 4:2, 5:3, 7:4, 9:5, 11:6};
+const name = (m) => { const [s, a] = SHARP_SPELL[m % 12]; return STEP_NAMES[s] + (a ? "♯" : "") + (Math.floor(m / 12) - 1); };
+
+// spelling = {dia, acc}  dia = octave*7 + stepIndex
+function spellFromMidi(m) { const [s, a] = SHARP_SPELL[m % 12]; return { dia: (Math.floor(m / 12) - 1) * 7 + s, acc: a ? "♯" : "" }; }
+function spellFromNote(n) {
+  const p = n.Pitch; const step = FUND_TO_STEP[p.FundamentalNote];
+  const alt = p.AccidentalHalfTones || 0;
+  return { dia: (p.Octave + 3) * 7 + step, acc: alt > 0 ? "♯".repeat(alt) : alt < 0 ? "♭".repeat(-alt) : "" };
+}
+const midiOf = (n) => n.halfTone + 12;
+
+// ---------- score loading ----------
+async function loadScore(content, title) {
+  try {
+    $("empty").style.display = "none";
+    await osmd.load(content);
+    osmd.zoom = zoom;
+    osmd.render();
+    loaded = true;
+    setupParts();
+    osmd.cursor.show();
+    osmd.cursor.reset();
+    skipEmpty();
+    clearOverlay(); hitThisStep.clear();
+    sizeOverlay(); updatePos();
+    document.title = (title ? title + " · " : "") + "Piano practice";
+  } catch (e) {
+    console.error(e);
+    $("empty").style.display = "block";
+    $("empty").textContent = "Couldn't read that file: " + e.message;
+  }
+}
+async function loadUrl(url, title) {
+  const r = await fetch(url);
+  if (url.toLowerCase().endsWith(".mxl")) {
+    const buf = new Uint8Array(await r.arrayBuffer());
+    let s = ""; for (let i = 0; i < buf.length; i += 0x8000) s += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+    return loadScore(s, title);
+  }
+  return loadScore(await r.text(), title);
+}
+function loadFile(f) {
+  const rd = new FileReader();
+  rd.onload = () => loadScore(rd.result, f.name.replace(/\.(mxl|musicxml|xml)$/i, ""));
+  if (/\.mxl$/i.test(f.name)) rd.readAsBinaryString(f); else rd.readAsText(f);
+}
+
+fetch(BASE + "songs/songs.json").then(r => r.ok ? r.json() : []).then(list => {
+  for (const s of list) { const o = document.createElement("option"); o.value = BASE + "songs/" + s.file; o.textContent = s.title; $("songs").append(o); }
+}).catch(() => {});
+$("songs").onchange = (e) => { if (e.target.value) loadUrl(e.target.value, e.target.selectedOptions[0].textContent); e.target.blur(); };
+$("file").onchange = (e) => { if (e.target.files[0]) loadFile(e.target.files[0]); };
+["dragenter", "dragover"].forEach(t => wrap.addEventListener(t, (e) => { e.preventDefault(); wrap.classList.add("dragging"); }));
+["dragleave", "drop"].forEach(t => wrap.addEventListener(t, (e) => { e.preventDefault(); if (t === "drop" || e.target === $("drop")) wrap.classList.remove("dragging"); }));
+wrap.addEventListener("drop", (e) => { const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+
+// ---------- cursor / expected notes ----------
+// Ensemble scores (choir + organ, strings + piano) have several parts.
+// Default to the first two-staff part (the piano/organ), else the first part.
+function setupParts() {
+  const sel = $("part"), insts = osmd.Sheet.Instruments;
+  sel.innerHTML = "";
+  insts.forEach((inst, i) => { const o = document.createElement("option"); o.value = i;
+    o.textContent = (inst.Name || "Part " + (i + 1)) + (inst.Staves.length > 1 ? " (both staves)" : ""); sel.append(o); });
+  if (insts.length > 1) { const o = document.createElement("option"); o.value = -1; o.textContent = "Every part"; sel.append(o); }
+  const keyboardPart = insts.findIndex(inst => inst.Staves.length > 1);
+  // No two-staff part: OCR often splits a piano into two one-staff parts, so check both
+  part = keyboardPart >= 0 ? keyboardPart : insts.length === 2 ? -1 : 0;
+  sel.value = part;
+  sel.hidden = insts.length < 2;
+}
+function expected() {
+  if (!loaded || osmd.cursor.Iterator.EndReached) return [];
+  const insts = osmd.Sheet.Instruments;
+  const out = [];
+  for (const ve of osmd.cursor.Iterator.CurrentVoiceEntries) {
+    for (const n of ve.Notes) {
+      if (n.isRest()) continue;
+      if (n.NoteTie && n.NoteTie.StartNote !== n) continue;     // tied continuation: already held
+      const st = n.ParentStaffEntry.ParentStaff, inst = st.ParentInstrument;
+      if (part >= 0 && insts.indexOf(inst) !== part) continue;
+      const local = inst.Staves.indexOf(st);
+      if (inst.Staves.length > 1) {
+        if (hand === "right" && local !== 0) continue;
+        if (hand === "left" && local === 0) continue;
+      }
+      out.push({ midi: midiOf(n), staff: st.idInMusicSheet, note: n });
+    }
+  }
+  return out;
+}
+function skipEmpty() {
+  while (!osmd.cursor.Iterator.EndReached && expected().length === 0) osmd.cursor.next();
+  updatePos();
+  if (osmd.cursor.Iterator.EndReached) { $("done").style.display = "block"; setTimeout(() => $("done").style.display = "none", 2500); }
+}
+function advance() { hitThisStep.clear(); osmd.cursor.next(); skipEmpty(); }
+function stepBack() {
+  hitThisStep.clear();
+  do { osmd.cursor.previous(); } while (expected().length === 0 && osmd.cursor.Iterator.CurrentMeasureIndex > 0);
+  updatePos();
+}
+function updatePos() {
+  if (!loaded) return;
+  const total = osmd.Sheet.SourceMeasures.length;
+  const m = Math.min(osmd.cursor.Iterator.CurrentMeasureIndex + 1, total);
+  $("pos").textContent = `bar ${m} / ${total}`;
+}
+
+// ---------- overlay drawing ----------
+function sizeOverlay() {
+  const svg = scoreEl.querySelector("svg");
+  if (!svg) return;
+  overlay.setAttribute("width", svg.clientWidth); overlay.setAttribute("height", svg.clientHeight);
+  overlay.style.left = svg.offsetLeft + "px"; overlay.style.top = svg.offsetTop + "px";
+}
+function clearOverlay() { overlay.innerHTML = ""; held.clear(); }
+new ResizeObserver(() => sizeOverlay()).observe(scoreEl);
+
+// returns {x, topLineY, unit} in overlay px for the staff at the cursor
+function staffGeometry(staffIdx) {
+  const unit = 10 * osmd.zoom;
+  const svg = scoreEl.querySelector("svg");
+  const svgRect = svg.getBoundingClientRect();
+  const cur = osmd.cursor.cursorElement.getBoundingClientRect();
+  const mIdx = Math.min(osmd.cursor.Iterator.CurrentMeasureIndex, osmd.GraphicSheet.MeasureList.length - 1);
+  const row = osmd.GraphicSheet.MeasureList[mIdx];
+  const gm = row[Math.min(staffIdx, row.length - 1)];
+  const top = gm.PositionAndShape.AbsolutePosition.y * unit;
+  return { x: cur.left + cur.width / 2 - svgRect.left, top, unit, staffCount: row.length };
+}
+
+function drawNote(midi, color, spelling) {
+  // Global staff index: the matching written note's staff, else a staff of the part you're playing
+  const match = expected().find(e => e.midi === midi);
+  let staff;
+  if (match) staff = match.staff;
+  else {
+    const staves = osmd.Sheet.Instruments[Math.max(part, 0)].Staves;
+    let local = midi >= 60 ? 0 : 1;
+    if (hand === "right") local = 0; else if (hand === "left") local = 1;
+    staff = staves[Math.min(local, staves.length - 1)].idInMusicSheet;
+  }
+  const g = staffGeometry(staff);
+  const sp = spelling || spellFromMidi(midi);
+  // clef of that staff: treble top line F5 (5*7+3=38), bass top line A3 (3*7+5=26)
+  const clefIsBass = staffIsBass(staff);
+  const topDia = clefIsBass ? 26 : 38, bottomDia = topDia - 8;
+  const y = g.top + (topDia - sp.dia) * 0.5 * g.unit;
+  const grp = document.createElementNS(SVGNS, "g");
+  grp.setAttribute("fill", color); grp.setAttribute("stroke", color);
+  // offset slightly right of the cursor so it doesn't hide the real note
+  const x = g.x + g.unit * 1.6;
+  const ledger = (d) => { const l = document.createElementNS(SVGNS, "line");
+    const ly = g.top + (topDia - d) * 0.5 * g.unit;
+    l.setAttribute("x1", x - g.unit); l.setAttribute("x2", x + g.unit); l.setAttribute("y1", ly); l.setAttribute("y2", ly);
+    l.setAttribute("stroke-width", Math.max(1, g.unit * 0.12)); grp.append(l); };
+  for (let d = topDia + 2; d <= sp.dia; d += 2) ledger(d);
+  for (let d = bottomDia - 2; d >= sp.dia; d -= 2) ledger(d);
+  const e = document.createElementNS(SVGNS, "ellipse");
+  e.setAttribute("cx", x); e.setAttribute("cy", y); e.setAttribute("rx", g.unit * 0.62); e.setAttribute("ry", g.unit * 0.46);
+  e.setAttribute("transform", `rotate(-20 ${x} ${y})`); e.setAttribute("stroke", "none"); e.setAttribute("opacity", "0.85");
+  grp.append(e);
+  if (sp.acc) { const t = document.createElementNS(SVGNS, "text");
+    t.setAttribute("x", x - g.unit * 1.5); t.setAttribute("y", y + g.unit * 0.45); t.setAttribute("font-size", g.unit * 1.5);
+    t.setAttribute("stroke", "none"); t.setAttribute("text-anchor", "middle"); t.textContent = sp.acc; grp.append(t); }
+  overlay.append(grp);
+  return grp;
+}
+function staffIsBass(staffIdx) {
+  try {
+    const st = osmd.Sheet.Instruments[0].Staves[staffIdx];
+    const clef = osmd.cursor.Iterator.CurrentMeasure.FirstInstructionsStaffEntries[staffIdx]?.Instructions.find(i => i.ClefType !== undefined);
+    if (clef) return clef.ClefType === opensheetmusicdisplay.ClefEnum.F;
+    // fall back: look back for the last clef on this staff
+    for (let m = osmd.cursor.Iterator.CurrentMeasureIndex; m >= 0; m--) {
+      const fe = osmd.Sheet.SourceMeasures[m].FirstInstructionsStaffEntries[staffIdx];
+      const c = fe?.Instructions.find(i => i.ClefType !== undefined);
+      if (c) return c.ClefType === opensheetmusicdisplay.ClefEnum.F;
+    }
+    return staffIdx === 1;
+  } catch { return staffIdx === 1; }
+}
+
+function colorScoreNote(note, color) {
+  try { const gn = osmd.EngravingRules.GNote(note); const el = gn && gn.getSVGGElement && gn.getSVGGElement();
+    if (el) el.querySelectorAll("path").forEach(p => { p.setAttribute("fill", color); p.setAttribute("stroke", color); }); } catch {}
+}
+
+// ---------- sound ----------
+// Grand and felt use Salamander Grand samples (every minor third, repitched in between).
+// Electric piano, organ and pad are synthesized, so they work offline.
+const Sound = (() => {
+  const URL_BASE = "https://tonejs.github.io/audio/salamander/";
+  const PCS = { C: 0, Ds: 3, Fs: 6, A: 9 };
+  const SAMPLES = [["A", 0]];
+  for (let o = 1; o <= 7; o++) for (const n of ["C", "Ds", "Fs", "A"]) SAMPLES.push([n, o]);
+  SAMPLES.push(["C", 8]);
+
+  let ctx = null, master = null, kind = "grand", vol = 0.8, pedalDown = false, loading = null;
+  const buffers = new Map();      // midi -> AudioBuffer
+  const voices = new Map();       // midi -> voice
+  const sustained = new Set();    // released keys held by the pedal
+  const hint = (t) => { $("soundHint").hidden = !t; $("soundHint").textContent = t || ""; };
+
+  function ensure() {
+    if (ctx) return ctx;
+    ctx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: "interactive" });
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -12; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.2;
+    master = ctx.createGain(); master.gain.value = vol;
+    master.connect(comp).connect(ctx.destination);
+    ctx.onstatechange = () => { if (ctx.state === "running" && $("soundHint").textContent.startsWith("Click")) hint(""); };
+    return ctx;
+  }
+  function unlock() { ensure(); if (ctx.state !== "running") ctx.resume(); }
+
+  function loadSamples() {
+    if (loading) return loading;
+    ensure();
+    hint("Loading piano…");
+    loading = Promise.all(SAMPLES.map(([n, o]) =>
+      fetch(URL_BASE + n + o + ".mp3").then(r => r.arrayBuffer()).then(b => ctx.decodeAudioData(b))
+        .then(buf => buffers.set(12 * (o + 1) + PCS[n], buf)).catch(() => {})
+    )).then(() => hint(buffers.size ? "" : "Couldn't load piano samples"));
+    return loading;
+  }
+  function nearest(midi) {
+    let best = null;
+    for (const k of buffers.keys()) if (best === null || Math.abs(k - midi) < Math.abs(best - midi)) best = k;
+    return best;
+  }
+  const freq = (m) => 440 * 2 ** ((m - 69) / 12);
+
+  // a voice is {gain, srcs, release}; stop() fades it out
+  function voice(gain, srcs, release) { return { gain, srcs, release }; }
+  function stop(v, release = v.release) {
+    const t = ctx.currentTime;
+    v.gain.gain.cancelScheduledValues(t);
+    v.gain.gain.setValueAtTime(v.gain.gain.value, t);
+    v.gain.gain.setTargetAtTime(0, t, release);
+    for (const s of v.srcs) try { s.stop(t + release * 8); } catch {}
+  }
+
+  function samplePiano(midi, vel, felt) {
+    const key = nearest(midi);
+    if (key === null) return electricPiano(midi, vel);   // samples still loading
+    const t = ctx.currentTime;
+    const src = ctx.createBufferSource();
+    src.buffer = buffers.get(key);
+    src.playbackRate.value = 2 ** ((midi - key) / 12);
+    const g = ctx.createGain();
+    g.gain.value = (felt ? 0.9 : 0.75) * (0.12 + 0.88 * vel * vel);
+    let out = src;
+    if (felt) {
+      // felt between hammer and string: dull, soft, a little longer to ring out
+      const lp = ctx.createBiquadFilter();
+      lp.type = "lowpass"; lp.frequency.value = 500 + 1600 * vel; lp.Q.value = 0.2;
+      src.connect(lp); out = lp;
+    }
+    out.connect(g).connect(master);
+    src.start(t);
+    return voice(g, [src], felt ? 0.35 : 0.12);
+  }
+
+  function electricPiano(midi, vel) {
+    // two-operator FM tine, index decays so the bark fades into a sine
+    const t = ctx.currentTime, f = freq(midi);
+    const car = ctx.createOscillator(), mod = ctx.createOscillator(), modG = ctx.createGain();
+    car.frequency.value = f; mod.frequency.value = f;
+    modG.gain.setValueAtTime(f * (0.6 + 2.4 * vel), t);
+    modG.gain.setTargetAtTime(f * 0.15, t, 0.25);
+    mod.connect(modG).connect(car.frequency);
+    const bell = ctx.createOscillator(), bellG = ctx.createGain();
+    bell.frequency.value = f * 4; bellG.gain.setValueAtTime(0.08 * vel, t); bellG.gain.setTargetAtTime(0, t, 0.08);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.35 * (0.2 + 0.8 * vel), t + 0.004);
+    g.gain.setTargetAtTime(0, t + 0.004, 1.6);
+    car.connect(g); bell.connect(bellG).connect(g); g.connect(master);
+    [car, mod, bell].forEach(o => o.start(t));
+    return voice(g, [car, mod, bell], 0.15);
+  }
+
+  function organ(midi) {
+    // drawbars: 16', 8', 4', 2 2/3', 2'
+    const t = ctx.currentTime, f = freq(midi), g = ctx.createGain();
+    const srcs = [[0.5, 0.45], [1, 0.8], [2, 0.5], [3, 0.25], [4, 0.2]].map(([r, a]) => {
+      const o = ctx.createOscillator(), og = ctx.createGain();
+      o.frequency.value = f * r; og.gain.value = a; o.connect(og).connect(g); o.start(t); return o;
+    });
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.11, t + 0.012);
+    g.connect(master);
+    return voice(g, srcs, 0.04);
+  }
+
+  function pad(midi, vel) {
+    const t = ctx.currentTime, f = freq(midi), g = ctx.createGain(), lp = ctx.createBiquadFilter();
+    lp.type = "lowpass"; lp.Q.value = 0.7;
+    lp.frequency.setValueAtTime(300, t); lp.frequency.linearRampToValueAtTime(900 + 1500 * vel, t + 1.2);
+    const srcs = [-8, 8].map(c => { const o = ctx.createOscillator(); o.type = "sawtooth"; o.frequency.value = f; o.detune.value = c; o.connect(lp); o.start(t); return o; });
+    const sub = ctx.createOscillator(), subG = ctx.createGain();
+    sub.frequency.value = f / 2; subG.gain.value = 0.5; sub.connect(subG).connect(lp); sub.start(t); srcs.push(sub);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.09, t + 0.5);
+    lp.connect(g).connect(master);
+    return voice(g, srcs, 0.6);
+  }
+
+  function noteOn(midi, vel) {
+    if (kind === "off") return;
+    ensure();
+    if (ctx.state !== "running") { ctx.resume(); if (ctx.state !== "running") hint("Click anywhere to turn on sound"); }
+    const prev = voices.get(midi);
+    if (prev) stop(prev, 0.03);
+    sustained.delete(midi);
+    const v = kind === "grand" ? samplePiano(midi, vel, false)
+      : kind === "felt" ? samplePiano(midi, vel, true)
+      : kind === "ep" ? electricPiano(midi, vel)
+      : kind === "organ" ? organ(midi)
+      : pad(midi, vel);
+    voices.set(midi, v);
+  }
+  function noteOff(midi) {
+    const v = voices.get(midi);
+    if (!v) return;
+    if (pedalDown) { sustained.add(midi); return; }
+    stop(v); voices.delete(midi);
+  }
+  function pedal(down) {
+    pedalDown = down;
+    if (down) return;
+    for (const m of sustained) { const v = voices.get(m); if (v) { stop(v); voices.delete(m); } }
+    sustained.clear();
+  }
+  function setKind(k) {
+    kind = k;
+    if (ctx) for (const [m, v] of voices) { stop(v, 0.05); voices.delete(m); }
+    sustained.clear();
+    if (k === "grand" || k === "felt") loadSamples(); else if (!$("soundHint").textContent.startsWith("Click")) hint("");
+  }
+  function setVolume(v) { vol = v; if (master) master.gain.setTargetAtTime(v, ctx.currentTime, 0.02); }
+  return { noteOn, noteOff, pedal, setKind, setVolume, unlock };
+})();
+
+// Browsers only start audio after a click or key press on the page
+["pointerdown", "keydown"].forEach(t => window.addEventListener(t, () => Sound.unlock(), { capture: true }));
+
+const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+{
+  const k = store.get("pp-sound"), v = store.get("pp-vol");
+  if (k && $("sound").querySelector(`option[value="${k}"]`)) $("sound").value = k;
+  if (v !== null) $("vol").value = v;
+  Sound.setVolume(+$("vol").value);
+  Sound.setKind($("sound").value);
+}
+$("sound").onchange = (e) => { Sound.setKind(e.target.value); store.set("pp-sound", e.target.value); e.target.blur(); };
+$("vol").oninput = (e) => { Sound.setVolume(+e.target.value); store.set("pp-vol", e.target.value); };
+
+// ---------- input handling ----------
+function noteOn(midi, vel = 0.7) {
+  if (held.has(midi)) return;
+  Sound.noteOn(midi, vel);
+  let color = "var(--free)", spelling;
+  if (loaded && !osmd.cursor.Iterator.EndReached) {
+    const exp = expected();
+    const m = exp.find(e => e.midi === midi);
+    if (m) { color = "var(--hit)"; spelling = spellFromNote(m.note); hitThisStep.add(midi); colorScoreNote(m.note, getComputedStyle(document.body).getPropertyValue("--hit")); }
+    else color = "var(--miss)";
+  }
+  const grp = loaded ? drawNote(midi, color, spelling) : null;
+  held.set(midi, grp);
+  renderPlayed();
+  if (loaded) {
+    const exp = expected();
+    if (exp.length && exp.every(e => hitThisStep.has(e.midi))) setTimeout(advance, 60);
+  }
+}
+function noteOff(midi) {
+  Sound.noteOff(midi);
+  const g = held.get(midi);
+  if (g) { g.style.transition = "opacity .25s"; g.style.opacity = "0"; setTimeout(() => g.remove(), 260); }
+  held.delete(midi);
+  renderPlayed();
+}
+function renderPlayed() {
+  const ns = [...held.keys()].sort((a, b) => a - b).map(name);
+  $("played").textContent = ns.length ? ns.join("  ") : "—";
+}
+
+// Web MIDI
+function attachInputs(access) {
+  const names = [];
+  for (const input of access.inputs.values()) {
+    input.onmidimessage = (ev) => {
+      const [st, d1, d2] = ev.data; const cmd = st & 0xf0;
+      if (cmd === 0x90 && d2 > 0) noteOn(d1, d2 / 127);
+      else if (cmd === 0x80 || (cmd === 0x90 && d2 === 0)) noteOff(d1);
+      else if (cmd === 0xb0 && d1 === 64) Sound.pedal(d2 >= 64);   // sustain pedal
+    };
+    names.push(input.name);
+  }
+  $("midiDot").classList.toggle("on", names.length > 0);
+  $("midiName").textContent = names.length ? names.join(", ") : "No MIDI";
+}
+if (navigator.requestMIDIAccess) {
+  navigator.requestMIDIAccess().then(a => { attachInputs(a); a.onstatechange = () => attachInputs(a); },
+    () => { $("midiName").textContent = "MIDI blocked"; });
+} else { $("midiName").textContent = "Use Chrome for MIDI"; }
+
+// Computer keyboard fallback
+const KEYMAP = { a:0, w:1, s:2, e:3, d:4, f:5, t:6, g:7, y:8, h:9, u:10, j:11, k:12, o:13, l:14, p:15, ";":16 };
+const keyDown = new Map();
+window.addEventListener("keydown", (e) => {
+  if (e.metaKey || e.ctrlKey || e.target.tagName === "SELECT" || e.target.tagName === "INPUT") return;
+  if (e.key === "ArrowRight") { advance(); return; }
+  if (e.key === "ArrowLeft") { stepBack(); return; }
+  if (e.key === " ") { e.preventDefault(); if (!e.repeat) Sound.pedal(true); return; }
+  if (e.key === "z") { octaveShift -= 12; return; }
+  if (e.key === "x") { octaveShift += 12; return; }
+  const k = KEYMAP[e.key.toLowerCase()];
+  if (k === undefined || e.repeat) return;
+  const midi = 60 + k + octaveShift; keyDown.set(e.key.toLowerCase(), midi); noteOn(midi);
+});
+window.addEventListener("keyup", (e) => { if (e.key === " ") Sound.pedal(false); const m = keyDown.get(e.key.toLowerCase()); if (m !== undefined) { keyDown.delete(e.key.toLowerCase()); noteOff(m); } });
+
+// ---------- controls ----------
+$("part").onchange = (e) => { part = +e.target.value; hitThisStep.clear(); if (loaded) skipEmpty(); e.target.blur(); };
+$("hand").onchange =(e) => { hand = e.target.value; hitThisStep.clear(); if (loaded) skipEmpty(); e.target.blur(); };
+$("skip").onclick = () => loaded && advance();
+$("back").onclick = () => loaded && stepBack();
+$("restart").onclick = () => { if (!loaded) return; osmd.render(); osmd.cursor.show(); osmd.cursor.reset(); hitThisStep.clear(); clearOverlay(); skipEmpty(); };
+function setZoom(z) { zoom = Math.max(0.5, Math.min(2, z)); if (!loaded) return; osmd.zoom = zoom; osmd.render(); clearOverlay(); sizeOverlay(); }
+$("zoomIn").onclick = () => setZoom(zoom + 0.1);
+$("zoomOut").onclick = () => setZoom(zoom - 0.1);
+</script>
+</body>
+</html>
