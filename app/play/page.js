@@ -8,6 +8,16 @@ export const metadata = {
 
 const projects = [
   {
+    id: 'piano-practice',
+    name: 'Piano practice',
+    description:
+      'Plug a MIDI keyboard into Chrome and every note you play lands on the staff right where you are in the song. Hit what is written and it turns green and the cursor moves on; miss and you see the wrong note in red at its real pitch. Load any MusicXML file, practice one hand at a time, and pick a sound: grand, felt piano, Rhodes-style EP, organ or pad.',
+    date: '2026.11.16',
+    type: 'HTML/CSS',
+    tags: ['HTML/CSS', 'JavaScript', 'Web MIDI'],
+    path: '/play/prototypes/piano-practice',
+  },
+  {
     id: 'row',
     name: 'Erg log',
     description:
