@@ -67,10 +67,10 @@ function Heading({ children }) {
 }
 
 // What I'm chasing. Benchmarks are rough reads of Concept2's logbook for men
-// 40 to 49; the per-stroke and pace goals assume steady pieces at about 20 spm.
+// 40 to 49; the pace goal assumes steady pieces at about 20 spm.
 // "Now" is the standing record and the day it was set.
 const GOALS = [
-  { key: 'mps', label: 'Meters per stroke', note: 'Steady pieces at 20 spm', goal: '11.5m', now: (r) => `${r.value.toFixed(2)}m` },
+  { key: 'd1000', label: '1k', note: '3:50 is fit, under 3:35 is strong', goal: '3:50', now: (r) => fmtTime(r.value) },
   { key: 'd2000', label: '2k', note: '8:00 is fit, under 7:30 is strong', goal: '8:00', now: (r) => fmtTime(r.value) },
   { key: 't1200', label: '20 min pace', note: 'Per 500m, at 20 spm', goal: '2:10', now: (r) => fmtPace(1200, r.value) },
 ]
