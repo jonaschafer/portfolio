@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import useRandomTheme from './useRandomTheme'
 import { THEMES } from '../lib/themes'
-import { ago, dayLabel, gcalLink, slotLabel } from '../lib/orbit/time'
-import { nudgeLine } from '../lib/orbit/words'
+import { ago, dayLabel, gcalLink, pdxTime, slotLabel } from '../lib/orbit/time'
+import { askText, nudgeLine } from '../lib/orbit/words'
 
 const api = (path, method, body) =>
   fetch(`/api/orbit/${path}`, { method, headers: { 'Content-Type': 'application/json' }, body: body && JSON.stringify(body) }).then(
@@ -21,8 +21,9 @@ export default function Orbit({ people, today, site, calendar }) {
   const { theme, ready } = useRandomTheme(THEMES)
   const t = theme || THEMES[4]
   const due = people.filter((p) => p.status.due)
+  const waiting = people.filter((p) => !p.status.due && !p.status.upcoming && p.status.invites.length)
   const planned = people.filter((p) => p.status.upcoming)
-  const rest = people.filter((p) => !p.status.due && !p.status.upcoming)
+  const rest = people.filter((p) => !p.status.due && !p.status.upcoming && !p.status.invites.length)
   const [adding, setAdding] = useState(false)
 
   const statement = due.length
@@ -38,6 +39,7 @@ export default function Orbit({ people, today, site, calendar }) {
           <p className="ob-small">Calendar not connected, so invite times skip the clash check.</p>
         )}
         {due.length > 0 && <Section title="Due" people={due} today={today} site={site} />}
+        {waiting.length > 0 && <Section title="Waiting to hear back" people={waiting} today={today} site={site} />}
         {planned.length > 0 && <Section title="Planned" people={planned} today={today} site={site} />}
         {rest.length > 0 && <Section title="In orbit" people={rest} today={today} site={site} />}
         <div style={{ marginTop: 40 }}>
@@ -68,16 +70,19 @@ function Section({ title, people, today, site }) {
 function Card({ p, today, site }) {
   const router = useRouter()
   const s = p.status
-  const [open, setOpen] = useState(null) // 'hang' | 'invite' | 'edit' | null
+  const [open, setOpen] = useState(null) // 'hang' | 'reach' | 'edit' | null
   const toggle = (k) => setOpen(open === k ? null : k)
   const refresh = () => {
     setOpen(null)
     router.refresh()
   }
 
+  // Tapping the push lands here with the text already written.
   useEffect(() => {
-    if (window.location.hash === `#${p.id}`) setOpen(s.invites.length ? null : 'hang')
-  }, [p.id, s.invites.length])
+    if (window.location.hash !== `#${p.id}`) return
+    if (!s.invites.length && !s.upcoming) setOpen(p.invitable ? 'reach' : 'hang')
+    document.getElementById(p.id)?.scrollIntoView()
+  }, [p.id, p.invitable, s.invites.length, s.upcoming])
 
   let line
   if (s.upcoming) line = `Planned: ${dayLabel(s.upcoming.day)}${s.upcoming.what ? `, ${s.upcoming.what}` : ''}`
@@ -116,9 +121,9 @@ function Card({ p, today, site }) {
         <button className={`ob-btn ${open === 'hang' ? 'on' : ''}`} onClick={() => toggle('hang')}>
           Hung out
         </button>
-        {p.invitable && !s.invites.length && (
-          <button className={`ob-btn ${open === 'invite' ? 'on' : ''}`} onClick={() => toggle('invite')}>
-            Find a time
+        {p.invitable && !s.invites.length && !s.upcoming && (
+          <button className={`ob-btn ${open === 'reach' ? 'on' : ''}`} onClick={() => toggle('reach')}>
+            Reach out
           </button>
         )}
         {s.due && (
@@ -132,7 +137,7 @@ function Card({ p, today, site }) {
       </div>
       {open && p.notes && <div className="ob-note">{p.notes}</div>}
       {open === 'hang' && <HangPanel p={p} today={today} onDone={refresh} />}
-      {open === 'invite' && <InvitePanel p={p} site={site} onDone={refresh} />}
+      {open === 'reach' && <ReachPanel p={p} site={site} onDone={refresh} />}
       {open === 'edit' && <EditPanel person={p} onDone={refresh} />}
     </article>
   )
@@ -189,65 +194,50 @@ function HangPanel({ p, today, onDone }) {
   )
 }
 
-function InvitePanel({ p, site, onDone }) {
+// Write the text: pick what and when, and the message writes itself with the
+// times spelled out. Copying it saves the ask, so the times are waiting here
+// when they answer.
+function ReachPanel({ p, site, onDone }) {
   const [slots, setSlots] = useState(null)
   const [on, setOn] = useState([])
   const [idea, setIdea] = useState(p.status.idea || '')
-  const [link, setLink] = useState(null)
   const [msg, setMsg] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [edited, setEdited] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [linked, setLinked] = useState(false)
 
   useEffect(() => {
     api(`slots?person=${p.id}`, 'GET').then((r) => {
       setSlots(r.slots)
-      setOn(r.slots.slice(0, 5).map((_, i) => i))
+      setOn(r.slots.slice(0, 4).map((_, i) => i))
     })
   }, [p.id])
 
-  const make = async () => {
-    const chosen = slots.filter((_, i) => on.includes(i))
+  const chosen = (slots || []).filter((_, i) => on.includes(i))
+  useEffect(() => {
+    if (!edited && slots) setMsg(askText(p, idea, chosen))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idea, on, slots, edited])
+
+  // Copy first, while the tap still counts (iOS drops clipboard access after a network wait).
+  const send = async () => {
+    setBusy(true)
+    await copyOrShare(msg)
+    await api('invite', 'POST', { person_id: p.id, idea, slots: chosen, note: msg })
+    onDone()
+  }
+
+  // Groups can get a link where everyone taps what works. Two taps: make it, then copy it.
+  const makeLink = async () => {
+    setBusy(true)
     const inv = await api('invite', 'POST', { person_id: p.id, idea, slots: chosen })
-    const url = `${site}/orbit/i/${inv.id}`
-    setLink(url)
-    const ask = idea ? `${idea.charAt(0).toLowerCase()}${idea.slice(1)} soon?` : 'wanna hang soon?'
-    setMsg(`yo! ${ask} here's when i'm free, tap whatever works: ${url}`)
-  }
-
-  const share = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ text: msg })
-        return
-      } catch {}
-    }
-    await navigator.clipboard.writeText(msg)
-    setCopied(true)
-  }
-
-  if (link) {
-    return (
-      <div className="ob-panel">
-        <div className="ob-label">Send this</div>
-        <textarea value={msg} onChange={(e) => setMsg(e.target.value)} />
-        <div className="ob-row">
-          <button className="ob-btn solid" onClick={share}>
-            Share
-          </button>
-          <button
-            className="ob-btn"
-            onClick={async () => {
-              await navigator.clipboard.writeText(msg)
-              setCopied(true)
-            }}
-          >
-            {copied ? 'Copied' : 'Copy'}
-          </button>
-          <button className="ob-btn quiet" onClick={onDone}>
-            Done
-          </button>
-        </div>
-      </div>
-    )
+    const ask = idea ? `${lowerFirst(idea)} sometime?` : 'wanna hang?'
+    const text = `hey all! it's been a min. ${ask} tap whatever times work: ${site}/orbit/i/${inv.id}`
+    await api('invite', 'PATCH', { id: inv.id, note: text })
+    setMsg(text)
+    setEdited(true)
+    setLinked(true)
+    setBusy(false)
   }
 
   return (
@@ -275,42 +265,83 @@ function InvitePanel({ p, site, onDone }) {
           </button>
         ))}
       </div>
+      <div className="ob-label">The text</div>
+      <textarea
+        value={msg}
+        onChange={(e) => {
+          setMsg(e.target.value)
+          setEdited(true)
+        }}
+        style={{ minHeight: 150 }}
+      />
       <div className="ob-row">
-        <button className="ob-btn solid" disabled={!on.length} onClick={make}>
-          Make the link
-        </button>
+        {linked ? (
+          <button
+            className="ob-btn solid"
+            onClick={async () => {
+              await copyOrShare(msg)
+              onDone()
+            }}
+          >
+            Copy the text
+          </button>
+        ) : (
+          <>
+            <button className="ob-btn solid" disabled={busy || !on.length} onClick={send}>
+              Copy the text
+            </button>
+            {p.is_group && (
+              <button className="ob-btn" disabled={busy || !on.length} onClick={makeLink}>
+                Use a pick-a-time link instead
+              </button>
+            )}
+          </>
+        )}
       </div>
     </div>
   )
 }
 
+const lowerFirst = (s) => s.charAt(0).toLowerCase() + s.slice(1)
+
+async function copyOrShare(text) {
+  try {
+    await navigator.clipboard.writeText(text)
+  } catch {
+    if (navigator.share) await navigator.share({ text }).catch(() => {})
+  }
+}
+
+// The ask is out. When they answer, tap the time (or type another) and it's on.
 function OpenInvite({ inv, p, site, onDone }) {
   const [copied, setCopied] = useState(false)
-  const url = `${site}/orbit/i/${inv.id}`
+  const [other, setOther] = useState('')
+  const isLink = Boolean(inv.note?.includes('/orbit/i/')) || inv.responses.length > 0
   const tally = inv.slots.map((_, i) => inv.responses.filter((r) => r.picks.includes(i)).map((r) => r.name))
-  const lock = async (slot) => {
-    await api('invite', 'PATCH', { id: inv.id, slot })
+  const lock = async (body) => {
+    await api('invite', 'PATCH', { id: inv.id, ...body })
     onDone()
   }
-  const cancel = async () => {
-    await api('invite', 'PATCH', { id: inv.id, cancel: true })
-    onDone()
-  }
+  const asked = inv.created_at ? ` · asked ${dayLabel(inv.created_at.slice(0, 10))}` : ''
   return (
     <div className="ob-panel">
       <div className="ob-label">
-        Invite out{inv.idea ? `: ${inv.idea}` : ''} ·{' '}
-        {inv.responses.length ? `${inv.responses.length} answered` : 'no answers yet'}
+        {isLink ? `Link out${inv.idea ? `: ${inv.idea}` : ''} · ${inv.responses.length ? `${inv.responses.length} answered` : 'no answers yet'}` : `Which time did they pick?${asked}`}
       </div>
-      {inv.slots.map((s, i) => (
-        <div key={s.start} style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
-          <span style={{ fontVariantNumeric: 'tabular-nums', minWidth: 150 }}>{slotLabel(s.start)}</span>
-          <span className="ob-small" style={{ flex: 1 }}>{tally[i].join(', ')}</span>
-          <button className="ob-btn quiet" style={{ padding: '2px 6px' }} onClick={() => lock(i)}>
-            Lock
+      <div className="ob-row" style={{ marginTop: 0 }}>
+        {inv.slots.map((s, i) => (
+          <button key={s.start} className="ob-btn" onClick={() => lock({ slot: i })}>
+            {slotLabel(s.start)}
+            {tally[i].length ? ` · ${tally[i].join(', ')}` : ''}
           </button>
-        </div>
-      ))}
+        ))}
+      </div>
+      <div className="ob-row" style={{ alignItems: 'center' }}>
+        <input type="datetime-local" value={other} onChange={(e) => setOther(e.target.value)} style={{ width: 'auto' }} />
+        <button className="ob-btn" disabled={!other} onClick={() => lock({ at: pdxTime(other.slice(0, 10), other.slice(11, 16)).toISOString() })}>
+          Other time
+        </button>
+      </div>
       {inv.responses
         .filter((r) => r.note)
         .map((r, i) => (
@@ -319,17 +350,19 @@ function OpenInvite({ inv, p, site, onDone }) {
           </div>
         ))}
       <div className="ob-row">
-        <button
-          className="ob-btn"
-          onClick={async () => {
-            await navigator.clipboard.writeText(url)
-            setCopied(true)
-          }}
-        >
-          {copied ? 'Copied' : 'Copy link'}
-        </button>
-        <button className="ob-btn quiet" onClick={cancel}>
-          Cancel invite
+        {inv.note && (
+          <button
+            className="ob-btn quiet"
+            onClick={async () => {
+              await copyOrShare(inv.note)
+              setCopied(true)
+            }}
+          >
+            {copied ? 'Copied' : 'Copy the text again'}
+          </button>
+        )}
+        <button className="ob-btn quiet" onClick={() => lock({ cancel: true })}>
+          No dice, drop it
         </button>
       </div>
     </div>
