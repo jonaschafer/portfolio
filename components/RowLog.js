@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Navigation from './Navigation'
 import Footer from './Footer'
@@ -70,21 +70,31 @@ function Heading({ children }) {
 // 40 to 49; the pace goal assumes steady pieces at about 20 spm.
 // "Now" is the standing record and the day it was set.
 const GOALS = [
-  { key: 'd1000', label: '1k', note: '3:50 is fit, under 3:35 is strong', goal: '3:50', now: (r) => fmtTime(r.value) },
-  { key: 'd2000', label: '2k', note: '8:00 is fit, under 7:30 is strong', goal: '8:00', now: (r) => fmtTime(r.value) },
+  { key: 'd1000', label: '1k', note: '3:50 is fit, under 3:35 is strong', goal: '3:50', target: 230, chart: true, now: (r) => fmtTime(r.value) },
+  { key: 'd2000', label: '2k', note: '8:00 is fit, under 7:30 is strong', goal: '8:00', target: 480, chart: true, now: (r) => fmtTime(r.value) },
   { key: 't1200', label: '20 min pace', note: 'Per 500m, at 20 spm', goal: '2:10', now: (r) => fmtPace(1200, r.value) },
 ]
 
-function Goals({ bests, t }) {
+function Goals({ bests, history, t }) {
+  const [active, setActive] = useState(null)
+  const open = GOALS.find((g) => g.key === active)
   return (
     <Fold title="Goals" t={t}>
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-x-[48px] gap-y-[40px]">
         {GOALS.map((g) => {
           const r = bests[g.key]
-          return (
-            <li key={g.key} className="flex flex-col gap-[20px] md:gap-[24px]">
+          const on = active === g.key
+          const body = (
+            <>
               <div className="flex flex-col gap-[4px]">
-                <span className="uppercase tracking-[0.3px]">{g.label}</span>
+                <span className="flex items-baseline justify-between gap-[12px]">
+                  <span className="uppercase tracking-[0.3px]">{g.label}</span>
+                  {g.chart && (
+                    <span className="text-[15px] md:text-[16px] opacity-70 group-hover:opacity-100 transition-opacity">
+                      {on ? 'Hide trend –' : 'Trend +'}
+                    </span>
+                  )}
+                </span>
                 <span className="opacity-70">{g.note}</span>
               </div>
               <div className="flex items-end gap-[32px] md:gap-[40px] tabular-nums">
@@ -98,11 +108,246 @@ function Goals({ bests, t }) {
                   </div>
                 )}
               </div>
+            </>
+          )
+          return (
+            <li key={g.key}>
+              {g.chart ? (
+                <button
+                  type="button"
+                  onClick={() => setActive(on ? null : g.key)}
+                  aria-expanded={on}
+                  className="group w-full text-left flex flex-col gap-[20px] md:gap-[24px] pb-[16px] border-b-2 transition-[border-color]"
+                  style={{ borderColor: on ? t.ink : 'transparent' }}
+                >
+                  {body}
+                </button>
+              ) : (
+                <div className="flex flex-col gap-[20px] md:gap-[24px] pb-[16px]">{body}</div>
+              )}
+              {/* On a phone the chart opens under the card that was tapped. */}
+              {on && (
+                <div className="md:hidden">
+                  <GoalChart goal={g} points={history?.[g.key] || []} t={t} />
+                </div>
+              )}
             </li>
           )
         })}
       </ul>
+      {open && (
+        <div className="hidden md:block">
+          <GoalChart key={open.key} goal={open} points={history?.[open.key] || []} t={t} />
+        </div>
+      )}
     </Fold>
+  )
+}
+
+// ---- Goal trend chart ----
+// Every row's fastest stretch at the distance (so a 1k inside a 30 min steady
+// piece counts), the running PR as a step line, and the goal as a dashed rule.
+// Faster is up.
+
+const HORIZONS = [
+  ['1M', 30],
+  ['3M', 91],
+  ['6M', 182],
+  ['1Y', 365],
+  ['All', null],
+]
+const DAY = 86400000
+const toMs = (startLocal) => {
+  const [y, m, d] = startLocal.slice(0, 10).split('-').map(Number)
+  const [hh = 0, mm = 0] = (startLocal.slice(11, 16) || '').split(':').map(Number)
+  return new Date(y, m - 1, d, hh, mm).getTime()
+}
+// Tick step in seconds that gives about four labels across the span.
+const timeStep = (span) => [1, 2, 5, 10, 15, 30, 60, 120, 300].find((s) => span / s <= 5) || 600
+
+function useWidth() {
+  const ref = useRef(null)
+  const [w, setW] = useState(0)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const ro = new ResizeObserver(([e]) => setW(Math.round(e.contentRect.width)))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  return [ref, w]
+}
+
+function GoalChart({ goal, points, t }) {
+  const [horizon, setHorizon] = useState('All')
+  const [hover, setHover] = useState(null)
+  const [ref, width] = useWidth()
+  const all = useMemo(() => points.map((p) => ({ ...p, x: toMs(p.start_local) })), [points])
+
+  const now = Date.now()
+  const days = HORIZONS.find(([k]) => k === horizon)[1]
+  const from = days ? now - days * DAY : all.length ? all[0].x - 3 * DAY : now - 30 * DAY
+  const to = days ? now : Math.max(now, all.length ? all[all.length - 1].x : now)
+  const shown = all.filter((p) => p.x >= from)
+
+  // Running best across all time, so a window opens on the PR that stood then.
+  const steps = []
+  let best = null
+  for (const p of all) {
+    if (best === null || p.value < best) {
+      best = p.value
+      steps.push({ x: p.x, value: best })
+    }
+  }
+  const standing = [...steps].reverse().find((s) => s.x < from)
+  const line = [...(standing ? [{ x: from, value: standing.value }] : []), ...steps.filter((s) => s.x >= from)]
+
+  const height = width < 600 ? 260 : 340
+  const pad = { l: 56, r: 16, t: 20, b: 36 }
+  const vals = [...shown.map((p) => p.value), ...line.map((s) => s.value), goal.target]
+  const lo = Math.min(...vals)
+  const hi = Math.max(...vals)
+  const span = Math.max(hi - lo, 10)
+  const step = timeStep(span * 1.2)
+  const yMin = Math.floor((lo - span * 0.08) / step) * step
+  const yMax = Math.ceil((hi + span * 0.08) / step) * step
+  const X = (x) => pad.l + ((x - from) / (to - from || 1)) * (width - pad.l - pad.r)
+  const Y = (v) => pad.t + ((v - yMin) / (yMax - yMin || 1)) * (height - pad.t - pad.b)
+
+  const yTicks = []
+  for (let v = yMin; v <= yMax + 0.01; v += step) yTicks.push(v)
+  const xTicks = []
+  {
+    const spanDays = (to - from) / DAY
+    const d = new Date(from)
+    if (spanDays <= 45) {
+      d.setHours(0, 0, 0, 0)
+      d.setDate(d.getDate() + ((8 - d.getDay()) % 7)) // Mondays
+      for (; d.getTime() <= to; d.setDate(d.getDate() + 7)) xTicks.push({ x: d.getTime(), label: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) })
+    } else {
+      const every = spanDays > 240 ? 2 : 1
+      d.setDate(1)
+      d.setHours(0, 0, 0, 0)
+      d.setMonth(d.getMonth() + 1)
+      for (; d.getTime() <= to; d.setMonth(d.getMonth() + every)) xTicks.push({ x: d.getTime(), label: d.toLocaleDateString('en-US', { month: 'short' }) })
+    }
+  }
+
+  const path = line.length
+    ? line.map((s, i) => (i === 0 ? `M${X(s.x)},${Y(s.value)}` : `H${X(s.x)}V${Y(s.value)}`)).join('') + `H${X(to)}`
+    : ''
+
+  const onMove = (e) => {
+    if (!shown.length) return
+    const box = e.currentTarget.getBoundingClientRect()
+    const mx = e.clientX - box.left
+    const my = e.clientY - box.top
+    let near = null
+    let dist = Infinity
+    for (const p of shown) {
+      const d = Math.hypot(X(p.x) - mx, (Y(p.value) - my) * 0.5)
+      if (d < dist) {
+        dist = d
+        near = p
+      }
+    }
+    setHover(dist < 48 ? near : null)
+  }
+
+  const faint = `${t.ink}26`
+  return (
+    <div className="mt-[40px] md:mt-[48px] flex flex-col gap-[16px]">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-[24px] gap-y-[12px]">
+        <p className="opacity-70">
+          Fastest {goal.label} inside every row. Solid dots are PRs, the line is the standing best.
+        </p>
+        <div role="group" aria-label="Time horizon" className="flex gap-[4px] tabular-nums">
+          {HORIZONS.map(([k]) => (
+            <button
+              key={k}
+              type="button"
+              onClick={() => setHorizon(k)}
+              aria-pressed={horizon === k}
+              className="px-[10px] py-[4px] border transition-colors"
+              style={horizon === k ? { backgroundColor: t.ink, color: t.bg, borderColor: t.ink } : { borderColor: `${t.ink}40` }}
+            >
+              {k}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div ref={ref} className="relative w-full" style={{ height }}>
+        {width > 0 && (
+          <svg
+            width={width}
+            height={height}
+            className="block tabular-nums touch-none"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+            onPointerMove={onMove}
+            onPointerDown={onMove}
+            onPointerLeave={() => setHover(null)}
+          >
+            {yTicks.map((v) => (
+              <g key={v}>
+                <line x1={pad.l} x2={width - pad.r} y1={Y(v)} y2={Y(v)} stroke={faint} />
+                <text x={pad.l - 10} y={Y(v)} dy="0.32em" textAnchor="end" fill={t.ink} opacity={0.7} fontSize={14}>
+                  {fmtTime(v).replace(/\.0$/, '')}
+                </text>
+              </g>
+            ))}
+            {xTicks.map((tk) => (
+              <text key={tk.x} x={X(tk.x)} y={height - 10} textAnchor="middle" fill={t.ink} opacity={0.7} fontSize={14}>
+                {tk.label}
+              </text>
+            ))}
+
+            <line x1={pad.l} x2={width - pad.r} y1={Y(goal.target)} y2={Y(goal.target)} stroke={t.ink} strokeWidth={1.5} strokeDasharray="6 5" />
+            <text x={width - pad.r} y={Y(goal.target) - 8} textAnchor="end" fill={t.ink} fontSize={14}>
+              Goal {goal.goal}
+            </text>
+
+            {path && <path d={path} fill="none" stroke={t.ink} strokeWidth={2} />}
+
+            {shown.map((p) => (
+              <circle
+                key={p.id}
+                cx={X(p.x)}
+                cy={Y(p.value)}
+                r={p.pr ? 5 : 4}
+                fill={p.pr ? t.ink : t.bg}
+                stroke={t.ink}
+                strokeWidth={1.5}
+                opacity={p.pr ? 1 : 0.7}
+              />
+            ))}
+            {hover && <circle cx={X(hover.x)} cy={Y(hover.value)} r={9} fill="none" stroke={t.ink} strokeWidth={1.5} />}
+          </svg>
+        )}
+
+        {hover && (
+          <div
+            className="absolute pointer-events-none px-[10px] py-[6px] text-[15px] md:text-[16px] leading-[1.3] tabular-nums whitespace-nowrap"
+            style={{
+              left: Math.min(Math.max(X(hover.x), 70), width - 70),
+              top: Y(hover.value) - 14,
+              transform: 'translate(-50%, -100%)',
+              backgroundColor: t.ink,
+              color: t.bg,
+            }}
+          >
+            {day(hover.start_local)} · {fmtTime(hover.value)} · {fmtPace(hover.value, goal.key === 'd1000' ? 1000 : 2000)}/500m
+            {hover.pr && ' · PR'}
+          </div>
+        )}
+
+        {!shown.length && (
+          <p className="absolute inset-0 flex items-center justify-center opacity-70">
+            No {goal.label} efforts in this window.
+          </p>
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -321,7 +566,7 @@ function Workout({ w, t }) {
   )
 }
 
-export default function RowLog({ workouts, bests }) {
+export default function RowLog({ workouts, bests, history }) {
   const { theme: t, ready } = useRandomTheme()
   return (
     <main style={{ backgroundColor: t.bg, color: t.ink, visibility: ready ? 'visible' : 'hidden' }}>
@@ -339,7 +584,7 @@ export default function RowLog({ workouts, bests }) {
       </section>
 
       <div className={`${social} text-[16px] md:text-[17px] leading-[1.3] tracking-[0.17px]`}>
-        <Goals bests={bests} t={t} />
+        <Goals bests={bests} history={history} t={t} />
         <Records bests={bests} latestId={workouts[0]?.id} t={t} />
 
         <section className="px-[20px] md:px-[26px] pb-[80px] md:pb-[120px]">

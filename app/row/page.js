@@ -18,10 +18,12 @@ export default async function RowPage() {
       return []
     })
   }
-  const { byId, bests } = computeRecords(workouts)
+  const { byId, bests, history } = computeRecords(workouts)
   // Streams stay on the server; the page only needs the summaries.
   const rows = workouts
     .map(({ stream, notified, advice_notes, ...w }) => ({ ...w, prs: byId[w.id] || [] }))
     .reverse()
-  return <RowLog workouts={rows} bests={bests} />
+  // Only the goals with a chart need their history on the client.
+  const charts = { d1000: history.d1000 || [], d2000: history.d2000 || [] }
+  return <RowLog workouts={rows} bests={bests} history={charts} />
 }
