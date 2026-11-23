@@ -10,6 +10,10 @@ export const metadata = {
 // New rows arrive by webhook at any time, so render per request. The table is small.
 export const dynamic = 'force-dynamic'
 
+// Rows left off a goal chart (they still count in the log and records).
+// Nov 15: a hand-logged 1k at an easy 8:00 that flattened the 1k chart.
+const CHART_SKIP = { d1000: [21001023471] }
+
 export default async function RowPage() {
   let workouts = []
   if (storeConfigured()) {
@@ -24,6 +28,8 @@ export default async function RowPage() {
     .map(({ stream, notified, advice_notes, ...w }) => ({ ...w, prs: byId[w.id] || [] }))
     .reverse()
   // Only the goals with a chart need their history on the client.
-  const charts = Object.fromEntries(['d1000', 'd2000', 't1200'].map((k) => [k, history[k] || []]))
+  const charts = Object.fromEntries(
+    ['d1000', 'd2000', 't1200'].map((k) => [k, (history[k] || []).filter((p) => !CHART_SKIP[k]?.includes(p.id))]),
+  )
   return <RowLog workouts={rows} bests={bests} history={charts} />
 }
