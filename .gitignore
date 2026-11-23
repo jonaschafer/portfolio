@@ -44,3 +44,4 @@ z-archive/
 
 # Private piano scores (symlink to Dropbox ai-builds, copyrighted)
 public/play/prototypes/piano-practice/songs/mine
+.orbit-dev.local.json

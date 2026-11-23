@@ -1,5 +1,5 @@
 export default function robots() {
   return {
-    rules: { userAgent: '*', disallow: '/aleph' },
+    rules: { userAgent: '*', disallow: ['/aleph', '/orbit'] },
   }
 }

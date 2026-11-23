@@ -8,6 +8,10 @@
     {
       "path": "/api/row/sync",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/orbit/nudge",
+      "schedule": "0 17 * * *"
     }
   ]
 }
