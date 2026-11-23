@@ -69,10 +69,15 @@ function Heading({ children }) {
 // What I'm chasing. Benchmarks are rough reads of Concept2's logbook for men
 // 40 to 49; the pace goal assumes steady pieces at about 20 spm.
 // "Now" is the standing record and the day it was set.
+// Charts plot seconds, lower is faster: a time for the distances, pace per
+// 500m for 20 min. `y` turns a record value into that, `tip` says the effort.
 const GOALS = [
-  { key: 'd1000', label: '1k', note: '3:50 is fit, under 3:35 is strong', goal: '3:50', target: 230, chart: true, now: (r) => fmtTime(r.value) },
-  { key: 'd2000', label: '2k', note: '8:00 is fit, under 7:30 is strong', goal: '8:00', target: 480, chart: true, now: (r) => fmtTime(r.value) },
-  { key: 't1200', label: '20 min pace', note: 'Per 500m, at 20 spm', goal: '2:10', now: (r) => fmtPace(1200, r.value) },
+  { key: 'd1000', label: '1k', note: '3:50 is fit, under 3:35 is strong', goal: '3:50', target: 230, now: (r) => fmtTime(r.value),
+    chart: { caption: 'Fastest 1k inside every row.', y: (v) => v, tip: (v) => `${fmtTime(v)} · ${fmtPace(v, 1000)}/500m` } },
+  { key: 'd2000', label: '2k', note: '8:00 is fit, under 7:30 is strong', goal: '8:00', target: 480, now: (r) => fmtTime(r.value),
+    chart: { caption: 'Fastest 2k inside every row.', y: (v) => v, tip: (v) => `${fmtTime(v)} · ${fmtPace(v, 2000)}/500m` } },
+  { key: 't1200', label: '20 min pace', note: 'Per 500m, at 20 spm', goal: '2:10', target: 130, now: (r) => fmtPace(1200, r.value),
+    chart: { caption: 'Best 20 minutes inside every row, as pace per 500m.', y: (v) => (1200 / v) * 500, tip: (v) => `${fmtMeters(v)} · ${fmtPace(1200, v)}/500m` } },
 ]
 
 function Goals({ bests, history, t }) {
@@ -182,7 +187,7 @@ function GoalChart({ goal, points, t }) {
   const [horizon, setHorizon] = useState('All')
   const [hover, setHover] = useState(null)
   const [ref, width] = useWidth()
-  const all = useMemo(() => points.map((p) => ({ ...p, x: toMs(p.start_local) })), [points])
+  const all = useMemo(() => points.map((p) => ({ ...p, raw: p.value, value: goal.chart.y(p.value), x: toMs(p.start_local) })), [points, goal])
 
   const now = Date.now()
   const days = HORIZONS.find(([k]) => k === horizon)[1]
@@ -259,7 +264,7 @@ function GoalChart({ goal, points, t }) {
     <div className="mt-[40px] md:mt-[48px] flex flex-col gap-[16px]">
       <div className="flex flex-wrap items-baseline justify-between gap-x-[24px] gap-y-[12px]">
         <p className="opacity-70">
-          Fastest {goal.label} inside every row. Solid dots are PRs, the line is the standing best.
+          {goal.chart.caption} Solid dots are PRs, the line is the standing best.
         </p>
         <div role="group" aria-label="Time horizon" className="flex gap-[4px] tabular-nums">
           {HORIZONS.map(([k]) => (
@@ -336,7 +341,7 @@ function GoalChart({ goal, points, t }) {
               color: t.bg,
             }}
           >
-            {day(hover.start_local)} · {fmtTime(hover.value)} · {fmtPace(hover.value, goal.key === 'd1000' ? 1000 : 2000)}/500m
+            {day(hover.start_local)} · {goal.chart.tip(hover.raw)}
             {hover.pr && ' · PR'}
           </div>
         )}

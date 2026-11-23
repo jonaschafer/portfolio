@@ -24,6 +24,6 @@ export default async function RowPage() {
     .map(({ stream, notified, advice_notes, ...w }) => ({ ...w, prs: byId[w.id] || [] }))
     .reverse()
   // Only the goals with a chart need their history on the client.
-  const charts = { d1000: history.d1000 || [], d2000: history.d2000 || [] }
+  const charts = Object.fromEntries(['d1000', 'd2000', 't1200'].map((k) => [k, history[k] || []]))
   return <RowLog workouts={rows} bests={bests} history={charts} />
 }
