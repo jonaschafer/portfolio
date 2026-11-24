@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=18'
-import * as C from './coach.js?v=18'
+import * as E from './engine.js?v=19'
+import * as C from './coach.js?v=19'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -395,7 +395,9 @@ async function fly(side, from, to, before, after, ms) {
     await tween(victim.firstChild, victimAt, barXY, Math.max(450, ms))
     victim.remove()
   }
+  // show the checker where it landed right away (it was hidden while flying)
   S.hide = null
+  render()
 }
 
 async function shake(owner, dice) {
