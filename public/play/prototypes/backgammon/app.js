@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=9'
-import * as C from './coach.js?v=9'
+import * as E from './engine.js?v=10'
+import * as C from './coach.js?v=10'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -235,7 +235,7 @@ function render() {
   if (pv) s += arrowPaths(pv.pos, pv.steps, 0, 'gold')
   else {
     if (S.lastBrown && S.steps.length === 0 && S.phase !== 'opening') s += arrowPaths(S.lastBrown.base, S.lastBrown.steps, 1, 'cream')
-    if (S.hint && S.steps.length === 0) s += arrowPaths(S.turnStart, S.hint, 0, 'gold')
+    if (S.hint && S.hint.base === S.pos) s += arrowPaths(S.hint.base, S.hint.steps, 0, 'gold')
   }
   // dice
   if (S.openDice) {
@@ -297,7 +297,7 @@ function renderControls() {
     case 'roll': add(btn('Roll', humanRoll, 'primary pulse', false, 'space')); break
     case 'move': {
       const complete = S.keys.has(E.key(S.pos))
-      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), btn('Hint', hint, 'quiet', false, 'H'), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
+      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), btn('Hint', hint, 'quiet', !E.stepOptions(S.pos, 0, S.rem, S.keys).length, 'H'), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
       break
     }
     case 'pass': add(btn('OK', passTurn, 'primary', false, 'space')); break
@@ -504,18 +504,43 @@ function undo() {
   render()
 }
 
+// Hint never touches your moves. It finds the best way to finish the turn
+// from where your checkers are right now and draws only the remaining steps.
+function bestFinish() {
+  const score = new Map(S.turns.map((t) => [E.key(t.pos), t]))
+  const book = S.isOpening && C.bookTurn(S.turns, S.dice)
+  let best = null
+  const seen = new Set()
+  const rec = (pos, rem, steps) => {
+    const k = E.key(pos) + '#' + rem.join('')
+    if (seen.has(k)) return
+    seen.add(k)
+    const opts = E.stepOptions(pos, 0, rem, S.keys)
+    if (!opts.length) {
+      const t = score.get(E.key(pos))
+      if (!t) return
+      const rank = t === book ? Infinity : t.score
+      if (!best || rank > best.rank) best = { rank, steps, turn: t }
+      return
+    }
+    for (const o of opts) rec(E.step(pos, 0, o.from, o.to).pos, E.removeOne(rem, o.die), steps.concat({ ...o, hit: E.step(pos, 0, o.from, o.to).hit }))
+  }
+  rec(S.pos, S.rem, [])
+  return best && best.steps.length ? { ...best, isBook: best.turn === book } : null
+}
+
 function hint() {
-  if (S.phase !== 'move') return
-  if (S.steps.length) { S.pos = S.turnStart; S.rem = E.diceList(S.dice); S.steps = []; S.undo = [] }
-  const bt = S.isOpening && C.bookTurn(S.turns, S.dice)
-  const t = bt || S.turns[0]
-  S.hint = t.steps
+  if (S.phase !== 'move' || S.busy) return
+  const b = bestFinish()
+  if (!b) { say('note', `You’ve used your whole roll. Press Done.`); return }
+  S.hint = { base: S.pos, steps: b.steps }
   S.stats.hints++
-  say('note', `Try this: move ${C.plainMove(t.steps, 0)}. The gold arrows show it. ${bt ? 'That’s the standard first move for this roll.' : hintWhy(t)}`)
+  const lead = S.steps.length ? 'From here, move' : 'Try this: move'
+  say('note', `${lead} ${C.plainMove(b.steps, 0)}. The gold arrows show it. ${b.isBook ? 'That’s the standard first move for this roll.' : hintWhy(b.turn, S.steps.concat(b.steps))}`)
   render()
 }
-function hintWhy(t) {
-  const f = C.features(S.turnStart, t.pos, t.steps, 0)
+function hintWhy(t, steps) {
+  const f = C.features(S.turnStart, t.pos, steps, 0)
   if (f.hits) return 'Hitting sends a Brown checker to the bar, so it has to start its trip all over again.'
   const km = f.made.filter((p) => [5, 4, 7, 6, 3, 20, 21].includes(p))
   if (km.length) return `That puts two of your checkers on ${km[0]}, so it’s yours: Brown can’t land there.`
