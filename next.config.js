@@ -19,6 +19,8 @@ const nextConfig = {
       { source: '/mma/map', destination: '/mma/food', permanent: false },
       { source: '/mma/map/:path*', destination: '/mma/food', permanent: false },
       { source: '/bio', destination: '/about', permanent: true },
+      // carscout was briefly a write-up; the card now opens the tool snapshot.
+      { source: '/play/carscout', destination: '/play/prototypes/carscout', permanent: false },
       // Work is the homepage now; project pages were folded into it.
       { source: '/work', destination: '/', permanent: false },
       { source: '/work/:slug', destination: '/', permanent: false },

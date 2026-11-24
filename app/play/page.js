@@ -8,6 +8,16 @@ export const metadata = {
 
 const projects = [
   {
+    id: 'carscout',
+    name: 'carscout',
+    description:
+      'My son needs a first car and I am not a car guy. This reads every AWD listing on Craigslist Portland under $10k, grades it against the good and bad model years, NHTSA recalls, mileage and what the seller wrote, and explains every car term in plain English. Plus a test drive checklist, how long it will last, and insuring a teen. A read-only snapshot of the tool I run on my laptop.',
+    date: '2026.11.23',
+    type: 'HTML/CSS',
+    tags: ['Python', 'Claude'],
+    path: '/play/prototypes/carscout',
+  },
+  {
     id: 'piano-practice',
     name: 'Piano practice',
     description:

@@ -1,0 +1,1257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>carscout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap" media="print" onload="this.media='all'">
+<style>
+:root {
+  --paper:#F2F3EF; --sheet:#FAFAF8; --ink:#131516; --ink-2:#33373A; --muted:#5E6468; --faint:#8A9094;
+  --rule:#CDD2CA; --hair:#E1E4DE; --band:#E8EEE4; --mark:#F2DC45; --mark-ink:#131516;
+  --invert-bg:#131516; --invert-ink:#F2F3EF;
+  --sans:'Geist', ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono:'Martian Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --gutter:24px; --bar:52px; --thead:44px; --ease-out:cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:#0F1110; --sheet:#151816; --ink:#E6E9E4; --ink-2:#C5CAC3; --muted:#979E98; --faint:#6C736D;
+    --rule:#2C312D; --hair:#1F2320; --band:#151B17; --mark:#E2CE45; --mark-ink:#0F1110;
+    --invert-bg:#E6E9E4; --invert-ink:#0F1110;
+  }
+}
+@media (max-width: 640px) { :root { --gutter:16px; } }
+* { box-sizing:border-box; }
+html { scroll-padding-top: calc(var(--bar) + 20px); }
+body { margin:0; font-family:var(--sans); font-size:17px; line-height:1.6; background:var(--paper); color:var(--ink);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+@media (max-width: 640px) { body { font-size:16px; } }
+::selection { background:var(--mark); color:var(--mark-ink); }
+a { color:inherit; text-decoration:underline; text-decoration-color:var(--rule); text-decoration-thickness:1px; text-underline-offset:3px; }
+@media (hover:hover) and (pointer:fine) { a:hover { text-decoration-color:var(--ink); } }
+:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+.wrap { width:100%; max-width:1240px; margin-inline:auto; padding-inline:var(--gutter); }
+.mono, .lbl { font-family:var(--mono); font-variation-settings:'wdth' 87.5; }
+.lbl { font-size:12px; line-height:1.45; color:var(--muted); }
+p.lbl { font-size:12px; line-height:1.45; letter-spacing:0; font-weight:400; margin:0; }
+mark { color:var(--mark-ink); background:linear-gradient(transparent 12%, var(--mark) 12%, var(--mark) 92%, transparent 92%);
+  padding:0 0.06em; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+
+/* bar */
+.bar { position:sticky; top:0; z-index:10; height:var(--bar); background:var(--paper); border-bottom:1px solid var(--ink); }
+.bar .wrap { height:100%; display:flex; align-items:center; gap:18px; }
+.bar .name { font:500 13px/1 var(--mono); font-variation-settings:'wdth' 87.5; letter-spacing:0; }
+.bar .meta { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:right; }
+button { font:inherit; color:inherit; cursor:pointer; transition:transform 120ms var(--ease-out), background 120ms var(--ease-out); }
+button:active { transform:scale(0.97); }
+.btn { font:400 12px/1 var(--mono); font-variation-settings:'wdth' 87.5; padding:9px 12px 8px; border-radius:2px;
+  border:1px solid var(--ink); background:var(--ink); color:var(--paper); white-space:nowrap; }
+.btn.ghost { background:transparent; color:var(--ink); border-color:var(--rule); }
+.btn[disabled] { opacity:0.55; cursor:progress; }
+@media (hover:hover) and (pointer:fine) { .btn.ghost:hover { border-color:var(--ink); } }
+
+/* head */
+header.top { padding:72px 0 0; }
+h1 { font-size:clamp(52px, 8.4vw, 104px); line-height:0.92; letter-spacing:-0.05em; font-weight:500; margin:14px 0 0; max-width:11em; }
+.lede { font-size:19px; line-height:1.55; color:var(--ink-2); max-width:36em; margin:28px 0 0; }
+.stats { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px; margin-top:56px; border-top:1px solid var(--ink); padding-top:18px; }
+.stat { font:300 clamp(40px, 4.4vw, 56px)/0.95 var(--mono); font-variation-settings:'wdth' 100; letter-spacing:-0.06em; width:max-content; margin-top:10px; }
+.stat.hot { background:linear-gradient(transparent 58%, var(--mark) 58%, var(--mark) 90%, transparent 90%); }
+@media (max-width: 700px) { .stats { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+
+section.blk { margin-top:96px; border-top:1px solid var(--ink); padding-top:20px; }
+h2 { font-size:clamp(30px, 3.4vw, 42px); line-height:1.08; letter-spacing:-0.035em; font-weight:500; margin:10px 0 0; }
+.sub { color:var(--ink-2); max-width:36em; margin:12px 0 0; }
+
+/* check */
+.check { display:flex; gap:10px; margin-top:22px; align-items:stretch; }
+.check textarea { flex:1; min-height:48px; height:48px; resize:vertical; font:15px/1.45 var(--sans); padding:12px 12px;
+  background:var(--sheet); color:var(--ink); border:1px solid var(--rule); border-radius:2px; }
+.check textarea:focus { outline:none; border-color:var(--ink); }
+.check .btn { padding-inline:18px; }
+.check-msg { margin-top:10px; min-height:18px; }
+
+/* filters */
+.filters { display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; margin-top:26px; padding-bottom:14px; }
+.seg { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
+.seg .lbl { margin-right:6px; }
+.chipbtn { font:400 11.5px/1 var(--mono); font-variation-settings:'wdth' 87.5; padding:6px 7px 5px; border:1px solid var(--rule);
+  border-radius:2px; background:transparent; color:var(--ink-2); }
+.chipbtn[aria-pressed="true"] { background:var(--ink); border-color:var(--ink); color:var(--paper); }
+@media (hover:hover) and (pointer:fine) { .chipbtn:hover { border-color:var(--ink); } }
+.filters input[type=search] { font:14px var(--sans); padding:6px 8px; border:1px solid var(--rule); border-radius:2px; background:var(--sheet); color:var(--ink); width:180px; }
+
+/* small marks */
+.pri, .chip, .ref { display:inline-block; font-size:11.5px; line-height:1; border:1px solid var(--rule); border-radius:2px; white-space:nowrap;
+  font-family:var(--mono); font-variation-settings:'wdth' 87.5; }
+.pri { padding:4px 6px 3px; border-color:var(--ink); }
+.pri-P1 { background:var(--ink); color:var(--paper); font-weight:500; }
+.pri-P3 { border-color:var(--rule); color:var(--muted); }
+.is-flag { background:var(--mark); border-color:var(--mark); color:var(--mark-ink); }
+.chip { padding:3px 6px; margin:0 4px 4px 0; line-height:1.3; background:var(--sheet); color:var(--ink-2); white-space:normal; }
+.ref { padding:4px 5px 3px; background:var(--sheet); color:var(--ink); text-decoration:none; font-weight:500; }
+@media (hover:hover) and (pointer:fine) { a.ref:hover { background:var(--mark); border-color:var(--mark); color:var(--mark-ink); } }
+
+/* grid */
+.grid table { width:100%; border-collapse:separate; border-spacing:0; font-size:14px; line-height:1.48; }
+.grid th, .grid td { text-align:left; font-weight:400; vertical-align:top; }
+.grid .num { font-variant-numeric:tabular-nums; }
+.grid .c-car .t { font-weight:600; color:var(--ink); }
+.grid .c-car .s { color:var(--muted); font-size:13px; }
+.grid .thumb { width:84px; height:63px; object-fit:cover; border-radius:2px; background:var(--hair); flex:none; }
+.grid .carwrap { display:flex; gap:12px; }
+.grid tr.row { cursor:pointer; }
+.grid tr.row.gone .c-car .t { text-decoration:line-through; text-decoration-color:var(--faint); }
+.grid tr.row.gone { opacity:0.6; }
+.score { font:300 26px/1 var(--mono); font-variation-settings:'wdth' 100; letter-spacing:-0.05em; width:max-content; }
+.score.hot { background:linear-gradient(transparent 58%, var(--mark) 58%, var(--mark) 90%, transparent 90%); }
+.watch { color:var(--ink-2); }
+.watch b { font-weight:600; color:var(--ink); }
+.star { border:0; background:none; padding:2px; color:var(--faint); font-size:15px; line-height:1; }
+.star[aria-pressed="true"] { color:var(--ink); }
+@media (hover:hover) and (pointer:fine) { .grid tr.row:hover > * { background:var(--sheet); } }
+
+@media (min-width: 1180px) {
+  .grid table { table-layout:fixed; }
+  .grid thead th { position:sticky; top:var(--bar); z-index:3; height:var(--thead); padding:0 8px 0 10px; vertical-align:middle; line-height:1.2;
+    background:var(--paper); border-bottom:1px solid var(--ink); font:11.5px var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); }
+  .grid tbody tr.row > * { padding:13px 10px 14px; border-bottom:1px solid var(--hair); }
+  .grid thead .c-score { width:7%; } .grid thead .c-car { width:31%; } .grid thead .c-price { width:10%; }
+  .grid thead .c-miles { width:8%; } .grid thead .c-cam { width:10%; } .grid thead .c-verdict { width:9%; }
+  .grid thead .c-watch { width:16%; } .grid thead .c-listed { width:9%; }
+}
+@media (max-width: 1179px) {
+  .grid table, .grid tbody, .grid tr, .grid td, .grid th { display:block; }
+  .grid thead { display:none; }
+  .grid tr.row { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px 16px; padding:16px 0 18px; border-bottom:1px solid var(--hair); }
+  .grid .c-car, .grid .c-watch { grid-column:1 / -1; }
+  .grid .c-car { order:-1; }
+  .grid td::before { content:attr(data-l); display:block; font:11px/1.5 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); margin-bottom:4px; }
+  .grid td.c-car::before { display:none; }
+}
+@media (min-width: 700px) and (max-width: 1179px) { .grid tr.row { grid-template-columns:repeat(4, minmax(0,1fr)); } }
+
+/* detail */
+tr.detail > td { padding:0 !important; border-bottom:1px solid var(--ink); }
+tr.detail > td::before { display:none !important; }
+.dpanel { display:grid; grid-template-columns:minmax(0, 1fr) 360px; gap:40px; padding:22px 0 36px; animation:open 260ms var(--ease-out); }
+@keyframes open { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
+@media (max-width: 1000px) { .dpanel { grid-template-columns:minmax(0,1fr); gap:28px; } }
+.photos { display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; scroll-snap-type:x mandatory; }
+.photos img { height:180px; border-radius:2px; scroll-snap-align:start; background:var(--hair); }
+.dpanel h3 { font-size:21px; line-height:1.28; letter-spacing:-0.015em; font-weight:600; margin:26px 0 0; }
+.dpanel h3:first-child { margin-top:0; }
+.dpanel .claim { font-size:clamp(20px, 2vw, 24px); line-height:1.25; letter-spacing:-0.025em; font-weight:500; margin:18px 0 0; max-width:30em; }
+.dpanel p { margin:8px 0 0; color:var(--ink-2); font-size:15px; max-width:40em; }
+.dpanel p.lbl { font-size:12px; line-height:1.45; color:var(--muted); }
+.issues { list-style:none; margin:10px 0 0; padding:0; }
+.issues li { border-top:1px solid var(--hair); padding:12px 0; font-size:14.5px; line-height:1.5; }
+.issues li .h { display:flex; gap:10px; align-items:baseline; }
+.issues li .h b { font-weight:600; }
+.issues li .d { color:var(--ink-2); margin-top:4px; }
+.issues li .k { margin-top:6px; color:var(--ink); }
+.issues li .k::before { content:'Check: '; font-family:var(--mono); font-variation-settings:'wdth' 87.5; font-size:11.5px; color:var(--muted); }
+.bullets { list-style:none; margin:10px 0 0; padding:0; font-size:14.5px; color:var(--ink-2); }
+.bullets li { position:relative; padding-left:26px; margin:0 0 8px; }
+.bullets li::before { content:''; position:absolute; left:2px; top:0.78em; width:12px; border-top:1px solid currentColor; }
+.rail h4 { font:400 11.5px/1.3 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); margin:24px 0 8px; padding-bottom:6px; border-bottom:1px solid var(--ink); }
+.rail h4:first-child { margin-top:0; }
+.kv { display:grid; grid-template-columns:110px 1fr; gap:4px 12px; font-size:14px; }
+.kv dt { font:11.5px/1.7 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); }
+.kv dd { margin:0; color:var(--ink-2); }
+.recalls { font-size:13.5px; color:var(--ink-2); }
+.recalls details { border-top:1px solid var(--hair); padding:8px 0; }
+.recalls summary { cursor:pointer; color:var(--ink); }
+.recalls summary .lbl { margin-left:6px; }
+.links { display:flex; flex-wrap:wrap; gap:6px; }
+svg.bars text { font-family:var(--mono); font-variation-settings:'wdth' 87.5; font-size:9.5px; fill:var(--muted); }
+svg.bars .b { fill:var(--rule); }
+svg.bars .b.on { fill:var(--ink); }
+svg.bars .hl { fill:var(--mark); }
+
+/* guide */
+.rubric { width:100%; border-collapse:collapse; margin-top:18px; font-size:14.5px; line-height:1.45; }
+.rubric th, .rubric td { text-align:left; vertical-align:top; padding:9px 0; border-top:1px solid var(--hair); }
+.rubric th[scope=row] { width:220px; padding-right:16px; font-weight:600; }
+.rubric td { color:var(--ink-2); }
+.rubric td.y { width:110px; font-family:var(--mono); font-variation-settings:'wdth' 87.5; font-size:12px; color:var(--ink); padding-right:12px; }
+.rubric td.cam { width:140px; font-size:13px; }
+.page[data-page=insurance] .rubric { max-width:820px; }
+.page[data-page=insurance] .rubric th[scope=row] { width:200px; }
+.rubric td.sum .m { display:block; max-width:62ch; }
+.rstats { margin-top:0; border-top:0; padding-top:0; }
+.rstats .jump { margin-top:12px; }
+.rstats .rnote { grid-column:1 / -1; margin-top:-6px; }
+.rubric.reality { max-width:820px; margin-top:36px; }
+.rubric.reality th[scope=row] { width:200px; }
+.rubric-g th { padding:28px 0 6px; border-top:0; font:400 11.5px/1.3 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); border-bottom:1px solid var(--ink); }
+#guideTable thead th { font:400 11.5px/1.2 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); padding:0 12px 8px 0; border-top:0; border-bottom:1px solid var(--ink); }
+#guideTable .rubric-g th { border-bottom:1px solid var(--hair); color:var(--ink); font-weight:500; font-size:12.5px; padding-top:32px; }
+#guideTable th[scope=row] { width:150px; }
+#guideTable tr.cont > * { border-top-color:transparent; }
+#guideTable td.v { width:104px; padding-right:12px; }
+#guideTable td.cam { width:110px; padding-right:12px; }
+#guideTable td.price { width:176px; padding-right:16px; }
+#guideTable .pr { display:block; font:500 13px/1.3 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--ink); font-variant-numeric:tabular-nums; }
+#guideTable .pn { display:block; font:11px/1.4 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); margin-top:2px; font-weight:400; }
+@media (max-width: 900px) {
+  #guideTable thead { display:none; }
+  #guideTable tr:not(.rubric-g) { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px 14px; padding:14px 0; border-top:1px solid var(--hair); }
+  #guideTable tr:not(.rubric-g) > * { border:0; padding:0; width:auto !important; }
+  #guideTable tr.cont th[scope=row] { display:none; }
+  #guideTable th[scope=row], #guideTable td.sum { grid-column:1 / -1; }
+  #guideTable td:not(.sum)::before { content:attr(data-l); display:block; font:11px/1.5 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); margin-bottom:3px; }
+}
+@media (max-width: 560px) { #guideTable tr:not(.rubric-g) { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+@media (max-width: 760px) {
+  .rubric tr:not(.rubric-g) { display:grid; grid-template-columns:auto 1fr; border-top:1px solid var(--hair); padding:10px 0; }
+  .rubric tr:not(.rubric-g) > * { border:0; padding:2px 0; width:auto !important; }
+  .rubric td.sum { grid-column:1 / -1; }
+}
+
+.working { background:var(--invert-bg); color:var(--invert-ink); padding:40px clamp(22px, 5vw, 64px) 44px; margin-top:96px; }
+.working .lbl { color:inherit; opacity:0.7; }
+.working h2 { margin-top:8px; }
+.working .cols { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:32px; margin-top:24px; }
+.working .bullets { color:inherit; }
+@media (max-width: 800px) { .working .cols { grid-template-columns:minmax(0,1fr); } }
+footer { padding:40px 0 80px; color:var(--faint); }
+.empty { padding:40px 0; color:var(--muted); }
+/* sub nav + pages */
+.bar a.name { color:inherit; text-decoration:none; }
+.subnav { display:flex; gap:2px; margin-left:6px; }
+.subnav a { font:400 12px/1 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); text-decoration:none; padding:8px 9px 7px; border-radius:2px; white-space:nowrap; }
+.subnav a[aria-current="page"] { color:var(--ink); background:linear-gradient(transparent 62%, var(--mark) 62%, var(--mark) 92%, transparent 92%); }
+@media (hover:hover) and (pointer:fine) { .subnav a:hover { color:var(--ink); } }
+@media (max-width: 900px) { .bar .meta { visibility:hidden; } }
+@media (max-width: 640px) {
+  .bar .wrap { gap:8px; } .bar .name { display:none; } .subnav { margin-left:-9px; } .subnav a { padding-inline:7px; }
+  #refresh { font-size:0; padding:9px 10px 8px; } #refresh::after { content:'Refresh'; font-size:12px; }
+}
+[hidden] { display:none !important; }
+section.blk.tight { margin-top:56px; }
+.page .working { margin-top:56px; }
+.filters select { font:400 12px var(--mono); font-variation-settings:'wdth' 87.5; padding:6px 8px; border:1px solid var(--rule); border-radius:2px; background:var(--sheet); color:var(--ink); }
+.pager { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin-top:22px; }
+.pager .lbl { margin-right:12px; }
+.pager .chipbtn[disabled] { opacity:0.4; cursor:default; }
+.pager .gap { color:var(--faint); padding:0 4px; font:11.5px var(--mono); }
+
+/* insurance */
+.page[data-page=lifespan] .stat { font-size:clamp(32px, 3.3vw, 42px); }
+.ins-stats .note { margin-top:10px; max-width:18em; }
+.bullets.cols2 { columns:2; column-gap:32px; } .bullets.cols2 li { break-inside:avoid; }
+@media (max-width: 760px) { .bullets.cols2 { columns:1; } }
+.qform { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px 14px; margin-top:24px; align-items:end; }
+.qform label { display:flex; flex-direction:column; gap:6px; }
+.qform label.wide { grid-column:span 3; }
+.qform input { font:15px var(--sans); padding:9px 10px; border:1px solid var(--rule); border-radius:2px; background:var(--sheet); color:var(--ink); }
+.qform input:focus { outline:none; border-color:var(--ink); }
+.qform .btn { padding-block:11px 10px; }
+@media (max-width: 760px) { .qform { grid-template-columns:minmax(0,1fr) minmax(0,1fr); } .qform label.wide { grid-column:1 / -1; } .qform .btn { grid-column:1 / -1; } }
+.qtable { margin-top:28px; }
+.qtable table { width:100%; border-collapse:collapse; font-size:14px; line-height:1.45; }
+.qtable th, .qtable td { text-align:left; vertical-align:top; padding:11px 12px 11px 0; border-bottom:1px solid var(--hair); }
+.qtable thead th { font:400 11.5px/1.2 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); border-bottom:1px solid var(--ink); padding-bottom:8px; }
+.qtable td.num { font-variant-numeric:tabular-nums; white-space:nowrap; }
+.qtable td.n { color:var(--ink-2); }
+.qtable tr.best td:first-child { font-weight:600; }
+.qtable .x { border:0; background:none; color:var(--muted); font:11.5px var(--mono); padding:0; }
+.qtable table:has(tbody:empty) { display:none; }
+@media (max-width: 800px) {
+  .qtable table, .qtable tbody, .qtable tr, .qtable td { display:block; } .qtable thead { display:none; }
+  .qtable tr { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px 14px; padding:14px 0; border-bottom:1px solid var(--hair); }
+  .qtable td { border:0; padding:0; } .qtable td:first-child, .qtable td.n { grid-column:1 / -1; }
+  .qtable td::before { content:attr(data-l); display:block; font:11px/1.5 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); }
+  .qtable td:first-child::before, .qtable td:last-child::before { display:none; }
+}
+p.lbl.ins-foot { margin-top:56px; padding-bottom:80px; }
+.print-btn { margin-top:28px; }
+.print-only { display:none; }
+@media print {
+  @page { size:letter; margin:0.5in; }
+  :root { --paper:#fff; --ink:#000; --ink-2:#222; --muted:#555; }
+  html, body { background:#fff !important; color:#000; font-size:10pt; }
+  .bar, footer, .print-btn, .page:not([data-page="checklist"]) { display:none !important; }
+  .page[data-page="checklist"] { display:block !important; }
+  .wrap { max-width:none; padding:0; }
+  header.top { padding:0; }
+  header.top h1 { font-size:26pt; margin-top:2pt; }
+  header.top .lede { font-size:10pt; margin-top:6pt; max-width:none; }
+  .print-only { display:block; }
+  .pfields { display:grid; grid-template-columns:2fr 1fr 1fr; gap:8pt 14pt; margin-top:12pt; }
+  .pf { border-bottom:0.75pt solid #000; height:22pt; display:flex; align-items:flex-start; }
+  .pf span, .plbl { font-family:var(--mono); font-size:8pt; line-height:1; font-variation-settings:'wdth' 87.5; color:#555; }
+  .page .working { background:none !important; color:#000; padding:0; margin-top:14pt; border-top:1.5pt solid #000; padding-top:10pt; }
+  .working .lbl { opacity:1; color:#000; font-weight:600; font-size:8.5pt; }
+  .working .cols { grid-template-columns:1fr 1fr; gap:22pt; margin-top:4pt; }
+  .working .bullets { font-size:9.5pt; line-height:1.38; color:#000; margin-top:6pt; }
+  .working .bullets li { padding-left:16pt; margin-bottom:5pt; break-inside:avoid; }
+  .working .bullets li::before { width:7pt; height:7pt; border:0.75pt solid #000; top:0.2em; left:0; border-radius:1pt; }
+  .pnotes { margin-top:16pt; border-top:1.5pt solid #000; padding-top:4pt; }
+  .pnotes .plbl { margin:10pt 0 0; }
+  .pnotes .line { border-bottom:0.75pt solid #999; height:20pt; }
+  * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
+/* glossary tips */
+.term { white-space:nowrap; }
+.tip { display:inline-grid; place-items:center; width:14px; height:14px; margin:0 1px 0 3px; padding:0; vertical-align:0.1em;
+  border:1px solid currentColor; border-radius:50%; background:transparent; color:var(--muted);
+  font:500 9px/1 var(--mono); font-variation-settings:'wdth' 87.5; font-style:normal; cursor:help; }
+.working .tip { color:inherit; }
+@media (hover:hover) and (pointer:fine) { .tip:hover { background:var(--mark); border-color:var(--mark); color:var(--mark-ink); } }
+.tipbox { position:fixed; z-index:50; padding:10px 12px 11px; background:var(--ink); color:var(--paper); border-radius:2px;
+  font:13.5px/1.45 var(--sans); box-shadow:0 6px 24px rgba(0,0,0,0.18); pointer-events:none; }
+.tipbox[hidden] { display:none; }
+@media print { .tip, .tipbox { display:none !important; } }
+@media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="wrap">
+    <a class="name" href="/" data-nav>carscout</a>
+    <nav class="subnav" aria-label="Pages">
+      <a href="/" data-nav>Cars</a>
+      <a href="/checklist" data-nav>Checklist</a>
+      <a href="/years" data-nav>Model years</a>
+      <a href="/lifespan" data-nav>Lifespan</a>
+      <a href="/insurance" data-nav>Insurance</a>
+    </nav>
+    <span class="lbl meta" id="barmeta">Loading</span>
+    <button class="btn" id="refresh">Refresh listings</button>
+  </div>
+</div>
+
+<main class="wrap">
+<div class="page" data-page="">
+  <header class="top">
+    <p class="lbl">Portland · AWD · gas · under $<span id="cap">10,000</span></p>
+    <h1>My son’s first car</h1>
+    <p class="lede" id="realLede"></p>
+  </header>
+
+  <section class="blk" id="reality">
+    <div class="stats rstats" id="realStats"></div>
+    <table class="rubric reality">
+      <tbody>
+        <tr><th scope="row">What it buys</th><td class="sum" id="realBuys"></td></tr>
+        <tr><th scope="row">The camera squeeze</th><td class="sum">Cameras went standard around 2014 on most models, which pushes you into newer years with more miles. Adding one aftermarket ($120 DIY, about $400 installed) opens up 2010 to 2013 cars with fewer miles for the money. Probably the best trade you have.</td></tr>
+        <tr><th scope="row">The real cost</th><td class="sum">Oregon has no sales tax, but title, registration and dealer fees add a few hundred. At 130k, plan on tires, brakes or fluids soon after. $10k really buys an $8.5k car.</td></tr>
+        <tr><th scope="row">Dealers</th><td class="sum" id="realDealers"></td></tr>
+        <tr><th scope="row">Waiting a year</th><td class="sum">These cars lose value slowly, so the same money in a year buys about the same car with a few thousand more miles. Don't count on prices dropping.</td></tr>
+        <tr><th scope="row">The read</th><td class="sum">AWD under $10k is very doable. A clean, low-mileage car with a factory camera at that price is rare. Expect 130k+ on a well-kept car and let the inspection decide, or budget closer to $12k for under 100k.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk" id="cars">
+    <p class="lbl" id="carsLbl">Listings</p>
+    <h2>The list</h2>
+    <div class="filters">
+      <div class="seg" data-key="show">
+        <span class="lbl">Show</span>
+        <button class="chipbtn" data-v="all">All</button>
+        <button class="chipbtn" data-v="good">Good picks</button>
+        <button class="chipbtn" data-v="strict">Strict picks</button>
+        <button class="chipbtn" data-v="starred">Starred</button>
+        <button class="chipbtn" data-v="checked">Checked</button>
+      </div>
+      <div class="seg" data-key="sort">
+        <span class="lbl">Sort</span>
+        <button class="chipbtn" data-v="score">Score</button>
+        <button class="chipbtn" data-v="price">Price</button>
+        <button class="chipbtn" data-v="miles">Miles</button>
+        <button class="chipbtn" data-v="new">Newest</button>
+      </div>
+      <div class="seg" data-key="toggles">
+        <button class="chipbtn" data-t="camera">Camera only</button>
+        <button class="chipbtn" data-t="under150">Under 150k mi</button>
+        <button class="chipbtn" data-t="avoid">Include avoid</button>
+        <button class="chipbtn" data-t="gone">Include gone</button>
+      </div>
+      <select id="brand" aria-label="Brand"></select>
+      <input type="search" id="q" placeholder="Filter, e.g. forester">
+    </div>
+    <div class="grid">
+      <table>
+        <thead><tr>
+          <th class="c-score">Score</th><th class="c-car">Car</th><th class="c-price">Price</th><th class="c-miles">Miles</th>
+          <th class="c-cam">Camera</th><th class="c-verdict">Verdict</th><th class="c-watch">Watch for</th><th class="c-listed">Listed</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden></div>
+    </div>
+    <div class="pager" id="pager"></div>
+  </section>
+
+  <section class="blk" id="check">
+    <p class="lbl">Check a car</p>
+    <h2>Found one somewhere else?</h2>
+    <p class="sub">Paste the listing title and description from Facebook, OfferUp, Carvana or a dealer, a VIN, or a Craigslist link. It lands in the list above, marked as checked.</p>
+    <div class="check">
+      <textarea id="checkText" placeholder="2014 Subaru Forester 2.5i Premium, 138k miles, $8,900, new tires, backup camera"></textarea>
+      <button class="btn" id="checkBtn">Check it</button>
+    </div>
+    <p class="lbl check-msg" id="checkMsg"></p>
+  </section>
+</div>
+
+<div class="page" data-page="checklist" hidden>
+  <header class="top">
+    <p class="lbl">Before you buy any of these</p>
+    <h1>The checklist</h1>
+    <p class="lede">Take this on every test drive. The first column applies to any used car, the second is about putting a new driver in it.</p>
+    <button class="btn ghost print-btn" onclick="window.print()">Print one-pager</button>
+  </header>
+  <div class="print-only pfields">
+    <div class="pf w2"><span>Car</span></div><div class="pf"><span>Price</span></div><div class="pf"><span>Miles</span></div>
+    <div class="pf w2"><span>VIN</span></div><div class="pf"><span>Seller</span></div><div class="pf"><span>Date</span></div>
+  </div>
+  <section class="working" id="teen">
+    <div class="cols">
+      <div><p class="lbl">Every car</p><ul class="bullets" id="genCheck"></ul></div>
+      <div><p class="lbl">Teen driver</p><ul class="bullets" id="teenCheck"></ul></div>
+    </div>
+  </section>
+  <div class="print-only pnotes">
+    <p class="plbl">Known issues for this year (from carscout)</p><div class="line"></div><div class="line"></div>
+    <p class="plbl">Notes from the drive</p><div class="line"></div><div class="line"></div><div class="line"></div>
+    <p class="plbl">Inspection shop, date, result</p><div class="line"></div>
+  </div>
+</div>
+
+<div class="page" data-page="years" hidden>
+  <header class="top">
+    <p class="lbl">Model guide</p>
+    <h1>Model years</h1>
+    <p class="lede">Which years to target and skip, by brand, with what each is going for on Craigslist right now. Avoid-list models only show up if you check one by hand.</p>
+  </header>
+  <section class="blk tight">
+    <p class="lbl" id="guideLbl">Model years</p>
+    <div class="filters" id="gfilters">
+      <select data-g="make" aria-label="Brand"></select>
+      <div class="seg" data-gk="verdict">
+        <span class="lbl">Verdict</span>
+        <button class="chipbtn" data-v="good">Good pick</button>
+        <button class="chipbtn" data-v="ok">Solid</button>
+        <button class="chipbtn" data-v="caution">Caution</button>
+        <button class="chipbtn" data-v="avoid">Avoid</button>
+      </div>
+      <select data-g="camera" aria-label="Camera">
+        <option value="">Any camera</option><option value="standard">Camera standard</option><option value="most">Most trims or better</option><option value="some">Upper trims or better</option><option value="none">No camera</option>
+      </select>
+      <select data-g="year" aria-label="Year"></select>
+      <div class="seg" data-gk="toggles">
+        <button class="chipbtn" data-t="forsale">For sale now</button>
+        <button class="chipbtn" data-t="awdstd">AWD standard</button>
+      </div>
+      <input type="search" data-g="q" placeholder="Search notes, e.g. head gasket">
+      <button class="chipbtn" id="greset">Reset</button>
+    </div>
+    <table class="rubric" id="guideTable"></table>
+    <div class="empty" id="gempty" hidden>No model years match those filters.</div>
+  </section>
+</div>
+
+<div class="page" data-page="lifespan" hidden>
+  <header class="top">
+    <p class="lbl">How long will it last?</p>
+    <h1>Lifespan</h1>
+    <p class="lede">Say you buy what this tool points you to: a good-year AWD SUV or wagon from about 2014 to 2016, with 130k miles and a service history. Think Forester, CR-V, Outback, RX 350 or CX-5. If it's been looked after, it should get my son through high school and maybe into college. Plan on about four years, with the transmission as the one big unknown.</p>
+    <div class="stats ins-stats">
+      <div><p class="lbl">Typical life</p><div class="stat">200–250k</div><p class="lbl note">Miles for a well-kept car on the good list</p></div>
+      <div><p class="lbl">Left on a 130k car</p><div class="stat">70–120k</div><p class="lbl note">Miles, if the big parts hold up</p></div>
+      <div><p class="lbl">Teen miles a year</p><div class="stat">~8k</div><p class="lbl note">School, practice, a job, friends. A guess, not data</p></div>
+      <div><p class="lbl">Plan on</p><div class="stat hot">~4 yrs</div><p class="lbl note">16 to 20, before anything wears out the car</p></div>
+    </div>
+  </header>
+
+  <section class="blk">
+    <p class="lbl">The math</p>
+    <h2>Mileage won't be what ends it</h2>
+    <table class="rubric reality">
+      <tbody>
+        <tr><th scope="row">16 to 18, at home</th><td class="sum">About 20k to 25k miles. Buy it at 130k and it's around 155k when he leaves for school.</td></tr>
+        <tr><th scope="row">If it goes to college</th><td class="sum">Another 5k to 8k a year. Still well under 200k by graduation.</td></tr>
+        <tr><th scope="row">Budget per year</th><td class="sum">$800 to $1,500 for maintenance and repairs at this age, more in a year it needs tires or brakes.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk">
+    <p class="lbl">What could end it early</p>
+    <h2>The three real risks</h2>
+    <table class="rubric reality">
+      <tbody>
+        <tr><th scope="row">1. The transmission</th><td class="sum">The big one on any car this age. A replacement runs $3k to $7k, most of what the car is worth. Subarus, newer CR-Vs and Nissans use a CVT, which is the bigger risk; the RX 350, CX-5 and older CR-Vs use a regular automatic. Either way, ask for proof the transmission fluid was changed, and walk if it shudders, slips or hesitates on the test drive.</td></tr>
+        <tr><th scope="row">2. A crash</th><td class="sum">The first year of driving is by far the riskiest, so this is likely how the car's story ends. It's also the case for an $8k car over a $15k one.</td></tr>
+        <tr><th scope="row">3. Ordinary age repairs</th><td class="sum">Wheel bearings, struts, the AC, small oil leaks. Annoying and a few hundred each, but none of them kill the car.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk">
+    <p class="lbl">In your favor</p>
+    <h2>Why the good picks hold up</h2>
+    <table class="rubric reality">
+      <tbody>
+        <tr><th scope="row">Timing chains</th><td class="sum">Most of the good-list engines (Subaru's FB25, Honda's 2.4, Mazda's 2.5, the Lexus V6) use a timing chain, which usually lasts the life of the engine. No $1,000 belt job coming due.</td></tr>
+        <tr><th scope="row">Bad years filtered out</th><td class="sum">The model years page already steers you off the known problem years, like Subaru's head gasket era and early oil burners. What's left are the generations with the fewest surprises.</td></tr>
+        <tr><th scope="row">Portland weather</th><td class="sum">No road salt, so rust isn't the killer it is back east.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk">
+    <p class="lbl">The move</p>
+    <h2>Buy the one with records</h2>
+    <p class="sub">Two identical cars, one with a folder of service receipts and one without: pay the extra $500 for the folder. Records showing transmission fluid and regular oil changes are the best predictor of how long it lasts.</p>
+  </section>
+  <p class="lbl ins-foot">General patterns for these models and years, not a promise about any one car. A pre-purchase inspection on the actual car beats all of it.</p>
+</div>
+
+<div class="page" data-page="insurance" hidden>
+  <header class="top">
+    <p class="lbl">Insurance · Oregon · teen driver</p>
+    <h1>Insuring him</h1>
+    <p class="lede">A 16 year old boy is the priciest driver to insure. The car and the discounts matter almost as much as the sticker price.</p>
+    <div class="stats ins-stats">
+      <div><p class="lbl">Typical premium change</p><div class="stat hot">~2×</div><p class="lbl note">Adding a teen boy, national ballpark, not an Oregon quote</p></div>
+      <div><p class="lbl">Permit age</p><div class="stat">15</div><p class="lbl note">Tell your insurer; most cover permit drivers free</p></div>
+      <div><p class="lbl">License age</p><div class="stat">16</div><p class="lbl note">This is when the premium jumps</p></div>
+      <div><p class="lbl">Quotes to get</p><div class="stat">3+</div><p class="lbl note">Same coverage, same car, same week</p></div>
+    </div>
+  </header>
+
+  <section class="blk">
+    <p class="lbl">Timeline</p>
+    <h2>When to do what</h2>
+    <table class="rubric">
+      <tbody>
+        <tr><th scope="row">Permit, around 15</th><td class="sum">Tell your insurer. Most cover permit drivers free, but skipping the call can sink a claim. Ask what his licensed rate will be.</td></tr>
+        <tr><th scope="row">Driver ed</th><td class="sum">Take an ODOT-approved course. It halves the required practice hours to 50, skips the DMV drive test, and earns a discount.</td></tr>
+        <tr><th scope="row">Shortlisting cars</th><td class="sum">Quote two or three real VINs before buying. Same kid, different car, can mean hundreds a year.</td></tr>
+        <tr><th scope="row">A month before license</th><td class="sum">Get three or more quotes at identical coverage. Your current carrier is usually the one to beat.</td></tr>
+        <tr><th scope="row">License, 16+</th><td class="sum">Add him to your policy, assigned to his car. Keep the car titled in your name.</td></tr>
+        <tr><th scope="row">Every renewal</th><td class="sum">Re-shop. Rates fall with each clean year and again at 18 and 25.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk">
+    <p class="lbl">Who to call</p>
+    <h2>Where to get quotes</h2>
+    <p class="sub">Get one from each. They price teens very differently.</p>
+    <table class="rubric">
+      <tbody>
+        <tr><th scope="row">Your current carrier</th><td class="sum">Usually cheapest thanks to multi-car and bundle discounts. The number to beat.</td></tr>
+        <tr><th scope="row">Independent agent</th><td class="sum">One call, several carriers, including Northwest regionals like PEMCO that don't sell direct.</td></tr>
+        <tr><th scope="row">Direct carriers</th><td class="sum">Progressive, GEICO. Fifteen minutes online, a good check on the agent.</td></tr>
+        <tr><th scope="row">Captive agents</th><td class="sum">State Farm, Allstate, Farmers, American Family. Strong teen programs. USAA if anyone in the family served.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk">
+    <p class="lbl">Bring the price down</p>
+    <h2>Discounts and levers</h2>
+    <table class="rubric">
+      <tbody>
+        <tr><th scope="row">Good student</th><td class="sum">B average or 3.0 GPA, often 10 to 25% off. Send a report card each term.</td></tr>
+        <tr><th scope="row">Driver training</th><td class="sum">The ODOT course, plus some carriers' own online teen programs.</td></tr>
+        <tr><th scope="row">Telematics app</th><td class="sum">Snapshot, Drive Safe &amp; Save, Drivewise. Rewards careful driving. Ask if a bad score can raise the rate.</td></tr>
+        <tr><th scope="row">The car itself</th><td class="sum">Older, mid-size, no turbo, cheap to fix. What this tool's grades already favor.</td></tr>
+        <tr><th scope="row">Deductible</th><td class="sum">$1,000 on his car. If collision costs more than 10% of the car's value a year, drop it.</td></tr>
+        <tr><th scope="row">The small stuff</th><td class="sum">Pay in full, bundle, multi-car. Ask for each by name.</td></tr>
+        <tr><th scope="row">Later: college</th><td class="sum">Big discount if he's 100+ miles away without the car.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk">
+    <p class="lbl">Coverage</p>
+    <h2>What to carry</h2>
+    <p class="sub">Don't skimp on liability. A teen driver is the biggest lawsuit risk to your house, and higher limits are cheap.</p>
+    <table class="rubric">
+      <tbody>
+        <tr><th scope="row">Oregon minimum</th><td class="y">25/50/20</td><td class="sum">Plus $15k PIP and 25/50 uninsured motorist. Too thin.</td></tr>
+        <tr><th scope="row">Carry this</th><td class="y">100/300/100</td><td class="sum">Or 250/500/100 with real assets. Match uninsured motorist to it.</td></tr>
+        <tr><th scope="row">Umbrella</th><td class="y">$1M</td><td class="sum">A few hundred a year. Price it once he's licensed.</td></tr>
+        <tr><th scope="row">Comp and collision</th><td class="y">Depends</td><td class="sum">Keep comprehensive. Collision depends on the car's value.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="blk">
+    <p class="lbl">Ask every quote</p>
+    <h2>Questions to ask</h2>
+    <ul class="bullets cols2">
+      <li>Is a permit driver covered, and do you need him listed?</li>
+      <li>What's the six-month premium with him added, on this VIN?</li>
+      <li>Which discounts did you apply? Read them back.</li>
+      <li>Is gender a rating factor for you? Most states allow it, and boys pay more.</li>
+      <li>What happens to the rate after his first ticket or at-fault claim?</li>
+      <li>Can the telematics program raise the rate, or only lower it?</li>
+      <li>Does he get assigned to a specific car, and can we choose which?</li>
+      <li>Is there an accident forgiveness option, and what does it cost?</li>
+      <li>When does the rate step down: 17, 18, after three clean years?</li>
+      <li>Umbrella price, and what underlying limits it needs.</li>
+    </ul>
+  </section>
+
+  <section class="blk">
+    <p class="lbl" id="quoteLbl">Quote tracker</p>
+    <h2>Compare quotes</h2>
+    <p class="sub">Saved in this browser. Keep the coverage identical across rows or the comparison doesn't mean much.</p>
+    <form class="qform" id="qform" autocomplete="off">
+      <label><span class="lbl">Carrier</span><input name="carrier" required placeholder="PEMCO via agent"></label>
+      <label><span class="lbl">Six-month premium</span><input name="premium" inputmode="numeric" required placeholder="2,400"></label>
+      <label><span class="lbl">Liability</span><input name="limits" placeholder="100/300/100"></label>
+      <label><span class="lbl">Car</span><input name="car" placeholder="2014 Forester"></label>
+      <label class="wide"><span class="lbl">Discounts and notes</span><input name="notes" placeholder="good student, telematics, $1k deductible"></label>
+      <button class="btn">Add quote</button>
+    </form>
+    <div class="qtable">
+      <table>
+        <thead><tr><th>Carrier</th><th>Six months</th><th>Per year</th><th>Liability</th><th>Car</th><th>Notes</th><th></th></tr></thead>
+        <tbody id="quotes"></tbody>
+      </table>
+      <div class="empty" id="qempty">No quotes yet.</div>
+    </div>
+  </section>
+
+  <p class="lbl ins-foot">General guidance from how carriers usually price teens, not legal or insurance advice. Oregon rules from ODOT and DMV as of 2026; confirm details with your agent.</p>
+</div>
+
+  <footer class="lbl" id="foot"></footer>
+</main>
+
+<script>window.CARSCOUT = { base:'/play/prototypes/carscout', snapshot:true };</script>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => n == null ? '—' : '$' + Number(n).toLocaleString();
+const miles = n => n == null ? '—' : Math.round(n / 1000) + 'k';
+const LS = { get:k => JSON.parse(localStorage.getItem('carscout.'+k) || 'null'), set:(k,v) => localStorage.setItem('carscout.'+k, JSON.stringify(v)) };
+
+// Public snapshot mode: the exporter sets window.CARSCOUT = { base, snapshot:true }. No server, read-only.
+const STATIC = window.CARSCOUT || null;
+const BASE = STATIC?.base || '';
+let DATA = null;
+let open = new Set();
+const ui = Object.assign({ show:'all', sort:'score', toggles:{ camera:false, under150:false, avoid:false, gone:false }, q:'', brand:'', page:1 }, LS.get('ui') || {});
+const PER = 25;
+const BRAND_FIX = { Bmw:'BMW', Mini:'MINI', Gmc:'GMC' };
+function brandOf(x) {
+  const w = (x.model_name || x.vin_info?.Make || x.title || '').trim().split(/\s+/)[0] || 'Other';
+  const b = w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  return BRAND_FIX[b] || b;
+}
+let stars = new Set(LS.get('stars') || []);
+const GUI0 = () => ({ make:'', verdict:[], camera:'', year:'', toggles:{ forsale:false, awdstd:false }, q:'' });
+const gui = Object.assign(GUI0(), LS.get('gui') || {});
+
+const VERDICT = {
+  good:['Good pick','pri pri-P1'], ok:['Solid','pri'], caution:['Caution','pri is-flag'], avoid:['Avoid','pri pri-P3'], unknown:['Unknown','pri pri-P3']
+};
+const CAMERA = {
+  listed:'In listing', standard:'Standard', likely:'Likely, verify', trim:'Upper trims', none:'None, add one', unknown:'Unknown'
+};
+
+function ago(iso) {
+  if (!iso) return '';
+  const d = (Date.now() - new Date(iso)) / 864e5;
+  if (d * 24 < 1) return Math.max(1, Math.round(d * 1440)) + 'm ago';
+  if (d < 1) return Math.round(d * 24) + 'h ago';
+  if (d < 60) return Math.round(d) + 'd ago';
+  return Math.round(d / 30) + 'mo ago';
+}
+
+function watchFor(x) {
+  const w = [];
+  x.power_flags?.forEach(p => w.push(['b', p]));
+  x.red_flags?.forEach(r => w.push(['b', r.label]));
+  if (x.price_flag) w.push(['b', 'Suspicious price']);
+  if (x.awd === 'unconfirmed') w.push(['b', 'Confirm AWD']);
+  if (x.awd === 'no') w.push(['b', 'Not AWD']);
+  (x.issues || []).filter(i => i.sev === 'major').forEach(i => w.push(['', i.title]));
+  (x.issues || []).filter(i => i.sev === 'moderate').forEach(i => w.push(['', i.title]));
+  return w;
+}
+
+function priceDrop(x) {
+  const p = x.prices || [];
+  if (p.length < 2) return 0;
+  return p[0][1] - p[p.length - 1][1];
+}
+
+function filtered(anyBrand) {
+  const t = ui.toggles, q = ui.q.trim().toLowerCase();
+  let L = DATA.listings.filter(x => {
+    if (!t.gone && x.status === 'gone') return false;
+    if (!t.avoid && x.verdict === 'avoid' && x.status !== 'check') return false;
+    if (x.awd === 'no' && x.status !== 'check') return false;
+    if (ui.show === 'good' && !(x.verdict === 'good' && x.score >= 70)) return false;
+    if (ui.show === 'strict' && !isStrict(x)) return false;
+    if (ui.show === 'starred' && !stars.has(x.id)) return false;
+    if (ui.show === 'checked' && x.status !== 'check') return false;
+    if (t.camera && !['listed','standard','likely'].includes(x.camera)) return false;
+    if (t.under150 && !(x.miles && x.miles < 150000)) return false;
+    if (q && !(`${x.title} ${x.model_name} ${x.location}`.toLowerCase().includes(q))) return false;
+    if (!anyBrand && ui.brand && brandOf(x) !== ui.brand) return false;
+    return true;
+  });
+  const by = {
+    score:(a,b) => b.score - a.score,
+    price:(a,b) => (a.price ?? 1e9) - (b.price ?? 1e9),
+    miles:(a,b) => (a.miles ?? 1e9) - (b.miles ?? 1e9),
+    new:(a,b) => new Date(b.posted || b.first_seen || b.checked_at || 0) - new Date(a.posted || a.first_seen || a.checked_at || 0),
+  }[ui.sort];
+  return L.sort(by);
+}
+
+function render() {
+  const cfg = DATA.config || {};
+  $('#cap').textContent = (cfg.price_max || 10000).toLocaleString();
+
+  const counts = {};
+  filtered(true).forEach(x => { const b = brandOf(x); counts[b] = (counts[b] || 0) + 1; });
+  if (ui.brand && !counts[ui.brand]) counts[ui.brand] = 0;
+  $('#brand').innerHTML = `<option value="">All brands</option>` + Object.entries(counts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([b, n]) => `<option value="${esc(b)}"${b === ui.brand ? ' selected' : ''}>${esc(b)} · ${n}</option>`).join('');
+
+  renderReality();
+  const L = filtered();
+  const pages = Math.max(1, Math.ceil(L.length / PER));
+  ui.page = Math.min(Math.max(1, ui.page || 1), pages);
+  const start = (ui.page - 1) * PER;
+  $('#carsLbl').textContent = `${L.length} shown of ${DATA.listings.length} tracked`;
+  $('#rows').innerHTML = L.slice(start, start + PER).map(rowHTML).join('');
+  $('#pager').innerHTML = L.length > PER ? pagerHTML(pages, start, L.length) : '';
+  gloss($('#rows')); gloss($('#reality'));
+  $('#empty').hidden = L.length > 0;
+  $('#empty').textContent = DATA.listings.length ? 'Nothing matches those filters.' : 'No listings yet. Hit refresh, first run takes a few minutes.';
+
+  document.querySelectorAll('.seg[data-key=show] .chipbtn').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === ui.show));
+  document.querySelectorAll('.seg[data-key=sort] .chipbtn').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === ui.sort));
+  document.querySelectorAll('.seg[data-key=toggles] .chipbtn').forEach(b => b.setAttribute('aria-pressed', !!ui.toggles[b.dataset.t]));
+  LS.set('ui', ui);
+}
+
+function isStrict(x) {
+  const cap = (DATA.config || {}).price_max || 10000;
+  return x.status === 'active' && x.awd !== 'no' && x.price && x.price <= cap && x.verdict === 'good' && x.score >= 70
+    && x.miles && x.miles < 140000 && ['listed', 'standard', 'likely'].includes(x.camera) && !(x.red_flags || []).length;
+}
+
+// Plain-English definitions. Each term gets an (i) next to its first use in a row, card or section.
+const GLOSSARY = [
+  ['AWD', 'All-wheel drive. The engine powers all four wheels, so the car grips better in rain and snow. Most Subarus have it all the time; on many other SUVs it only kicks in when the front wheels slip.'],
+  ['FWD', 'Front-wheel drive. Only the front wheels are powered. Fine for Portland most days, weaker in snow. Many SUVs were sold in both FWD and AWD versions.'],
+  ['CVT', 'Continuously variable transmission. An automatic that uses a steel belt between two pulleys in place of gears. Smooth and good on gas, but when one fails it usually gets replaced whole, around $4k to $7k. Fluid changes help it last.'],
+  ['VIN', 'Vehicle identification number. A 17-character ID on the dashboard (visible through the windshield) and the driver door frame. It looks up recalls, specs and history for that exact car.'],
+  ['NHTSA', 'National Highway Traffic Safety Administration. The federal agency that runs recalls and collects complaints from owners. This tool pulls both.'],
+  ['IIHS', 'Insurance Institute for Highway Safety. Crash-tests cars and publishes Top Safety Picks and a list of safe used cars for teens.'],
+  ['ESC', 'Electronic stability control. Brakes individual wheels to stop a skid. Cuts fatal single-car crashes roughly in half; standard on every car from 2012 on.'],
+  ['DEQ', 'Oregon Department of Environmental Quality. Runs the emissions test you need to register a car in the Portland area.'],
+  ['ODOT', 'Oregon Department of Transportation. Approves the driver ed courses that count for the license and insurance discounts.'],
+  ['PIP', 'Personal injury protection. Pays medical bills for you and your passengers after a crash, no matter whose fault. Oregon requires at least $15k.'],
+  ['PTU', 'Power transfer unit. The gearbox that sends power to the rear wheels on AWD Fords, Mazdas and others. Its oil often goes unchanged, and they leak and fail.'],
+  ['EcoBoost', 'Ford’s name for its turbocharged engines. Several of them in this era can leak coolant into the engine, which is why the guide is wary.'],
+  ['FB25', 'Subaru’s 2.5 liter engine from 2011 on. Uses a timing chain. Early ones (2011 to 2014) could burn oil between changes.'],
+  ['EJ25', 'Subaru’s older 2.5 liter engine, used through about 2011. Known for head gasket leaks around 100k to 150k miles.'],
+  ['head gasket', 'The seal between the two main halves of the engine. When it leaks, oil or coolant gets where it shouldn’t and the engine can overheat. About $1,500 to $2,500 to fix.'],
+  ['timing chain', 'Keeps the engine’s internal parts moving in sync. A chain usually lasts the life of the engine. A timing belt does the same job but needs replacing around 100k miles, about $700 to $1,200.'],
+  ['timing belt', 'Keeps the engine’s internal parts moving in sync. Needs replacing around 100k miles, about $700 to $1,200. If it snaps, the engine can be wrecked. Ask for proof it was done.'],
+  ['turbo', 'A turbocharger uses exhaust to force extra air into the engine for more power. More parts to fail, and more power than a new driver needs.'],
+  ['V6', 'A six-cylinder engine. More power and worse gas mileage than the usual four-cylinder. For a teen, less power is safer.'],
+  ['oil consumption', 'The engine burns oil between oil changes, so the level drops. Check the dipstick; low oil can ruin an engine.'],
+  ['wheel bearing', 'Lets each wheel spin smoothly. A worn one hums or growls louder as you speed up. A few hundred dollars per wheel.'],
+  ['struts', 'The shock absorbers that hold up each corner. Worn ones make the car bouncy and floaty over bumps.'],
+  ['transmission', 'The gearbox: turns engine power into wheel speed. Expensive to replace, so a smooth one on the test drive matters a lot.'],
+  ['recall', 'A free fix the manufacturer issues for a safety defect, done at any dealer. Open recalls stay with the car until fixed.'],
+  ['pre-purchase inspection', 'An independent mechanic looks the car over before you buy, about $150 to $250. Catches what a test drive won’t.'],
+  ['branded title', 'The car was once declared a total loss (salvage) or rebuilt after one. Hard to insure and resell. Avoid for a teen’s car.'],
+  ['salvage', 'An insurance company declared the car a total loss. A salvage or rebuilt title is a hard pass for this.'],
+  ['trim', 'The version of a model, like Base, Premium or Limited. Higher trims add features like the backup camera.'],
+  ['liability', 'Pays for damage and injuries you cause to other people. Numbers like 100/300/100 mean $100k per person, $300k per crash, $100k for property.'],
+  ['umbrella', 'Extra liability coverage, usually $1M, that sits on top of your car and home policies. Cheap protection once there’s a teen driver.'],
+  ['deductible', 'What you pay out of pocket on a claim before insurance kicks in. Higher deductible, lower premium.'],
+  ['comprehensive', 'Covers your car for things other than crashes: theft, hail, a cracked windshield, hitting a deer.'],
+  ['collision', 'Covers damage to your own car in a crash. On a cheap car it can cost more than it’s worth.'],
+  ['telematics', 'An app or plug-in that tracks how someone drives (speed, braking, phone use) in exchange for a discount.'],
+  ['uninsured motorist', 'Pays for your injuries if the other driver has no insurance or not enough. Oregon requires it.'],
+  ['out-the-door', 'The total you actually pay: price plus title, registration and dealer fees.'],
+  ['odometer', 'The mileage reading on the dashboard.'],
+  ['drivetrain', 'Which wheels get power: AWD, FWD or 4WD.'],
+  ['VCM', 'Variable cylinder management. Honda shuts off some cylinders to save gas, which in this era caused oil burning and rough running.'],
+];
+const GLOSS_RE = new RegExp('\\b(' + GLOSSARY.map(([t]) => t.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&')).sort((a, b) => b.length - a.length).join('|') + ")(?:s|['’]s)?\\b", 'gi');
+const GLOSS_KEY = Object.fromEntries(GLOSSARY.map(([t, d]) => [t.toLowerCase(), [t, d]]));
+const isAcro = t => /[A-Z].*[A-Z]/.test(t);
+function gloss(root) {
+  if (!root) return;
+  const SKIP = 'button, input, textarea, select, a, h1, h2, h3, .lbl, .chipbtn, .pri, .tip, .term, .desc, script, style, svg, thead';
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT,
+  });
+  const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  const seen = new Map();
+  for (const n of nodes) {
+    const scope = n.parentElement.closest('tr, .dpanel, section, header, li') || root;
+    if (!seen.has(scope)) seen.set(scope, new Set([...scope.querySelectorAll('.tip')].map(b => b.dataset.term)));
+    const used = seen.get(scope);
+    const text = n.nodeValue; let last = 0, out = null;
+    text.replace(GLOSS_RE, (m, w, i) => {
+      const hit = GLOSS_KEY[w.toLowerCase()];
+      if (!hit || used.has(hit[0]) || (isAcro(hit[0]) && w !== hit[0])) return m;
+      used.add(hit[0]);
+      out ||= document.createDocumentFragment();
+      out.append(text.slice(last, i));
+      const span = document.createElement('span'); span.className = 'term';
+      span.append(m);
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'tip'; b.textContent = 'i';
+      b.dataset.tip = hit[1]; b.dataset.term = hit[0]; b.setAttribute('aria-label', `What is ${hit[0]}?`);
+      span.append(b); out.append(span);
+      last = i + m.length; return m;
+    });
+    if (out) { out.append(text.slice(last)); n.replaceWith(out); }
+  }
+}
+const tipBox = Object.assign(document.createElement('div'), { className:'tipbox', role:'tooltip', hidden:true });
+document.body.append(tipBox);
+let tipFor = null;
+const canHover = () => matchMedia('(hover:hover) and (pointer:fine)').matches;
+function showTip(b) {
+  tipFor = b; tipBox.textContent = b.dataset.tip; tipBox.hidden = false;
+  const r = b.getBoundingClientRect(), w = Math.min(300, innerWidth - 24);
+  tipBox.style.width = w + 'px';
+  tipBox.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width / 2 - w / 2)) + 'px';
+  const h = tipBox.offsetHeight;
+  tipBox.style.top = (r.top - h - 8 > 60 ? r.top - h - 8 : r.bottom + 8) + 'px';
+}
+function hideTip() { tipBox.hidden = true; tipFor = null; }
+document.addEventListener('mouseover', e => { const b = e.target.closest?.('.tip'); if (b && canHover()) showTip(b); });
+document.addEventListener('mouseout', e => { if (e.target.closest?.('.tip') && canHover()) hideTip(); });
+document.addEventListener('focusin', e => { if (e.target.matches?.('.tip')) showTip(e.target); });
+document.addEventListener('focusout', e => { if (e.target.matches?.('.tip')) hideTip(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); });
+addEventListener('scroll', hideTip, { passive:true });
+document.addEventListener('click', e => {
+  const b = e.target.closest('.tip');
+  if (b) { e.stopPropagation(); e.preventDefault(); if (tipFor === b && !canHover()) hideTip(); else showTip(b); return; }
+  if (!tipBox.hidden) hideTip();
+}, true);
+
+function renderReality() {
+  const cap = (DATA.config || {}).price_max || 10000;
+  const k = n => '$' + (Math.round(n / 100) / 10).toString().replace(/\.0$/, '') + 'k';
+  const med = a => { const b = [...a].sort((x, y) => x - y); return b.length ? b[b.length >> 1] : null; };
+  const A = DATA.listings.filter(x => x.status === 'active' && x.awd !== 'no' && x.price && x.price <= cap && x.source !== 'check');
+  const goodYears = A.filter(x => ['good', 'ok'].includes(x.verdict));
+  const G = A.filter(x => x.verdict === 'good' && x.score >= 70);
+  const strict = A.filter(isStrict);
+  const gm = G.map(x => x.miles).filter(Boolean), gy = G.map(x => x.year).filter(Boolean);
+  const under120 = gm.filter(m => m < 120000).length;
+  const when = new Date(DATA.last_refresh || DATA.generated || Date.now());
+  if (!A.length) { $('#realLede').textContent = 'No listings yet. Refresh to see how the market looks.'; return; }
+  $('#realLede').textContent = `AWD under ${k(cap)} is realistic. The catch is mileage: as of ${when.toLocaleDateString(undefined, { month:'long', year:'numeric' })}, that means a ${med(gy) - 1} to ${med(gy) + 1} car with roughly ${Math.round(med(gm) / 1e4) * 10 - 10}k to ${Math.round(med(gm) / 1e4) * 10 + 5}k miles, plus about $1,500 for what it needs in the first month. The numbers below are a snapshot from the last refresh and will move; the advice holds.`;
+  $('#realStats').innerHTML = [
+    [`AWD under ${k(cap)}`, A.length, false],
+    ['Decent model years', goodYears.length, false],
+    ['Score 70+', G.length, false],
+    ['Strict picks', strict.length, true],
+  ].map(([l, n, hot]) => `<div><p class="lbl">${l}</p><div class="stat${hot ? ' hot' : ''}">${n}</div>${hot && n ? `<button class="btn ghost jump" data-jump="strict">Review these ↓</button>` : ''}</div>`).join('') +
+    `<p class="lbl rnote">Strict means a good year, under 140k miles, a camera, and no red flags in the listing.</p>`;
+  const byModel = {};
+  G.forEach(x => (byModel[x.model_name] ||= []).push(x.price));
+  const top = Object.entries(byModel).sort((a, b) => b[1].length - a[1].length).slice(0, 4)
+    .map(([m, p]) => `${m} (${p.length}, median ${k(med(p))})`).join(', ');
+  $('#realBuys').textContent = `The typical good pick is a ${med(gy)} with ${Math.round(med(gm) / 1000)}k miles; only ${under120} of ${G.length} are under 120k. The most common: ${top}.`;
+  const dealers = G.filter(x => x.dealer).length;
+  $('#realDealers').textContent = `${dealers} of ${G.length} good picks are dealers. Plenty of the $9,995 listings are small lots, and some only honor that price if you finance with them. Ask for the out-the-door price before you drive over.`;
+}
+
+function pagerHTML(pages, start, n) {
+  const p = ui.page, nums = [];
+  for (let i = 1; i <= pages; i++) if (i === 1 || i === pages || Math.abs(i - p) <= 1) nums.push(i);
+  let out = `<span class="lbl">${start + 1}–${Math.min(start + PER, n)} of ${n}</span>`;
+  out += `<button class="chipbtn" data-page="${p - 1}"${p === 1 ? ' disabled' : ''}>Prev</button>`;
+  nums.forEach((i, k) => {
+    if (k && i - nums[k - 1] > 1) out += `<span class="gap">…</span>`;
+    out += `<button class="chipbtn" data-page="${i}" aria-pressed="${i === p}">${i}</button>`;
+  });
+  return out + `<button class="chipbtn" data-page="${p + 1}"${p === pages ? ' disabled' : ''}>Next</button>`;
+}
+
+function rowHTML(x) {
+  const [vl, vc] = VERDICT[x.verdict] || VERDICT.unknown;
+  const w = watchFor(x).slice(0, 3).map(([b, t]) => b ? `<b>${esc(t)}</b>` : esc(t)).join(', ');
+  const drop = priceDrop(x);
+  const peer = x.peer_median ? (x.price < x.peer_median ? `${money(x.peer_median - x.price)} under similar` : x.price > x.peer_median ? `${money(x.price - x.peer_median)} over similar` : 'At market') : '';
+  const listed = x.status === 'gone' ? `Gone ${ago(x.gone_at)}` : x.status === 'check' ? `Checked ${ago(x.checked_at)}` : ago(x.posted || x.first_seen);
+  const src = x.status === 'check' ? (x.source === 'check' ? 'Pasted' : x.source) : (x.dealer ? 'Dealer' : 'Private');
+  const img = x.images && x.images[0] ? `<img class="thumb" loading="lazy" src="${esc(x.images[0])}" alt="">` : `<div class="thumb"></div>`;
+  const row = `<tr class="row${x.status === 'gone' ? ' gone' : ''}" data-id="${esc(x.id)}">
+    <td class="c-score" data-l="Score"><div class="score${x.score >= 75 ? ' hot' : ''}">${x.score}</div></td>
+    <td class="c-car" data-l="Car"><div class="carwrap">${img}<div>
+      <div class="t">${esc(x.title)}</div>
+      <div class="s">${esc([x.location, src].filter(Boolean).join(' · '))}</div>
+      <button class="star" data-star="${esc(x.id)}" aria-pressed="${stars.has(x.id)}" aria-label="Star">${stars.has(x.id) ? '★' : '☆'}</button>
+    </div></div></td>
+    <td class="c-price num" data-l="Price">${money(x.price)}${drop > 0 ? `<div class="lbl">Dropped ${money(drop)}</div>` : ''}${peer ? `<div class="lbl">${peer}</div>` : ''}</td>
+    <td class="c-miles num" data-l="Miles">${miles(x.miles)}</td>
+    <td class="c-cam" data-l="Camera">${CAMERA[x.camera] || '—'}</td>
+    <td class="c-verdict" data-l="Verdict"><span class="${vc}">${vl}</span></td>
+    <td class="c-watch watch" data-l="Watch for">${w || '<span class="lbl">Nothing flagged</span>'}</td>
+    <td class="c-listed lbl" data-l="Listed">${esc(listed)}</td>
+  </tr>`;
+  return row + (open.has(x.id) ? `<tr class="detail"><td colspan="8">${detailHTML(x)}</td></tr>` : '');
+}
+
+function bars(x) {
+  const s = DATA.series?.[x.model_id];
+  if (!s) return '';
+  const years = Object.keys(s).map(Number).sort((a, b) => a - b);
+  if (years.length < 2) return '';
+  const max = Math.max(...years.map(y => s[y].complaints), 1);
+  const W = 340, H = 92, bw = Math.min(22, (W - 4) / years.length - 3);
+  const step = (W - 4) / years.length;
+  const parts = years.map((y, i) => {
+    const h = Math.max(1, (s[y].complaints / max) * (H - 30));
+    const xx = 2 + i * step, on = y === x.year;
+    return `${on ? `<rect class="hl" x="${xx - 2}" y="${H - 18 - h - 4}" width="${bw + 4}" height="${h + 4}"/>` : ''}
+      <rect class="b${on ? ' on' : ''}" x="${xx}" y="${H - 18 - h}" width="${bw}" height="${h}"><title>${y}: ${s[y].complaints} complaints, ${s[y].recalls} recalls</title></rect>
+      ${(i % 2 === 0 || on) ? `<text x="${xx}" y="${H - 4}">${String(y).slice(2)}</text>` : ''}`;
+  }).join('');
+  const avg = Math.round(years.reduce((a, y) => a + s[y].complaints, 0) / years.length);
+  const mine = s[x.year]?.complaints;
+  const read = mine == null ? '' : mine > avg * 1.6 ? 'Well above this model’s other years.' : mine < avg * 0.6 ? 'Below this model’s other years.' : 'Typical for this model.';
+  return `<h4>NHTSA complaints by model year</h4>
+    <svg class="bars" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Complaints by year">${parts}</svg>
+    <p class="lbl">${x.year}: ${mine ?? '—'} complaints vs. ${avg} average across years. ${read} Raw counts, so popular years run higher.</p>`;
+}
+
+function detailHTML(x) {
+  const G = DATA.general;
+  const model = DATA.models.find(m => m.id === x.model_id);
+  const g = x.gen;
+  const vin = x.vin;
+  const n = x.nhtsa;
+  const cam = DATA.general.camera_aftermarket;
+  const photos = (x.images || []).map(u => `<img loading="lazy" src="${esc(u)}" alt="">`).join('');
+  const issues = (x.issues || []).map(i => `<li><div class="h"><b>${esc(i.title)}</b><span class="pri ${i.sev === 'major' ? 'is-flag' : 'pri-P3'}">${i.sev}</span><span class="lbl">${i.years[0]}–${i.years[1]}</span></div>
+    <div class="d">${esc(i.detail)}</div><div class="k">${esc(i.check)}</div></li>`).join('');
+  const reds = (x.red_flags || []).map(r => `<li><div class="h"><b>${esc(r.label)}</b><span class="pri is-flag">listing</span></div><div class="d">${esc(r.detail)}</div></li>`).join('');
+  const power = (x.power_flags || []).map(p => `<li><div class="h"><b>${esc(p)}</b><span class="pri is-flag">teen</span></div><div class="d">IIHS advises against high-horsepower cars for new drivers.</div></li>`).join('');
+  const awd = x.awd === 'unconfirmed' ? `<li><div class="h"><b>Confirm it's AWD</b><span class="pri is-flag">check</span></div><div class="d">This model came in FWD too and the listing doesn't say. Look for the AWD badge and check the VIN.</div></li>` : '';
+  const pf = x.price_flag ? `<li><div class="h"><b>Suspicious price</b><span class="pri is-flag">listing</span></div><div class="d">${esc(x.price_flag)}</div></li>` : '';
+  const camTxt = {
+    listed:'The listing mentions a camera. Confirm it works.',
+    standard:'Standard on this model year.',
+    likely:`Most trims had one. ${esc(g?.camera_note || 'Check the photos for a dash screen.')}`,
+    trim:`Only upper trims. ${esc(g?.camera_note || '')} If missing, a plate camera is about $${cam.diy} DIY, $${cam.installed} installed.`,
+    none:`Not available this year. ${esc(cam.note)}`,
+    unknown:`Unknown. ${esc(cam.note)}`,
+  }[x.camera];
+  const recalls = (n?.recalls || []).map(r => `<details><summary>${esc(r.component)}<span class="lbl">${esc(r.campaign)}</span></summary><p>${esc(r.summary)}</p></details>`).join('');
+  const vi = x.vin_info || {};
+  const prices = (x.prices || []).length > 1 ? x.prices.map(p => `${money(p[1])} <span class="lbl">${new Date(p[0]).toLocaleDateString()}</span>`).join('<br>') : '';
+  const links = [
+    x.url && `<a class="ref" href="${esc(x.url)}" target="_blank" rel="noopener">Open listing</a>`,
+    vin && `<a class="ref" href="https://www.nhtsa.gov/recalls?vin=${esc(vin)}" target="_blank" rel="noopener">Open recalls for this VIN</a>`,
+    vin && `<a class="ref" href="https://vpic.nhtsa.dot.gov/decoder/Decoder?VIN=${esc(vin)}" target="_blank" rel="noopener">Full VIN decode</a>`,
+    `<a class="ref" href="https://www.iihs.org/ratings" target="_blank" rel="noopener">IIHS ratings</a>`,
+    x.status === 'check' && `<button class="ref" data-uncheck="${esc(x.id)}">Remove</button>`,
+  ].filter(Boolean).join('');
+  return `<div class="dpanel">
+    <div>
+      ${photos ? `<div class="photos">${photos}</div>` : ''}
+      ${g ? `<p class="claim">${esc(g.summary)}</p>` : `<p class="claim">${esc(x.note || 'Not a model in the guide, so this grade leans on the listing text and mileage.')}</p>`}
+      ${g?.iihs ? `<p>${esc(g.iihs)}</p>` : ''}
+      ${(reds || power || awd || pf) ? `<h3>From the listing</h3><ul class="issues">${power}${reds}${pf}${awd}</ul>` : ''}
+      ${x.green_flags?.length ? `<p>${x.green_flags.map(f => `<span class="chip">${esc(f)}</span>`).join('')}</p>` : ''}
+      <h3>Watch for on a ${esc(x.year || '')} ${esc(x.model_name || '')}</h3>
+      ${issues ? `<ul class="issues">${issues}</ul>` : '<p>No known pattern issues for this year in the guide. The inspection still matters.</p>'}
+      ${model?.checklist?.length ? `<ul class="bullets" style="margin-top:14px">${model.checklist.map(c => `<li>${esc(c)}</li>`).join('')}</ul>` : ''}
+      ${x.body ? `<h3>Seller's description</h3><p class="desc" style="white-space:pre-line">${esc(x.body.replace(/[ \t]*\n[\s]*\n\s*/g, '\n\n').trim().slice(0, 1400))}${x.body.length > 1400 ? '…' : ''}</p>` : ''}
+    </div>
+    <div class="rail">
+      <h4>Facts</h4>
+      <dl class="kv">
+        <dt>Price</dt><dd>${money(x.price)}${x.peer_median ? ` <span class="lbl">median ${money(x.peer_median)} across ${x.peer_n} similar</span>` : ''}</dd>
+        <dt>Miles</dt><dd>${x.miles ? x.miles.toLocaleString() : 'Not listed'}</dd>
+        <dt>AWD</dt><dd>${{yes:'Yes', listed:'Listing says so', unconfirmed:'Not confirmed', no:'No'}[x.awd]}</dd>
+        <dt>Camera</dt><dd>${camTxt}</dd>
+        <dt>Title</dt><dd>${esc(x.attrs?.title_status || 'Not listed')}</dd>
+        ${vi.Trim || vi.DisplacementL ? `<dt>VIN says</dt><dd>${esc([vi.Trim, vi.DisplacementL && vi.DisplacementL + 'L', vi.EngineCylinders && vi.EngineCylinders + ' cyl', vi.DriveType, vi.TransmissionStyle].filter(Boolean).join(', '))}</dd>` : ''}
+        ${vin ? `<dt>VIN</dt><dd class="mono" style="font-size:12px">${esc(vin)}</dd>` : '<dt>VIN</dt><dd>Not listed. Ask for it before going to see the car.</dd>'}
+        ${prices ? `<dt>Price history</dt><dd>${prices}</dd>` : ''}
+      </dl>
+      <h4>Recalls for this model year${n ? ` · ${n.recalls.length}` : ''}</h4>
+      <div class="recalls">${n ? (recalls || '<p class="lbl">None on file.</p>') : '<p class="lbl">Not pulled yet. Refresh to fetch.</p>'}
+      ${n?.recalls?.length ? `<p class="lbl" style="margin-top:8px">Model-wide list. Use the VIN link to see which are still open on this car.</p>` : ''}</div>
+      ${n ? `<h4>Top complaint areas, ${x.year}</h4><p class="recalls">${n.top.map(([c, k]) => `${esc(c.toLowerCase())} <span class="lbl">${k}</span>`).join(' · ') || 'None'}</p>` : ''}
+      ${bars(x)}
+      <h4>Links</h4>
+      <div class="links">${links}</div>
+    </div>
+  </div>`;
+}
+
+function renderStatic() {
+  const G = DATA.general;
+  $('#genCheck').innerHTML = G.checklist.map(c => `<li>${esc(c)}</li>`).join('');
+  $('#teenCheck').innerHTML = G.teen.map(c => `<li>${esc(c)}</li>`).join('') + `<li>${esc(G.camera_aftermarket.note)}</li>`;
+  renderGuide();
+  document.querySelectorAll('.page > header, .page > section').forEach(el => { if (!el.querySelector('#guideTable, #rows')) gloss(el); });
+  $('#foot').innerHTML = `Listings from Craigslist Portland, read automatically. Facebook, Carvana, CarMax, Cars.com and CarGurus block scripts, so use the check box for those. VIN decode, recalls and complaints from NHTSA. Model notes are hand-curated; camera notes marked "verify" depend on trim. Generated ${esc(new Date(DATA.generated || Date.now()).toLocaleString())}.${STATIC ? ' This is a read-only snapshot. Seller photos, descriptions and VINs are left out; the Craigslist links go to the original listings, many of which have sold.' : ''}`;
+}
+
+function renderGuide() {
+  const camT = { standard:'Standard', most:'Most trims', some:'Upper trims', none:'None, add one' };
+  const vT = { good:['Good pick','pri pri-P1'], ok:['Solid','pri'], caution:['Caution','pri is-flag'], avoid:['Avoid','pri pri-P3'] };
+  const k = n => n >= 1000 ? '$' + (Math.round(n / 100) / 10).toString().replace(/\.0$/, '') + 'k' : '$' + n;
+  const live = DATA.listings.filter(x => x.status === 'active' && x.price && x.awd !== 'no' && !x.price_flag);
+  const f = gui, q = f.q.trim().toLowerCase();
+  const camRank = { standard:3, most:2, some:1, none:0 };
+  const priceOf = (m, g) => live.filter(x => x.model_id === m.id && x.year >= g.years[0] && x.year <= g.years[1]).map(x => x.price).sort((a, b) => a - b);
+  const keep = (m, g) => {
+    if (f.make && m.make !== f.make) return false;
+    if (f.verdict.length && !f.verdict.includes(g.verdict)) return false;
+    if (f.camera === 'none' ? g.camera !== 'none' : f.camera && camRank[g.camera] < camRank[f.camera]) return false;
+    if (f.year && !(g.years[0] <= +f.year && +f.year <= g.years[1])) return false;
+    if (f.toggles.awdstd && m.awd === 'optional') return false;
+    if (f.toggles.forsale && !priceOf(m, g).length) return false;
+    if (q && !`${m.make} ${m.model} ${g.summary} ${(m.issues || []).filter(i => i.years[0] <= g.years[1] && i.years[1] >= g.years[0]).map(i => i.title + ' ' + (i.detail || '')).join(' ')}`.toLowerCase().includes(q)) return false;
+    return true;
+  };
+  const byMake = {};
+  let shown = 0, total = 0;
+  DATA.models.forEach(m => {
+    total += m.gens.length;
+    const gens = m.gens.filter(g => keep(m, g));
+    shown += gens.length;
+    if (gens.length) (byMake[m.make] ||= []).push({ ...m, gens });
+  });
+  const makes = [...new Set(DATA.models.map(m => m.make))].sort();
+  document.querySelector('[data-g=make]').innerHTML = '<option value="">All brands</option>' + makes.map(b => `<option${b === f.make ? ' selected' : ''}>${esc(b)}</option>`).join('');
+  const yrs = DATA.models.flatMap(m => m.gens.flatMap(g => g.years));
+  const yOpts = []; for (let y = Math.max(...yrs); y >= Math.min(...yrs); y--) yOpts.push(y);
+  document.querySelector('[data-g=year]').innerHTML = '<option value="">Any year</option>' + yOpts.map(y => `<option${String(y) === String(f.year) ? ' selected' : ''}>${y}</option>`).join('');
+  document.querySelector('[data-g=camera]').value = f.camera;
+  document.querySelector('[data-g=q]').value = f.q;
+  document.querySelectorAll('[data-gk=verdict] .chipbtn').forEach(b => b.setAttribute('aria-pressed', f.verdict.includes(b.dataset.v)));
+  document.querySelectorAll('[data-gk=toggles] .chipbtn').forEach(b => b.setAttribute('aria-pressed', !!f.toggles[b.dataset.t]));
+  $('#guideLbl').textContent = `${shown} of ${total} model years`;
+  $('#gempty').hidden = shown > 0;
+  LS.set('gui', gui);
+  $('#guideTable').innerHTML = !shown ? '' : `<thead><tr><th>Model</th><th>Years</th><th>Verdict</th><th>Camera</th><th>For sale now</th><th>Notes</th></tr></thead>` +
+    Object.keys(byMake).sort().map(make => {
+      const models = byMake[make].sort((a, b) => a.model.localeCompare(b.model));
+      const n = models.reduce((t, m) => t + m.gens.length, 0);
+      return `<tbody><tr class="rubric-g"><th colspan="6">${esc(make)} · ${models.length} model${models.length > 1 ? 's' : ''}</th></tr>` +
+        models.map(m => [...m.gens].sort((a, b) => a.years[0] - b.years[0]).map((g, gi) => {
+          const P = priceOf(m, g);
+          const price = P.length ? `<span class="pr">${P.length > 1 ? `${k(P[0])}–${k(P[P.length - 1])}` : k(P[0])}</span><span class="pn">${P.length} listed${P.length > 2 ? `, median ${k(P[P.length >> 1])}` : ''}</span>` : '<span class="pn">None listed</span>';
+          const [vl, vc] = vT[g.verdict] || vT.ok;
+          return `<tr${gi ? ' class="cont"' : ''}><th scope="row" data-l="Model">${gi ? '' : `${esc(m.model)}${m.awd === 'optional' ? '<span class="pn">AWD optional</span>' : ''}`}</th>
+            <td class="y" data-l="Years">${g.years[0]}–${g.years[1]}</td><td class="v" data-l="Verdict"><span class="${vc}">${vl}</span></td>
+            <td class="cam" data-l="Camera">${camT[g.camera] || '—'}</td><td class="price" data-l="For sale now">${price}</td>
+            <td class="sum" data-l="Notes"><span class="m">${esc(g.summary)}</span></td></tr>`;
+        }).join('')).join('') + '</tbody>';
+    }).join('');
+  gloss($('#guideTable'));
+}
+
+function setBar(status) {
+  const btn = $('#refresh');
+  if (STATIC) {
+    btn.hidden = true;
+    const d = new Date(DATA?.last_refresh || DATA?.generated || Date.now());
+    $('#barmeta').textContent = `Snapshot from ${d.toLocaleDateString(undefined, { month:'short', day:'numeric', year:'numeric' })}`;
+    return;
+  }
+  if (status?.running) {
+    btn.disabled = true;
+    btn.textContent = 'Refreshing';
+    $('#barmeta').textContent = `${status.step}${status.total ? ` · ${status.done} of ${status.total}` : ''}`;
+  } else {
+    btn.disabled = false;
+    btn.textContent = 'Refresh listings';
+    const last = DATA?.last_refresh;
+    $('#barmeta').textContent = status?.error ? `Refresh failed: ${status.error}` : last ? `Refreshed ${ago(last)} · ${new Date(last).toLocaleString()}` : 'Never refreshed';
+  }
+}
+
+async function load() {
+  DATA = await (await fetch(STATIC ? BASE + '/data.json' : '/api/data')).json();
+  if (DATA.nhtsa) DATA.listings.forEach(x => { if (x.nk) x.nhtsa = DATA.nhtsa[x.nk]; });
+  renderStatic();
+  render();
+}
+
+let polling = false;
+async function poll() {
+  if (polling) return;
+  polling = true;
+  let wasRunning = false;
+  while (true) {
+    const s = await (await fetch('/api/status')).json();
+    setBar(s);
+    if (s.running) { wasRunning = true; await new Promise(r => setTimeout(r, 1500)); continue; }
+    if (wasRunning) await load(), setBar(s);
+    break;
+  }
+  polling = false;
+}
+
+document.addEventListener('click', async e => {
+  const star = e.target.closest('[data-star]');
+  if (star) {
+    e.stopPropagation();
+    const id = star.dataset.star;
+    stars.has(id) ? stars.delete(id) : stars.add(id);
+    LS.set('stars', [...stars]);
+    return render();
+  }
+  const un = e.target.closest('[data-uncheck]');
+  if (un) {
+    await fetch('/api/uncheck', { method:'POST', body:JSON.stringify({ id:un.dataset.uncheck }) });
+    return load();
+  }
+  if (e.target.closest('.dpanel a, .dpanel details, .dpanel .photos')) return;
+  const row = e.target.closest('tr.row');
+  if (row) {
+    const id = row.dataset.id;
+    open.has(id) ? open.delete(id) : open.add(id);
+    return render();
+  }
+  const seg = e.target.closest('.seg .chipbtn');
+  if (seg) {
+    const key = seg.parentElement.dataset.key;
+    if (key === 'toggles') ui.toggles[seg.dataset.t] = !ui.toggles[seg.dataset.t];
+    else ui[key] = seg.dataset.v;
+    ui.page = 1;
+    return render();
+  }
+  const jump = e.target.closest('[data-jump]');
+  if (jump) {
+    Object.assign(ui, { show:jump.dataset.jump, brand:'', q:'', page:1, sort:'score' });
+    ui.toggles.avoid = ui.toggles.gone = false;
+    $('#q').value = '';
+    render();
+    return $('#cars').scrollIntoView({ behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start' });
+  }
+  const pg = e.target.closest('.pager [data-page]');
+  if (pg && !pg.disabled) {
+    ui.page = +pg.dataset.page;
+    render();
+    return $('#cars').scrollIntoView({ block:'start' });
+  }
+  const nav = e.target.closest('a[data-nav]');
+  if (nav && !e.metaKey && !e.ctrlKey && !e.shiftKey) {
+    e.preventDefault();
+    if (nav.getAttribute('href') !== location.pathname) history.pushState(null, '', nav.getAttribute('href'));
+    route();
+    return window.scrollTo(0, 0);
+  }
+  const qx = e.target.closest('[data-delq]');
+  if (qx) {
+    quotes.splice(+qx.dataset.delq, 1);
+    LS.set('quotes', quotes);
+    return renderQuotes();
+  }
+});
+
+const TITLES = { '':'Cars', checklist:'Checklist', years:'Model years', lifespan:'Lifespan', insurance:'Insurance' };
+function route() {
+  let key = location.pathname.slice(BASE.length).replace(/^\/|\/$/g, '');
+  if (!(key in TITLES)) key = '';
+  document.querySelectorAll('.page').forEach(p => p.hidden = p.dataset.page !== key);
+  document.querySelectorAll('.subnav a').forEach(a => a.dataset.k === key ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  document.title = key ? `${TITLES[key]} · carscout` : 'carscout';
+  $('#foot').hidden = key !== '';
+}
+document.querySelectorAll('a[data-nav]').forEach(a => {
+  a.dataset.k = a.getAttribute('href').replace(/^\//, '');
+  if (BASE) a.setAttribute('href', BASE + (a.dataset.k ? '/' + a.dataset.k : ''));
+});
+if (STATIC) {
+  $('#check').hidden = true;
+  document.querySelector('.seg[data-key=show] [data-v=checked]').hidden = true;
+}
+window.addEventListener('popstate', route);
+route();
+
+let quotes = LS.get('quotes') || [];
+const toNum = v => Number(String(v).replace(/[^\d.]/g, '')) || 0;
+function renderQuotes() {
+  const best = quotes.length > 1 ? Math.min(...quotes.map(q => q.premium)) : null;
+  $('#quotes').innerHTML = quotes.map((q, i) => `<tr${q.premium === best ? ' class="best"' : ''}>
+    <td data-l="Carrier">${esc(q.carrier)}${q.premium === best ? ' <span class="pri is-flag">Lowest</span>' : ''}</td>
+    <td class="num" data-l="Six months">${money(q.premium)}</td>
+    <td class="num" data-l="Per year">${money(q.premium * 2)}</td>
+    <td class="num" data-l="Liability">${esc(q.limits || '—')}</td>
+    <td data-l="Car">${esc(q.car || '—')}</td>
+    <td class="n" data-l="Notes">${esc(q.notes || '')}</td>
+    <td><button class="x" data-delq="${i}" aria-label="Remove ${esc(q.carrier)}">Remove</button></td></tr>`).join('');
+  $('#qempty').hidden = quotes.length > 0;
+  $('#quoteLbl').textContent = quotes.length ? `Quote tracker · ${quotes.length} saved` : 'Quote tracker';
+}
+$('#qform').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = Object.fromEntries(new FormData(e.target));
+  quotes.push({ ...f, premium:toNum(f.premium), added:new Date().toISOString() });
+  quotes.sort((a, b) => a.premium - b.premium);
+  LS.set('quotes', quotes);
+  e.target.reset();
+  renderQuotes();
+});
+renderQuotes();
+$('#q').value = ui.q;
+$('#q').addEventListener('input', e => { ui.q = e.target.value; ui.page = 1; render(); });
+document.querySelectorAll('#gfilters select').forEach(el => el.addEventListener('change', e => { gui[el.dataset.g] = e.target.value; renderGuide(); }));
+document.querySelector('[data-g=q]').addEventListener('input', e => { gui.q = e.target.value; renderGuide(); });
+document.querySelector('#gfilters').addEventListener('click', e => {
+  const b = e.target.closest('.chipbtn');
+  if (!b) return;
+  e.stopPropagation();
+  if (b.id === 'greset') Object.assign(gui, GUI0());
+  else if (b.dataset.t) gui.toggles[b.dataset.t] = !gui.toggles[b.dataset.t];
+  else gui.verdict = gui.verdict.includes(b.dataset.v) ? gui.verdict.filter(v => v !== b.dataset.v) : [...gui.verdict, b.dataset.v];
+  renderGuide();
+});
+$('#brand').addEventListener('change', e => { ui.brand = e.target.value; ui.page = 1; render(); });
+$('#refresh').addEventListener('click', async () => {
+  await fetch('/api/refresh', { method:'POST' });
+  poll();
+});
+$('#checkBtn').addEventListener('click', async () => {
+  const text = $('#checkText').value;
+  $('#checkMsg').textContent = 'Checking, pulling NHTSA data';
+  $('#checkBtn').disabled = true;
+  try {
+    const r = await (await fetch('/api/check', { method:'POST', body:JSON.stringify({ text }) })).json();
+    if (r.error) { $('#checkMsg').textContent = r.error; return; }
+    $('#checkText').value = '';
+    $('#checkMsg').textContent = 'Added. It’s open in the list above.';
+    open.add(r.id);
+    ui.show = 'checked';
+    ui.page = 1;
+    await load();
+    document.querySelector(`tr.row[data-id="${r.id}"]`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+  } finally { $('#checkBtn').disabled = false; }
+});
+$('#checkText').addEventListener('keydown', e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) $('#checkBtn').click(); });
+
+load().then(() => { setBar(null); if (!STATIC) poll(); });
+</script>
+</body>
+</html>
