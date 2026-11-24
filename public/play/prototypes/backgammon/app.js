@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=15'
-import * as C from './coach.js?v=15'
+import * as E from './engine.js?v=16'
+import * as C from './coach.js?v=16'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -165,18 +165,6 @@ function render() {
   if (S.coach && !pv) {
     s += `<path d="M830 296 L120 296 Q92 296 92 320 Q92 344 120 344 L846 344" fill="none" stroke="#f1e4c6" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="8 7" marker-end="url(#ahC)"/>`
     if (!S.dice && !S.openDice) s += `<text x="275" y="326" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" font-size="17" fill="#f1e4c6" fill-opacity=".85">you move this way, 24 down to 1, then off</text>`
-  }
-  // On Easy, chevrons along the frame always show which way you travel:
-  // right to left across the top, left to right across the bottom, then off.
-  if (S.level === 'easy' && !pv) {
-    const chev = (x, y, dir) => `<path d="M${x - 4 * dir} ${y - 5} L${x + 4 * dir} ${y} L${x - 4 * dir} ${y + 5}" fill="none" stroke="#e2b75c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>`
-    for (let h = 13; h < 24; h++) if (h !== 18) s += chev((px(h) + px(h + 1)) / 2, 32, -1)
-    for (let h = 12; h > 1; h--) if (h !== 7) s += chev((px(h) + px(h - 1)) / 2, 607, 1)
-    s += chev(BARX - 6, 32, -1) + chev(BARX + 6, 32, -1) + chev(BARX - 6, 607, 1) + chev(BARX + 6, 607, 1)
-    // the turn at the left end and the exit into the tray
-    s += `<path d="M86 32 Q66 32 66 60 L66 580 Q66 607 86 607" fill="none" stroke="#e2b75c" stroke-width="2" stroke-dasharray="3 5" stroke-linecap="round" opacity=".75"/>`
-    s += `<path d="M846 607 L890 607 Q898 607 898 598 L898 ${BOT - 2}" fill="none" stroke="#e2b75c" stroke-width="2" stroke-linecap="round" opacity=".9" marker-end="url(#ahG)"/>`
-    s += `<text x="${px(24)}" y="20" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" font-size="12" fill="#e2b75c">start</text>`
   }
   // destination glows (under checkers)
   if (showOpts && S.dests) {
