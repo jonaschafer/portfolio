@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=19'
-import * as C from './coach.js?v=19'
+import * as E from './engine.js?v=21'
+import * as C from './coach.js?v=21'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -487,7 +487,38 @@ function startHumanTurn(dice) {
   }
   // only one way to play it? say so
   if (S.turns.length === 1 && S.turns[0].steps.length < E.diceList(dice).length) say('note', `Only part of this roll can be played. That’s the rule: use what you can.`)
+  if (S.coach) recommend()
   render()
+}
+
+// The coach's written recommendation for this roll: what to aim for, the
+// move in words, and why. Arrows only come with Show me.
+function headline(b) {
+  const f = C.features(S.turnStart, b.turn.pos, S.steps.concat(b.steps), 0)
+  if (b.isBook) return 'Play the standard first move.'
+  if (S.pos[0][25] > 0) return 'Bring your checker in from the bar first.'
+  if (f.hits) return `Hit Brown’s lone checker on ${f.hitAt[0]}.`
+  const km = f.made.filter((p) => [5, 4, 7, 6, 3, 20, 21].includes(p))
+  if (km.length) return `Claim ${km[0]}.`
+  if (f.off) return 'Take checkers off.'
+  if (f.escaped) return 'Get a back checker moving.'
+  if (!E.contact(S.pos)) return 'Race your checkers home.'
+  if (f.shots === 0) return 'Play it safe.'
+  return 'Keep the risk low.'
+}
+function recommend() {
+  if (S.phase !== 'move') return
+  const b = bestFinish()
+  if (!b) return
+  if (S.turns.length === 1) {
+    say('tip', `Only one way to play this roll: move ${C.plainMove(b.steps, 0)}.`)
+  } else {
+    const why = b.isBook ? '' : ' ' + hintWhy(b.turn, S.steps.concat(b.steps))
+    const first = !S.seen.has('showMeIntro')
+    S.seen.add('showMeIntro')
+    say('tip', `<b>${headline(b)}</b> I’d move ${C.plainMove(b.steps, 0)}.${why}${first ? '<p>Want to see it on the board? Press <b>Show me</b>.</p>' : ''}`)
+  }
+  S.hintNoted = S.pos
 }
 
 function computeDests(from) {
@@ -609,7 +640,7 @@ function hintWhy(t, steps) {
   if (f.escaped) return 'It gets one of your two checkers off the far end before Brown traps them there.'
   if (f.shots === 0 && f.blots.length === 0) return 'Every checker ends up with at least one other of yours, so Brown has nothing it can hit.'
   if (f.shots === 0) return 'Your lone checkers end up too far from Brown to be hit.'
-  return `It’s the safest useful move: Brown hits you with only ${f.shots} of its 36 possible rolls.`
+  return `Every option leaves something open, and this one gives Brown the fewest chances: only ${f.shots} of its 36 possible rolls hit you.`
 }
 
 async function done() {
@@ -799,6 +830,7 @@ function setCoach(on) {
   b.setAttribute('aria-pressed', String(on))
   b.textContent = on ? 'Coach on' : 'Coach off'
   if (!on) S.hint = null
+  else if (S.phase === 'move' && S.hintNoted !== S.pos) recommend()
   render()
 }
 $('#coachBtn').onclick = () => setCoach(!S.coach)

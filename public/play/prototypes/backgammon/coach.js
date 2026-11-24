@@ -2,7 +2,7 @@
 // happening on the board right now. Everything is in the player's numbering
 // (cream moves 24 down to 1). Brown's points are flipped (its j = your 25 - j).
 
-import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=19'
+import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=21'
 
 export const term = (id, text) => `<a class="term" data-rule="${id}">${text}</a>`
 
@@ -273,7 +273,7 @@ export function tipForRoll(pos, dice, turns, ctx) {
     const b = OPENINGS[openingKey(dice)]
     if (b) {
       const [hi, lo] = openingKey(dice).split('')
-      return `First move of the game. With ${hi}-${lo}, the standard play ${b.idea}. Can you find it?<p>Why it’s good: ${b.why}</p><p>Stuck? Press <b>Show me</b>.</p>${once('openings') ? `<p>Every first roll has a standard move like this. They’re all listed under ${term('openings', 'opening moves')}.</p>` : ''}`
+      return `First move of the game. With ${hi}-${lo}, the standard play ${b.idea}.<p>Why it’s good: ${b.why}</p>${once('openings') ? `<p>Every first roll has a standard move like this. They’re all listed under ${term('openings', 'opening moves')}.</p>` : ''}`
     }
   }
   if (me[25] > 0) {
@@ -287,7 +287,8 @@ export function tipForRoll(pos, dice, turns, ctx) {
     return null
   }
   const hits = hitOptions(turns)
-  if (hits.length) {
+  // the concept, once; the recommendation names the actual hit
+  if (hits.length && once('hit')) {
     const spots = list(hits.slice(0, 3).map((x) => x.at))
     let t = `You can ${term('hitting', 'hit')} this turn. Brown has ${hits.length > 1 ? 'checkers' : 'a checker'} sitting alone on ${spots}. Landing on one sends it to the bar, so Brown has to start that checker’s trip over.`
     t += `<p>How to find it: count the points from each of your checkers down to ${hits.length > 1 ? 'one of those spots' : hits[0].at}. If the count matches one die, or both dice added together, that checker can hit.</p>`
