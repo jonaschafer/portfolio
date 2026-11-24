@@ -2,7 +2,7 @@
 // happening on the board right now. Everything is in the player's numbering
 // (cream moves 24 down to 1). Brown's points are flipped (its j = your 25 - j).
 
-import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=7'
+import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=9'
 
 export const term = (id, text) => `<a class="term" data-rule="${id}">${text}</a>`
 
@@ -34,6 +34,35 @@ export function fmtMove(steps, side) {
   const counts = new Map()
   for (const s of strs) counts.set(s, (counts.get(s) || 0) + 1)
   return [...counts].map(([s, n]) => (n > 1 ? `${s}(${n})` : s)).join('  ')
+}
+
+// The same move in plain words, e.g. "one checker from 13 to 6 (13 to 9 with
+// the 4, then 9 to 6 with the 3)". Used anywhere a beginner reads a move.
+const NUM = ['', 'one', 'two', 'three', 'four']
+export function plainMove(steps, side) {
+  const lab = side === 0 ? mine : flip
+  const who = side === 0 ? 'Brown' : 'you'
+  const chains = []
+  for (const st of steps) {
+    const last = chains[chains.length - 1]
+    if (last && last.to === st.from && st.from !== 25) { last.steps.push(st); last.to = st.to }
+    else chains.push({ from: st.from, to: st.to, steps: [st] })
+  }
+  const phrases = chains.map((c) => {
+    const A = lab(c.from), B = lab(c.to)
+    let p = A === 'bar' ? `the checker on the bar in to ${B}` : B === 'off' ? `a checker off from ${A}` : `a checker from ${A} to ${B}`
+    if (c.steps.length === 2) {
+      const [x, y] = c.steps, m = lab(x.to)
+      p += ` (${A === 'bar' ? 'in to ' + m : A + ' to ' + m} with the ${x.die}, then ${m} to ${B} with the ${y.die})`
+    } else if (c.steps.length > 2) p += ` (using the ${c.steps[0].die} ${NUM[c.steps.length]} times)`
+    const hits = c.steps.filter((x) => x.hit).map((x) => lab(x.to))
+    if (hits.length) p += `, hitting ${who} ${hits.length === 1 && hits[0] === B ? 'there' : 'on ' + list(hits)}`
+    return p
+  })
+  // two identical moves read better as "two checkers from 13 to 7"
+  const counts = new Map()
+  for (const p of phrases) counts.set(p, (counts.get(p) || 0) + 1)
+  return list([...counts].map(([p, n]) => (n === 1 ? p : p.replace(/^a checker/, `${NUM[n]} checkers`).replace(/^the checker on the bar/, `${NUM[n]} checkers from the bar`))))
 }
 
 // ---------- Opening book (your numbering) ----------
@@ -165,7 +194,7 @@ export function explainBrown(before, after, steps, dice, seen) {
   const lines = []
   const f = features(before, after, steps, 1)
   if (!steps.length) return [`Brown rolled ${Math.max(...dice)}-${Math.min(...dice)} and can’t move. Every landing spot is ${term('blocked', 'blocked')}.`]
-  lines.push(`Brown rolled ${Math.max(...dice)}-${Math.min(...dice)}: <span class="mv">${fmtMove(steps, 1)}</span>`)
+  lines.push(`Brown rolled ${Math.max(...dice)}-${Math.min(...dice)} and moved ${plainMove(steps, 1)}.`)
   if (f.hits) {
     const at = list(f.hitAt)
     if (!seen.has('gotHit')) {

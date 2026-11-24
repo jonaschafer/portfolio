@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=7'
-import * as C from './coach.js?v=7'
+import * as E from './engine.js?v=9'
+import * as C from './coach.js?v=9'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -163,6 +163,18 @@ function render() {
   if (S.phase === 'opening' && !S.openDice) {
     s += `<path d="M830 296 L120 296 Q92 296 92 320 Q92 344 120 344 L846 344" fill="none" stroke="#f1e4c6" stroke-opacity=".7" stroke-width="2.5" stroke-dasharray="8 7" marker-end="url(#ahC)"/>
           <text x="275" y="326" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" font-size="17" fill="#f1e4c6" fill-opacity=".85">you move this way, 24 down to 1, then off</text>`
+  }
+  // On Easy, chevrons along the frame always show which way you travel:
+  // right to left across the top, left to right across the bottom, then off.
+  if (S.level === 'easy' && !pv) {
+    const chev = (x, y, dir) => `<path d="M${x - 4 * dir} ${y - 5} L${x + 4 * dir} ${y} L${x - 4 * dir} ${y + 5}" fill="none" stroke="#e2b75c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>`
+    for (let h = 13; h < 24; h++) if (h !== 18) s += chev((px(h) + px(h + 1)) / 2, 32, -1)
+    for (let h = 12; h > 1; h--) if (h !== 7) s += chev((px(h) + px(h - 1)) / 2, 607, 1)
+    s += chev(BARX - 6, 32, -1) + chev(BARX + 6, 32, -1) + chev(BARX - 6, 607, 1) + chev(BARX + 6, 607, 1)
+    // the turn at the left end and the exit into the tray
+    s += `<path d="M86 32 Q66 32 66 60 L66 580 Q66 607 86 607" fill="none" stroke="#e2b75c" stroke-width="2" stroke-dasharray="3 5" stroke-linecap="round" opacity=".75"/>`
+    s += `<path d="M846 607 L890 607 Q898 607 898 598 L898 ${BOT - 2}" fill="none" stroke="#e2b75c" stroke-width="2" stroke-linecap="round" opacity=".9" marker-end="url(#ahG)"/>`
+    s += `<text x="${px(24)}" y="20" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" font-size="12" fill="#e2b75c">start</text>`
   }
   // destination glows (under checkers)
   if (showOpts && S.dests) {
@@ -390,6 +402,9 @@ async function rollOpening() {
   const first = !S.seen.has('openRoll')
   S.seen.add('openRoll')
   say('sys', `You rolled ${c}, Brown rolled ${b}. ${youFirst ? 'You go first' : 'Brown goes first'}${first ? `, playing those two numbers (${Math.max(c, b)}-${Math.min(c, b)}) as the ${C.term('start', 'opening move')}` : ''}.`)
+  // lock the opening so a second click can't roll it again
+  S.phase = 'commit'
+  renderControls()
   await wait(500)
   S.openDice = null
   const dice = [Math.max(c, b), Math.min(c, b)]
@@ -496,18 +511,19 @@ function hint() {
   const t = bt || S.turns[0]
   S.hint = t.steps
   S.stats.hints++
-  say('note', `Gold arrows show the move: <span class="mv">${C.fmtMove(t.steps, 0)}</span>. ${bt ? 'That’s the standard first move for this roll.' : hintWhy(t)}`)
+  say('note', `Try this: move ${C.plainMove(t.steps, 0)}. The gold arrows show it. ${bt ? 'That’s the standard first move for this roll.' : hintWhy(t)}`)
   render()
 }
 function hintWhy(t) {
   const f = C.features(S.turnStart, t.pos, t.steps, 0)
-  if (f.hits) return 'It hits.'
+  if (f.hits) return 'Hitting sends a Brown checker to the bar, so it has to start its trip all over again.'
   const km = f.made.filter((p) => [5, 4, 7, 6, 3, 20, 21].includes(p))
-  if (km.length) return `It makes ${C.pointName(km[0])}.`
-  if (f.off) return 'Bear off as many as you can.'
-  if (f.escaped) return 'It gets a back checker moving.'
-  if (f.shots === 0) return 'It keeps everything safe.'
-  return ''
+  if (km.length) return `That puts two of your checkers on ${km[0]}, so it’s yours: Brown can’t land there.`
+  if (f.off) return 'Taking checkers off is how you win, so take off as many as you can.'
+  if (f.escaped) return 'It gets one of your two checkers off the far end before Brown traps them there.'
+  if (f.shots === 0 && f.blots.length === 0) return 'Every checker ends up with at least one other of yours, so Brown has nothing it can hit.'
+  if (f.shots === 0) return 'Your lone checkers end up too far from Brown to be hit.'
+  return `It’s the safest useful move: Brown hits you with only ${f.shots} of its 36 possible rolls.`
 }
 
 async function done() {
@@ -516,7 +532,7 @@ async function done() {
   if (S.turns.length === 1) {
     // Forced: nothing to grade.
     S.hint = null
-    say('you', `<span class="mv">${C.fmtMove(S.steps, 0)}</span><p style="color:var(--muted)">The only legal way to play this roll.</p>`)
+    say('you', `You moved ${C.plainMove(S.steps, 0)}.<p style="color:var(--muted)">That was the only legal way to play this roll.</p>`)
     if (E.gameResult(S.pos)) return gameOver()
     S.phase = 'commit'; render()
     await wait(T().after)
@@ -530,7 +546,7 @@ async function done() {
   const better = g.grade !== 'best' && g.grade !== 'book' && g.best !== g.chosen
   if (better) acts.push(['Show the better play', () => startPreview(before, g.best.steps)])
   const pct = ['inaccuracy', 'mistake', 'blunder'].includes(g.grade) && g.diff >= 0.01 ? ` <span style="color:var(--muted);font-size:15px">(−${Math.round(g.diff * 100)}% chances)</span>` : ''
-  say('you', `<span class="badge ${G.tone}">${G.label}</span><span class="mv">${C.fmtMove(S.steps, 0)}</span>${pct}<p>${g.why}${better ? ` Better: <span class="mv">${C.fmtMove(g.best.steps, 0)}</span>.` : ''}</p>`, acts)
+  say('you', `<span class="badge ${G.tone}">${G.label}</span>You moved ${C.plainMove(S.steps, 0)}.${pct}<p>${g.why}</p>${better ? `<p>Better: move ${C.plainMove(g.best.steps, 0)}.</p>` : ''}`, acts)
   if (E.gameResult(S.pos)) return gameOver()
   S.phase = 'commit'
   if (S.pause && ['inaccuracy', 'mistake', 'blunder'].includes(g.grade)) {
