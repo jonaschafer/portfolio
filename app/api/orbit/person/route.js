@@ -2,7 +2,7 @@ import { insert, remove, update } from '../../../../lib/orbit/db'
 
 export const dynamic = 'force-dynamic'
 
-const FIELDS = ['name', 'grp', 'members', 'every_days', 'notes', 'ideas', 'windows', 'invitable', 'is_group', 'snoozed_until', 'sort']
+const FIELDS = ['name', 'grp', 'members', 'every_days', 'notes', 'ideas', 'windows', 'invitable', 'is_group', 'snoozed_until', 'sort', 'travel_mins']
 const pick = (o) => Object.fromEntries(Object.entries(o).filter(([k]) => FIELDS.includes(k)))
 
 export async function PATCH(request) {

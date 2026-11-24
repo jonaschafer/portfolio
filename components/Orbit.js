@@ -6,6 +6,7 @@ import useRandomTheme from './useRandomTheme'
 import { THEMES } from '../lib/themes'
 import { ago, dayLabel, gcalLink, pdxTime, slotLabel } from '../lib/orbit/time'
 import { askText, nudgeLine } from '../lib/orbit/words'
+import { textToWindows, windowsToText } from '../lib/orbit/week'
 
 const api = (path, method, body) =>
   fetch(`/api/orbit/${path}`, { method, headers: { 'Content-Type': 'application/json' }, body: body && JSON.stringify(body) }).then(
@@ -404,6 +405,8 @@ function EditPanel({ person, onDone }) {
     ideas: (person.ideas || []).join('\n'),
     notes: person.notes || '',
     invitable: person.invitable ?? true,
+    times: windowsToText(person.windows),
+    travel: person.travel_mins ?? 15,
   })
   const set = (k) => (e) => setF({ ...f, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value })
   const save = async () => {
@@ -415,6 +418,8 @@ function EditPanel({ person, onDone }) {
       notes: f.notes.trim() || null,
       invitable: f.invitable,
       is_group: f.members.includes(','),
+      windows: textToWindows(f.times),
+      travel_mins: Math.max(0, Number(f.travel) || 0),
     }
     if (!body.name) return
     if (person.id) await api('person', 'PATCH', { id: person.id, ...body })
@@ -436,6 +441,13 @@ function EditPanel({ person, onDone }) {
       <input value={f.members} onChange={set('members')} placeholder="Tom, Maren, River, Journey" />
       <div className="ob-label">Remind me every … weeks</div>
       <input type="number" min="1" value={f.weeks} onChange={set('weeks')} style={{ width: 90 }} />
+      <div className="ob-label">Times that work, one per line (like “Tue-Thu 6:30pm 2h” or “Sat Sun 1pm 3h”)</div>
+      <textarea value={f.times} onChange={set('times')} placeholder="Mon-Fri 8am 45m" />
+      <div className="ob-label">Drive, minutes each way</div>
+      <input type="number" min="0" value={f.travel} onChange={set('travel')} style={{ width: 90 }} />
+      <div className="ob-small" style={{ marginTop: 4 }}>
+        Weekday 8am only gets offered when this is 15 or less. Work hours are always off.
+      </div>
       <div className="ob-label">Ideas, one per line</div>
       <textarea value={f.ideas} onChange={set('ideas')} />
       <div className="ob-label">Notes to self</div>
