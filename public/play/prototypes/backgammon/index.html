@@ -99,6 +99,11 @@
   .chip.solid { background: var(--ink); color: var(--paper); border-color: var(--ink); }
   .term { color: inherit; text-decoration: underline; text-decoration-color: rgba(42,29,20,.35); text-underline-offset: 3px; cursor: pointer; }
   .term:hover { text-decoration-color: var(--ink); }
+  .advice { border-top: 2px solid var(--brass); background: #fbf4e3; padding: 12px 18px 14px; font-size: 17px; line-height: 1.42; }
+  .advice[hidden] { display: none; }
+  .advice .who { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8a6420; margin-bottom: 3px; }
+  .advice p { margin: 6px 0 0; }
+  .advice .hint-line { font-size: 14.5px; color: var(--muted); }
   .coach-foot { border-top: 1px solid var(--line); padding: 10px 18px; display: flex; gap: 16px; font-size: 14px; color: var(--muted); flex-wrap: wrap; }
   .coach-foot label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
   .coach-foot input { accent-color: var(--ink); }
@@ -195,6 +200,7 @@
         </div>
       </div>
       <div class="feed" id="feed" aria-live="polite"></div>
+      <div class="advice" id="advice" aria-live="polite" hidden></div>
       <div class="coach-foot">
         <div class="speedrow">Brown’s speed
           <span class="mini" id="speed" role="group" aria-label="Brown’s speed">
@@ -280,7 +286,10 @@
           <tr><td>6</td><td>19</td><td>6</td></tr>
         </table>
         <p>So you come in at the top right, at the very start of your trip. Brown comes in at the bottom right, in your home board.</p>
-        <p>A point with two or more of the other side’s checkers is closed. If both of your dice point at closed spots, you can’t come in and you lose the turn. If Brown owns all six points, you’re <b>closed out</b> until one opens. After it comes in, use the other die on any checker.</p>
+        <p><b>Closed points.</b> If the other side has two or more checkers on a point, you can’t land there. That goes for coming in from the bar too.</p>
+        <p><b>Example:</b> you’re on the bar and roll a 3 and a 5. The 3 would bring you in on 22 and the 5 on 20. If Brown has two checkers on 22 and two on 20, neither number works, so you can’t come in. Your turn is skipped and you try again next roll.</p>
+        <p>If at least one number works, you come in with it, and then you play the other number with any checker you like.</p>
+        <p>If Brown has two or more checkers on all six points from 19 to 24, no roll can bring you in. You just wait, skipping turns, until Brown opens one up. That’s called being <b>closed out</b>.</p>
         <p class="aside">On this board, the little boxes over 19 to 24 show which roll brings you in where. Gold ones match your dice; crossed-out ones are closed.</p>
       </section>
 
@@ -363,6 +372,6 @@
     </div>
   </aside>
 
-  <script type="module" src="/play/prototypes/backgammon/app.js?v=21"></script>
+  <script type="module" src="/play/prototypes/backgammon/app.js?v=22"></script>
 </body>
 </html>

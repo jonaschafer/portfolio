@@ -30,7 +30,8 @@ const nextConfig = {
       { source: '/dana-plan/', destination: '/dana-plan-v2', permanent: true },
     ]
   },
-  // Ensure static files in public/play/prototypes are served correctly
+  // Prototypes change often: make browsers check for a new version on every load
+  // (cheap 304s when nothing changed) instead of holding a copy for an hour.
   async headers() {
     return [
       {
@@ -38,7 +39,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, must-revalidate',
+            value: 'public, max-age=0, must-revalidate',
           },
         ],
       },

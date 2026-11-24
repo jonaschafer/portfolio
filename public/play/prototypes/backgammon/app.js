@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=21'
-import * as C from './coach.js?v=21'
+import * as E from './engine.js?v=22'
+import * as C from './coach.js?v=22'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -270,6 +270,7 @@ function render() {
   }
   renderControls()
   renderHead()
+  renderAdvice()
 }
 
 function renderHead() {
@@ -487,7 +488,6 @@ function startHumanTurn(dice) {
   }
   // only one way to play it? say so
   if (S.turns.length === 1 && S.turns[0].steps.length < E.diceList(dice).length) say('note', `Only part of this roll can be played. That’s the rule: use what you can.`)
-  if (S.coach) recommend()
   render()
 }
 
@@ -506,19 +506,26 @@ function headline(b) {
   if (f.shots === 0) return 'Play it safe.'
   return 'Keep the risk low.'
 }
-function recommend() {
-  if (S.phase !== 'move') return
-  const b = bestFinish()
-  if (!b) return
-  if (S.turns.length === 1) {
-    say('tip', `Only one way to play this roll: move ${C.plainMove(b.steps, 0)}.`)
-  } else {
-    const why = b.isBook ? '' : ' ' + hintWhy(b.turn, S.steps.concat(b.steps))
-    const first = !S.seen.has('showMeIntro')
-    S.seen.add('showMeIntro')
-    say('tip', `<b>${headline(b)}</b> I’d move ${C.plainMove(b.steps, 0)}.${why}${first ? '<p>Want to see it on the board? Press <b>Show me</b>.</p>' : ''}`)
+// The pinned "Your move" card: while it's your move and the coach is on,
+// it always holds the current recommendation (goal, move in words, why),
+// recomputed whenever your checkers move. Show me only adds arrows.
+function renderAdvice() {
+  const el = $('#advice')
+  if (!S.coach || S.phase !== 'move' || S.preview) { el.hidden = true; return }
+  if (S.adviceFor !== S.pos) {
+    S.adviceFor = S.pos
+    const b = bestFinish()
+    let html
+    if (!b) html = `<b>You’ve played your whole roll.</b> Press Done to finish your turn.`
+    else if (S.turns.length === 1) html = `<b>Only one way to play this roll.</b> Move ${C.plainMove(b.steps, 0)}.`
+    else {
+      const why = b.isBook ? ' That’s the standard first move for this roll.' : ' ' + hintWhy(b.turn, S.steps.concat(b.steps))
+      html = `<b>${headline(b)}</b> ${S.steps.length ? 'From here, I’d' : 'I’d'} move ${C.plainMove(b.steps, 0)}.${why}<p class="hint-line">Press Show me to see it on the board.</p>`
+    }
+    S.adviceHTML = html.replace(/\b(back checkers?)\b/g, '<a class="term" data-rule="backcheckers">$1</a>')
   }
-  S.hintNoted = S.pos
+  el.hidden = false
+  el.innerHTML = `<span class="who">Your move</span>${S.adviceHTML}`
 }
 
 function computeDests(from) {
@@ -623,12 +630,9 @@ function showMe() {
   // second press hides the arrows
   if (hintShown()) { S.hint = null; return render() }
   const b = bestFinish()
-  if (!b) { say('note', `You’ve used your whole roll. Press Done.`); return render() }
+  if (!b) return render()
+  // the written advice is already in the Your move card; this just draws it
   S.hint = { base: S.pos, steps: b.steps }
-  // the note is said once per position; showing again just redraws the arrows
-  if (S.hintNoted === S.pos) return render()
-  S.hintNoted = S.pos
-  say('tip', `${S.steps.length ? 'From here, I’d' : 'I’d'} move ${C.plainMove(b.steps, 0)}. ${b.isBook ? 'That’s the standard first move for this roll.' : hintWhy(b.turn, S.steps.concat(b.steps))}`)
   render()
 }
 function hintWhy(t, steps) {
@@ -830,7 +834,6 @@ function setCoach(on) {
   b.setAttribute('aria-pressed', String(on))
   b.textContent = on ? 'Coach on' : 'Coach off'
   if (!on) S.hint = null
-  else if (S.phase === 'move' && S.hintNoted !== S.pos) recommend()
   render()
 }
 $('#coachBtn').onclick = () => setCoach(!S.coach)
