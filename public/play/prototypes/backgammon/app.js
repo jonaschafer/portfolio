@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=23'
-import * as C from './coach.js?v=23'
+import * as E from './engine.js?v=24'
+import * as C from './coach.js?v=24'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -469,6 +469,7 @@ async function humanRoll() {
 
 function startHumanTurn(dice) {
   S.dice = dice; S.rem = E.diceList(dice); S.diceOwner = 0
+  S.turnId = (S.turnId || 0) + 1
   S.turnStart = E.clone(S.pos); S.steps = []; S.undo = []; S.sel = null; S.dests = null; S.hint = null
   S.isOpening = S.firstMove
   S.firstMove = false
@@ -517,6 +518,7 @@ function renderAdvice() {
     if (S.adviceEl) {
       S.adviceEl.classList.remove('live')
       S.adviceEl.innerHTML = `<span class="who">Coach suggested</span>${S.adviceFirst}`
+      S.frozen = { el: S.adviceEl, turn: S.turnId }
       S.adviceEl = null
     }
     return
@@ -534,9 +536,18 @@ function renderAdvice() {
     S.adviceHTML = html.replace(/\b(back checkers?)\b/g, '<a class="term" data-rule="backcheckers">$1</a>')
   }
   if (!S.adviceEl || !S.adviceEl.isConnected) {
-    S.adviceEl = document.createElement('div')
-    S.adviceEl.className = 'msg advice live'
-    S.adviceFirst = S.adviceHTML.replace(/<p class="hint-line">.*?<\/p>/, '')
+    // back in the same turn (coach toggled, or Try again): revive that turn's
+    // card instead of adding a second one
+    const f = S.frozen
+    if (f && f.turn === S.turnId && f.el.isConnected) {
+      S.adviceEl = f.el
+      S.adviceEl.classList.add('live')
+    } else {
+      S.adviceEl = document.createElement('div')
+      S.adviceEl.className = 'msg advice live'
+      S.adviceFirst = S.adviceHTML.replace(/<p class="hint-line">.*?<\/p>/, '')
+    }
+    S.frozen = null
   }
   const fresh = `<span class="who">Your move</span>${S.adviceHTML}`
   if (S.adviceEl.innerHTML !== fresh) S.adviceEl.innerHTML = fresh
