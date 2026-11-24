@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backyard: hot tub, sauna, ADU</title>
+<meta name="description" content="Research for a Portland backyard: a saltwater hot tub, a sauna and an ADU. Costs, running costs, kid rules, permits and how the three fit on one city lot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap" media="print" onload="this.media='all'">
+<style>
+:root {
+  --paper:#F2F3EF; --sheet:#FAFAF8; --ink:#131516; --ink-2:#33373A; --muted:#5E6468; --faint:#8A9094;
+  --rule:#CDD2CA; --hair:#E1E4DE; --mark:#F2DC45; --mark-ink:#131516;
+  --invert-bg:#131516; --invert-ink:#F2F3EF;
+  --sans:'Geist', ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono:'Martian Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --gutter:24px; --bar:52px; --ease-out:cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper:#0F1110; --sheet:#151816; --ink:#E6E9E4; --ink-2:#C5CAC3; --muted:#979E98; --faint:#6C736D;
+    --rule:#2C312D; --hair:#1F2320; --mark:#E2CE45; --mark-ink:#0F1110;
+    --invert-bg:#E6E9E4; --invert-ink:#0F1110;
+  }
+}
+@media (max-width: 640px) { :root { --gutter:16px; } }
+* { box-sizing:border-box; }
+html { scroll-padding-top:calc(var(--bar) + 20px); scroll-behavior:smooth; }
+body { margin:0; font-family:var(--sans); font-size:17px; line-height:1.6; background:var(--paper); color:var(--ink);
+  -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1240px; margin:0 auto; padding:0 var(--gutter); }
+.lbl { font:400 11.5px/1.45 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); letter-spacing:0; margin:0; }
+a { color:inherit; text-underline-offset:0.18em; text-decoration-thickness:1px; }
+mark { color:var(--mark-ink); background:linear-gradient(transparent 12%, var(--mark) 12%, var(--mark) 92%, transparent 92%);
+  padding:0 0.06em; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+
+/* bar */
+.bar { position:sticky; top:0; z-index:10; height:var(--bar); background:var(--paper); border-bottom:1px solid var(--ink); }
+.bar .wrap { height:100%; display:flex; align-items:center; gap:18px; }
+.bar .name { font:500 13px/1 var(--mono); font-variation-settings:'wdth' 87.5; text-decoration:none; white-space:nowrap; }
+.subnav { display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; }
+.subnav::-webkit-scrollbar { display:none; }
+.subnav a { font:400 12px/1 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); text-decoration:none;
+  padding:8px 9px 7px; border-radius:2px; white-space:nowrap; }
+.subnav a[aria-current="true"] { color:var(--ink); background:linear-gradient(transparent 62%, var(--mark) 62%, var(--mark) 92%, transparent 92%); }
+@media (hover:hover) and (pointer:fine) { .subnav a:hover { color:var(--ink); } }
+@media (max-width: 640px) { .bar .name { display:none; } .subnav { margin-left:-9px; } .subnav a { padding-inline:7px; } }
+
+/* head */
+header.top { padding:72px 0 0; }
+h1 { font-size:clamp(48px, 8vw, 100px); line-height:0.92; letter-spacing:-0.05em; font-weight:500; margin:14px 0 0; max-width:11em; }
+.lede { font-size:19px; line-height:1.55; color:var(--ink-2); max-width:36em; margin:28px 0 0; }
+.stats { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px; margin-top:56px; border-top:1px solid var(--ink); padding-top:18px; }
+.stat { font:300 clamp(34px, 3.8vw, 50px)/0.95 var(--mono); font-variation-settings:'wdth' 100; letter-spacing:-0.06em; width:max-content; margin-top:10px; }
+.stat.hot { background:linear-gradient(transparent 58%, var(--mark) 58%, var(--mark) 90%, transparent 90%); }
+.stats .note { margin-top:10px; font-size:14px; line-height:1.45; color:var(--ink-2); max-width:17em; }
+@media (max-width: 760px) { .stats { grid-template-columns:repeat(2, minmax(0,1fr)); row-gap:32px; } }
+
+section.blk { margin-top:96px; border-top:1px solid var(--ink); padding-top:20px; }
+section.blk.tight { margin-top:56px; }
+h2 { font-size:clamp(30px, 3.4vw, 42px); line-height:1.08; letter-spacing:-0.035em; font-weight:500; margin:10px 0 0; }
+h3 { font-size:21px; line-height:1.28; letter-spacing:-0.015em; font-weight:600; margin:44px 0 0; }
+.sub { color:var(--ink-2); max-width:38em; margin:12px 0 0; }
+p { max-width:40em; }
+.body p { color:var(--ink-2); margin:12px 0 0; font-size:16px; }
+.claim { font-size:clamp(20px, 2vw, 24px); line-height:1.3; letter-spacing:-0.025em; font-weight:500; margin:22px 0 0; max-width:30em; }
+
+.two { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:48px; }
+@media (max-width: 900px) { .two { grid-template-columns:minmax(0,1fr); gap:0; } }
+
+/* lists */
+.bullets { list-style:none; margin:12px 0 0; padding:0; font-size:15.5px; color:var(--ink-2); max-width:44em; }
+.bullets li { position:relative; padding-left:26px; margin:0 0 9px; }
+.bullets li::before { content:''; position:absolute; left:2px; top:0.8em; width:12px; border-top:1px solid currentColor; }
+.bullets b { color:var(--ink); font-weight:600; }
+ol.steps { list-style:none; counter-reset:s; margin:14px 0 0; padding:0; max-width:46em; }
+ol.steps li { counter-increment:s; display:grid; grid-template-columns:40px 1fr; border-top:1px solid var(--hair); padding:12px 0; font-size:15.5px; color:var(--ink-2); }
+ol.steps li::before { content:counter(s, decimal-leading-zero); font:400 11.5px/1.9 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); }
+ol.steps b { color:var(--ink); font-weight:600; }
+
+/* tables */
+.tbl { width:100%; border-collapse:collapse; margin-top:18px; font-size:14.5px; line-height:1.45; }
+.tbl thead th { font:400 11.5px/1.2 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); text-align:left;
+  padding:0 16px 8px 0; border-bottom:1px solid var(--ink); }
+.tbl th, .tbl td { text-align:left; vertical-align:top; padding:10px 16px 10px 0; border-bottom:1px solid var(--hair); }
+.tbl th[scope=row] { font-weight:500; color:var(--ink); width:42%; }
+.tbl td { color:var(--ink-2); }
+.tbl td.num { font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--ink); }
+.tbl tr.total th, .tbl tr.total td { border-top:1px solid var(--ink); border-bottom:0; font-weight:600; color:var(--ink); }
+.tbl .n { display:block; color:var(--muted); font-size:13px; font-weight:400; margin-top:2px; }
+@media (max-width: 640px) {
+  .tbl th[scope=row] { width:auto; }
+  .tbl.wide thead { display:none; }
+  .tbl.wide tr { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:6px 14px; padding:12px 0; border-bottom:1px solid var(--hair); }
+  .tbl.wide th, .tbl.wide td { border:0; padding:0; }
+  .tbl.wide th[scope=row] { grid-column:1 / -1; }
+  .tbl.wide td::before { content:attr(data-l); display:block; font:11px/1.5 var(--mono); font-variation-settings:'wdth' 87.5; color:var(--muted); }
+}
+
+/* evidence chips */
+.ev { display:inline-block; font:400 10.5px/1 var(--mono); font-variation-settings:'wdth' 87.5; padding:4px 5px 3px; border:1px solid var(--rule);
+  border-radius:2px; color:var(--muted); vertical-align:0.12em; margin-left:6px; white-space:nowrap; }
+.ev.strong { border-color:var(--ink); color:var(--ink); }
+
+/* rules block */
+.working { background:var(--invert-bg); color:var(--invert-ink); padding:36px clamp(22px, 5vw, 56px) 40px; margin-top:40px; border-radius:2px; }
+.working .lbl { color:inherit; opacity:0.7; }
+.working h3 { margin-top:6px; }
+.working .cols { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:32px; margin-top:18px; }
+.working .bullets, .working .bullets b { color:inherit; }
+@media (max-width: 800px) { .working .cols { grid-template-columns:minmax(0,1fr); } }
+
+/* options cards (rules, not boxes) */
+.opts { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:24px; margin-top:22px; }
+.opt { border-top:1px solid var(--ink); padding-top:12px; }
+.opt .t { font-weight:600; font-size:16px; margin-top:6px; }
+.opt p { font-size:14.5px; color:var(--ink-2); margin:6px 0 0; }
+@media (max-width: 1000px) { .opts { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+@media (max-width: 560px) { .opts { grid-template-columns:minmax(0,1fr); } }
+
+.callout { border-left:2px solid var(--mark); padding:2px 0 2px 16px; margin-top:22px; max-width:44em; color:var(--ink-2); font-size:15.5px; }
+.callout b { color:var(--ink); }
+
+/* plan diagram */
+figure.plan { margin:28px 0 0; max-width:760px; }
+figure.plan svg { width:100%; height:auto; display:block; }
+figure.plan text { font-family:var(--mono); font-variation-settings:'wdth' 87.5; font-size:11px; fill:var(--ink); }
+figure.plan text.m { fill:var(--muted); font-size:10px; }
+figure.plan .lot { fill:none; stroke:var(--ink); stroke-width:1.5; }
+figure.plan .house { fill:var(--hair); stroke:var(--ink); stroke-width:1; }
+figure.plan .deck { fill:none; stroke:var(--ink); stroke-width:1; stroke-dasharray:3 3; }
+figure.plan .zone { fill:var(--mark); opacity:0.55; }
+figure.plan .zone2 { fill:none; stroke:var(--ink); stroke-width:1; stroke-dasharray:6 4; }
+figure.plan .dim { stroke:var(--muted); stroke-width:0.75; }
+figure.plan figcaption { margin-top:10px; }
+
+.src { columns:2; column-gap:40px; font-size:14px; color:var(--ink-2); list-style:none; padding:0; margin:16px 0 0; }
+.src li { break-inside:avoid; margin:0 0 8px; }
+@media (max-width: 760px) { .src { columns:1; } }
+
+footer { padding:56px 0 80px; color:var(--faint); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } * { animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="bar">
+  <div class="wrap">
+    <a class="name" href="/play">Backyard</a>
+    <div class="subnav">
+      <a href="#top">Overview</a>
+      <a href="#tub">Hot tub</a>
+      <a href="#sauna">Sauna</a>
+      <a href="#adu">ADU</a>
+      <a href="#lot">Fitting it in</a>
+      <a href="#next">Next steps</a>
+      <a href="#sources">Sources</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<header class="top" id="top">
+  <p class="lbl">Research · Portland, OR · Nov 2026</p>
+  <h1>Hot tub, sauna, maybe an ADU</h1>
+  <p class="lede">Three big backyard ideas, researched together because they share one yard, one electrical panel and one cap on how much of the lot can be outbuildings. Costs are 2025 to 2026 ranges from dealers, builders and cost aggregators, so treat them as a starting point for real quotes.</p>
+
+  <div class="stats">
+    <div><p class="lbl">Hot tub, all-in</p><div class="stat">$12–25k</div><p class="note">About $900 to $1,500 a year to run on PGE.</p></div>
+    <div><p class="lbl">Sauna, all-in</p><div class="stat">$10–30k</div><p class="note">About $250 to $500 a year at 3 to 4 sessions a week.</p></div>
+    <div><p class="lbl">ADU, all-in</p><div class="stat">$150–340k</div><p class="note">9 to 18 months. Rent pays it back in roughly 17 to 20 years.</p></div>
+    <div><p class="lbl">Electrical</p><div class="stat hot">200A+</div><p class="note">Tub plus sauna won't fit on an old 100A panel. Upgrade once, sized for everything.</p></div>
+  </div>
+</header>
+
+<section class="blk tight">
+  <p class="lbl">The short version</p>
+  <p class="claim">Tub and sauna are easy wins that fit together. The ADU is a much bigger trade, and it's the one decision to make first so you only dig up the yard once.</p>
+  <ul class="bullets" style="margin-top:20px">
+    <li><b>Hot tub:</b> salt is nicer to live with, but it's still chlorine and still needs weekly testing. A teen sleepover will use up chlorine faster than the salt cell can make it.</li>
+    <li><b>Sauna:</b> it has the best health evidence of the three. That evidence is observational but consistent. Use a traditional electric heater. Wood-fired is a poor fit inside Portland.</li>
+    <li><b>ADU:</b> the real value is flexibility across life stages, not ROI. The decision with the longest tail is <a href="#adu-vs-duplex">permitting it as an ADU or as a detached duplex</a>.</li>
+    <li><b>Order:</b> lot check, zoning call and electrical load calc first. Then the ADU yes or no. The tub and sauna can go in any time, as long as the panel upgrade is sized for the future.</li>
+  </ul>
+</section>
+
+<!-- HOT TUB -->
+<section class="blk" id="tub">
+  <p class="lbl">01 · Hot tub</p>
+  <h2>Saltwater hot tub</h2>
+  <p class="sub">A salt tub runs a salt chlorine generator. A cell in very mildly salty water, about 1/20th of seawater, makes chlorine by electrolysis. You get chlorine at a lower, steadier level, so the tub isn't chemical-free. Mineral, ozone and UV systems are a different thing: they cut chlorine use but don't replace it.</p>
+
+  <div class="two">
+    <div>
+      <h3>Upfront cost</h3>
+      <table class="tbl">
+        <thead><tr><th>Item</th><th>Range</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Entry 120V plug-in<span class="n">Slow to reheat in winter. Skip.</span></th><td class="num">$4–7k</td></tr>
+          <tr><th scope="row">Mid 240V, 5 to 7 seats</th><td class="num">$7–12k</td></tr>
+          <tr><th scope="row">Premium with salt<span class="n">Hot Spring Highlife, Bullfrog, Caldera, Marquis</span></th><td class="num">$12–20k+</td></tr>
+          <tr><th scope="row">Salt system upgrade<span class="n">Often bundled in promos</span></th><td class="num">$1–2k</td></tr>
+          <tr><th scope="row">Delivery<span class="n">Crane if the side path is under ~4 ft</span></th><td class="num">$200–500<br>crane $800–2.5k</td></tr>
+          <tr><th scope="row">Electrical<span class="n">50A GFCI, disconnect 5 ft+ from the tub, in sight</span></th><td class="num">$500–4k</td></tr>
+          <tr><th scope="row">Pad<span class="n">Pavers, concrete or a reinforced deck</span></th><td class="num">$400–5k</td></tr>
+          <tr><th scope="row">Permit<span class="n">Electrical only. The electrician pulls it.</span></th><td class="num">~$100–250</td></tr>
+          <tr class="total"><th scope="row">All-in</th><td class="num">$9–14k mid<br>$16–28k premium</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>Running cost per year</h3>
+      <table class="tbl">
+        <thead><tr><th>Item</th><th>Per year</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Electricity<span class="n">1,800 to 2,800 kWh at ~20¢. PGE rates rise again in 2027.</span></th><td class="num">$350–600</td></tr>
+          <tr><th scope="row">Salt cartridges or cell<span class="n">FreshWater cartridges swap about every 4 months</span></th><td class="num">~$300</td></tr>
+          <tr><th scope="row">Chemicals<span class="n">pH down, test strips, calcium remover, shock</span></th><td class="num">$100–200</td></tr>
+          <tr><th scope="row">Filters</th><td class="num">$50–150</td></tr>
+          <tr><th scope="row">Cover<span class="n">Replaced every 5 to 7 years</span></th><td class="num">$80–150</td></tr>
+          <tr class="total"><th scope="row">Total</th><td class="num">$900–1,500</td></tr>
+        </tbody>
+      </table>
+      <p class="lbl" style="margin-top:14px">Premium shells last 15 to 20 years, budget tubs 5 to 10. Resale is close to zero, so treat it as sunk.</p>
+    </div>
+  </div>
+
+  <div class="two">
+    <div>
+      <h3>Salt vs regular chlorine</h3>
+      <ul class="bullets">
+        <li><b>Better:</b> softer feel, much less smell and eye sting, no daily dosing, steadier sanitizer, fewer drains. Vendors say up to a year between drains; plan on 4 to 6 months with teens.</li>
+        <li><b>Worse:</b> costs more upfront, you still test weekly, pH drifts up constantly, calcium builds up as scale, the cell needs maintenance, and splash can etch natural stone (seal it).</li>
+        <li><b>The big one with kids:</b> heavy use outruns the generator. Five teens in sunscreen and hair product will push chlorine below safe levels, so you shock it after parties.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Placement</h3>
+      <ul class="bullets">
+        <li>A 20 to 30 second walk from the back door in January rain, ideally under a roof or pergola. Cover also keeps leaves and needles out of the filter.</li>
+        <li>On its own pad, not on a deck. A full tub weighs 3,000 to 6,000 lb.</li>
+        <li>Away from neighbors' bedroom windows. The pump is quiet; teens at 10pm aren't.</li>
+        <li>Close to the panel keeps trenching cheap. Leave 18 to 24 in behind for the cover lifter.</li>
+        <li>Measure the narrowest point of the side path, counting gutters, downspouts and meters. Under about 4 ft usually means a crane.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="working">
+    <p class="lbl">House rules</p>
+    <h3>Kids, friends and friends of kids</h3>
+    <div class="cols">
+      <ul class="bullets">
+        <li><b>The real risks at 11 to 15</b> aren't classic drowning, since 80% of child drownings are under 5. They're overheating, breath-hold games, heads under near the drains, and a friend's little sibling wandering out.</li>
+        <li><b>Temperature:</b> 104°F is the adult max. Run it at 100 to 101°F with kids in. 15 minute rounds, then cool off.</li>
+        <li><b>Cover:</b> ASTM F1346 rated with locking clips. Locked any time an adult isn't outside.</li>
+        <li><b>Drains:</b> VGB-compliant covers, check them for cracks. Hair up, no heads under.</li>
+      </ul>
+      <ul class="bullets">
+        <li><b>Hygiene:</b> hot tub rash (Pseudomonas) comes from under-sanitized water. Shower first, and test before anyone gets in after a party.</li>
+        <li><b>Friends:</b> tell their parents the tub exists and ask about medical stuff. Adults supervising don't drink.</li>
+        <li><b>Insurance:</b> tell the insurer, bump liability to $300 to $500k, and add a $1M umbrella (~$200 to $300 a year). The same applies to the sauna.</li>
+        <li><b>Buying:</b> late fall and winter are clearance season. Wet-test models with the kids, because seat depth varies a lot.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SAUNA -->
+<section class="blk" id="sauna">
+  <p class="lbl">02 · Sauna</p>
+  <h2>Sauna</h2>
+  <p class="sub">The type that matters is a traditional Finnish sauna with an electric heater at 70 to 100°C. Nearly all the health research is on that one.</p>
+
+  <div class="opts">
+    <div class="opt"><p class="lbl">Default</p><p class="t">Traditional electric</p><p>The real heat and steam the studies are based on. Preheat it from your phone. 240V, 30 to 50A.</p></div>
+    <div class="opt"><p class="lbl">Skip here</p><p class="t">Wood-fired</p><p>Best feel, but Multnomah County bans outdoor wood burning on red air days. Those cluster in winter, which is sauna season. Neighbors too.</p></div>
+    <div class="opt"><p class="lbl">Fine, not the same</p><p class="t">Infrared</p><p>Cheap to run and gentle, but air only reaches 40 to 60°C, there's no steam, and there's no hard-outcome evidence.</p></div>
+    <div class="opt"><p class="lbl">Shape</p><p class="t">Barrel vs cabin</p><p>Barrels are cheaper and heat fast, but they get cramped past 3 or 4 people. Cabins fit a changing room and groups of teens.</p></div>
+  </div>
+
+  <div class="two">
+    <div>
+      <h3>Upfront cost</h3>
+      <table class="tbl">
+        <thead><tr><th>Item</th><th>Range</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Barrel kit<span class="n">Almost Heaven, Dundalk. 2 to 6 people</span></th><td class="num">$4–10k+</td></tr>
+          <tr><th scope="row">Outdoor cabin kit</th><td class="num">$8–20k</td></tr>
+          <tr><th scope="row">Custom Portland build</th><td class="num">$10–35k<br>$50k+ fancy</td></tr>
+          <tr><th scope="row">Heater 6 to 9 kW<span class="n">Harvia, Huum. Wifi controller adds $300 to $800</span></th><td class="num">$1–2.5k</td></tr>
+          <tr><th scope="row">Electrical<span class="n">30 to 50A 240V, trench</span></th><td class="num">$1.5–3.5k</td></tr>
+          <tr><th scope="row">Foundation</th><td class="num">$300–5k</td></tr>
+          <tr><th scope="row">Permit<span class="n">No building permit under 200 sq ft and 15 ft tall. Electrical permit yes. Setbacks still apply.</span></th><td class="num">electrical only</td></tr>
+          <tr class="total"><th scope="row">All-in</th><td class="num">$8–14k DIY barrel<br>$15–25k installed</td></tr>
+        </tbody>
+      </table>
+      <p class="lbl" style="margin-top:14px">Running: an 8 kW heater uses ~6 to 10 kWh a session, about $1.30 to $2.20. At 3 to 4 a week, $250 to $500 a year. Heaters last 10 to 20 years.</p>
+    </div>
+    <div>
+      <h3>Health, with honest evidence levels</h3>
+      <ul class="bullets">
+        <li><b>Mortality and heart</b><span class="ev">observational</span> The Kuopio study followed 2,315 Finnish men for about 20 years. 4 to 7 sessions a week was tied to 40% lower all-cause death and 63% lower sudden cardiac death than once a week. Frequent users may just be healthier people.</li>
+        <li><b>Blood pressure</b><span class="ev">observational + mechanism</span> 47% lower risk of developing hypertension at 4 to 7 sessions a week. Short-term studies show real vascular changes.</li>
+        <li><b>Mood</b><span class="ev">one small RCT</span> A single hyperthermia session lowered depression scores for ~6 weeks. That was a clinical protocol, not a backyard sauna.</li>
+        <li><b>Sleep, recovery</b><span class="ev">self-report</span> People reliably feel better. No strong trials.</li>
+        <li><b>Cold plunge</b><span class="ev">small trials</span> Lower stress at 12 hours and better sleep scores. No evidence it beats a cold shower, and it adds drowning risk with kids.</li>
+      </ul>
+      <p class="callout">The benefit shows up at real heat (~80°C) and real frequency (3 to 4+ times a week). Used less than that, it's a lovely amenity, not a health intervention.</p>
+    </div>
+  </div>
+
+  <div class="two">
+    <div>
+      <h3>Adults</h3>
+      <ul class="bullets">
+        <li><b>Sessions:</b> 75 to 90°C, 2 to 3 rounds of 10 to 20 min, 5 to 15 min cooldown between. Sit a minute before standing.</li>
+        <li><b>Alcohol is the big risk.</b> About half of Finnish sauna deaths involve it.</li>
+        <li>Also watch for dehydration (0.5 to 1 L of sweat a session), blood pressure meds and beta-blockers, unstable heart conditions, pregnancy (ask the OB), and a temporary sperm count drop.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Kids</h3>
+      <ul class="bullets">
+        <li><b>There's no AAP guidance.</b> Finnish data says kids heat up faster than adults: more skin per body mass, less sweating. 10 minutes at 70°C raised kids' core temp more than 30 minutes at 80°C did for adults.</li>
+        <li><b>Finnish kids sauna all the time,</b> just lower and shorter.</li>
+        <li><b>Around 11:</b> lower bench, 60 to 75°C, 5 to 10 min rounds, 2 rounds max.</li>
+        <li><b>Around 14:</b> up to ~80°C, 10 to 15 min rounds.</li>
+        <li><b>Visiting friends:</b> lower bench and the shorter rounds by default.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="working">
+    <p class="lbl">House rules</p>
+    <h3>The sauna, with teens and their friends</h3>
+    <div class="cols">
+      <ul class="bullets">
+        <li><b>An adult is home and aware</b> before the heater goes on. Check on teen groups every 10 minutes.</li>
+        <li><b>Friends need a parent's OK by text,</b> including health stuff: asthma, heart, meds.</li>
+        <li><b>No endurance contests,</b> no dares, no cranking the steam. Anyone dizzy or headachy leaves, no grief.</li>
+        <li><b>A timer for every round,</b> and a 30 to 45 min total cap.</li>
+      </ul>
+      <ul class="bullets">
+        <li><b>Water before and after.</b> No energy drinks, vapes, edibles or alcohol. Not when sick.</li>
+        <li><b>Hardware:</b> no lock on the door (push to open), glass in the door, a guard rail around the heater, wifi auto-off, and the controller locked when no adult is home.</li>
+        <li><b>Don't stack sauna and hot tub back to back.</b> The heat adds up. Do one, or take 30+ min of cooldown and water between.</li>
+        <li>The real ongoing risk is unsupervised who-can-last-longest, not the heater.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 id="den">Building from Den Outdoors plans</h3>
+  <p class="sub">Den sells sauna <em>plans</em>, not kits. A set is $299, or $399 for the "Extra Sweaty" version with a deck and covered changing room. You get construction drawings, a materials list and a license to build. You don't get materials, engineering stamps, customization or support.</p>
+  <table class="tbl wide" style="max-width:900px">
+    <thead><tr><th>Design</th><th>Footprint</th><th>Seats</th><th>Plans</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Small Modern / Rustic</th><td data-l="Footprint" class="num">4 × 8 ft, 32 sq ft</td><td data-l="Seats" class="num">2–3</td><td data-l="Plans" class="num">$299 / $399</td></tr>
+      <tr><th scope="row">Medium Modern / Rustic, Prism</th><td data-l="Footprint" class="num">8 × 8 ft, 64 sq ft</td><td data-l="Seats" class="num">~4</td><td data-l="Plans" class="num">$299 / $399</td></tr>
+      <tr><th scope="row">Large Modern / Rustic</th><td data-l="Footprint" class="num">8 × 12 ft, 96 sq ft</td><td data-l="Seats" class="num">6–10</td><td data-l="Plans" class="num">$299 / $399</td></tr>
+    </tbody>
+  </table>
+  <div class="two">
+    <div>
+      <h4 class="lbl" style="margin-top:28px">Why it fits a city lot</h4>
+      <ul class="bullets">
+        <li><b>Built on site from lumber,</b> so everything carries through a narrow side gate. A barrel kit does too, but a prefab cabin often can't.</li>
+        <li><b>Every size is under 200 sq ft,</b> so no building permit. You still need the electrical permit and setbacks.</li>
+        <li><b>It looks like architecture,</b> not a hot tub accessory. That matters in a small yard you see from the kitchen.</li>
+        <li><b>A shed roof with real overhangs</b> handles Portland rain better than a barrel's staves.</li>
+        <li><b>The changing module</b> in Extra Sweaty solves teen privacy and gives you somewhere dry for towels.</li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="lbl" style="margin-top:28px">Watch for</h4>
+      <ul class="bullets">
+        <li><b>"DIY in a few days" is optimistic.</b> Sauna details are unforgiving: vapor barrier, venting, heater clearances, bench heights. Plan on several weekends if you're handy, or hire a carpenter.</li>
+        <li><b>Rough cost, my estimate:</b> medium 8 × 8 materials ~$6 to $12k, plus heater, electrical and foundation. Built by a carpenter, roughly $20 to $35k all-in, versus ~$12 to $18k for an installed barrel.</li>
+        <li><b>Pick the full-height or half window</b> in the door so you can see in from outside.</li>
+        <li>They list it as compatible with a wood heater. Go electric anyway.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="callout"><b>My take:</b> the medium (8 × 8) in the Extra Sweaty version is the sweet spot for a family plus a couple of friends. Go large only if 5+ teens at once is the real use. It's the best-looking option for a city backyard, and the build method suits tight access. It costs more than a barrel unless someone's doing the carpentry.</p>
+</section>
+
+<!-- ADU -->
+<section class="blk" id="adu">
+  <p class="lbl">03 · ADU</p>
+  <h2>Accessory dwelling unit</h2>
+  <p class="sub">Portland is one of the friendliest cities in the country for ADUs: no owner-occupancy rule, no parking requirement, and city fees waived. The constraints are yard space, utilities and getting materials into the backyard.</p>
+
+  <div class="two">
+    <div>
+      <h3>The rules (City of Portland)</h3>
+      <ul class="bullets">
+        <li><b>Size:</b> 800 sq ft or 75% of the house, whichever is smaller.</li>
+        <li><b>Height:</b> 20 ft, or 15 ft inside setbacks. Above 15 ft it has to match the house or meet listed design standards.</li>
+        <li><b>Where:</b> 40+ ft from the front lot line, or behind the house's rear wall.</li>
+        <li><b>Coverage:</b> <mark>all detached outbuildings together max out at 20% of the lot.</mark> ADU, sauna and shed all share that budget.</li>
+        <li><b>How many:</b> a house plus 2 ADUs on qualifying lots. Only one of the two can be attached or internal.</li>
+        <li><b>Can't be sold separately.</b> Ever.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Cost</h3>
+      <table class="tbl">
+        <thead><tr><th>Size</th><th>All-in</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">~400 sq ft studio</th><td class="num">$150–220k</td></tr>
+          <tr><th scope="row">~600 sq ft 1BR</th><td class="num">$190–280k</td></tr>
+          <tr><th scope="row">~800 sq ft 2BR</th><td class="num">$230–340k</td></tr>
+          <tr><th scope="row">Prefab turnkey<span class="n">Plus site work. Usually needs a crane over the house.</span></th><td class="num">$185–350k</td></tr>
+          <tr><th scope="row">Garage conversion<span class="n">Often close to the cost of new</span></th><td class="num">$100–200k</td></tr>
+        </tbody>
+      </table>
+      <p class="lbl" style="margin-top:14px">Custom runs $275 to $400 per sq ft; small units cost more per foot. Timeline 9 to 18 months: design 2 to 4, permit 1 to 4, build 5 to 9.</p>
+    </div>
+  </div>
+
+  <h3>Costs that blow budgets</h3>
+  <table class="tbl" style="max-width:900px">
+    <tbody>
+      <tr><th scope="row">Sewer lateral<span class="n">A long run from the back of the lot to the street. Much more if it needs a pump.</span></th><td class="num">$5–20k</td></tr>
+      <tr><th scope="row">Electrical service upgrade</th><td class="num">$3–15k</td></tr>
+      <tr><th scope="row">Site work, excavation, access<span class="n">Narrow side yards mean hand carrying and a pumped concrete line</span></th><td class="num">$10–40k</td></tr>
+      <tr><th scope="row">Design<span class="n">Or use the city's free pre-approved plans</span></th><td class="num">$15–40k</td></tr>
+      <tr><th scope="row">Trees<span class="n">Removing any 20 in+ tree triggers mitigation fees. Root zones, including a neighbor's, can dictate placement.</span></th><td class="num">varies</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="adu-vs-duplex">ADU vs detached duplex</h3>
+  <p class="sub">Same backyard building, different permit. Portland lets you add a second primary house on a lot where the existing house is 5+ years old. This is the decision to make before anything gets drawn.</p>
+  <table class="tbl wide" style="max-width:1000px">
+    <thead><tr><th></th><th>ADU</th><th>Detached duplex</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Size</th><td data-l="ADU">800 sq ft max</td><td data-l="Duplex">No 800 cap. Floor area rules govern.</td></tr>
+      <tr><th scope="row">Height</th><td data-l="ADU">20 ft</td><td data-l="Duplex">25 ft</td></tr>
+      <tr><th scope="row">Sell separately later</th><td data-l="ADU">No</td><td data-l="Duplex">Yes, through a Middle Housing Land Division, if the lot allows it</td></tr>
+      <tr><th scope="row">City fees (~$19k+)</th><td data-l="ADU">Waived, but with a 10-year covenant against short-term rentals anywhere on the property. Breaking it costs 150% of the fees.</td><td data-l="Duplex">Waived under a temporary exemption for permits issued by <mark>Sep 30, 2028</mark>. No rental covenant.</td></tr>
+      <tr><th scope="row">Tenant law</th><td data-l="ADU">Owner-on-site exemptions apply</td><td data-l="Duplex">Not confirmed. Likely fewer exemptions.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="two">
+    <div>
+      <h3>Money</h3>
+      <ul class="bullets">
+        <li><b>Rent:</b> ~$1,250 to $1,500 studio, $1,500 to $1,850 1BR, $1,900 to $2,400 2BR.</li>
+        <li><b>Example:</b> a $275k build at $1,800 a month nets ~$14 to $16k a year after vacancy, insurance, maintenance and property tax. That's a 5 to 6% yield, a 17 to 20 year payback, and about breakeven if fully financed.</li>
+        <li><b>Property tax</b> goes up a few thousand a year, since new construction gets reassessed.</li>
+        <li><b>Financing:</b> $250k on a HELOC at ~8% is ~$1,670 a month interest-only. Don't cash-out refi a low-rate first mortgage.</li>
+        <li><b>Taxes:</b> rent goes on Schedule E with depreciation over 27.5 years. The rented portion may lose the home-sale capital gains exclusion. Call a CPA before renting.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Portland tenant law</h3>
+      <ul class="bullets">
+        <li><b>Relocation payment</b> on a no-cause termination: $2,900 studio, $3,300 1BR, $4,200 2BR, plus 90 days' notice. You're exempt if you live on site, but only if you file with the Housing Bureau <em>before</em> you need it.</li>
+        <li><b>Ending a tenancy with no cause</b> is allowed after year one when it's your home and there are 2 units or fewer on the lot.</li>
+        <li><b>Rent cap</b> doesn't apply to buildings under 15 years old.</li>
+        <li><b>The gotcha:</b> rent to a tenant in year one and you can't easily take the unit back for a kid. Use fixed-term leases timed to when you'll want it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Who lives where</h3>
+  <div class="opts">
+    <div class="opt"><p class="lbl">A</p><p class="t">Build and rent</p><p>Income, real landlord work, a tenant in your backyard. Needs a separate path, a fenced patio for them, and frosted glass facing your yard. Best on paper, hardest to live next to.</p></div>
+    <div class="opt"><p class="lbl">B</p><p class="t">Parents out back</p><p>College kids get the house. Later, you can rent the main house while living on site and keep the tenant-law exemptions. 800 sq ft is a real downsize, so design it as a real home.</p></div>
+    <div class="opt"><p class="lbl">C</p><p class="t">Kids out back</p><p>Great for summers home from college. As a teen hangout before then, think about noise and supervision.</p></div>
+    <div class="opt"><p class="lbl">D</p><p class="t">Everything else</p><p>Office or studio now with no tenant risk. Aging parents later. Skip short-term rental, since it kills the fee waiver.</p></div>
+  </div>
+  <p class="callout"><b>The move that keeps every option open:</b> single level, its own entry and address, a separate meter, a full kitchen, in-unit laundry, sound-rated walls facing the house, and accessibility designed in. Use it as an office now, for kids or yourselves later, and rent it whenever.</p>
+</section>
+
+<!-- LOT -->
+<section class="blk" id="lot">
+  <p class="lbl">04 · Fitting it in</p>
+  <h2>On a standard 50 × 100 Portland lot</h2>
+  <p class="sub">Most inner Southeast lots are 50 × 100, 5,000 sq ft, with the house in the middle third. That leaves a backyard around 50 × 35 to 40 ft, less any deck. Here's what that means for these three.</p>
+
+  <figure class="plan">
+    <svg viewBox="0 0 760 400" role="img" aria-label="Schematic 50 by 100 foot lot showing street, house, deck, hot tub, sauna and possible ADU zones">
+      <!-- lot: 100ft deep (x) by 50ft wide (y). ~6.6px/ft, origin 40,40. street on the right -->
+      <rect class="lot" x="40" y="40" width="660" height="330"/>
+      <text x="706" y="210" class="m">street</text>
+      <text x="44" y="30" class="m">back fence</text>
+      <!-- house: ~35 ft deep, 42 ft wide, 27 ft setback, 4 ft side yards -->
+      <rect class="house" x="292" y="66" width="230" height="278"/>
+      <text x="380" y="210">house</text>
+      <!-- deck 11 x 19 -->
+      <rect class="deck" x="219" y="80" width="73" height="125"/>
+      <text x="226" y="146" class="m">deck</text>
+      <!-- hot tub 8 x 8 off the deck end -->
+      <rect class="zone" x="228" y="216" width="53" height="53"/>
+      <text x="224" y="286" class="m">hot tub</text>
+      <!-- ADU zone ~19 x 30 -->
+      <rect class="zone2" x="48" y="48" width="125" height="200"/>
+      <text x="60" y="140">ADU zone</text>
+      <text x="60" y="156" class="m">if it happens</text>
+      <!-- sauna 8 x 8 -->
+      <rect class="zone" x="48" y="308" width="53" height="53"/>
+      <text x="110" y="338" class="m">sauna 8 × 8</text>
+      <!-- side yards -->
+      <line class="dim" x1="560" y1="40" x2="560" y2="66"/>
+      <line class="dim" x1="560" y1="344" x2="560" y2="370"/>
+      <text x="566" y="60" class="m">3–4 ft side yard</text>
+      <text x="566" y="362" class="m">3–4 ft side yard</text>
+      <text x="44" y="392" class="m">100 ft deep · 50 ft wide · schematic, not to survey</text>
+    </svg>
+    <figcaption class="lbl">Schematic. The ADU and sauna compete for the same back corner, which is why the ADU decision comes first.</figcaption>
+  </figure>
+
+  <div class="two">
+    <div>
+      <h3>What a typical city lot changes</h3>
+      <ul class="bullets">
+        <li><b>Access is the hidden cost.</b> With 3 to 4 ft side yards and no alley, a hot tub probably needs a crane, an ADU means hand carrying everything, and prefab or modular means a crane over the house.</li>
+        <li><b>Old 100A panels</b> can't take a tub plus a sauna. Upgrade to 200A (~$2.5 to $5k), more if an ADU's coming. Do it once.</li>
+        <li><b>An ADU costs you the kids' yard.</b> Even 400 sq ft takes most of a 35 ft deep backyard. The timing can work, though: build it when the trampoline would have come down anyway.</li>
+        <li><b>Two stories keeps some yard:</b> a 400 sq ft footprint × 2. It costs more per foot, the stairs rule out aging parents, and the upstairs windows look down on the tub.</li>
+        <li><b>The 20% cap</b> is ~1,000 sq ft of outbuildings on 5,000 sq ft. That's enough for an ADU or a sauna plus shed, but tight for both.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Where things go</h3>
+      <ul class="bullets">
+        <li><b>Hot tub:</b> right off the end of the deck on its own pad. Close to the door, partly sheltered, on the side nearest the panel.</li>
+        <li><b>Sauna:</b> a back corner, with a paver path and a rinse shower. With an ADU, build the sauna into it instead, where it doesn't count against the cap.</li>
+        <li><b>ADU:</b> along the back fence, if it happens.</li>
+        <li><b>Watch for</b> running bamboo near any foundation or pad, and a neighbor's big tree near the back fence. Its roots can limit where a foundation goes.</li>
+      </ul>
+      <p class="callout"><b>Realistic read:</b> the tub and sauna fit easily and don't need to wait on the ADU, as long as the panel upgrade is sized for the future. If an ADU happens on a 50 × 100, lean toward a 400 to 500 sq ft studio or a two-story 800.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="blk" id="next">
+  <p class="lbl">05 · Next steps</p>
+  <h2>What to do first</h2>
+  <ol class="steps">
+    <li><span><b>Pull the lot on portlandmaps.com:</b> zone, lot size, overlays, trees, sewer.</span></li>
+    <li><span><b>Book a free 15-minute Early Assistance call</b> with the city. Ask about ADU vs detached duplex, coverage, and any neighbor tree root zones.</span></li>
+    <li><span><b>Have an electrician do a load calc</b> covering all three projects. That's when you size the service upgrade.</span></li>
+    <li><span><b>Measure the narrowest point of each side yard.</b> It decides crane or no crane, and prefab or stick-built.</span></li>
+    <li><span><b>Talk to someone who's built one.</b> Ask about all-in cost vs the bid, where overruns came from (sewer, trees, electrical), fixed price or cost-plus, permit time and correction rounds, which fee route they used, the actual property tax increase, what they'd change for privacy and sound, and whether they'd do prefab next time.</span></li>
+    <li><span><b>Hot tub:</b> wet-test at a couple of dealers this winter. Oregon Hot Tub carries Hot Spring and Caldera, Emerald Outdoor Living carries Bullfrog, plus Arctic Spas and Marquis Spas of Portland.</span></li>
+    <li><span><b>Sauna:</b> decide barrel vs a Den-style cabin, and DIY vs carpenter.</span></li>
+  </ol>
+
+  <h3>Still unconfirmed</h3>
+  <ul class="bullets">
+    <li>Current city fee amounts. This uses the city's 2023 sample, ~$19k.</li>
+    <li>Tree mitigation fee per inch. Title 11 is being rewritten in 2026 to 2027.</li>
+    <li>Whether a detached duplex gets the same owner-on-site tenant exemptions.</li>
+    <li>2026 list prices for Bullfrog, Caldera and Marquis.</li>
+    <li>Whether lenders count projected ADU rent on construction or renovation loans.</li>
+  </ul>
+</section>
+
+<section class="blk" id="sources">
+  <p class="lbl">Sources</p>
+  <ul class="src">
+    <li><a href="https://www.portland.gov/ppd/zoning-land-use/zoning-code-overview/adu-zoning">Portland ADU zoning</a></li>
+    <li><a href="https://www.portland.gov/ppd/residential-permitting/adu-sdc-waiver">ADU fee (SDC) waiver</a></li>
+    <li><a href="https://www.portland.gov/ppd/current-fee-schedules/housing-sdc-exemption">Housing SDC exemption, through Sep 2028</a></li>
+    <li><a href="https://www.portland.gov/code/30/01/085">Portland relocation assistance</a></li>
+    <li><a href="https://oregon.public.law/statutes/ORS_90.427">ORS 90.427, termination of tenancies</a></li>
+    <li><a href="https://www.portland.gov/ppd/residential-permitting/home-projects/garage-shed-and-accessory-structures">Accessory structures under 200 sq ft</a></li>
+    <li><a href="https://www.portland.gov/ppd/residential-permitting/residential-electrical-permits">Residential electrical permits</a></li>
+    <li><a href="https://www.portland.gov/trees/title-11/2026treecodeupdate">2026 tree code update</a></li>
+    <li><a href="https://www.multco.us/health/staying-healthy/wood-burning-restrictions">Multnomah County wood burning restrictions</a></li>
+    <li><a href="https://multco.us/info/accessory-dwelling-units">Multnomah County on ADU property tax</a></li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/25705824/">Kuopio sauna study, JAMA IM 2015</a></li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/30077204/">Mayo Clinic Proceedings sauna review, 2018</a></li>
+    <li><a href="https://sauna.fi/?p=12316">Finnish Sauna Society on children</a></li>
+    <li><a href="https://pubmed.ncbi.nlm.nih.gov/18471223/">Sauna deaths and alcohol, J Forensic Sci 2008</a></li>
+    <li><a href="https://www.cpsc.gov/content/cpsc-warns-of-hot-tub-temperatures">CPSC on hot tub temperatures</a></li>
+    <li><a href="https://www.cdc.gov/healthy-swimming/prevention/preventing-hot-tub-rash.html">CDC on hot tub rash</a></li>
+    <li><a href="https://www.jacuzzi.com/en-us/What-is-a-Saltwater-Hot-Tub.html">Jacuzzi on saltwater tubs</a></li>
+    <li><a href="https://www.hotspring.com/?p=2056">Hot Spring FreshWater salt system</a></li>
+    <li><a href="https://denoutdoors.com/collections/sauna-wellness">Den Outdoors sauna plans</a></li>
+    <li><a href="https://callmepower.com/or/utility/portland-general-electric">PGE residential rates</a></li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="wrap"><p class="lbl">Researched with Claude, Nov 2026. Numbers are ranges for planning, not quotes.</p></footer>
+
+<script>
+// highlight the subnav item for the section in view
+const links = [...document.querySelectorAll('.subnav a')];
+const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+const io = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(a => a.removeAttribute('aria-current'));
+    const a = map.get(e.target.id);
+    if (!a) return;
+    a.setAttribute('aria-current', 'true');
+    // scroll only the nav strip sideways; never the page
+    const nav = a.parentElement;
+    if (nav.scrollWidth > nav.clientWidth) {
+      nav.scrollLeft += a.getBoundingClientRect().left - nav.getBoundingClientRect().left - 8;
+    }
+  });
+}, { rootMargin:'-40% 0px -55% 0px' });
+map.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+</script>
+</body>
+</html>

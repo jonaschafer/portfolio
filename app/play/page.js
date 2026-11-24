@@ -8,6 +8,16 @@ export const metadata = {
 
 const projects = [
   {
+    id: 'backyard',
+    name: 'Backyard',
+    description:
+      'We keep talking about a hot tub, a sauna and maybe an ADU out back. They all fight for the same small city yard and the same electrical panel, so I researched them together: what each costs to buy and run, salt vs chlorine, sauna health claims sorted by how good the evidence is, house rules for teens and their friends, Portland ADU rules and tenant law, and how it all fits on a 50 × 100 lot.',
+    date: '2026.11.23',
+    type: 'HTML/CSS',
+    tags: ['Research', 'Claude'],
+    path: '/play/prototypes/backyard',
+  },
+  {
     id: 'carscout',
     name: 'carscout',
     description:
