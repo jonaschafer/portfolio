@@ -113,6 +113,10 @@
   .preview-tag { display: none; position: absolute; left: 50%; top: 10px; transform: translateX(-50%); background: var(--paper); color: var(--ink); padding: 6px 14px; border-radius: 99px; font-size: 15px; box-shadow: 0 4px 12px rgba(0,0,0,.3); z-index: 2; white-space: nowrap; }
   .previewing .preview-tag { display: block; }
 
+  .buy { position: fixed; right: 20px; bottom: 14px; font-size: 14px; font-style: italic; text-decoration: none; opacity: .6; z-index: 5; }
+  .buy:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 1100px) { .buy { position: static; display: block; text-align: right; padding: 0 20px 18px; } }
+
   /* ---------- Rules drawer ---------- */
   .scrim { position: fixed; inset: 0; background: rgba(10, 4, 0, .45); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 20; }
   .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 100vw); background: var(--paper); color: var(--ink); z-index: 21; transform: translateX(102%); transition: transform .38s cubic-bezier(.2,.8,.2,1); box-shadow: -20px 0 40px rgba(0,0,0,.35); display: flex; flex-direction: column; }
@@ -199,6 +203,8 @@
       </div>
     </aside>
   </main>
+
+  <a class="buy" href="https://maisondubuis.fr/products/letoile-du-nord" target="_blank" rel="noopener">Buy this board ↗</a>
 
   <div class="scrim" id="scrim"></div>
   <aside class="drawer" id="drawer" aria-label="Rules" aria-hidden="true">
