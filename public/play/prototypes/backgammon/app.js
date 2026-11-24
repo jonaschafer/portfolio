@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=24'
-import * as C from './coach.js?v=24'
+import * as E from './engine.js?v=25'
+import * as C from './coach.js?v=25'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -531,7 +531,8 @@ function renderAdvice() {
     else if (S.turns.length === 1) html = `<b>Only one way to play this roll.</b> Move ${C.plainMove(b.steps, 0)}.`
     else {
       const why = b.isBook ? ' That’s the standard first move for this roll.' : ' ' + hintWhy(b.turn, S.steps.concat(b.steps))
-      html = `<b>${headline(b)}</b> ${S.steps.length ? 'From here, I’d' : 'I’d'} move ${C.plainMove(b.steps, 0)}.${why}<p class="hint-line">Press Show me to see it on the board.</p>`
+      const noHit = S.steps.length || b.isBook ? '' : C.whyNotHit(S.turnStart, b.turn, S.turns)
+      html = `<b>${headline(b)}</b> ${S.steps.length ? 'From here, I’d' : 'I’d'} move ${C.plainMove(b.steps, 0)}.${why}${noHit}<p class="hint-line">Press Show me to see it on the board.</p>`
     }
     S.adviceHTML = html.replace(/\b(back checkers?)\b/g, '<a class="term" data-rule="backcheckers">$1</a>')
   }

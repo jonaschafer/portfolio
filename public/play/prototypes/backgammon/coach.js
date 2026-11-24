@@ -2,7 +2,7 @@
 // happening on the board right now. Everything is in the player's numbering
 // (cream moves 24 down to 1). Brown's points are flipped (its j = your 25 - j).
 
-import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=24'
+import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=25'
 
 export const term = (id, text) => `<a class="term" data-rule="${id}">${text}</a>`
 
@@ -321,3 +321,27 @@ export function blockedText(reason, from, dice) {
 }
 
 export { evaluate, winProb }
+
+// ---------- Why not hit? ----------
+// When the recommended move passes on a hit you could make, say why.
+// A hit on your point p only costs Brown p steps (that checker had p to go
+// before reaching your side of the board), so deep hits in your own home
+// board barely hurt it, while your lone checker there sits right where
+// Brown comes back in.
+export function whyNotHit(before, best, turns) {
+  if (best.steps.some((x) => x.hit)) return ''
+  const h = turns.find((t) => t.steps.some((x) => x.hit))
+  if (!h) return ''
+  const fh = features(before, h.pos, h.steps, 0)
+  const fb = features(before, best.pos, best.steps, 0)
+  const at = fh.hitAt.slice().sort((a, b) => a - b)
+  const cost = at.reduce((n, p) => n + p, 0)
+  const out = []
+  if (cost <= 8) out.push(`Brown’s checker there had barely started its trip, so the hit only sets Brown back ${cost} step${cost > 1 ? 's' : ''}.`)
+  const lone = fh.blots.find((p) => p <= 6 && at.includes(p))
+  const back = fh.shots > fb.shots ? `Brown hits back with ${shotsTxt(fh.shots)}, compared with ${fb.shots} after my move.` : ''
+  if (lone) out.push(`Your checker would sit alone on ${lone}, right where Brown comes back in. ${back}`.trim())
+  else if (back) out.push(back)
+  if (!out.length) out.push('The other move just does more for you here.')
+  return `<p><b>Why not hit on ${list(at)}?</b> You could, moving ${plainMove(h.steps, 0)}. ${out.join(' ')}</p>`
+}
