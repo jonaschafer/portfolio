@@ -136,7 +136,7 @@
   .rules h3 { font-weight: 600; font-size: 21px; margin: 0 0 6px; }
   .rules h4 { font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 26px 0 0; }
   .rules p { margin: 0 0 10px; }
-  .rules ul { margin: 0 0 10px; padding-left: 20px; }
+  .rules ul, .rules ol { margin: 0 0 10px; padding-left: 20px; }
   .rules li { margin: 3px 0; }
   .rules table { border-collapse: collapse; width: 100%; font-size: 16px; margin: 6px 0 12px; }
   .rules td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
@@ -258,13 +258,30 @@
       </section>
 
       <section id="r-hitting"><h3>Hitting and the bar</h3>
-        <p>A single checker alone on a point is a <b>blot</b>. If the other side lands on it, the blot is <b>hit</b>: it goes to the bar and has to start over from the far end.</p>
-        <p>Hitting is a big swing. A checker hit on your 6-point loses 19 pips of progress.</p>
+        <p>A checker sitting alone on a point is a <b>blot</b>. If the other side lands a checker exactly on it, that’s a <b>hit</b>:</p>
+        <ol>
+          <li>The hitting checker takes the point.</li>
+          <li>The lone checker gets picked up and put on the <b>bar</b>, the strip down the middle of the board.</li>
+          <li>It has to start its whole trip over from the far end.</li>
+        </ol>
+        <p>You can’t hit a point with two or more checkers on it. That’s why pairs are safe.</p>
       </section>
 
-      <section id="r-entering"><h3>Coming in from the bar</h3>
-        <p>If you have a checker on the bar, you can’t move anything else until it comes back in. It enters in Brown’s home board: a 1 enters on your 24-point, a 2 on 23, up to a 6 on 19.</p>
-        <p>If the point for both numbers is blocked, you can’t enter and you lose the turn. If Brown has all six home points made, you’re <b>closed out</b> until one opens up.</p>
+      <section id="r-entering"><h3>Coming back in from the bar</h3>
+        <p>If you have a checker on the bar, bringing it back in is the first thing you do on your turn. Nothing else can move until it’s in.</p>
+        <p>It comes in on the <b>other side’s home board</b>, using one of your dice to pick the point:</p>
+        <table>
+          <tr><td>Roll</td><td>You come in on</td><td>Brown comes in on</td></tr>
+          <tr><td>1</td><td>24</td><td>1</td></tr>
+          <tr><td>2</td><td>23</td><td>2</td></tr>
+          <tr><td>3</td><td>22</td><td>3</td></tr>
+          <tr><td>4</td><td>21</td><td>4</td></tr>
+          <tr><td>5</td><td>20</td><td>5</td></tr>
+          <tr><td>6</td><td>19</td><td>6</td></tr>
+        </table>
+        <p>So you come in at the top right, at the very start of your trip. Brown comes in at the bottom right, in your home board.</p>
+        <p>A point with two or more of the other side’s checkers is closed. If both of your dice point at closed spots, you can’t come in and you lose the turn. If Brown owns all six points, you’re <b>closed out</b> until one opens. After it comes in, use the other die on any checker.</p>
+        <p class="aside">On this board, the little boxes over 19 to 24 show which roll brings you in where. Gold ones match your dice; crossed-out ones are closed.</p>
       </section>
 
       <section id="r-bearoff"><h3>Bearing off</h3>
@@ -346,6 +363,6 @@
     </div>
   </aside>
 
-  <script type="module" src="/play/prototypes/backgammon/app.js?v=17"></script>
+  <script type="module" src="/play/prototypes/backgammon/app.js?v=18"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 // happening on the board right now. Everything is in the player's numbering
 // (cream moves 24 down to 1). Brown's points are flipped (its j = your 25 - j).
 
-import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=17'
+import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=18'
 
 export const term = (id, text) => `<a class="term" data-rule="${id}">${text}</a>`
 
@@ -199,8 +199,13 @@ export function explainBrown(before, after, steps, dice, seen) {
     const at = list(f.hitAt)
     if (!seen.has('gotHit')) {
       seen.add('gotHit')
-      lines.push(`Brown ${term('hitting', 'hit')} your checker on ${at}. It goes to the ${term('hitting', 'bar')} in the middle, and on your next turn it has to come back in through Brown’s home board (top right) before you can move anything else.`)
+      lines.push(`Brown ${term('hitting', 'hit')} your checker on ${at}. Because it was alone, Brown’s checker knocked it off the point and onto the ${term('hitting', 'bar')}, the strip in the middle. On your turn it has to come back in on Brown’s home board (top right, 19 to 24) before you can move anything else.`)
     } else lines.push(`Brown hit your checker on ${at}. Bring it in from the bar first next turn.`)
+  }
+  if (steps.some((x) => x.from === 25) && !seen.has('brownEnter')) {
+    seen.add('brownEnter')
+    const at = steps.filter((x) => x.from === 25).map((x) => 25 - x.to)
+    lines.push(`Brown brought its checker back in from the bar on your ${list(at)}. Brown comes in on your home board (bottom right): its 1 lands on your 1, its 6 on your 6. That’s why owning points there matters: each one is a spot Brown can’t come in on.`)
   }
   const hB = homePoints(after[1])
   if (f.made.includes(20)) lines.push(`Brown now has two checkers on 20, its best point. You can’t land there anymore.`)
@@ -272,8 +277,8 @@ export function tipForRoll(pos, dice, turns, ctx) {
     }
   }
   if (me[25] > 0) {
-    if (once('enter')) return `You’re on the bar, so that checker has to ${term('entering', 'come in')} first. It enters Brown’s home board, top right: a 1 lands on 24, a 6 on 19. Points with two or more Brown checkers are closed.`
-    return `Enter from the bar first.`
+    if (once('enter')) return `One of your checkers is on the ${term('hitting', 'bar')} (the strip in the middle) because Brown landed on it while it was alone. Before you can move anything else, it has to ${term('entering', 'come back in')} on Brown’s home board, top right.<p>Your dice pick the spot: a 1 brings it in on 24, a 2 on 23, and so on up to a 6 on 19. The little boxes over those points show it, and the gold ones are what you rolled. It can’t come in where Brown has two or more checkers.</p>`
+    return `You’re on the bar, so bring that checker in first. The gold boxes over 19 to 24 show where your dice let it land.`
   }
   if (dice[0] === dice[1] && once('doubles')) return `${term('doubles', 'Doubles')}! You play a ${dice[0]} four times. Move one checker four times, four checkers once, or any mix.`
   if (!contact(pos)) {

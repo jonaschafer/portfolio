@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=17'
-import * as C from './coach.js?v=17'
+import * as E from './engine.js?v=18'
+import * as C from './coach.js?v=18'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -166,6 +166,18 @@ function render() {
     s += `<path d="M830 296 L120 296 Q92 296 92 320 Q92 344 120 344 L846 344" fill="none" stroke="#f1e4c6" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="8 7" marker-end="url(#ahC)"/>`
     if (!S.dice && !S.openDice) s += `<text x="275" y="326" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" font-size="17" fill="#f1e4c6" fill-opacity=".85">you move this way, 24 down to 1, then off</text>`
   }
+  // On the bar: which die brings it in where. You come in on Brown's home
+  // board (top right): a 1 lands on 24 ... a 6 on 19.
+  if (S.coach && !pv && pos[0][25] > 0 && (S.phase === 'roll' || S.phase === 'move')) {
+    const live = S.phase === 'move' ? S.rem : []
+    for (let h = 19; h <= 24; h++) {
+      const d = 25 - h, x = px(h), y = 288
+      const blocked = pos[1][25 - h] >= 2
+      const on = !blocked && live.includes(d)
+      s += `<g transform="translate(${x},${y})" opacity="${blocked ? 0.45 : 1}"><rect x="-9" y="-9" width="18" height="18" rx="4" fill="${on ? '#e2b75c' : 'none'}" stroke="${blocked ? '#e9a0a0' : '#e2b75c'}" stroke-width="1.5"/><text y="4.5" text-anchor="middle" font-family="Newsreader, serif" font-size="13" font-weight="700" fill="${on ? '#2a1a06' : '#e9dcbc'}">${d}</text>${blocked ? '<path d="M-9 -9 L9 9" stroke="#e9a0a0" stroke-width="1.5"/>' : ''}</g>`
+    }
+    s += `<text x="${px(19) - 22}" y="292" text-anchor="end" font-family="Newsreader, serif" font-style="italic" font-size="13" fill="#e2b75c">roll this to come in →</text>`
+  }
   // destination glows (under checkers)
   if (showOpts && S.dests) {
     for (const [to] of S.dests) {
@@ -175,12 +187,13 @@ function render() {
     }
   }
   // checkers on points
-  const hide = S.hide
+  // checkers currently in flight are hidden from their landing spot
+  const hidden = (side, pt) => (S.hide || []).filter((h) => h.side === side && h.pt === pt).length
   for (let h = 1; h <= 24; h++) {
     const n0 = pos[0][h], n1 = pos[1][25 - h]
     const side = n0 ? 0 : 1, n = n0 || n1
     let shown = n
-    if (hide && hide.side === side && (side === 0 ? hide.pt : 25 - hide.pt) === h) shown = n - 1
+    shown = n - hidden(side, side === 0 ? h : 25 - h)
     for (let k = 0; k < shown; k++) {
       const cls = side === 0 && k === n - 1 && S.sel === h && !pv ? 'sel' : ''
       s += checker(px(h), stackY(h, k, n), side, cls)
@@ -189,10 +202,10 @@ function render() {
   // bar and tray
   for (const side of [0, 1]) {
     const nb = pos[side][25]
-    const hb = hide && hide.side === side && hide.pt === 25 ? 1 : 0
+    const hb = hidden(side, 25)
     for (let k = 0; k < nb - hb; k++) { const [x, y] = slotXY(side, 25, k, nb); s += checker(x, y, side) }
     const no = pos[side][0]
-    const ho = hide && hide.side === side && hide.pt === 0 ? 1 : 0
+    const ho = hidden(side, 0)
     for (let k = 0; k < no - ho; k++) { const [x, y] = slotXY(side, 0, k, no); s += slice(x, y, side) }
   }
   // movable checkers get a brass ring; the selected one gets a full glow
@@ -335,29 +348,54 @@ function say(kind, html, acts) {
 }
 
 // ---------- Animation ----------
-function fly(side, from, to, before, after, ms) {
-  if (reduced) return Promise.resolve()
-  const a = slotXY(side, from, before[side][from] - 1, before[side][from])
-  const b = slotXY(side, to, after[side][to] - 1, after[side][to])
-  S.hide = { side, pt: to }
-  render()
-  const g = document.createElementNS(NS, 'g')
-  g.innerHTML = to === 0 ? checker(0, 0, side) : checker(0, 0, side)
-  const node = g.firstChild
-  $('#fly').append(g)
+function tween(node, a, b, ms) {
   const lift = Math.min(70, Math.hypot(b[0] - a[0], b[1] - a[1]) * 0.18)
   return new Promise((res) => {
     const t0 = performance.now()
     const tick = (t) => {
-      let k = Math.min(1, (t - t0) / ms)
+      const k = Math.min(1, (t - t0) / ms)
       const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2
       const x = a[0] + (b[0] - a[0]) * e, y = a[1] + (b[1] - a[1]) * e - Math.sin(Math.PI * e) * lift
       node.setAttribute('transform', `translate(${x},${y}) scale(${1 + Math.sin(Math.PI * e) * 0.08})`)
       if (k < 1) requestAnimationFrame(tick)
-      else { g.remove(); S.hide = null; res() }
+      else res()
     }
     requestAnimationFrame(tick)
   })
+}
+function floating(side, xy) {
+  const g = document.createElementNS(NS, 'g')
+  g.innerHTML = checker(xy[0], xy[1], side)
+  $('#fly').append(g)
+  return g
+}
+
+// Move one checker. On a hit, the lone checker it lands on stays put until
+// the hitter arrives, then gets picked up and carried to the bar.
+async function fly(side, from, to, before, after, ms) {
+  if (reduced) return
+  const v = 1 - side
+  const hit = to !== 0 && after[v][25] > before[v][25]
+  const a = slotXY(side, from, before[side][from] - 1, before[side][from])
+  const b = slotXY(side, to, after[side][to] - 1, after[side][to])
+  const victimAt = hit ? slotXY(v, 25 - to, 0, 1) : null
+  S.hide = [{ side, pt: to }].concat(hit ? [{ side: v, pt: 25 }] : [])
+  render()
+  const victim = hit ? floating(v, victimAt) : null
+  const mover = floating(side, a)
+  await tween(mover.firstChild, a, b, ms)
+  mover.remove()
+  if (hit) {
+    S.hide = [{ side: v, pt: 25 }]
+    render()
+    // a beat so you see the hit happen, then off to the bar
+    victim.firstChild.innerHTML += `<circle r="${CR + 4}" fill="none" stroke="#e2b75c" stroke-width="3"/>`
+    await wait(Math.max(250, ms * 0.6))
+    const barXY = slotXY(v, 25, after[v][25] - 1, after[v][25])
+    await tween(victim.firstChild, victimAt, barXY, Math.max(450, ms))
+    victim.remove()
+  }
+  S.hide = null
 }
 
 async function shake(owner, dice) {
@@ -438,6 +476,7 @@ function startHumanTurn(dice) {
     return render()
   }
   S.phase = 'move'
+  selectBarIfNeeded()
   const tip = C.tipForRoll(S.pos, dice, S.turns, { seen: S.seen, isOpening: S.isOpening })
   if (tip) say('tip', tip)
   if (!S.seen.has('howToMove')) {
@@ -485,6 +524,13 @@ async function clickPoint(pt) {
   render()
 }
 
+// When you're on the bar that's the only checker that can move, so pick it
+// up for you and light up where it can come in.
+function selectBarIfNeeded() {
+  if (S.phase !== 'move' || !S.pos[0][25]) return
+  if (E.stepOptions(S.pos, 0, S.rem, S.keys).some((o) => o.from === 25)) { S.sel = 25; S.dests = computeDests(25) }
+}
+
 async function playPath(path) {
   S.busy = true
   S.sel = null; S.dests = null
@@ -494,9 +540,10 @@ async function playPath(path) {
     const r = E.step(S.pos, 0, o.from, o.to)
     S.pos = r.pos; S.rem = E.removeOne(S.rem, o.die); S.steps = S.steps.concat({ ...o, hit: r.hit })
     await fly(0, o.from, o.to, before, S.pos, 230)
-    if (r.hit && !S.seen.has('youHit')) { S.seen.add('youHit'); say('note', `Hit! That Brown checker goes to the bar and has to start over from your home board.`) }
+    if (r.hit && !S.seen.has('youHit')) { S.seen.add('youHit'); say('note', `Hit! That Brown checker went to the bar, the strip in the middle. On Brown’s turn it has to come back in on your home board (bottom right, points 1 to 6) before Brown can move anything else. Any point where you have two or more checkers is closed to it.`) }
   }
   S.busy = false
+  selectBarIfNeeded()
   render()
 }
 
@@ -505,6 +552,7 @@ function undo() {
   if (S.phase !== 'move' || !S.undo.length || S.busy) return
   const u = S.undo.pop()
   S.pos = u.pos; S.rem = u.rem; S.steps = u.steps; S.sel = null; S.dests = null
+  selectBarIfNeeded()
   render()
 }
 
