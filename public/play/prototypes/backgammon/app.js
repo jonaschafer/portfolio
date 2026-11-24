@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=16'
-import * as C from './coach.js?v=16'
+import * as E from './engine.js?v=17'
+import * as C from './coach.js?v=17'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -110,7 +110,7 @@ function staticBoard() {
         <line x1="33" y1="46" x2="33" y2="586" stroke="#c9b27a" stroke-width="4" stroke-dasharray="1.6 1.6"/>
         <rect x="27" y="560" width="12" height="22" rx="3" fill="#d8c18a" stroke="#8e7744"/>
         <path d="M33 582 L33 600 L44 614" fill="none" stroke="#1d4a31" stroke-width="6" stroke-linecap="round"/>`
-  s += `<g id="dyn"></g><g id="fly"></g><g id="hits"></g>`
+  s += `<g id="dyn"></g><g id="fly"></g><g id="hits"></g><g id="badges"></g>`
   svg.innerHTML = s
   // click targets
   let h = ''
@@ -212,15 +212,20 @@ function render() {
       }
     }
   }
-  // danger: how many of Brown's rolls hit each of your blots
-  if (S.coach && S.threats && !pv && S.phase !== 'opening' && S.phase !== 'over' && E.contact(pos)) {
+  // danger: how many of Brown's rolls hit each of your blots. Drawn above the
+  // click targets so they can be hovered; a click still reaches the point.
+  let badges = ''
+  if (S.coach && S.threats && !pv && !S.replaying && S.phase !== 'opening' && S.phase !== 'over' && E.contact(pos)) {
     const r = E.shotRisk(pos, 0)
     for (const b in r.byPoint) {
       const [x, y] = slotXY(0, +b, 0, 1)
       const by = isTop(+b) ? y + 20 : y - 20
-      s += `<g transform="translate(${x + 19},${by})"><circle r="11.5" fill="#b8402f" stroke="#fff4e2" stroke-width="1.5"/><text y="4.5" text-anchor="middle" font-family="Newsreader, serif" font-size="13.5" font-weight="700" fill="#fff">${r.byPoint[b]}</text></g>`
+      const n = r.byPoint[b]
+      const tip = `Brown can hit this checker with ${n} of its 36 possible rolls. It’s alone on ${b}, so if Brown lands here it goes to the bar. ${n <= 6 ? 'That’s fairly safe.' : n <= 12 ? 'That’s a real risk.' : 'That’s very likely.'} Put a second checker with it to make it safe.`
+      badges += `<g class="badge-dot" data-pt="${b}" data-tip="${tip}" transform="translate(${x + 19},${by})" style="cursor:help"><circle r="13" fill="transparent"/><circle r="11.5" fill="#b8402f" stroke="#fff4e2" stroke-width="1.5"/><text y="4.5" text-anchor="middle" font-family="Newsreader, serif" font-size="13.5" font-weight="700" fill="#fff">${n}</text></g>`
     }
   }
+  $('#badges').innerHTML = badges
   // arrows: coach's suggestion / better play (gold)
   if (pv) s += arrowPaths(pv.pos, pv.steps, 0, 'gold')
   else {
@@ -283,10 +288,14 @@ function renderControls() {
   if (S.preview) return add(btn('Back to the game', endPreview, 'primary', false, 'esc'))
   switch (S.phase) {
     case 'opening': add(btn(S.openDice ? 'Roll again' : 'Roll to start', rollOpening, 'primary pulse', false, 'space')); break
-    case 'roll': add(btn('Roll', humanRoll, 'primary pulse', false, 'space')); break
+    case 'roll':
+      if (S.replaying) { controls.innerHTML = `<span style="opacity:.7;font-style:italic;font-size:17px;padding:10px">Replaying Brown’s move…</span>`; break }
+      if (S.lastBrown && S.lastBrown.steps.length) add(btn('Replay Brown’s move', replayBrown, 'quiet', false, 'P'))
+      add(btn('Roll', humanRoll, 'primary pulse', false, 'space'))
+      break
     case 'move': {
       const complete = S.keys.has(E.key(S.pos))
-      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), ...(S.coach ? [btn('Show me', showMe, 'quiet', !E.stepOptions(S.pos, 0, S.rem, S.keys).length, 'S')] : []), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
+      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), ...(S.coach ? [btn(hintShown() ? 'Hide' : 'Show me', showMe, 'quiet', !E.stepOptions(S.pos, 0, S.rem, S.keys).length, 'S')] : []), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
       break
     }
     case 'pass': add(btn('OK', passTurn, 'primary', false, 'space')); break
@@ -310,6 +319,7 @@ function say(kind, html, acts) {
   const el = document.createElement('div')
   el.className = 'msg ' + kind
   const who = { tip: 'Coach', you: 'You', brown: 'Brown', note: '', sys: '' }[kind]
+  html = html.replace(/\b(back checkers?)\b/g, '<a class="term" data-rule="backcheckers">$1</a>')
   el.innerHTML = (who ? `<span class="who">${who}</span>` : '') + html
   if (acts && acts.length) {
     const box = document.createElement('div')
@@ -526,11 +536,17 @@ function bestFinish() {
 // "Show me": gold arrows for the best way to finish the turn from where
 // your checkers are now, plus a note on why. Only on request; it never
 // moves anything, and the arrows clear once you move a checker.
+const hintShown = () => !!(S.hint && S.hint.base === S.pos)
 function showMe() {
   if (S.phase !== 'move' || S.busy || !S.coach) return
+  // second press hides the arrows
+  if (hintShown()) { S.hint = null; return render() }
   const b = bestFinish()
   if (!b) { say('note', `You’ve used your whole roll. Press Done.`); return render() }
   S.hint = { base: S.pos, steps: b.steps }
+  // the note is said once per position; showing again just redraws the arrows
+  if (S.hintNoted === S.pos) return render()
+  S.hintNoted = S.pos
   say('tip', `${S.steps.length ? 'From here, I’d' : 'I’d'} move ${C.plainMove(b.steps, 0)}. ${b.isBook ? 'That’s the standard first move for this roll.' : hintWhy(b.turn, S.steps.concat(b.steps))}`)
   render()
 }
@@ -641,12 +657,32 @@ async function aiTurn(given) {
     await fly(1, st.from, st.to, b, S.pos, T().fly)
     if (S.speed !== 'step' && i < steps.length - 1) await wait(T().gap)
   }
-  S.lastBrown = { base: before, steps }
+  S.lastBrown = { base: before, steps, dice, after: S.pos }
   const lines = C.explainBrown(before, S.pos, steps, dice, S.seen)
   if (lines.length) say('brown', lines.map((l, i) => (i ? `<p>${l}</p>` : l)).join(''))
   if (E.gameResult(S.pos)) return gameOver()
   S.phase = 'roll'
   S.dice = null
+  render()
+}
+
+// Play Brown's last move again from where it started, then put the board back.
+async function replayBrown() {
+  if (S.phase !== 'roll' || S.busy || !S.lastBrown || !S.lastBrown.steps.length) return
+  const { base, steps, dice, after } = S.lastBrown
+  S.busy = true; S.replaying = true
+  S.pos = base; S.dice = dice; S.rem = E.diceList(dice); S.diceOwner = 1
+  render()
+  await wait(500)
+  for (const st of steps) {
+    const b = S.pos
+    S.pos = E.step(S.pos, 1, st.from, st.to).pos
+    S.rem = E.removeOne(S.rem, st.die)
+    await fly(1, st.from, st.to, b, S.pos, Math.max(500, T().fly))
+    await wait(250)
+  }
+  S.pos = after; S.dice = null; S.rem = []
+  S.busy = false; S.replaying = false
   render()
 }
 
@@ -685,6 +721,17 @@ function closeRules() { document.body.classList.remove('rules-open'); $('#drawer
 
 // ---------- Wiring ----------
 staticBoard()
+const tipEl = $('#tip')
+svg.addEventListener('mouseover', (e) => {
+  const t = e.target.closest('[data-tip]')
+  if (!t) return
+  tipEl.textContent = t.dataset.tip
+  const r = t.getBoundingClientRect(), box = $('#banner').getBoundingClientRect()
+  tipEl.style.left = `${Math.min(r.left - box.left + r.width / 2, box.width - 150)}px`
+  tipEl.style.top = `${r.top - box.top}px`
+  tipEl.classList.add('on')
+})
+svg.addEventListener('mouseout', (e) => { if (e.target.closest('[data-tip]')) tipEl.classList.remove('on') })
 svg.addEventListener('click', (e) => {
   const t = e.target.closest('[data-pt]')
   if (S.preview) return endPreview()
@@ -746,6 +793,7 @@ document.addEventListener('keydown', (e) => {
   } else if (k === 'u' || k === 'backspace') undo()
   else if (k === 'c') setCoach(!S.coach)
   else if (k === 's') showMe()
+  else if (k === 'p') replayBrown()
   else if (k === 'r' || k === '?') openRules()
 })
 

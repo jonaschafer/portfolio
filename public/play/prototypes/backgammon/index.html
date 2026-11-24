@@ -112,6 +112,8 @@
   .banner { position: relative; }
   .preview-tag { display: none; position: absolute; left: 50%; top: 10px; transform: translateX(-50%); background: var(--paper); color: var(--ink); padding: 6px 14px; border-radius: 99px; font-size: 15px; box-shadow: 0 4px 12px rgba(0,0,0,.3); z-index: 2; white-space: nowrap; }
   .previewing .preview-tag { display: block; }
+  .tip { position: absolute; z-index: 3; width: 280px; transform: translate(-50%, calc(-100% - 12px)); background: var(--paper); color: var(--ink); padding: 10px 13px; border-radius: 6px; font-size: 15px; line-height: 1.4; box-shadow: 0 8px 20px rgba(0,0,0,.35); pointer-events: none; opacity: 0; transition: opacity .12s; }
+  .tip.on { opacity: 1; }
 
   .buy { position: fixed; right: 20px; bottom: 14px; font-size: 14px; font-style: italic; text-decoration: none; opacity: .6; z-index: 5; }
   .buy:hover { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
@@ -176,6 +178,7 @@
   <main class="stage">
     <div class="table">
       <div class="banner" id="banner">
+        <div class="tip" id="tip" role="tooltip"></div>
         <div class="preview-tag" id="previewTag">Showing the better play · click the board to go back</div>
         <svg id="board" viewBox="0 0 1000 640" role="img" aria-label="Backgammon board"></svg>
       </div>
@@ -288,9 +291,13 @@
         <p>Your pip count is the total distance your checkers still have to travel: each checker’s point number added up (a checker on the bar counts 25). Both sides start at 167. Lower is better. It tells you who’s ahead in a race.</p>
       </section>
 
+      <section id="r-backcheckers"><h3>Back checkers</h3>
+        <p>Your two checkers that start on 24, deep in Brown’s home board. They have the farthest to travel, and they’re the ones Brown tries to trap by building points in front of them. Moving one of them early, or running them out before Brown’s wall goes up, keeps them from getting stuck.</p>
+      </section>
+
       <section id="r-blots"><h3>Blots and shots</h3>
         <p>Every blot is a risk. Count the <b>shots</b>: how many of Brown’s 36 possible rolls would hit it. A blot 6 or fewer points away from a Brown checker is a direct shot (11+ rolls). 7 to 12 away needs a combination and is much harder to hit.</p>
-        <p class="aside">With the coach on and “Show danger” checked, red numbers on your blots show exactly that count.</p>
+        <p class="aside">With the coach on and “Show danger” checked, red numbers on your blots show exactly that count. Hover one to see what it means.</p>
       </section>
 
       <section id="r-points"><h3>Making points</h3>
@@ -339,6 +346,6 @@
     </div>
   </aside>
 
-  <script type="module" src="/play/prototypes/backgammon/app.js?v=16"></script>
+  <script type="module" src="/play/prototypes/backgammon/app.js?v=17"></script>
 </body>
 </html>
