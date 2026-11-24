@@ -2,7 +2,7 @@
 // happening on the board right now. Everything is in the player's numbering
 // (cream moves 24 down to 1). Brown's points are flipped (its j = your 25 - j).
 
-import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=10'
+import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=11'
 
 export const term = (id, text) => `<a class="term" data-rule="${id}">${text}</a>`
 
@@ -229,7 +229,7 @@ export function tipForRoll(pos, dice, turns, ctx) {
     const b = OPENINGS[openingKey(dice)]
     if (b) {
       const [hi, lo] = openingKey(dice).split('')
-      return `First move of the game. With ${hi}-${lo}, the standard play is to move <b>${b.steps}</b>.<p>Why: ${b.why}</p>${once('openings') ? `<p>Every first roll has a standard move like this. They’re all listed under ${term('openings', 'opening moves')}. Press Hint to see it drawn on the board.</p>` : ''}`
+      return `First move of the game. With ${hi}-${lo}, the standard play is to move <b>${b.steps}</b> (gold arrows).<p>Why: ${b.why}</p>${once('openings') ? `<p>Every first roll has a standard move like this. They’re all listed under ${term('openings', 'opening moves')}.</p>` : ''}`
     }
   }
   if (me[25] > 0) {

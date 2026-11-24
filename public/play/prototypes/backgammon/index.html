@@ -40,6 +40,10 @@
   .seg button { background: none; border: 0; padding: 6px 16px; border-radius: 999px; cursor: pointer; font-size: 16px; opacity: .75; }
   .seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); opacity: 1; }
   .ghost { background: rgba(20, 8, 2, .35); border: 1px solid rgba(244, 234, 214, .18); border-radius: 999px; padding: 7px 16px; cursor: pointer; font-size: 16px; }
+  .coach-toggle[aria-pressed="true"] { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+  .coach-toggle[aria-pressed="true"]:hover { background: #fff6e4; }
+  body.no-coach .coach { display: none; }
+  body.no-coach .stage { grid-template-columns: minmax(0, 1fr); }
   .ghost:hover, .seg button:hover { opacity: 1; border-color: rgba(244, 234, 214, .4); }
 
   /* ---------- Stage ---------- */
@@ -159,6 +163,7 @@
       <button data-level="hard">Hard</button>
     </div>
     <button class="ghost" id="newGame">New game</button>
+    <button class="ghost coach-toggle" id="coachBtn" aria-pressed="true" title="Coach (C)">Coach on</button>
     <button class="ghost" id="rulesBtn">Rules</button>
     </div>
     <a class="back" href="/play">← Play</a>
@@ -279,7 +284,7 @@
 
       <section id="r-blots"><h3>Blots and shots</h3>
         <p>Every blot is a risk. Count the <b>shots</b>: how many of Brown’s 36 possible rolls would hit it. A blot 6 or fewer points away from a Brown checker is a direct shot (11+ rolls). 7 to 12 away needs a combination and is much harder to hit.</p>
-        <p class="aside">With “Show danger” on, red numbers on your blots show exactly that count.</p>
+        <p class="aside">With the coach on and “Show danger” checked, red numbers on your blots show exactly that count.</p>
       </section>
 
       <section id="r-points"><h3>Making points</h3>
@@ -328,6 +333,6 @@
     </div>
   </aside>
 
-  <script type="module" src="/play/prototypes/backgammon/app.js?v=10"></script>
+  <script type="module" src="/play/prototypes/backgammon/app.js?v=11"></script>
 </body>
 </html>

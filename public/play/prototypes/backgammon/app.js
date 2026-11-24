@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=10'
-import * as C from './coach.js?v=10'
+import * as E from './engine.js?v=11'
+import * as C from './coach.js?v=11'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -32,6 +32,7 @@ const S = {
   seen: new Set(store.get('seen', [])),
   score: store.get('score', { you: 0, brown: 0 }),
   threats: store.get('threats', true),
+  coach: store.get('coach', true),
   pause: store.get('pause', true),
   speed: store.get('speed', 'normal'),
   stepWaiter: null,
@@ -223,7 +224,7 @@ function render() {
     }
   }
   // danger: how many of Brown's rolls hit each of your blots
-  if (S.threats && !pv && S.phase !== 'opening' && S.phase !== 'over' && E.contact(pos)) {
+  if (S.coach && S.threats && !pv && S.phase !== 'opening' && S.phase !== 'over' && E.contact(pos)) {
     const r = E.shotRisk(pos, 0)
     for (const b in r.byPoint) {
       const [x, y] = slotXY(0, +b, 0, 1)
@@ -231,7 +232,7 @@ function render() {
       s += `<g transform="translate(${x + 19},${by})"><circle r="11.5" fill="#b8402f" stroke="#fff4e2" stroke-width="1.5"/><text y="4.5" text-anchor="middle" font-family="Newsreader, serif" font-size="13.5" font-weight="700" fill="#fff">${r.byPoint[b]}</text></g>`
     }
   }
-  // arrows: Brown's last move (dashed cream), hint / better play (gold)
+  // arrows: Brown's last move (dashed cream), coach's suggestion / better play (gold)
   if (pv) s += arrowPaths(pv.pos, pv.steps, 0, 'gold')
   else {
     if (S.lastBrown && S.steps.length === 0 && S.phase !== 'opening') s += arrowPaths(S.lastBrown.base, S.lastBrown.steps, 1, 'cream')
@@ -297,12 +298,17 @@ function renderControls() {
     case 'roll': add(btn('Roll', humanRoll, 'primary pulse', false, 'space')); break
     case 'move': {
       const complete = S.keys.has(E.key(S.pos))
-      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), btn('Hint', hint, 'quiet', !E.stepOptions(S.pos, 0, S.rem, S.keys).length, 'H'), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
+      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
       break
     }
     case 'pass': add(btn('OK', passTurn, 'primary', false, 'space')); break
     case 'review': add(btn('Try again', tryAgain, 'quiet', false, 'U'), btn('Keep my move', keepMove, 'primary', false, 'space')); break
-    case 'over': add(btn('New game', newGame, 'primary pulse', false, 'space')); break
+    case 'over': {
+      const r = E.gameResult(S.pos)
+      if (r) controls.insertAdjacentHTML('beforeend', `<span style="font-size:20px;font-style:italic;padding:10px 6px">${r.winner === 0 ? 'You win' : 'Brown wins'}${r.kind > 1 ? (r.kind === 2 ? ' a gammon' : ' a backgammon') : ''}.</span>`)
+      add(btn('New game', newGame, 'primary pulse', false, 'space'))
+      break
+    }
     case 'ai':
       if (S.stepWaiter) add(btn(`Brown’s next checker (${S.stepWaiter.i + 1} of ${S.stepWaiter.n})`, nextStep, 'primary pulse', false, 'space'))
       else controls.innerHTML = `<span style="opacity:.7;font-style:italic;font-size:17px;padding:10px">Brown is moving…</span>`
@@ -378,7 +384,7 @@ function newGame() {
   S.turnStart = null; S.turns = []; S.keys = new Set(); S.undo = []; S.steps = []
   S.sel = null; S.dests = null; S.hint = null; S.lastBrown = null; S.preview = null; S.review = null
   S.firstMove = true
-  S.stats = { best: 0, good: 0, inaccuracy: 0, mistake: 0, blunder: 0, book: 0, hints: 0 }
+  S.stats = { best: 0, good: 0, inaccuracy: 0, mistake: 0, blunder: 0, book: 0 }
   feed.innerHTML = ''
   if (!S.seen.has('welcome')) {
     S.seen.add('welcome')
@@ -442,6 +448,7 @@ function startHumanTurn(dice) {
   }
   // only one way to play it? say so
   if (S.turns.length === 1 && S.turns[0].steps.length < E.diceList(dice).length) say('note', `Only part of this roll can be played. That’s the rule: use what you can.`)
+  if (S.coach) suggest(false)
   render()
 }
 
@@ -493,6 +500,7 @@ async function playPath(path) {
     if (r.hit && !S.seen.has('youHit')) { S.seen.add('youHit'); say('note', `Hit! That Brown checker goes to the bar and has to start over from your home board.`) }
   }
   S.busy = false
+  if (S.coach) suggest(true)
   render()
 }
 
@@ -501,10 +509,11 @@ function undo() {
   if (S.phase !== 'move' || !S.undo.length || S.busy) return
   const u = S.undo.pop()
   S.pos = u.pos; S.rem = u.rem; S.steps = u.steps; S.sel = null; S.dests = null
+  if (S.coach) suggest(true)
   render()
 }
 
-// Hint never touches your moves. It finds the best way to finish the turn
+// Finds the best way to finish the turn
 // from where your checkers are right now and draws only the remaining steps.
 function bestFinish() {
   const score = new Map(S.turns.map((t) => [E.key(t.pos), t]))
@@ -529,15 +538,16 @@ function bestFinish() {
   return best && best.steps.length ? { ...best, isBook: best.turn === book } : null
 }
 
-function hint() {
-  if (S.phase !== 'move' || S.busy) return
+// The coach's suggestion: gold arrows for the best way to finish the turn
+// from where your checkers are now. It never moves anything for you.
+// `quiet` redraws the arrows without adding a note (after each checker you move).
+function suggest(quiet) {
+  if (S.phase !== 'move') return
   const b = bestFinish()
-  if (!b) { say('note', `You’ve used your whole roll. Press Done.`); return }
-  S.hint = { base: S.pos, steps: b.steps }
-  S.stats.hints++
-  const lead = S.steps.length ? 'From here, move' : 'Try this: move'
-  say('note', `${lead} ${C.plainMove(b.steps, 0)}. The gold arrows show it. ${b.isBook ? 'That’s the standard first move for this roll.' : hintWhy(b.turn, S.steps.concat(b.steps))}`)
-  render()
+  S.hint = b ? { base: S.pos, steps: b.steps } : null
+  // the opening tip already names the standard move
+  if (quiet || !b || b.isBook) return
+  say('tip', `I’d move ${C.plainMove(b.steps, 0)} (gold arrows). ${b.isBook ? 'That’s the standard first move for this roll.' : hintWhy(b.turn, S.steps.concat(b.steps))}`)
 }
 function hintWhy(t, steps) {
   const f = C.features(S.turnStart, t.pos, steps, 0)
@@ -558,6 +568,14 @@ async function done() {
     // Forced: nothing to grade.
     S.hint = null
     say('you', `You moved ${C.plainMove(S.steps, 0)}.<p style="color:var(--muted)">That was the only legal way to play this roll.</p>`)
+    if (E.gameResult(S.pos)) return gameOver()
+    S.phase = 'commit'; render()
+    await wait(T().after)
+    return aiTurn()
+  }
+  if (!S.coach) {
+    // Coach off: no grades, no pauses, just play.
+    S.hint = null
     if (E.gameResult(S.pos)) return gameOver()
     S.phase = 'commit'; render()
     await wait(T().after)
@@ -589,6 +607,7 @@ function tryAgain() {
   S.stats[S.review.grade]--
   S.pos = S.turnStart; S.rem = E.diceList(S.dice); S.steps = []; S.undo = []; S.sel = null; S.dests = null
   S.phase = 'move'; S.review = null
+  if (S.coach) suggest(true)
   say('note', `Same roll, ${S.dice[0]}-${S.dice[1]}. Have another look.`)
   render()
 }
@@ -658,7 +677,7 @@ function gameOver() {
   const st = S.stats
   const total = st.best + st.good + st.inaccuracy + st.mistake + st.blunder + st.book
   const clean = st.best + st.book + st.good
-  say('tip', `<b>${r.winner === 0 ? 'You win' : 'Brown wins'}</b>, ${kind} (${pts} point${pts > 1 ? 's' : ''}).<p>Your ${total} moves: ${st.book + st.best} best or book, ${st.good} good, ${st.inaccuracy} inaccurate, ${st.mistake + st.blunder} mistakes${st.hints ? `, ${st.hints} hint${st.hints > 1 ? 's' : ''}` : ''}. ${total ? `${Math.round((clean / total) * 100)}% solid.` : ''}</p>${S.level !== 'hard' && r.winner === 0 && clean / Math.max(1, total) > 0.7 ? `<p>Ready to try ${S.level === 'easy' ? 'Medium' : 'Hard'}?</p>` : ''}`)
+  say('tip', `<b>${r.winner === 0 ? 'You win' : 'Brown wins'}</b>, ${kind} (${pts} point${pts > 1 ? 's' : ''}).<p>Your ${total} moves: ${st.book + st.best} best or book, ${st.good} good, ${st.inaccuracy} inaccurate, ${st.mistake + st.blunder} mistakes. ${total ? `${Math.round((clean / total) * 100)}% solid.` : ''}</p>${S.level !== 'hard' && r.winner === 0 && clean / Math.max(1, total) > 0.7 ? `<p>Ready to try ${S.level === 'easy' ? 'Medium' : 'Hard'}?</p>` : ''}`)
   render()
 }
 
@@ -692,6 +711,17 @@ document.addEventListener('click', (e) => {
   if (t) { e.preventDefault(); openRules(t.dataset.rule) }
 })
 $('#rulesBtn').onclick = () => openRules()
+function setCoach(on) {
+  S.coach = on; store.set('coach', on)
+  document.body.classList.toggle('no-coach', !on)
+  const b = $('#coachBtn')
+  b.setAttribute('aria-pressed', String(on))
+  b.textContent = on ? 'Coach on' : 'Coach off'
+  if (on) { if (S.phase === 'move') suggest(S.steps.length > 0) }
+  else S.hint = null
+  render()
+}
+$('#coachBtn').onclick = () => setCoach(!S.coach)
 $('#closeRules').onclick = closeRules
 $('#scrim').onclick = closeRules
 document.querySelectorAll('.toc a').forEach((a) => (a.onclick = (e) => { e.preventDefault(); openRules(a.getAttribute('href').slice(3)) }))
@@ -731,8 +761,9 @@ document.addEventListener('keydown', (e) => {
     if (S.stepWaiter) return nextStep()
     ;({ opening: rollOpening, roll: humanRoll, move: done, pass: passTurn, review: keepMove, over: newGame }[S.phase] || (() => {}))()
   } else if (k === 'u' || k === 'backspace') undo()
-  else if (k === 'h') hint()
+  else if (k === 'c') setCoach(!S.coach)
   else if (k === 'r' || k === '?') openRules()
 })
 
+setCoach(S.coach)
 newGame()
