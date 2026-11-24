@@ -32,16 +32,22 @@ export default function Orbit({ people, today, site, calendar }) {
 
   return (
     <main className="ob" style={{ '--ob-bg': t.bg, '--ob-ink': t.ink, visibility: ready ? 'visible' : 'hidden' }}>
-      <div className="ob-wrap">
+      <div className="ob-wrap wide">
         <h1 className="ob-title">Orbit</h1>
         <p className="ob-statement">{statement}</p>
         {!calendar && (
           <p className="ob-small">Calendar not connected, so invite times skip the clash check.</p>
         )}
-        {due.length > 0 && <Section title="Due" people={due} today={today} site={site} />}
-        {waiting.length > 0 && <Section title="Waiting to hear back" people={waiting} today={today} site={site} />}
-        {planned.length > 0 && <Section title="Planned" people={planned} today={today} site={site} />}
-        {rest.length > 0 && <Section title="In orbit" people={rest} today={today} site={site} />}
+        <div className="ob-cols">
+          <div>
+            <Section title="Due" people={due} today={today} site={site} empty="Nobody's due. Nice." />
+          </div>
+          <div>
+            {waiting.length > 0 && <Section title="Waiting to hear back" people={waiting} today={today} site={site} />}
+            {planned.length > 0 && <Section title="Planned" people={planned} today={today} site={site} />}
+            {rest.length > 0 && <Section title="Done for now" people={rest} today={today} site={site} />}
+          </div>
+        </div>
         <div style={{ marginTop: 40 }}>
           {adding ? (
             <EditPanel person={{ name: '', every_days: 42, ideas: [] }} onDone={() => setAdding(false)} />
@@ -56,10 +62,11 @@ export default function Orbit({ people, today, site, calendar }) {
   )
 }
 
-function Section({ title, people, today, site }) {
+function Section({ title, people, today, site, empty }) {
   return (
     <section>
       <h2 className="ob-section">{title}</h2>
+      {!people.length && empty && <p className="ob-small">{empty}</p>}
       {people.map((p) => (
         <Card key={p.id} p={p} today={today} site={site} />
       ))}

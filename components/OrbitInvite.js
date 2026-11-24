@@ -18,7 +18,8 @@ export default function OrbitInvite({ invite, group, name: initialName }) {
   const [busy, setBusy] = useState(false)
 
   const booked = sent?.booked || (invite.status === 'booked' && invite.picked)
-  const what = invite.idea ? invite.idea.charAt(0).toLowerCase() + invite.idea.slice(1) : 'a hang'
+  // Ideas are written with their own capitals ("Dune: Part Three in Tigard"), so they start a sentence.
+  const what = invite.idea || 'A hang'
   const title = `${invite.idea || 'Hang'} with Jon`
 
   const tap = (i) => {
@@ -39,12 +40,22 @@ export default function OrbitInvite({ invite, group, name: initialName }) {
     else setSent({ closed: true })
   }
 
+  const needsName = (group || none) && !name.trim()
+  const ready2 = (picks.length > 0 || (none && note.trim())) && !needsName
+  const sendLabel = !picks.length && !none
+    ? 'Tap a time above'
+    : needsName
+      ? 'Add your name'
+      : group || none
+        ? 'Send to Jon'
+        : `Book ${slotLabel(invite.slots[picks[0]].start)}`
+
   let body
   if (booked) {
     body = (
       <>
         <p className="ob-statement">
-          Locked in: {slotLabel(booked.start)}, {what}. See you then.
+          {what}, {slotLabel(booked.start)}. Locked in, see you then.
         </p>
         <div className="ob-row">
           <a className="ob-btn solid" href={gcalLink({ title, ...booked })} target="_blank" rel="noreferrer">
@@ -64,7 +75,7 @@ export default function OrbitInvite({ invite, group, name: initialName }) {
     body = (
       <>
         <p className="ob-statement">
-          Jon's up for {what}. {group ? 'Tap every time that works.' : 'Tap a time that works.'}
+          {what} with Jon? {group ? 'Tap every time that works for you.' : 'Tap the time that works.'}
         </p>
         <div>
           {invite.slots.map((s, i) => (
@@ -94,14 +105,9 @@ export default function OrbitInvite({ invite, group, name: initialName }) {
           {none ? 'What works for you?' : 'Anything else? (optional)'}
         </div>
         <textarea value={note} onChange={(e) => setNote(e.target.value)} style={{ minHeight: 60 }} />
-        <div className="ob-row" style={{ marginTop: 16 }}>
-          <button
-            className="ob-btn solid"
-            style={{ fontSize: 19, padding: '10px 16px' }}
-            disabled={busy || (!picks.length && !(none && note.trim())) || ((group || none) && !name.trim())}
-            onClick={send}
-          >
-            {group || none ? 'Send' : 'Lock it in'}
+        <div className="ob-sendbar">
+          <button className="ob-btn solid" disabled={busy || !ready2} onClick={send}>
+            {sendLabel}
           </button>
         </div>
       </>

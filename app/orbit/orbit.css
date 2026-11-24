@@ -189,3 +189,34 @@
 .ob-slot:active {
   transform: scale(0.99);
 }
+
+/* The friend's one button stays on screen however long the list of times is. */
+.ob-sendbar {
+  position: sticky;
+  bottom: 0;
+  margin: 20px -20px 0;
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+  background: var(--ob-bg);
+  border-top: 1px solid color-mix(in srgb, var(--ob-ink) 25%, transparent);
+}
+.ob-sendbar .ob-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 19px;
+  padding: 12px 16px;
+}
+
+/* Jon's list: due on the left, everyone else on the right, on a wide screen. */
+.ob-wrap.wide {
+  max-width: 1200px;
+}
+.ob-cols {
+  display: grid;
+  gap: 0 64px;
+}
+@media (min-width: 900px) {
+  .ob-cols {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
