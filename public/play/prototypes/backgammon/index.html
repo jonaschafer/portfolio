@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backgammon</title>
+<meta name="description" content="Play backgammon against the computer with a coach that explains what’s happening as you play.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4ead6; --paper-2: #ebdec4; --ink: #2a1d14; --muted: #7a6650; --line: #d8c7a6;
+    --felt: #1c4630; --felt-d: #14341f; --red: #c8323a; --cream: #efe3c9; --brass: #d6a94f;
+    --good: #3f7d4b; --warn: #c08a1e; --bad: #b8402f;
+    --serif: 'Newsreader', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: var(--serif); font-optical-sizing: auto; color: var(--paper);
+    background-color: #5b2c15;
+    background-image:
+      radial-gradient(ellipse 55% 45% at 92% 4%, rgba(255, 214, 150, .38), rgba(255, 200, 120, .08) 55%, transparent 75%),
+      radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(20, 6, 0, .55) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='900'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0018 0.085' numOctaves='4' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.05  0 0 0 0 0.01  1.9 0 0 0 -0.62'/%3E%3C/filter%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.6' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.12  0 0 0 0 0.04  0 0 0 0 0  1.2 0 0 0 -0.55'/%3E%3C/filter%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003 0.05' numOctaves='3' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 0.85  0 0 0 0 0.48  0 0 0 0 0.24  1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%236a3319'/%3E%3Crect width='100%25' height='100%25' filter='url(%23h)' opacity='.55'/%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23f)' opacity='.7'/%3E%3C/svg%3E");
+    background-size: auto, auto, 1400px 900px;
+    background-attachment: fixed, fixed, scroll;
+  }
+  button { font: inherit; color: inherit; }
+  a { color: inherit; }
+
+  /* ---------- Top bar ---------- */
+  .top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px; padding: 18px 28px 6px; }
+  .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .back { justify-self: end; font-size: 15px; text-decoration: none; opacity: .7; }
+  .back:hover { opacity: 1; }
+  h1 { font-weight: 400; font-style: italic; font-size: 34px; letter-spacing: -.01em; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+  .seg { display: inline-flex; background: rgba(20, 8, 2, .35); border: 1px solid rgba(244, 234, 214, .18); border-radius: 999px; padding: 3px; }
+  .seg button { background: none; border: 0; padding: 6px 16px; border-radius: 999px; cursor: pointer; font-size: 16px; opacity: .75; }
+  .seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); opacity: 1; }
+  .ghost { background: rgba(20, 8, 2, .35); border: 1px solid rgba(244, 234, 214, .18); border-radius: 999px; padding: 7px 16px; cursor: pointer; font-size: 16px; }
+  .ghost:hover, .seg button:hover { opacity: 1; border-color: rgba(244, 234, 214, .4); }
+
+  /* ---------- Stage ---------- */
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; padding: 10px 28px 40px; max-width: 1480px; margin: 0 auto; align-items: start; }
+  /* Fit board + buttons in the viewport height: board is 1000x640, ~170px goes to the top bar and buttons. */
+  .table { min-width: 0; width: 100%; max-width: calc((100vh - 170px) * 1.5625); max-width: calc((100dvh - 170px) * 1.5625); margin: 0 auto; }
+  #board { width: 100%; height: auto; display: block; filter: drop-shadow(0 18px 28px rgba(0,0,0,.45)) drop-shadow(0 3px 6px rgba(0,0,0,.35)); user-select: none; -webkit-user-select: none; }
+  #board .hit { cursor: default; }
+  #board .hit.can { cursor: pointer; }
+  .controls { display: flex; gap: 10px; justify-content: center; margin-top: 10px; flex-wrap: wrap; min-height: 46px; }
+  .btn { background: var(--paper); color: var(--ink); border: 0; border-radius: 999px; padding: 10px 22px; font-size: 18px; cursor: pointer; box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 6px 14px rgba(0,0,0,.25); }
+  .btn:hover { background: #fff6e4; }
+  .btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.25); }
+  .btn.quiet { background: rgba(20, 8, 2, .4); color: var(--paper); border: 1px solid rgba(244,234,214,.2); box-shadow: none; }
+  .btn.quiet:hover { border-color: rgba(244,234,214,.45); }
+  .btn.primary { background: var(--brass); color: #2a1a06; }
+  .btn.primary:hover { background: #e4b95e; }
+  .btn:disabled { opacity: .35; cursor: default; }
+  .btn.pulse { animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(214,169,79,.25), 0 6px 14px rgba(0,0,0,.25); } }
+  kbd { font-family: var(--serif); font-size: .72em; opacity: .55; margin-left: 6px; }
+
+  /* ---------- Coach ---------- */
+  .coach { background: var(--paper); color: var(--ink); border-radius: 6px; box-shadow: 0 16px 30px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.3); display: flex; flex-direction: column; max-height: calc(100vh - 110px); position: sticky; top: 16px; overflow: hidden;
+    background-image: linear-gradient(rgba(255,255,255,.25), rgba(255,255,255,0) 30%); }
+  .coach-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--line); }
+  .coach-head .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .coach-title { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .score { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .score b { color: var(--ink); font-weight: 600; }
+  .odds { margin-top: 12px; }
+  .odds .lab { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .odds .lab b { color: var(--ink); font-weight: 600; }
+  .bar { height: 8px; border-radius: 99px; background: #6b3f22; overflow: hidden; margin-top: 5px; box-shadow: inset 0 1px 2px rgba(0,0,0,.3); }
+  .bar i { display: block; height: 100%; background: #fbf4e4; border-right: 1px solid rgba(0,0,0,.2); transition: width .6s ease; }
+  .pipline { margin-top: 8px; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .feed { flex: 1; overflow-y: auto; padding: 6px 18px 12px; scroll-behavior: smooth; min-height: 220px; }
+  .msg { padding: 12px 0; border-bottom: 1px solid rgba(216,199,166,.6); font-size: 17px; line-height: 1.42; animation: in .35s ease; }
+  .msg:last-child { border-bottom: 0; }
+  @keyframes in { from { opacity: 0; transform: translateY(4px); } }
+  .msg .who { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .msg.brown .who { color: #7b4a28; }
+  .msg.note { font-size: 15.5px; color: #5b4636; font-style: italic; }
+  .msg.tip { }
+  .msg.sys { font-size: 15.5px; color: var(--muted); }
+  .msg .mv { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  .msg p { margin: 4px 0 0; }
+  .badge { display: inline-block; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 9px 1px; border-radius: 99px; color: #fff; margin-right: 6px; vertical-align: 2px; font-weight: 600; }
+  .badge.best { background: var(--good); } .badge.good { background: #6e9a5b; } .badge.warn { background: var(--warn); } .badge.bad { background: var(--bad); }
+  .msg .acts { display: flex; gap: 8px; margin-top: 9px; flex-wrap: wrap; }
+  .chip { font-size: 15px; background: none; border: 1px solid var(--line); border-radius: 99px; padding: 4px 12px; cursor: pointer; color: var(--ink); }
+  .chip:hover { border-color: var(--muted); background: rgba(255,255,255,.4); }
+  .chip.solid { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .term { color: inherit; text-decoration: underline; text-decoration-color: rgba(42,29,20,.35); text-underline-offset: 3px; cursor: pointer; }
+  .term:hover { text-decoration-color: var(--ink); }
+  .coach-foot { border-top: 1px solid var(--line); padding: 10px 18px; display: flex; gap: 16px; font-size: 14px; color: var(--muted); flex-wrap: wrap; }
+  .coach-foot label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .coach-foot input { accent-color: var(--ink); }
+  .speedrow { white-space: nowrap; display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; }
+  .mini { display: inline-flex; border: 1px solid var(--line); border-radius: 99px; padding: 2px; }
+  .mini button { background: none; border: 0; border-radius: 99px; padding: 3px 10px; font-size: 14px; color: var(--muted); cursor: pointer; }
+  .mini button:hover { color: var(--ink); }
+  .mini button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+  /* ---------- Preview banner ---------- */
+  .banner { position: relative; }
+  .preview-tag { display: none; position: absolute; left: 50%; top: 10px; transform: translateX(-50%); background: var(--paper); color: var(--ink); padding: 6px 14px; border-radius: 99px; font-size: 15px; box-shadow: 0 4px 12px rgba(0,0,0,.3); z-index: 2; white-space: nowrap; }
+  .previewing .preview-tag { display: block; }
+
+  /* ---------- Rules drawer ---------- */
+  .scrim { position: fixed; inset: 0; background: rgba(10, 4, 0, .45); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 20; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(520px, 100vw); background: var(--paper); color: var(--ink); z-index: 21; transform: translateX(102%); transition: transform .38s cubic-bezier(.2,.8,.2,1); box-shadow: -20px 0 40px rgba(0,0,0,.35); display: flex; flex-direction: column; }
+  body.rules-open .scrim { opacity: 1; pointer-events: auto; }
+  body.rules-open .drawer { transform: none; }
+  .drawer header { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px 14px; border-bottom: 1px solid var(--line); }
+  .drawer h2 { font-weight: 400; font-style: italic; font-size: 30px; margin: 0; }
+  .drawer .x { background: none; border: 0; font-size: 28px; line-height: 1; cursor: pointer; color: var(--muted); padding: 4px 8px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 12px 28px; font-size: 15px; border-bottom: 1px solid var(--line); }
+  .toc a { text-decoration: none; color: var(--muted); }
+  .toc a:hover { color: var(--ink); }
+  .rules { overflow-y: auto; padding: 4px 28px 60px; font-size: 18px; line-height: 1.5; }
+  .rules section { padding: 18px 0 6px; scroll-margin-top: 10px; border-radius: 6px; transition: background .6s; }
+  .rules section.flash { background: rgba(214,169,79,.22); box-shadow: 0 0 0 10px rgba(214,169,79,.22); }
+  .rules h3 { font-weight: 600; font-size: 21px; margin: 0 0 6px; }
+  .rules h4 { font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 26px 0 0; }
+  .rules p { margin: 0 0 10px; }
+  .rules ul { margin: 0 0 10px; padding-left: 20px; }
+  .rules li { margin: 3px 0; }
+  .rules table { border-collapse: collapse; width: 100%; font-size: 16px; margin: 6px 0 12px; }
+  .rules td { padding: 5px 8px 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .rules td:first-child { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+  .rules td:nth-child(2) { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .rules .aside { color: var(--muted); font-size: 16px; }
+
+  @media (max-width: 1100px) {
+    .stage { grid-template-columns: 1fr; }
+    .coach { position: static; max-height: none; }
+    .feed { max-height: 420px; }
+  }
+  @media (max-width: 640px) {
+    .top { grid-template-columns: 1fr auto; padding: 14px 14px 4px; gap: 10px; }
+    .actions { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; }
+    h1 { font-size: 26px; }
+    .stage { padding: 8px 8px 30px; gap: 16px; }
+    .seg button { padding: 5px 11px; font-size: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+  <div class="top">
+    <h1>Backgammon</h1>
+    <div class="actions">
+    <div class="seg" role="group" aria-label="Difficulty" id="levels">
+      <button data-level="easy">Easy</button>
+      <button data-level="medium">Medium</button>
+      <button data-level="hard">Hard</button>
+    </div>
+    <button class="ghost" id="newGame">New game</button>
+    <button class="ghost" id="rulesBtn">Rules</button>
+    </div>
+    <a class="back" href="/play">← Play</a>
+  </div>
+
+  <main class="stage">
+    <div class="table">
+      <div class="banner" id="banner">
+        <div class="preview-tag" id="previewTag">Showing the better play · click the board to go back</div>
+        <svg id="board" viewBox="0 0 1000 640" role="img" aria-label="Backgammon board"></svg>
+      </div>
+      <div class="controls" id="controls"></div>
+    </div>
+
+    <aside class="coach" aria-label="Coach">
+      <div class="coach-head">
+        <div class="row"><span class="coach-title">Coach</span><span class="score" id="score"></span></div>
+        <div class="odds">
+          <div class="lab"><span>Your chances <b id="oddsPct">50%</b></span><a class="term" data-rule="pips" id="pipsLink">Pips</a></div>
+          <div class="bar"><i id="oddsBar" style="width:50%"></i></div>
+          <div class="pipline" id="pipline"></div>
+        </div>
+      </div>
+      <div class="feed" id="feed" aria-live="polite"></div>
+      <div class="coach-foot">
+        <div class="speedrow">Brown’s speed
+          <span class="mini" id="speed" role="group" aria-label="Brown’s speed">
+            <button data-speed="step" title="Brown waits for you before each checker">Step</button><button data-speed="slow">Slow</button><button data-speed="normal">Normal</button><button data-speed="fast">Fast</button>
+          </span>
+        </div>
+        <label><input type="checkbox" id="optThreats" checked> Show danger</label>
+        <label><input type="checkbox" id="optPause" checked> Pause on mistakes</label>
+      </div>
+    </aside>
+  </main>
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" aria-label="Rules" aria-hidden="true">
+    <header><h2>How to play</h2><button class="x" id="closeRules" aria-label="Close rules">×</button></header>
+    <nav class="toc">
+      <a href="#r-goal">Goal</a><a href="#r-board">Board</a><a href="#r-moving">Moving</a><a href="#r-hitting">Hitting</a><a href="#r-bearoff">Bearing off</a><a href="#r-winning">Winning</a><a href="#r-points">Strategy</a><a href="#r-openings">Openings</a><a href="#r-notation">Notation</a>
+    </nav>
+    <div class="rules" id="rules">
+      <section id="r-goal"><h3>The goal</h3>
+        <p>Move all 15 of your checkers around the board, into your home board, and then off. First one to get all 15 off wins.</p>
+        <p>You’re cream. Brown is the computer.</p>
+      </section>
+
+      <section id="r-board"><h3>The board</h3>
+        <p>24 triangles, called <b>points</b>, numbered 1 to 24 from your side. The numbers are printed on the frame.</p>
+        <ul>
+          <li><b>Your home board</b> is points 1 to 6, bottom right.</li>
+          <li><b>Brown’s home board</b> is points 19 to 24, top right.</li>
+          <li><b>The bar</b> is the strip down the middle. Checkers that get hit wait there.</li>
+          <li>The tray on the right holds checkers that have been borne off.</li>
+        </ul>
+        <p>You move from 24 down to 1: right to left across the top, then left to right across the bottom, then off. Brown goes the opposite way.</p>
+      </section>
+
+      <section id="r-setup"><h3>Starting position</h3>
+        <p>Each side has 2 checkers on its 24-point, 5 on its 13 (the midpoint), 3 on its 8 and 5 on its 6. Brown’s setup is the mirror image of yours.</p>
+      </section>
+
+      <section id="r-start"><h3>Who goes first</h3>
+        <p>Each player rolls one die. Higher die goes first and plays the two numbers showing as their opening move. Ties roll again.</p>
+      </section>
+
+      <section id="r-moving"><h3>Moving</h3>
+        <p>Roll two dice. Each die is a separate move. You can move one checker for both numbers or two checkers one number each.</p>
+        <p>A checker can land on any point that’s empty, has your own checkers, or has exactly one Brown checker. It can’t land on a point with two or more Brown checkers.</p>
+        <p>When one checker plays both dice, the stop in between has to be open too.</p>
+        <p class="aside">On this board: click a checker, then click where it should go. Gold dots show every legal spot, including spots that use both dice.</p>
+      </section>
+
+      <section id="r-doubles"><h3>Doubles</h3>
+        <p>Roll the same number on both dice and you play that number four times. 6-6 means four moves of 6.</p>
+      </section>
+
+      <section id="r-blocked"><h3>Blocked points and using both dice</h3>
+        <p>A point with two or more of the other side’s checkers is <b>blocked</b>.</p>
+        <p>You must use both dice if there’s any legal way to. If only one die can be played, play it. If either one could be played but not both, you must play the larger. If nothing’s legal, you lose your turn.</p>
+        <p class="aside">This is why the board sometimes won’t let a checker move even though the spot looks open: that move would make your other die unplayable.</p>
+      </section>
+
+      <section id="r-hitting"><h3>Hitting and the bar</h3>
+        <p>A single checker alone on a point is a <b>blot</b>. If the other side lands on it, the blot is <b>hit</b>: it goes to the bar and has to start over from the far end.</p>
+        <p>Hitting is a big swing. A checker hit on your 6-point loses 19 pips of progress.</p>
+      </section>
+
+      <section id="r-entering"><h3>Coming in from the bar</h3>
+        <p>If you have a checker on the bar, you can’t move anything else until it comes back in. It enters in Brown’s home board: a 1 enters on your 24-point, a 2 on 23, up to a 6 on 19.</p>
+        <p>If the point for both numbers is blocked, you can’t enter and you lose the turn. If Brown has all six home points made, you’re <b>closed out</b> until one opens up.</p>
+      </section>
+
+      <section id="r-bearoff"><h3>Bearing off</h3>
+        <p>Once all 15 of your checkers are in your home board (1 to 6), you can start taking them off. A 4 takes a checker off the 4-point.</p>
+        <p>If you roll higher than your highest checker, take off from the highest point. You can always use a number to move inside your home board instead.</p>
+        <p>If one of your checkers gets hit while you’re bearing off, it has to come all the way back around before you can bear off again.</p>
+      </section>
+
+      <section id="r-winning"><h3>Winning</h3>
+        <ul>
+          <li><b>Single game</b> (1 point): you bear off all 15 first.</li>
+          <li><b>Gammon</b> (2 points): Brown hasn’t borne off any checkers yet.</li>
+          <li><b>Backgammon</b> (3 points): Brown hasn’t borne off any and still has a checker on the bar or in your home board.</li>
+        </ul>
+      </section>
+
+      <section id="r-cube"><h3>The doubling cube</h3>
+        <p>Real matches use a cube to raise the stakes: before rolling, a player can offer to double. The other side either accepts and plays for twice the points, or concedes. This trainer leaves the cube out so you can focus on the checker play.</p>
+      </section>
+
+      <h4>Strategy basics</h4>
+
+      <section id="r-pips"><h3>Pip count</h3>
+        <p>Your pip count is the total distance your checkers still have to travel: each checker’s point number added up (a checker on the bar counts 25). Both sides start at 167. Lower is better. It tells you who’s ahead in a race.</p>
+      </section>
+
+      <section id="r-blots"><h3>Blots and shots</h3>
+        <p>Every blot is a risk. Count the <b>shots</b>: how many of Brown’s 36 possible rolls would hit it. A blot 6 or fewer points away from a Brown checker is a direct shot (11+ rolls). 7 to 12 away needs a combination and is much harder to hit.</p>
+        <p class="aside">With “Show danger” on, red numbers on your blots show exactly that count.</p>
+      </section>
+
+      <section id="r-points"><h3>Making points</h3>
+        <p>Two checkers on a point make it yours: safe from hits and blocked for Brown. The best ones to own early are your 5-point, then your 4-point and your bar point (7). The 5-point is the best point on the board.</p>
+      </section>
+
+      <section id="r-anchors"><h3>Anchors</h3>
+        <p>A point you hold in Brown’s home board is an anchor. It’s a safe landing spot when you’re hit and keeps Brown from closing its board. Brown’s 5-point (your 20) is the best anchor.</p>
+      </section>
+
+      <section id="r-primes"><h3>Primes</h3>
+        <p>Several made points in a row form a prime. Six in a row is a full prime: nothing behind it can get past. Build primes in front of Brown’s back checkers, and get your own back checkers out before Brown builds one.</p>
+      </section>
+
+      <section id="r-race"><h3>The race</h3>
+        <p>Once every checker has passed the other side’s, there’s no more hitting. It’s a race. Bring checkers home efficiently, avoid wasting pips, and bear off as fast as you can.</p>
+      </section>
+
+      <section id="r-openings"><h3>Opening moves</h3>
+        <p>Every first roll has a standard move that good players agree on. The coach marks it “Standard” when you play it.</p>
+        <p>They mostly do one of two things: put two checkers on the same point so Brown can’t land there, or move one checker from 24 so your two back checkers aren’t stuck together.</p>
+        <table>
+          <tr><td>3-1</td><td>8/5 6/5</td><td>Claim the 5-point, the best point to own</td></tr>
+          <tr><td>4-2</td><td>8/4 6/4</td><td>Claim the 4-point</td></tr>
+          <tr><td>6-1</td><td>13/7 8/7</td><td>Claim the 7-point, a wall with 6 and 8</td></tr>
+          <tr><td>5-3</td><td>8/3 6/3</td><td>Claim the 3-point</td></tr>
+          <tr><td>6-5</td><td>24/13</td><td>Run a back checker all the way to safety</td></tr>
+          <tr><td>6-4</td><td>8/2 6/2</td><td>Claim the 2-point</td></tr>
+          <tr><td>6-3</td><td>24/18 13/10</td><td>Move a back checker, bring one closer to home</td></tr>
+          <tr><td>6-2</td><td>24/18 13/11</td><td>Move a back checker, bring one closer to home</td></tr>
+          <tr><td>5-4</td><td>24/20 13/8</td><td>Move a back checker, one safely to 8</td></tr>
+          <tr><td>5-2</td><td>13/8 13/11</td><td>Bring two checkers closer to home</td></tr>
+          <tr><td>5-1</td><td>24/23 13/8</td><td>Small back step, one safely to 8</td></tr>
+          <tr><td>4-3</td><td>24/20 13/10</td><td>Move a back checker, bring one closer to home</td></tr>
+          <tr><td>4-1</td><td>24/23 13/9</td><td>Small back step, bring one closer to home</td></tr>
+          <tr><td>3-2</td><td>24/21 13/11</td><td>Move a back checker, bring one closer to home</td></tr>
+          <tr><td>2-1</td><td>13/11 6/5</td><td>Risk one checker on 5 to claim it next turn</td></tr>
+        </table>
+        <p class="aside">How to read these: 13/10 means move a checker from point 13 to point 10.</p>
+      </section>
+
+      <section id="r-notation"><h3>Reading moves</h3>
+        <p><b>13/8</b> means a checker moved from point 13 to point 8. <b>6/5*</b> means it hit on 5. <b>bar/22</b> is entering from the bar, <b>6/off</b> is bearing off, and <b>13/7(2)</b> means two checkers made the same move.</p>
+        <p class="aside">Here Brown’s moves are written in your numbering, so you can find them on the board. Normally each player counts from their own side.</p>
+      </section>
+    </div>
+  </aside>
+
+  <script type="module" src="/play/prototypes/backgammon/app.js?v=7"></script>
+</body>
+</html>

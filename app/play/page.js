@@ -8,6 +8,16 @@ export const metadata = {
 
 const projects = [
   {
+    id: 'backgammon',
+    name: 'Backgammon',
+    description:
+      'I wanted to learn backgammon while playing it, the way chess.com teaches chess. Every site I tried makes you look up the rules somewhere else. Here a coach narrates the game as it happens: why Brown just hit you, what your roll can do, a grade on every move with the better play drawn on the board, and red counts on your blots showing how many of 36 rolls hit them. Easy, medium and hard.',
+    date: '2026.11.23',
+    type: 'HTML/CSS',
+    tags: ['HTML/CSS', 'JavaScript'],
+    path: '/play/prototypes/backgammon',
+  },
+  {
     id: 'backyard',
     name: 'Backyard',
     description:
