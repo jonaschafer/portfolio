@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=22'
-import * as C from './coach.js?v=22'
+import * as E from './engine.js?v=23'
+import * as C from './coach.js?v=23'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -423,6 +423,7 @@ function newGame() {
   S.turnStart = null; S.turns = []; S.keys = new Set(); S.undo = []; S.steps = []
   S.sel = null; S.dests = null; S.hint = null; S.lastBrown = null; S.preview = null; S.review = null
   S.firstMove = true
+  S.adviceEl = null
   S.stats = { best: 0, good: 0, inaccuracy: 0, mistake: 0, blunder: 0, book: 0 }
   feed.innerHTML = ''
   if (!S.seen.has('welcome')) {
@@ -506,12 +507,20 @@ function headline(b) {
   if (f.shots === 0) return 'Play it safe.'
   return 'Keep the risk low.'
 }
-// The pinned "Your move" card: while it's your move and the coach is on,
-// it always holds the current recommendation (goal, move in words, why),
-// recomputed whenever your checkers move. Show me only adds arrows.
+// The "Your move" card: while it's your move and the coach is on, the last
+// message in the coach feed holds the current recommendation (goal, move in
+// words, why) and updates as you move checkers. It scrolls with everything
+// else. When your turn ends it freezes as the turn's opening advice.
 function renderAdvice() {
-  const el = $('#advice')
-  if (!S.coach || S.phase !== 'move' || S.preview) { el.hidden = true; return }
+  const live = S.coach && S.phase === 'move'
+  if (!live) {
+    if (S.adviceEl) {
+      S.adviceEl.classList.remove('live')
+      S.adviceEl.innerHTML = `<span class="who">Coach suggested</span>${S.adviceFirst}`
+      S.adviceEl = null
+    }
+    return
+  }
   if (S.adviceFor !== S.pos) {
     S.adviceFor = S.pos
     const b = bestFinish()
@@ -524,8 +533,15 @@ function renderAdvice() {
     }
     S.adviceHTML = html.replace(/\b(back checkers?)\b/g, '<a class="term" data-rule="backcheckers">$1</a>')
   }
-  el.hidden = false
-  el.innerHTML = `<span class="who">Your move</span>${S.adviceHTML}`
+  if (!S.adviceEl || !S.adviceEl.isConnected) {
+    S.adviceEl = document.createElement('div')
+    S.adviceEl.className = 'msg advice live'
+    S.adviceFirst = S.adviceHTML.replace(/<p class="hint-line">.*?<\/p>/, '')
+  }
+  const fresh = `<span class="who">Your move</span>${S.adviceHTML}`
+  if (S.adviceEl.innerHTML !== fresh) S.adviceEl.innerHTML = fresh
+  // keep it the newest message, scrolling down only when it moves or appears
+  if (feed.lastElementChild !== S.adviceEl) { feed.append(S.adviceEl); feed.scrollTop = feed.scrollHeight }
 }
 
 function computeDests(from) {
