@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=11'
-import * as C from './coach.js?v=11'
+import * as E from './engine.js?v=12'
+import * as C from './coach.js?v=12'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -232,10 +232,9 @@ function render() {
       s += `<g transform="translate(${x + 19},${by})"><circle r="11.5" fill="#b8402f" stroke="#fff4e2" stroke-width="1.5"/><text y="4.5" text-anchor="middle" font-family="Newsreader, serif" font-size="13.5" font-weight="700" fill="#fff">${r.byPoint[b]}</text></g>`
     }
   }
-  // arrows: Brown's last move (dashed cream), coach's suggestion / better play (gold)
+  // arrows: coach's suggestion / better play (gold)
   if (pv) s += arrowPaths(pv.pos, pv.steps, 0, 'gold')
   else {
-    if (S.lastBrown && S.steps.length === 0 && S.phase !== 'opening') s += arrowPaths(S.lastBrown.base, S.lastBrown.steps, 1, 'cream')
     if (S.hint && S.hint.base === S.pos) s += arrowPaths(S.hint.base, S.hint.steps, 0, 'gold')
   }
   // dice
