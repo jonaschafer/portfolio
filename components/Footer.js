@@ -59,9 +59,24 @@ function NowPlaying() {
 // picked, so the default colors never flash before the swap.
 // `pageTheme` lets a page that already picked its color hand it down, so
 // page and footer match.
+// Reversed out: the footer swaps the theme's field and ink so it reads as its
+// own block instead of bleeding into the page. The email button keeps its own
+// color unless it matched the ink, in which case it flips with everything else.
+const REVERSED = true
+const reverse = (t) =>
+  REVERSED
+    ? {
+        bg: t.ink,
+        ink: t.bg,
+        hmu: t.hmu === t.ink ? t.bg : t.hmu,
+        hmuInk: t.hmu === t.ink ? t.ink : t.hmuInk,
+      }
+    : t
+
 function GiantFooter({ pageTheme }) {
   const random = useRandomTheme(THEMES, !pageTheme)
-  const { theme: t, ready, animate } = pageTheme ? { theme: pageTheme, ready: true, animate: random.animate } : random
+  const { theme: base, ready, animate } = pageTheme ? { theme: pageTheme, ready: true, animate: random.animate } : random
+  const t = reverse(base)
   const small = `${social} text-[17px] md:text-[22px] leading-[1.15] tracking-[0.22px]`
   return (
     <footer

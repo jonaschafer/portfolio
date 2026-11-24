@@ -4,11 +4,10 @@ import Image from 'next/image'
 // pull quotes (trimmed `pull` text, falling back to `quote`). Slots follow
 // a rhythm: 3 projects, quote, then a quote every 2 projects. A quote with
 // `after` (a project slug) is pinned to that project; the rest fill the
-// open slots in order. Anything left over sits in the Friends section at
-// the bottom as cards. A quote set to null is a placeholder and doesn't show.
+// open slots in order. Anything left over sits at the bottom of the page,
+// in the same pill. A quote set to null is a placeholder and doesn't show.
 const social = "font-['Social_Condensed','Haas_Grot_Disp',sans-serif]"
 const nichrome = "font-['Nichrome','Haas_Grot_Disp',sans-serif] font-normal"
-const nichromeUltra = "font-['Nichrome','Arial_Black',sans-serif] font-black"
 
 export const TESTIMONIALS = [
   {
@@ -137,21 +136,9 @@ export default function TestimonialsSection({ theme, rest }) {
   if (!rest.length) return null
   return (
     <section className="px-[20px] md:px-[26px] pb-[80px] md:pb-[120px]">
-      <h2 className={`${nichromeUltra} text-[26px] md:text-[30px] leading-none tracking-[0.3px] mb-[24px] md:mb-[32px]`}>
-        Friends
-      </h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-[48px] gap-y-[48px] md:gap-y-[64px]">
+      <div className="flex flex-col gap-[48px] md:gap-[64px]">
         {rest.map((t) => (
-          <figure
-            key={t.name}
-            className="flex flex-col justify-between gap-[32px] md:gap-[40px] border-t pt-[16px] md:pt-[20px]"
-            style={{ borderColor: `${theme.ink}40` }}
-          >
-            <blockquote className={`${nichrome} italic text-[18px] md:text-[21px] leading-[1.45] tracking-[0.2px]`}>
-              &ldquo;{t.quote}&rdquo;
-            </blockquote>
-            <Caption t={t} theme={theme} />
-          </figure>
+          <PullQuote key={t.name} t={t} theme={theme} />
         ))}
       </div>
     </section>
