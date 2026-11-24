@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=12'
-import * as C from './coach.js?v=12'
+import * as E from './engine.js?v=14'
+import * as C from './coach.js?v=14'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -297,7 +297,7 @@ function renderControls() {
     case 'roll': add(btn('Roll', humanRoll, 'primary pulse', false, 'space')); break
     case 'move': {
       const complete = S.keys.has(E.key(S.pos))
-      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
+      add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), ...(S.coach ? [btn('Show me', showMe, 'quiet', !E.stepOptions(S.pos, 0, S.rem, S.keys).length, 'S')] : []), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
       break
     }
     case 'pass': add(btn('OK', passTurn, 'primary', false, 'space')); break
@@ -447,7 +447,6 @@ function startHumanTurn(dice) {
   }
   // only one way to play it? say so
   if (S.turns.length === 1 && S.turns[0].steps.length < E.diceList(dice).length) say('note', `Only part of this roll can be played. That’s the rule: use what you can.`)
-  if (S.coach) suggest(false)
   render()
 }
 
@@ -499,7 +498,6 @@ async function playPath(path) {
     if (r.hit && !S.seen.has('youHit')) { S.seen.add('youHit'); say('note', `Hit! That Brown checker goes to the bar and has to start over from your home board.`) }
   }
   S.busy = false
-  if (S.coach) suggest(true)
   render()
 }
 
@@ -508,7 +506,6 @@ function undo() {
   if (S.phase !== 'move' || !S.undo.length || S.busy) return
   const u = S.undo.pop()
   S.pos = u.pos; S.rem = u.rem; S.steps = u.steps; S.sel = null; S.dests = null
-  if (S.coach) suggest(true)
   render()
 }
 
@@ -537,16 +534,16 @@ function bestFinish() {
   return best && best.steps.length ? { ...best, isBook: best.turn === book } : null
 }
 
-// The coach's suggestion: gold arrows for the best way to finish the turn
-// from where your checkers are now. It never moves anything for you.
-// `quiet` redraws the arrows without adding a note (after each checker you move).
-function suggest(quiet) {
-  if (S.phase !== 'move') return
+// "Show me": gold arrows for the best way to finish the turn from where
+// your checkers are now, plus a note on why. Only on request; it never
+// moves anything, and the arrows clear once you move a checker.
+function showMe() {
+  if (S.phase !== 'move' || S.busy || !S.coach) return
   const b = bestFinish()
-  S.hint = b ? { base: S.pos, steps: b.steps } : null
-  // the opening tip already names the standard move
-  if (quiet || !b || b.isBook) return
-  say('tip', `I’d move ${C.plainMove(b.steps, 0)} (gold arrows). ${b.isBook ? 'That’s the standard first move for this roll.' : hintWhy(b.turn, S.steps.concat(b.steps))}`)
+  if (!b) { say('note', `You’ve used your whole roll. Press Done.`); return render() }
+  S.hint = { base: S.pos, steps: b.steps }
+  say('tip', `${S.steps.length ? 'From here, I’d' : 'I’d'} move ${C.plainMove(b.steps, 0)}. ${b.isBook ? 'That’s the standard first move for this roll.' : hintWhy(b.turn, S.steps.concat(b.steps))}`)
+  render()
 }
 function hintWhy(t, steps) {
   const f = C.features(S.turnStart, t.pos, steps, 0)
@@ -606,7 +603,6 @@ function tryAgain() {
   S.stats[S.review.grade]--
   S.pos = S.turnStart; S.rem = E.diceList(S.dice); S.steps = []; S.undo = []; S.sel = null; S.dests = null
   S.phase = 'move'; S.review = null
-  if (S.coach) suggest(true)
   say('note', `Same roll, ${S.dice[0]}-${S.dice[1]}. Have another look.`)
   render()
 }
@@ -658,7 +654,7 @@ async function aiTurn(given) {
   }
   S.lastBrown = { base: before, steps }
   const lines = C.explainBrown(before, S.pos, steps, dice, S.seen)
-  say('brown', lines.map((l, i) => (i ? `<p>${l}</p>` : l)).join(''))
+  if (lines.length) say('brown', lines.map((l, i) => (i ? `<p>${l}</p>` : l)).join(''))
   if (E.gameResult(S.pos)) return gameOver()
   S.phase = 'roll'
   S.dice = null
@@ -716,8 +712,7 @@ function setCoach(on) {
   const b = $('#coachBtn')
   b.setAttribute('aria-pressed', String(on))
   b.textContent = on ? 'Coach on' : 'Coach off'
-  if (on) { if (S.phase === 'move') suggest(S.steps.length > 0) }
-  else S.hint = null
+  if (!on) S.hint = null
   render()
 }
 $('#coachBtn').onclick = () => setCoach(!S.coach)
@@ -761,6 +756,7 @@ document.addEventListener('keydown', (e) => {
     ;({ opening: rollOpening, roll: humanRoll, move: done, pass: passTurn, review: keepMove, over: newGame }[S.phase] || (() => {}))()
   } else if (k === 'u' || k === 'backspace') undo()
   else if (k === 'c') setCoach(!S.coach)
+  else if (k === 's') showMe()
   else if (k === 'r' || k === '?') openRules()
 })
 

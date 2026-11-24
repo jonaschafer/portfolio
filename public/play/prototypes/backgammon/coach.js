@@ -2,7 +2,7 @@
 // happening on the board right now. Everything is in the player's numbering
 // (cream moves 24 down to 1). Brown's points are flipped (its j = your 25 - j).
 
-import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=12'
+import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=14'
 
 export const term = (id, text) => `<a class="term" data-rule="${id}">${text}</a>`
 
@@ -70,21 +70,21 @@ export function plainMove(steps, side) {
 
 const SPLIT = 'Moving one of your two checkers off 24 means they aren’t stuck together at the far end, so they have more ways to escape later.'
 export const OPENINGS = {
-  '21': { play: '13/11 6/5', steps: 'one checker from 13 to 11, and one from 6 to 5', why: 'The checker on 5 is alone, so Brown might hit it. If it survives, you add a second checker next turn and own the 5-point, the most useful point on the board. A small risk for a big payoff.' },
-  '31': { play: '8/5 6/5', steps: 'one checker from 8 to 5, and one from 6 to 5', why: 'Two checkers on a point make it yours: Brown can’t land there. The 5-point is the most useful point to own, so this is the best first roll in the game.' },
-  '41': { play: '24/23 13/9', steps: 'one checker from 24 to 23, and one from 13 to 9', why: `The checker on 9 is in range to team up with another checker next turn and claim a new point. ${SPLIT}` },
-  '51': { play: '24/23 13/8', steps: 'one checker from 24 to 23, and one from 13 to 8', why: `8 already has your checkers on it, so that move is safe. ${SPLIT}` },
-  '61': { play: '13/7 8/7', steps: 'one checker from 13 to 7, and one from 8 to 7', why: 'Two checkers on 7 make it yours. Together with 6 and 8 it forms a wall that Brown’s two checkers on your 1-point have to get past.' },
-  '32': { play: '24/21 13/11', steps: 'one checker from 24 to 21, and one from 13 to 11', why: `The checker on 11 is in range to help claim a new point next turn. ${SPLIT}` },
-  '42': { play: '8/4 6/4', steps: 'one checker from 8 to 4, and one from 6 to 4', why: 'Two checkers on 4 make it yours: Brown can’t land there. It’s the second most useful point to own early on.' },
-  '52': { play: '13/8 13/11', steps: 'two checkers from 13: one to 8 and one to 11', why: 'It brings fresh checkers closer to home, where they can team up to claim points. The one on 8 is safe; the one on 11 is far enough from Brown to be hard to hit.' },
-  '62': { play: '24/18 13/11', steps: 'one checker from 24 to 18, and one from 13 to 11', why: `The checker on 11 is in range to help claim a point next turn. ${SPLIT}` },
-  '43': { play: '24/20 13/10', steps: 'one checker from 24 to 20, and one from 13 to 10', why: `20 is a spot Brown wants for its own home, so a checker there gets in Brown’s way. The checker on 10 is in range to help claim a point next turn.` },
-  '53': { play: '8/3 6/3', steps: 'one checker from 8 to 3, and one from 6 to 3', why: 'Two checkers on 3 make it yours. Every point you own near home is one more spot Brown can’t land on.' },
-  '63': { play: '24/18 13/10', steps: 'one checker from 24 to 18, and one from 13 to 10', why: `The checker on 10 is in range to help claim a point next turn. ${SPLIT}` },
-  '54': { play: '24/20 13/8', steps: 'one checker from 24 to 20, and one from 13 to 8', why: '8 already has your checkers, so that move is safe. 20 is a spot Brown wants for its own home, so sitting there gets in Brown’s way.' },
-  '64': { play: '8/2 6/2', steps: 'one checker from 8 to 2, and one from 6 to 2', why: 'Two checkers on 2 make it yours. It’s far from ideal, but owning a point beats leaving checkers alone where Brown can hit them.' },
-  '65': { play: '24/13', steps: 'one checker all the way from 24 to 13', why: 'That checker was stuck at the far end. This runs it to safety on 13, where you already have checkers. Players call this one lover’s leap.' },
+  '21': { play: '13/11 6/5', idea: 'risks one checker on 5 so you can claim it next turn', steps: 'one checker from 13 to 11, and one from 6 to 5', why: 'The checker on 5 is alone, so Brown might hit it. If it survives, you add a second checker next turn and own the 5-point, the most useful point on the board. A small risk for a big payoff.' },
+  '31': { play: '8/5 6/5', idea: 'claims the 5-point, the best point to own', steps: 'one checker from 8 to 5, and one from 6 to 5', why: 'Two checkers on a point make it yours: Brown can’t land there. The 5-point is the most useful point to own, so this is the best first roll in the game.' },
+  '41': { play: '24/23 13/9', idea: 'moves a back checker up a little and brings one closer to home', steps: 'one checker from 24 to 23, and one from 13 to 9', why: `The checker on 9 is in range to team up with another checker next turn and claim a new point. ${SPLIT}` },
+  '51': { play: '24/23 13/8', idea: 'moves a back checker up a little and brings one safely closer to home', steps: 'one checker from 24 to 23, and one from 13 to 8', why: `8 already has your checkers on it, so that move is safe. ${SPLIT}` },
+  '61': { play: '13/7 8/7', idea: 'claims the 7-point, building a wall with 6 and 8', steps: 'one checker from 13 to 7, and one from 8 to 7', why: 'Two checkers on 7 make it yours. Together with 6 and 8 it forms a wall that Brown’s two checkers on your 1-point have to get past.' },
+  '32': { play: '24/21 13/11', idea: 'moves a back checker up and brings one closer to home', steps: 'one checker from 24 to 21, and one from 13 to 11', why: `The checker on 11 is in range to help claim a new point next turn. ${SPLIT}` },
+  '42': { play: '8/4 6/4', idea: 'claims the 4-point', steps: 'one checker from 8 to 4, and one from 6 to 4', why: 'Two checkers on 4 make it yours: Brown can’t land there. It’s the second most useful point to own early on.' },
+  '52': { play: '13/8 13/11', idea: 'brings two checkers closer to home', steps: 'two checkers from 13: one to 8 and one to 11', why: 'It brings fresh checkers closer to home, where they can team up to claim points. The one on 8 is safe; the one on 11 is far enough from Brown to be hard to hit.' },
+  '62': { play: '24/18 13/11', idea: 'moves a back checker up and brings one closer to home', steps: 'one checker from 24 to 18, and one from 13 to 11', why: `The checker on 11 is in range to help claim a point next turn. ${SPLIT}` },
+  '43': { play: '24/20 13/10', idea: 'moves a back checker up and brings one closer to home', steps: 'one checker from 24 to 20, and one from 13 to 10', why: `20 is a spot Brown wants for its own home, so a checker there gets in Brown’s way. The checker on 10 is in range to help claim a point next turn.` },
+  '53': { play: '8/3 6/3', idea: 'claims the 3-point', steps: 'one checker from 8 to 3, and one from 6 to 3', why: 'Two checkers on 3 make it yours. Every point you own near home is one more spot Brown can’t land on.' },
+  '63': { play: '24/18 13/10', idea: 'moves a back checker up and brings one closer to home', steps: 'one checker from 24 to 18, and one from 13 to 10', why: `The checker on 10 is in range to help claim a point next turn. ${SPLIT}` },
+  '54': { play: '24/20 13/8', idea: 'moves a back checker up and brings one safely closer to home', steps: 'one checker from 24 to 20, and one from 13 to 8', why: '8 already has your checkers, so that move is safe. 20 is a spot Brown wants for its own home, so sitting there gets in Brown’s way.' },
+  '64': { play: '8/2 6/2', idea: 'claims the 2-point', steps: 'one checker from 8 to 2, and one from 6 to 2', why: 'Two checkers on 2 make it yours. It’s far from ideal, but owning a point beats leaving checkers alone where Brown can hit them.' },
+  '65': { play: '24/13', idea: 'runs a back checker all the way to safety', steps: 'one checker all the way from 24 to 13', why: 'That checker was stuck at the far end. This runs it to safety on 13, where you already have checkers. Players call this one lover’s leap.' },
 }
 export const openingKey = (d) => `${Math.max(...d)}${Math.min(...d)}`
 
@@ -116,7 +116,7 @@ export function features(before, after, steps, s) {
 
 const keyMade = (f) => f.made.filter((p) => KEY_POINTS.includes(p)).sort((a, b) => KEY_POINTS.indexOf(a) - KEY_POINTS.indexOf(b))
 const list = (arr) => (arr.length <= 1 ? arr.join('') : arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1])
-const shotsTxt = (n) => `${n} of 36 rolls`
+const shotsTxt = (n, cap) => (cap ? `${n} of your 36 possible rolls` : `${n} of 36 rolls`)
 
 // ---------- Grading your move ----------
 
@@ -190,33 +190,72 @@ function critique(fC, fB, before) {
 
 // ---------- Brown's move ----------
 
+// Only what Brown's move means for you. A routine move says nothing.
 export function explainBrown(before, after, steps, dice, seen) {
   const lines = []
+  if (!steps.length) return lines
   const f = features(before, after, steps, 1)
-  if (!steps.length) return [`Brown rolled ${Math.max(...dice)}-${Math.min(...dice)} and can’t move. Every landing spot is ${term('blocked', 'blocked')}.`]
-  lines.push(`Brown rolled ${Math.max(...dice)}-${Math.min(...dice)} and moved ${plainMove(steps, 1)}.`)
   if (f.hits) {
     const at = list(f.hitAt)
     if (!seen.has('gotHit')) {
       seen.add('gotHit')
-      lines.push(`Brown ${term('hitting', 'hit')} your blot on ${at}. It goes to the ${term('hitting', 'bar')} in the middle. Next turn it has to come back in through Brown’s home board before you move anything else.`)
-    } else lines.push(`Brown hit you on ${at}. You’ll need to enter from the bar first.`)
+      lines.push(`Brown ${term('hitting', 'hit')} your checker on ${at}. It goes to the ${term('hitting', 'bar')} in the middle, and on your next turn it has to come back in through Brown’s home board (top right) before you can move anything else.`)
+    } else lines.push(`Brown hit your checker on ${at}. Bring it in from the bar first next turn.`)
   }
-  const km = f.made.filter((p) => p >= 18 || p <= 4)
   const hB = homePoints(after[1])
-  if (km.includes(20)) lines.push(`Brown made its 5-point (your 20). That’s its best point.`)
-  else if (f.made.some((p) => p >= 19) && hB >= 3) lines.push(`Brown now owns ${hB} points in its home board. Getting hit is getting expensive.`)
-  if (f.made.some((p) => p <= 6) && !seen.has('anchorB')) { seen.add('anchorB'); lines.push(`Brown made an ${term('anchors', 'anchor')} in your home board. You can’t hit checkers on a made point.`) }
+  if (f.made.includes(20)) lines.push(`Brown now has two checkers on 20, its best point. You can’t land there anymore.`)
+  else if (f.made.some((p) => p >= 19) && hB >= 3) lines.push(`Brown now owns ${hB} points in its home board (top right). If you get hit, there are fewer open spots to come back in, so keep your checkers safe.`)
+  if (f.made.some((p) => p <= 6) && !seen.has('anchorB')) { seen.add('anchorB'); lines.push(`Brown has two checkers together in your home board. That’s an ${term('anchors', 'anchor')}: you can’t hit them while they stay paired.`) }
   const pr = prime(after[1])
   if (pr.len >= 4 && prime(before[1]).len < pr.len && after[0].slice(26 - pr.from).some((x) => x > 0)) {
-    lines.push(`Brown has a ${pr.len}-point ${term('primes', 'prime')}: ${pr.len} made points in a row. Your checkers behind it can only get past with big jumps.`)
+    lines.push(`Brown has ${pr.len} points in a row (a ${term('primes', 'prime')}). Your checkers behind it need big rolls to jump past.`)
   }
-  if (f.off) lines.push(`Brown bore off ${f.off}.`)
-  if (contact(before) && !contact(after)) lines.push(`Contact is broken. It’s a pure ${term('race', 'race')} now: no more hitting, fastest to bear off wins.`)
-  // Brown's blots you can hit next.
+  if (contact(before) && !contact(after)) lines.push(`Every checker has now passed the other side’s, so nobody can hit anymore. It’s a ${term('race', 'race')}: fastest to get home and off wins.`)
+  // Only worth saying when you have a real chance to hit.
   const r = shotRisk(after, 1)
-  if (r.shots && contact(after)) lines.push(`Brown left ${f.blots.length > 1 ? 'blots' : 'a blot'} on ${list(f.blots.filter((b) => r.byPoint[25 - b]))}. You hit with ${shotsTxt(r.shots)}.`)
+  if (r.shots >= 11 && contact(after)) {
+    const open = f.blots.filter((b) => r.byPoint[25 - b])
+    lines.push(open.length > 1 ? `Brown left checkers alone on ${list(open)}. ${shotsTxt(r.shots, true)} can hit one of them, so look for it when you roll.` : `Brown left a checker alone on ${open[0]}. ${shotsTxt(r.shots, true)} can hit it, so look for it when you roll.`)
+  }
   return lines
+}
+
+// Where your checkers can hit a lone Brown checker this roll, easiest first.
+// Each: { at, from, dice } with dice the die values that checker uses.
+function hitOptions(turns) {
+  const out = new Map()
+  for (const t of turns) {
+    const at = {}
+    for (const st of t.steps) {
+      const prev = (at[st.from] && at[st.from].pop()) || { from: st.from, dice: [] }
+      const cur = { from: prev.from, dice: prev.dice.concat(st.die) }
+      ;(at[st.to] = at[st.to] || []).push(cur)
+      if (st.hit) {
+        const ex = out.get(st.to)
+        if (!ex || cur.dice.length < ex.dice.length) out.set(st.to, { at: st.to, ...cur })
+      }
+    }
+  }
+  return [...out.values()].sort((a, b) => a.dice.length - b.dice.length || a.at - b.at)
+}
+const withDice = (d) => (d.length === 1 ? `with the ${d[0]}` : `using ${d.map((x) => 'the ' + x).join(' and ')} together (${d.join(' + ')} = ${d.reduce((a, b) => a + b, 0)})`)
+
+// How to put two checkers on point p this roll, in words, from the best turn that does it.
+function pointMakers(turns, p) {
+  for (const t of turns) {
+    const before = t.pos[0][p] - t.steps.filter((x) => x.to === p).length + t.steps.filter((x) => x.from === p).length
+    if (t.pos[0][p] < 2 || before >= 2) continue
+    const at = {}, landed = []
+    for (const st of t.steps) {
+      const prev = (at[st.from] && at[st.from].pop()) || { from: st.from, dice: [] }
+      const cur = { from: prev.from, dice: prev.dice.concat(st.die) }
+      ;(at[st.to] = at[st.to] || []).push(cur)
+    }
+    for (const c of at[p] || []) landed.push(`one from ${c.from} ${withDice(c.dice)}`)
+    if (!landed.length) continue
+    return `move ${list(landed)} onto ${p}`
+  }
+  return null
 }
 
 // ---------- A tip when you roll ----------
@@ -229,7 +268,7 @@ export function tipForRoll(pos, dice, turns, ctx) {
     const b = OPENINGS[openingKey(dice)]
     if (b) {
       const [hi, lo] = openingKey(dice).split('')
-      return `First move of the game. With ${hi}-${lo}, the standard play is to move <b>${b.steps}</b> (gold arrows).<p>Why: ${b.why}</p>${once('openings') ? `<p>Every first roll has a standard move like this. They’re all listed under ${term('openings', 'opening moves')}.</p>` : ''}`
+      return `First move of the game. With ${hi}-${lo}, the standard play ${b.idea}. Can you find it?<p>Why it’s good: ${b.why}</p><p>Stuck? Press <b>Show me</b>.</p>${once('openings') ? `<p>Every first roll has a standard move like this. They’re all listed under ${term('openings', 'opening moves')}.</p>` : ''}`
     }
   }
   if (me[25] > 0) {
@@ -242,15 +281,18 @@ export function tipForRoll(pos, dice, turns, ctx) {
     if (once('race')) return `No more contact, so this is a ${term('race', 'race')}. Get everything home and off. Pip count is the score: you ${pips(me)}, Brown ${pips(pos[1])}.`
     return null
   }
-  const canHit = turns.some((t) => t.steps.some((x) => x.hit))
-  if (canHit) {
-    if (once('hit')) return `Look for a ${term('hitting', 'hit')}. A Brown checker sitting alone (a ${term('blots', 'blot')}) can be knocked to the bar, which costs Brown all the ground it covered.`
-    if (Math.random() < 0.5) return `There’s a hit available.`
+  const hits = hitOptions(turns)
+  if (hits.length) {
+    const spots = list(hits.slice(0, 3).map((x) => x.at))
+    let t = `You can ${term('hitting', 'hit')} this turn. Brown has ${hits.length > 1 ? 'checkers' : 'a checker'} sitting alone on ${spots}. Landing on one sends it to the bar, so Brown has to start that checker’s trip over.`
+    t += `<p>How to find it: count the points from each of your checkers down to ${hits.length > 1 ? 'one of those spots' : hits[0].at}. If the count matches one die, or both dice added together, that checker can hit.</p>`
+    return t
   }
-  const makes5 = turns.some((t) => t.pos[0][5] >= 2 && me[5] < 2)
-  if (makes5 && once('five')) return `You can make ${pointName(5)} this turn. It’s the single best ${term('points', 'point')} to own: it blocks Brown and it’s a safe landing spot for you.`
-  const makes7 = turns.some((t) => t.pos[0][7] >= 2 && me[7] < 2)
-  if (makes7 && once('bar7')) return `You can make ${pointName(7)}. Owning 7 blocks Brown’s 6s, the roll it uses most to escape.`
+  for (const [p, why] of [[5, 'It’s the best point to own: Brown can’t land there, and it’s a safe spot for you.'], [7, 'It blocks the 6s Brown uses to run its back checkers out.']]) {
+    if (me[p] >= 2) continue
+    const via = pointMakers(turns, p)
+    if (via && once(p === 5 ? 'five' : 'bar7')) return `You can claim ${p} this turn by getting two checkers onto it. Two checkers on a ${term('points', 'point')} make it yours. ${why}<p>How to find it: look for checkers that are exactly one die (or both dice added) away from ${p}.</p>`
+  }
   if (once('blotsIntro')) return `A checker alone on a point is a ${term('blots', 'blot')}. Brown can hit it. Two or more make a ${term('points', 'point')} and are safe. After you move, the red numbers show how many of Brown’s 36 rolls hit each blot.`
   if (once('pipsIntro')) return `Your ${term('pips', 'pip count')} is how far you have to travel to finish: you ${pips(me)}, Brown ${pips(pos[1])}. Lower is better.`
   if (homePoints(pos[1]) >= 4 && once('strongBoard')) return `Brown’s home board is strong (${homePoints(pos[1])} points). Getting hit now could keep you on the bar for a while, so play safer.`
