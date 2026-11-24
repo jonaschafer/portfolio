@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=25'
-import * as C from './coach.js?v=25'
+import * as E from './engine.js?v=27'
+import * as C from './coach.js?v=27'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -328,6 +328,15 @@ function renderControls() {
 }
 
 // ---------- Coach feed ----------
+// Whenever anything in the coach feed changes, scroll to the newest message
+// once layout has settled (messages above can change height in the same tick,
+// which left smooth scrolling short of the bottom).
+let feedScroll = 0
+new MutationObserver(() => {
+  cancelAnimationFrame(feedScroll)
+  feedScroll = requestAnimationFrame(() => feed.scrollTo({ top: feed.scrollHeight, behavior: reduced ? 'auto' : 'smooth' }))
+}).observe(feed, { childList: true, subtree: true, characterData: true, attributes: true })
+
 function say(kind, html, acts) {
   if (kind === 'note') feed.querySelectorAll('.msg.note').forEach((n) => n.remove())
   const el = document.createElement('div')
@@ -343,7 +352,6 @@ function say(kind, html, acts) {
   }
   feed.append(el)
   while (feed.children.length > 60) feed.firstChild.remove()
-  feed.scrollTop = feed.scrollHeight
   saveSeen()
   return el
 }
@@ -553,7 +561,7 @@ function renderAdvice() {
   const fresh = `<span class="who">Your move</span>${S.adviceHTML}`
   if (S.adviceEl.innerHTML !== fresh) S.adviceEl.innerHTML = fresh
   // keep it the newest message, scrolling down only when it moves or appears
-  if (feed.lastElementChild !== S.adviceEl) { feed.append(S.adviceEl); feed.scrollTop = feed.scrollHeight }
+  if (feed.lastElementChild !== S.adviceEl) feed.append(S.adviceEl)
 }
 
 function computeDests(from) {
