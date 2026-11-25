@@ -41,7 +41,8 @@ export default function OrbitInvite({ invite, group, name: initialName }) {
   }
 
   const needsName = (group || none) && !name.trim()
-  const ready2 = (picks.length > 0 || (none && note.trim())) && !needsName
+  // "None of these work" sends on its own; a note about what does work is a bonus.
+  const ready2 = (picks.length > 0 || none) && !needsName
   const sendLabel = !picks.length && !none
     ? 'Tap a time above'
     : needsName
@@ -102,7 +103,7 @@ export default function OrbitInvite({ invite, group, name: initialName }) {
           </>
         )}
         <div className="ob-label" style={{ marginTop: 16 }}>
-          {none ? 'What works for you?' : 'Anything else? (optional)'}
+          {none ? 'What works instead? (optional)' : 'Anything else? (optional)'}
         </div>
         <textarea value={note} onChange={(e) => setNote(e.target.value)} style={{ minHeight: 60 }} />
         <div className="ob-sendbar">
