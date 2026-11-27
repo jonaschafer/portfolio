@@ -1,5 +1,5 @@
-import * as E from './engine.js?v=27'
-import * as C from './coach.js?v=27'
+import * as E from './engine.js?v=30'
+import * as C from './coach.js?v=30'
 
 const $ = (s) => document.querySelector(s)
 const NS = 'http://www.w3.org/2000/svg'
@@ -40,6 +40,7 @@ const S = {
   turnStart: null, turns: [], keys: new Set(), undo: [], steps: [],
   sel: null, dests: null, hint: null, lastBrown: null, preview: null, openDice: null,
   isOpening: false, firstMove: true, stats: null, hide: null, review: null, games: 0,
+  log: [], rv: null,
 }
 // How fast Brown plays. pre: pause after its dice land; fly: one checker's
 // travel; gap: pause between checkers; after: pause after your move before Brown rolls.
@@ -240,7 +241,7 @@ function render() {
   }
   $('#badges').innerHTML = badges
   // arrows: coach's suggestion / better play (gold)
-  if (pv) s += arrowPaths(pv.pos, pv.steps, 0, 'gold')
+  if (pv) s += arrowPaths(pv.pos, pv.steps, 0, pv.gold === false ? 'cream' : 'gold')
   else {
     if (S.hint && S.hint.base === S.pos) s += arrowPaths(S.hint.base, S.hint.steps, 0, 'gold')
   }
@@ -249,6 +250,8 @@ function render() {
     const [c, b] = S.openDice
     s += die(670, 320, c, 42, false, -6) + die(262, 320, b, 42, false, 5, '#f3e9d6')
     s += `<text x="670" y="${320 + 40}" text-anchor="middle" font-family="Newsreader, serif" font-size="13" fill="#f1e4c6" fill-opacity=".8">you</text><text x="262" y="${320 + 40}" text-anchor="middle" font-family="Newsreader, serif" font-size="13" fill="#f1e4c6" fill-opacity=".8">Brown</text>`
+  } else if (pv && pv.dice) {
+    pv.dice.forEach((d, i) => { s += die(670 + (i - 0.5) * 52, 320, d, 42, false, i % 2 ? 5 : -6) })
   } else if (S.dice && !pv) {
     const list = E.diceList(S.dice)
     const remaining = S.rem.slice()
@@ -264,6 +267,7 @@ function render() {
   }
   $('#dyn').innerHTML = s
   $('#banner').classList.toggle('previewing', !!pv)
+  $('#previewTag').textContent = pv && pv.tag ? pv.tag : 'Showing the better play · click the board to go back'
   for (const el of document.querySelectorAll('#hits .hit')) {
     const pt = +el.dataset.pt
     el.classList.toggle('can', showOpts && (movable.has(pt) || (S.dests && S.dests.has(pt))))
@@ -299,6 +303,10 @@ function btn(label, fn, cls = '', disabled = false, kbd = '') {
 function renderControls() {
   controls.innerHTML = ''
   const add = (...b) => controls.append(...b)
+  if (S.rv) {
+    const it = S.rv.items[S.rv.i], last = S.rv.i === S.rv.items.length - 1
+    return add(btn('Done reviewing', exitReview, 'quiet', false, 'esc'), btn('← Previous', () => reviewGo(-1), 'quiet', S.rv.i === 0, '←'), btn(S.rv.better ? 'My move' : 'Better play', reviewToggle, 'quiet', !hasBetter(it), 'B'), btn('Next →', () => reviewGo(1), 'primary', last, '→'))
+  }
   if (S.preview) return add(btn('Back to the game', endPreview, 'primary', false, 'esc'))
   switch (S.phase) {
     case 'opening': add(btn(S.openDice ? 'Roll again' : 'Roll to start', rollOpening, 'primary pulse', false, 'space')); break
@@ -312,11 +320,19 @@ function renderControls() {
       add(btn('Undo', undo, 'quiet', !S.steps.length, 'U'), ...(S.coach ? [btn(hintShown() ? 'Hide' : 'Show me', showMe, 'quiet', !E.stepOptions(S.pos, 0, S.rem, S.keys).length, 'S')] : []), btn('Done', done, 'primary' + (complete ? ' pulse' : ''), !complete, 'space'))
       break
     }
-    case 'pass': add(btn('OK', passTurn, 'primary', false, 'space')); break
+    case 'pass': {
+      // say why right by the button, so it reads even with the coach off
+      const why = document.createElement('span')
+      why.className = 'pass-why'
+      why.textContent = C.noMoveText(S.pos, S.dice).replace(/<[^>]+>/g, '').replace(/ ?(Your turn is skipped|Turn skipped)\.$/, '')
+      add(why, btn('OK, Brown’s turn', passTurn, 'primary pulse', false, 'space'))
+      break
+    }
     case 'review': add(btn('Try again', tryAgain, 'quiet', false, 'U'), btn('Keep my move', keepMove, 'primary', false, 'space')); break
     case 'over': {
       const r = E.gameResult(S.pos)
       if (r) controls.insertAdjacentHTML('beforeend', `<span style="font-size:20px;font-style:italic;padding:10px 6px">${r.winner === 0 ? 'You win' : 'Brown wins'}${r.kind > 1 ? (r.kind === 2 ? ' a gammon' : ' a backgammon') : ''}.</span>`)
+      if (S.log.some((e) => e.side === 0 && e.steps.length)) add(btn('Review game', startReview, 'quiet', false, 'V'))
       add(btn('New game', newGame, 'primary pulse', false, 'space'))
       break
     }
@@ -333,6 +349,7 @@ function renderControls() {
 // which left smooth scrolling short of the bottom).
 let feedScroll = 0
 new MutationObserver(() => {
+  if (S.rv) return
   cancelAnimationFrame(feedScroll)
   feedScroll = requestAnimationFrame(() => feed.scrollTo({ top: feed.scrollHeight, behavior: reduced ? 'auto' : 'smooth' }))
 }).observe(feed, { childList: true, subtree: true, characterData: true, attributes: true })
@@ -432,6 +449,7 @@ function newGame() {
   S.sel = null; S.dests = null; S.hint = null; S.lastBrown = null; S.preview = null; S.review = null
   S.firstMove = true
   S.adviceEl = null
+  S.log = []; S.rv = null; document.body.classList.remove('reviewing')
   S.stats = { best: 0, good: 0, inaccuracy: 0, mistake: 0, blunder: 0, book: 0 }
   feed.innerHTML = ''
   if (!S.seen.has('welcome')) {
@@ -686,6 +704,7 @@ function hintWhy(t, steps) {
 async function done() {
   if (S.phase !== 'move' || S.busy || !S.keys.has(E.key(S.pos))) return
   const before = S.turnStart
+  S.log.push({ side: 0, dice: S.dice, before, steps: S.steps.slice(), opening: S.isOpening })
   if (S.turns.length === 1) {
     // Forced: nothing to grade.
     S.hint = null
@@ -726,6 +745,7 @@ async function done() {
 
 function tryAgain() {
   if (S.phase !== 'review') return
+  S.log.pop()
   S.stats[S.review.grade]--
   S.pos = S.turnStart; S.rem = E.diceList(S.dice); S.steps = []; S.undo = []; S.sel = null; S.dests = null
   S.phase = 'move'; S.review = null
@@ -741,6 +761,7 @@ async function keepMove() {
 }
 async function passTurn() {
   if (S.phase !== 'pass') return
+  S.log.push({ side: 0, dice: S.dice, before: S.pos, steps: [], opening: false })
   S.phase = 'commit'
   render()
   await wait(200)
@@ -779,6 +800,7 @@ async function aiTurn(given) {
     if (S.speed !== 'step' && i < steps.length - 1) await wait(T().gap)
   }
   S.lastBrown = { base: before, steps, dice, after: S.pos }
+  S.log.push({ side: 1, dice, before, steps })
   const lines = C.explainBrown(before, S.pos, steps, dice, S.seen)
   if (lines.length) say('brown', lines.map((l, i) => (i ? `<p>${l}</p>` : l)).join(''))
   if (E.gameResult(S.pos)) return gameOver()
@@ -823,7 +845,123 @@ function gameOver() {
 }
 
 function startPreview(pos, steps) { S.preview = { pos, steps }; render() }
-function endPreview() { S.preview = null; render() }
+function endPreview() { if (S.rv) return exitReview(); S.preview = null; render() }
+
+
+// ---------- Game review ----------
+// After a game (coach on or off), go back through each of your turns: the
+// board shows the position and roll, your move as dashed arrows, and the
+// better play in gold. The coach grades every move after the fact.
+function buildReview() {
+  const items = []
+  // number turns by round, the same way the notation does
+  let n = 0, mine = false
+  for (const e of S.log) {
+    if (e.side === 1) { if (!mine) n++; mine = false; continue }
+    n++; mine = true
+    if (!e.steps.length) continue
+    let after = e.before
+    for (const st of e.steps) after = E.step(after, 0, st.from, st.to).pos
+    const turns = E.analyze(e.before, 0, e.dice)
+    const it = { n, dice: [Math.max(...e.dice), Math.min(...e.dice)], before: e.before, steps: e.steps, txt: C.fmtMove(e.steps, 0).replace(/\s+/g, ' ') }
+    if (turns.length > 1) it.g = C.grade(e.before, turns, E.key(after), e.dice, e.opening)
+    items.push(it)
+  }
+  return items
+}
+const BAD = ['inaccuracy', 'mistake', 'blunder']
+function startReview() {
+  if (S.phase !== 'over' || !S.log.length) return
+  const items = buildReview()
+  if (!items.length) return
+  S.rv = { items, i: 0, better: false, feed: feed.innerHTML }
+  // open on your biggest slip, or the first move if you played it clean
+  const worst = items.reduce((w, it, i) => (it.g && BAD.includes(it.g.grade) && (!w || it.g.diff > items[w.i].g.diff) ? { i } : w), null)
+  if (worst) S.rv.i = worst.i
+  document.body.classList.add('reviewing')
+  showReview()
+}
+function exitReview() {
+  if (!S.rv) return
+  feed.innerHTML = S.rv.feed
+  S.rv = null; S.preview = null
+  document.body.classList.remove('reviewing')
+  render()
+}
+function reviewGo(d) {
+  if (!S.rv) return
+  const i = Math.max(0, Math.min(S.rv.items.length - 1, S.rv.i + d))
+  if (i === S.rv.i) return
+  S.rv.i = i; S.rv.better = false
+  showReview()
+}
+function reviewToggle() {
+  const it = S.rv && S.rv.items[S.rv.i]
+  if (!it || !hasBetter(it)) return
+  S.rv.better = !S.rv.better
+  showReview()
+}
+const hasBetter = (it) => it.g && it.g.grade !== 'best' && it.g.grade !== 'book' && it.g.best !== it.g.chosen
+function copyNotation(btnEl) {
+  const txt = gameNotation()
+  navigator.clipboard.writeText(txt).then(() => { btnEl.textContent = 'Copied'; setTimeout(() => (btnEl.textContent = 'Copy notation'), 1400) }, () => downloadNotation())
+}
+function downloadNotation() {
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(new Blob([gameNotation()], { type: 'text/plain' }))
+  a.download = `backgammon-${new Date().toISOString().slice(0, 10)}.txt`
+  a.click()
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000)
+}
+function gameNotation() {
+  const r = E.gameResult(S.pos)
+  const kind = r ? (r.kind === 3 ? 'a backgammon' : r.kind === 2 ? 'a gammon' : 'a single game') : ''
+  return C.notation(S.log, {
+    date: new Date().toISOString().slice(0, 10),
+    level: { easy: 'Easy', medium: 'Medium', hard: 'Hard' }[S.level],
+    result: r ? `${r.winner === 0 ? 'You' : 'Brown'} won ${kind} (${r.kind} point${r.kind > 1 ? 's' : ''})` : 'Unfinished',
+  })
+}
+function showReview() {
+  const { items, i, better } = S.rv
+  const it = items[i]
+  S.preview = { pos: it.before, steps: better ? it.g.best.steps : it.steps, gold: better, dice: it.dice, tag: `Turn ${it.n} · ${it.dice[0]}-${it.dice[1]} · ${better ? 'the better play' : 'your move'}` }
+  // the feed: summary, then every turn; the current one opens up
+  const st = { best: 0, good: 0, inaccuracy: 0, mistake: 0, blunder: 0, book: 0 }
+  for (const x of items) if (x.g) st[x.g.grade]++
+  const slips = items.filter((x) => x.g && BAD.includes(x.g.grade)).sort((a, b) => b.g.diff - a.g.diff)
+  let h = `<div class="msg tip"><span class="who">Game review</span>Here’s every move you made, graded after the fact. ${slips.length ? `${slips.length === 1 ? 'One move was a real slip' : `${slips.length} moves were real slips`}, so I’ve started on the one that cost you the most.` : 'No real slips. Nice game.'}<p style="color:var(--muted);font-size:15px">${st.best + st.book} best, ${st.good} good, ${st.inaccuracy} inaccurate, ${st.mistake + st.blunder} mistakes or blunders. Use ← and → to step through, or click any move.</p><div class="acts"><button class="chip" data-rv="copy">Copy notation</button><button class="chip" data-rv="dl">Download .txt</button></div></div>`
+  items.forEach((x, j) => {
+    const G = x.g ? C.GRADES[x.g.grade] : null
+    const badge = G ? `<span class="badge ${G.tone}">${G.label}</span>` : `<span class="badge plain">Only move</span>`
+    h += `<div class="msg rv-row${j === i ? ' on' : ''}" data-rvi="${j}"><div class="rv-line"><span class="rv-n">${x.n}.</span> <span class="rv-dice">${x.dice[0]}-${x.dice[1]}</span> <span class="rv-move">${x.txt}</span>${badge}</div>`
+    if (j === i) {
+      if (!x.g) h += `<p>That was the only legal way to play this roll.</p>`
+      else {
+        const pct = BAD.includes(x.g.grade) && x.g.diff >= 0.01 ? ` <span style="color:var(--muted);font-size:15px">(−${Math.round(x.g.diff * 100)}% chances)</span>` : ''
+        h += `<p>You moved ${C.plainMove(x.steps, 0)}.${pct}</p><p>${x.g.why}</p>`
+        if (hasBetter(x)) h += `<p><b>Better:</b> move ${C.plainMove(x.g.best.steps, 0)}.</p><div class="acts"><button class="chip${better ? ' solid' : ''}" data-rv="toggle">${better ? 'Show my move' : 'Show the better play'}</button></div>`
+      }
+    }
+    h += `</div>`
+  })
+  feed.innerHTML = h.replace(/\b(back checkers?)\b/g, '<a class="term" data-rule="backcheckers">$1</a>')
+  render()
+  const on = feed.querySelector('.rv-row.on')
+  if (on) requestAnimationFrame(() => on.scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' }))
+}
+feed.addEventListener('click', (e) => {
+  if (!S.rv) return
+  const b = e.target.closest('[data-rv]')
+  if (b) {
+    if (b.dataset.rv === 'copy') copyNotation(b)
+    else if (b.dataset.rv === 'dl') downloadNotation()
+    else if (b.dataset.rv === 'toggle') reviewToggle()
+    return
+  }
+  const row = e.target.closest('[data-rvi]')
+  if (row && !e.target.closest('.term')) { const j = +row.dataset.rvi; if (j !== S.rv.i) { S.rv.i = j; S.rv.better = false; showReview() } }
+})
 
 // ---------- Rules drawer ----------
 function openRules(id) {
@@ -855,6 +993,7 @@ svg.addEventListener('mouseover', (e) => {
 svg.addEventListener('mouseout', (e) => { if (e.target.closest('[data-tip]')) tipEl.classList.remove('on') })
 svg.addEventListener('click', (e) => {
   const t = e.target.closest('[data-pt]')
+  if (S.rv) return
   if (S.preview) return endPreview()
   if (t) clickPoint(+t.dataset.pt)
 })
@@ -900,6 +1039,14 @@ document.addEventListener('keydown', (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey) return
   if (e.target.closest('input, textarea, select')) return
   const k = e.key.toLowerCase()
+  if (S.rv && !document.body.classList.contains('rules-open')) {
+    if (k === 'arrowright' || k === ' ' || k === 'enter' || k === 'j') { e.preventDefault(); return reviewGo(1) }
+    if (k === 'arrowleft' || k === 'k') { e.preventDefault(); return reviewGo(-1) }
+    if (k === 'b') return reviewToggle()
+    if (k === 'escape') return exitReview()
+    if (k !== 'r' && k !== '?') return
+  }
+  if (k === 'v' && S.phase === 'over') return startReview()
   if (k === 'escape') {
     if (document.body.classList.contains('rules-open')) return closeRules()
     if (S.preview) return endPreview()

@@ -2,7 +2,7 @@
 // happening on the board right now. Everything is in the player's numbering
 // (cream moves 24 down to 1). Brown's points are flipped (its j = your 25 - j).
 
-import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=27'
+import { shotRisk, evaluate, winProb, contact, allHome, homePoints, prime, pips, key } from './engine.js?v=30'
 
 export const term = (id, text) => `<a class="term" data-rule="${id}">${text}</a>`
 
@@ -306,7 +306,10 @@ export function tipForRoll(pos, dice, turns, ctx) {
 }
 
 export function noMoveText(pos, dice) {
-  if (pos[0][25] > 0) return `You rolled ${Math.max(...dice)}-${Math.min(...dice)} but can’t ${term('entering', 'enter')}: points ${[...new Set(dice)].map((d) => 25 - d).join(' and ')} are closed by Brown. Your turn is skipped.`
+  if (pos[0][25] > 0) {
+    const pts = [...new Set(dice)].map((d) => 25 - d)
+    return `You rolled ${Math.max(...dice)}-${Math.min(...dice)} but can’t ${term('entering', 'come in')} from the bar: Brown holds ${pts.length > 1 ? `points ${pts.join(' and ')}` : `point ${pts[0]}`}, so ${pts.length > 1 ? 'both are' : 'it’s'} closed to you. Your turn is skipped.`
+  }
   return `You rolled ${Math.max(...dice)}-${Math.min(...dice)} and every move is ${term('blocked', 'blocked')}. Turn skipped.`
 }
 
@@ -344,4 +347,22 @@ export function whyNotHit(before, best, turns) {
   else if (back) out.push(back)
   if (!out.length) out.push('The other move just does more for you here.')
   return `<p><b>Why not hit on ${list(at)}?</b> You could, moving ${plainMove(h.steps, 0)}. ${out.join(' ')}</p>`
+}
+
+// ---------- Game record ----------
+// Standard backgammon notation: each line is one round, your roll then
+// Brown's, and each side counts points from its own side (24 is your back
+// point, 1 is the deepest point in your home board). * marks a hit.
+export function notation(log, meta) {
+  const roll = (d) => `${Math.max(...d)}${Math.min(...d)}`
+  const play = (e) => `${roll(e.dice)}: ${e.steps.length ? fmtMove(e.steps, 0).replace(/\s+/g, ' ') : '(no move)'}`
+  const lines = [`; Backgammon at jonschafer.com/play, ${meta.date}, ${meta.level}`, `; ${meta.result}`, '', `    ${'You (cream)'.padEnd(30)}Brown`]
+  let n = 0, row = null
+  const flush = () => { if (row) lines.push(`${String(row.n).padStart(2)}) ${row.a.padEnd(30)}${row.b}`.trimEnd()); row = null }
+  for (const e of log) {
+    if (e.side === 0) { flush(); row = { n: ++n, a: play(e), b: '' } }
+    else { if (!row) row = { n: ++n, a: '', b: '' }; row.b = play(e); flush() }
+  }
+  flush()
+  return lines.join('\n')
 }
